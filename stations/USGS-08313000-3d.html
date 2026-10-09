@@ -921,9 +921,9 @@ catch (e) { diagShow('WEBGL FAILED: ' + e.message); }
 { let lastSt = ''; setInterval(() => { const s = document.getElementById('status'); const t = s ? s.textContent : ''; if (t !== lastSt) { lastSt = t; if (t) diagShow('load: ' + t); } }, 4000); }
 // Patched into the 3D page module scope. Uses page internals: D, S2, BTN, act, drawFlow,
 // shownQ, flowP, scene, gaugeMark, gGaugeLabel, THREE, fmtQ, setDay, updateGaugeLabels.
+let $st = (t) => { const el = document.getElementById('status'); if (el) el.textContent = t; };
 {
 const LIVE = { on: false, q: null, timer: null };
-const $st = (t) => { const el = document.getElementById('status'); if (el) el.textContent = t; };
 
 // ---------- NRCS stations per river (from the project's NRCS mapping; same stations the models trained on)
 const SNOTEL = {  // in-basin SNOTEL triplets (snow)
@@ -1081,6 +1081,18 @@ async function loadLive(silent) {
     $st(`live: ${Math.round(q).toLocaleString('en-US')} cfs${LIVE.wx ? ' · ' + LIVE.wx : ''}${sweTxt ? ' · ' + sweTxt : ''}`);
     if (!LIVE.timer) LIVE.timer = setInterval(() => { if (LIVE.on) loadLive(true); }, 15 * 60 * 1000);
   } catch (e) { if (!silent) $st('live: USGS unreachable — check connection'); }
+
+// LiveAR hook (must stay inside this block: loadLive is block-scoped).
+const loadLiveLAR0 = loadLive;
+loadLive = async function (silent) {
+  await loadLiveLAR0(silent);
+  if (LIVE.on && LIVE.q > 0 && !LAR.demoTimer) {
+    larStep(Math.log(LIVE.q));
+    larForecast();
+    larPanelUpdate();
+    if (S2.model === LAR_IDX) { drawFlow(); levelDirty = true; }
+  }
+};
 }
 
 // ---------- big-model live forecast: all 8 models on the newest data ----------
@@ -1621,16 +1633,7 @@ act = function (a) {
   if (a === 'model' && D.models[S2.model] === 'LiveAR') larOnSelect();
   return r;
 };
-const loadLiveLAR0 = loadLive;
-loadLive = async function (silent) {
-  await loadLiveLAR0(silent);
-  if (LIVE.on && LIVE.q > 0 && !LAR.demoTimer) {
-    larStep(Math.log(LIVE.q));
-    larForecast();
-    larPanelUpdate();
-    if (S2.model === LAR_IDX) { drawFlow(); levelDirty = true; }
-  }
-};
+
 
 
 // ------------------------------------------------------------------ loop
