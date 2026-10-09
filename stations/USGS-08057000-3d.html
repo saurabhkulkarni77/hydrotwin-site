@@ -1615,6 +1615,7 @@ async function larBigModel() {
 
 // ---------- wire in: demo button, act routing, live 15-min hook ----------
 (function(){ var btop = document.getElementById('lardemoTop'); if (btop) btop.onclick = function(){ larDemo(); }; })();
+(function(){ var rtop = document.getElementById('retrainTop'); if (rtop) rtop.onclick = function(){ window.open('https://github.com/saurabhkulkarni77/hydrotwin-models/actions/workflows/daily-retrain.yml','_blank'); }; })();
 const actLAR0 = act;
 act = function (a) {
   if (a === 'lardemo') { larDemo(); return; }
@@ -1725,5 +1726,5 @@ window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater,
 window.HT3_READY = true;
 </script>
 <div id="ht-datewrap" style="position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(12,18,28,.88);color:#E6EDF5;font:600 14px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4);"><label for="ht-date" style="cursor:pointer;">Date</label><input id="ht-date" type="date" min="2016-10-01" max="2026-09-30" style="font:600 14px Arial;padding:5px 8px;border-radius:6px;border:1px solid #3A4A5E;background:#0E1A24;color:#E6EDF5;color-scheme:dark;"></div>
-<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button></div>
+<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo<button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button></div>
 </body></html>
