@@ -1708,7 +1708,6 @@ function cmpRenderStats() {
       '<span>+1d <b style="color:#DDE6EE">' + (r.plus1 == null ? '\u2014' : r.plus1.toLocaleString('en-US')) + '</b> cfs \u00b7 +7d <b style="color:#DDE6EE">' + (r.plus7 == null ? '\u2014' : r.plus7.toLocaleString('en-US')) + '</b> cfs</span></div></div>';
   });
   html += '<div style="font-size:10px;color:#5B6B7D;margin-top:2px">RMSE on held-out test period \u00b7 LiveAR is a continual in-browser learner (5 station wins)</div></div>';
-  html += '<div id="cmpstats"></div>';
     dv.innerHTML = html;
 }
 
@@ -1731,6 +1730,7 @@ function cmpShowPanel(show) {
         '<span style="width:14px;height:14px;border-radius:4px;background:' + col + ';display:inline-block;flex:none"></span>' +
         '<span>' + name + (isLAR && !trained ? ' (not trained)' : '') + '</span></label>';
     });
+    html += '<div id="cmpstats"></div>';
     dv.innerHTML = html;
     document.body.appendChild(dv);
     document.getElementById('cmpx').onclick = () => cmpShowPanel(false);
