@@ -539,6 +539,7 @@ function drawFlow() {
   const x0 = 30, x1 = W * 0.69, y0 = 125, y1 = H * 0.6, win = 90, a = Math.max(0, i - win + 1), cols = win + 7;
   const vals = []; for (let k = a; k <= Math.min(D.n - 1, i + 7); k++) if (D.flow[k] != null) vals.push(D.flow[k]);
   for (let l = 1; l <= 7; l++) { const p = predFor(S2.model, i, l); if (p != null) vals.push(p); }
+  if (typeof CMP !== 'undefined' && CMP.on) CMP.models.forEach((m) => { const cf = cmpForecast(m, i); if (cf) cf.forEach(v => vals.push(v)); });
   if (!vals.length) vals.push(1);
   const lo = Math.log(Math.max(1, Math.min(...vals))) - 0.1, hi = Math.log(Math.max(...vals)) + 0.1;
   const X = (k) => x0 + (k - a) / (cols - 1) * (x1 - x0), Y = (v) => y1 - (Math.log(v) - lo) / (hi - lo || 1) * (y1 - y0);
@@ -576,6 +577,28 @@ function drawFlow() {
     const sm = N.soil && N.soil.sms2 ? N.soil.sms2[di] : null; if (N.soil) parts.push(`soil moisture 2 in ${sm == null ? '—' : sm + '%'} (NRCS ${N.soil.network} ${N.soil.name})`);
     (N.snow || []).slice(0, 3).forEach((x) => { const v = x.swe[di]; parts.push(`SWE ${v == null ? '—' : v.toFixed(1) + ' in'} ${x.name}`); });
     g.font = '22px Arial'; g.fillStyle = '#A8D8B9'; g.fillText(parts.join(' · ').slice(0, 118), 30, y1 + 112); }
+  // multi-model comparison overlay
+  if (typeof CMP !== 'undefined' && CMP.on && CMP.models.length && D.flow[i] != null) {
+    const cmpFcs = [];
+    CMP.models.forEach((m) => { const fc = cmpForecast(m, i); if (fc) cmpFcs.push([m, fc]); });
+    cmpFcs.forEach(([m, fc]) => {
+      g.strokeStyle = cmpColor(m); g.lineWidth = 4; g.beginPath();
+      g.moveTo(X(i), Y(D.flow[i]));
+      fc.forEach((v, l) => g.lineTo(X(i + l + 1), Y(v)));
+      g.stroke();
+    });
+    let ly = 140; const lx = x1 - 300;
+    g.font = '600 22px Arial'; g.textAlign = 'left';
+    g.fillStyle = 'rgba(10,16,26,0.78)'; g.beginPath(); g.roundRect(lx - 12, ly - 30, 312, cmpFcs.length * 28 + 72, 10); g.fill();
+    g.fillStyle = '#FFFFFF'; g.fillText('Model comparison', lx, ly); ly += 30;
+    g.fillStyle = '#6FB0F0'; g.fillRect(lx, ly - 16, 22, 6);
+    g.fillStyle = '#DDE6EE'; g.font = '20px Arial'; g.fillText('Observed', lx + 30, ly - 4); ly += 28;
+    cmpFcs.forEach(([m]) => {
+      g.fillStyle = cmpColor(m); g.fillRect(lx, ly - 16, 22, 6);
+      g.fillStyle = '#DDE6EE'; g.fillText(D.models[m], lx + 30, ly - 4); ly += 28;
+    });
+    g.textAlign = 'left';
+  }
   BTN.forEach((row, r) => row.forEach(([t, ac], k) => { const bw = (W - 60) / row.length, bx = 30 + k * bw, by = BTNY[r] * H;
     const on = (ac === 'fc' && FC.on) || (ac === 'play' && S2.playing);
     g.fillStyle = on ? '#2F6FB0' : '#23466E'; g.beginPath(); g.roundRect(bx + 4, by, bw - 8, BTNH * H, 14); g.fill();
@@ -1625,6 +1648,54 @@ async function larBigModel() {
 // ---------- wire in: demo button, act routing, live 15-min hook ----------
 (function(){ var btop = document.getElementById('lardemoTop'); if (btop) btop.onclick = function(){ larDemo(); }; })();
 (function(){ var rtop = document.getElementById('retrainTop'); if (rtop) rtop.onclick = function(){ window.open('https://github.com/saurabhkulkarni77/hydrotwin-models/actions/workflows/daily-retrain.yml','_blank'); }; })();
+
+// ---------- multi-model comparison ----------
+const CMP = { on: false, models: [] };
+function cmpColor(m) { return m === LAR_IDX ? '#FFFFFF' : COL[m % COL.length]; }
+function cmpForecast(m, i) {
+  if (m === LAR_IDX) return (LAR.fc && LAR.n > 0) ? LAR.fc.slice(0, 7) : null;
+  const out = [];
+  for (let l = 1; l <= 7; l++) { const p = predFor(m, i, l); if (p == null) return null; out.push(p); }
+  return out;
+}
+function cmpShowPanel(show) {
+  let dv = document.getElementById('cmppanel');
+  if (show && !dv) {
+    dv = document.createElement('div');
+    dv.id = 'cmppanel';
+    dv.style.cssText = 'position:fixed;right:18px;bottom:196px;width:min(320px,44vw);z-index:50;background:rgba(10,16,26,0.96);border:1px solid #2A3A4A;border-radius:14px;padding:14px;color:#DDE6EE;font:14px Arial;max-height:60vh;overflow-y:auto;';
+    let html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+      '<b style="color:#8FC1F2">Compare models</b>' +
+      '<button id="cmpx" style="background:none;border:none;color:#8AA;cursor:pointer;font-size:18px">\u00d7</button></div>' +
+      '<div style="margin-bottom:8px;color:#9FB3C8;font-size:12px">7-day forecasts overlaid on the hydrograph</div>';
+    D.models.forEach((name, m) => {
+      const isLAR = m === LAR_IDX;
+      const trained = !isLAR || (LAR.fc && LAR.n > 0);
+      const col = cmpColor(m);
+      html += '<label style="display:flex;align-items:center;gap:8px;padding:5px 4px;cursor:' + (trained ? 'pointer' : 'not-allowed') + ';opacity:' + (trained ? '1' : '0.45') + '">' +
+        '<input type="checkbox" data-cmpm="' + m + '"' + (trained ? '' : ' disabled') + ' style="width:16px;height:16px">' +
+        '<span style="width:14px;height:14px;border-radius:4px;background:' + col + ';display:inline-block;flex:none"></span>' +
+        '<span>' + name + (isLAR && !trained ? ' (not trained)' : '') + '</span></label>';
+    });
+    dv.innerHTML = html;
+    document.body.appendChild(dv);
+    document.getElementById('cmpx').onclick = () => cmpShowPanel(false);
+    dv.querySelectorAll('input[data-cmpm]').forEach(cb => {
+      cb.onchange = () => {
+        CMP.models = Array.from(dv.querySelectorAll('input[data-cmpm]:checked')).map(x => +x.dataset.cmpm);
+        CMP.on = CMP.models.length > 0;
+        drawFlow(); levelDirty = true;
+      };
+    });
+  } else if (!show && dv) {
+    dv.remove();
+    CMP.on = false; CMP.models = [];
+    drawFlow(); levelDirty = true;
+  }
+  return dv;
+}
+(function(){ var ctop = document.getElementById('cmpTop'); if (ctop) ctop.onclick = function(){ const p = document.getElementById('cmppanel'); cmpShowPanel(!p); }; })();
+
 const actLAR0 = act;
 act = function (a) {
   if (a === 'lardemo') { larDemo(); return; }
@@ -1726,5 +1797,5 @@ window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater,
 window.HT3_READY = true;
 </script>
 <div id="ht-datewrap" style="position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(12,18,28,.88);color:#E6EDF5;font:600 14px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4);"><label for="ht-date" style="cursor:pointer;">Date</label><input id="ht-date" type="date" min="2016-10-01" max="2026-09-30" style="font:600 14px Arial;padding:5px 8px;border-radius:6px;border:1px solid #3A4A5E;background:#0E1A24;color:#E6EDF5;color-scheme:dark;"></div>
-<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button></div>
+<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button><button id="cmpTop" title="Overlay 7-day forecasts of multiple models" style="padding:6px 14px;border-radius:10px;border:1px solid #8FC1F2;background:rgba(12,18,28,.88);color:#8FC1F2;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Δ Compare models</button></div>
 </body></html>
