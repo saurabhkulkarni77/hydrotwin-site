@@ -734,7 +734,7 @@ function anchorPanels() { if (S2.mode !== 'ground') return; panelGroup.position.
 
 // ------------------------------------------------------------------ day / level / actions
 let levelDirty = true, ghostKey = '';
-function setDay(i) { S2.day = Math.max(0, Math.min(D.n - 1, i)); levelDirty = true; drawFlow(); updateGaugeLabels(); htSyncDate(); }
+function setDay(i) { S2.day = Math.max(0, Math.min(D.n - 1, i)); levelDirty = true; drawFlow(); updateGaugeLabels(); htSyncDate(); if (typeof cmpRenderStats === 'function') cmpRenderStats(); }
 function htIsoDay(i){ return new Date(day0 + i*864e5).toISOString().slice(0,10); }
 function htSyncDate(){ var el = document.getElementById('ht-date'); if (el && document.activeElement !== el) el.value = htIsoDay(S2.day); }
 (function htDateInit(){ var el = document.getElementById('ht-date'); if(!el) return; el.value = htIsoDay(S2.day);
@@ -1661,6 +1661,60 @@ function cmpForecast(m, i) {
   for (let l = 1; l <= 7; l++) { const p = predFor(m, i, l); if (p == null) return null; out.push(p); }
   return out;
 }
+
+// ---------- comparison stats: RMSE leaderboard, bar chart, forecast values ----------
+const CMP_RMSE = {
+  'Transformer': { rmse: 0.2791, rank: 1 },
+  'TFT': { rmse: 0.2821, rank: 2 },
+  'LSTM': { rmse: 0.2848, rank: 3 },
+  'GP RBF': { rmse: 0.2872, rank: 4 },
+  'GP Mat\u00e9rn': { rmse: 0.2908, rank: 5 },
+  'LiveAR': { rmse: 0.2956, rank: 6 },
+  'PatchTST': { rmse: 0.2967, rank: 7 },
+  'SARIMA': { rmse: 0.6612, rank: 8 },
+  'ARIMA': { rmse: 0.6715, rank: 9 },
+};
+const CMP_MEDAL = { 1: '\uD83E\uDD47', 2: '\uD83E\uDD48', 3: '\uD83E\uDD49' };
+function cmpRenderStats() {
+  const dv = document.getElementById('cmpstats');
+  if (!dv) return;
+  if (typeof CMP === 'undefined' || !CMP.on || !CMP.models.length) { dv.innerHTML = ''; return; }
+  const rows = CMP.models.map(m => {
+    const name = D.models[m];
+    const st = CMP_RMSE[name] || { rmse: NaN, rank: '\u2014' };
+    const fc = cmpForecast(m, S2.day);
+    return { m, name, rmse: st.rmse, rank: st.rank,
+             plus1: fc ? Math.round(fc[0]) : null,
+             plus7: fc ? Math.round(fc[6]) : null };
+  }).sort((a, b) => a.rmse - b.rmse);
+  const best = rows[0].rmse, worst = rows[rows.length - 1].rmse;
+  const span = Math.max(worst - best, 1e-9);
+  let html = '<div style="margin-top:10px;border-top:1px solid #22303F;padding-top:10px">' +
+    '<div style="color:#8FC1F2;font-weight:700;margin-bottom:8px">\uD83D\uDCCA Model statistics <span style="color:#6B7C8F;font-weight:400;font-size:11px">\u00b7 mean test RMSE, lower wins</span></div>';
+  rows.forEach((r, ri) => {
+    const col = cmpColor(r.m);
+    const medal = CMP_MEDAL[r.rank] || ('#' + r.rank);
+    const pct = ((r.rmse - best) / best * 100);
+    const w = 8 + 92 * (1 - (r.rmse - best) / span);
+    const isWin = ri === 0, isLAR = r.m === LAR_IDX;
+    html += '<div style="margin-bottom:8px;padding:7px 8px;border-radius:8px;background:' + (isWin ? 'rgba(255,215,0,0.07)' : 'rgba(255,255,255,0.02)') + ';border:1px solid ' + (isWin ? '#C9A227' : '#22303F') + '">' +
+      '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">' +
+      '<span style="width:12px;height:12px;border-radius:3px;background:' + col + ';flex:none"></span>' +
+      '<b style="font-size:13px">' + (isWin ? '\uD83D\uDC51 ' : '') + r.name + '</b>' +
+      '<span style="font-size:13px">' + medal + '</span>' +
+      (isLAR ? '<span style="font-size:10px;background:#D1495B;color:#fff;border-radius:4px;padding:1px 5px;font-weight:700">\uD83D\uDD34 LIVE</span>' : '') +
+      '<span style="margin-left:auto;font-size:12px;color:#DDE6EE;font-weight:700">' + r.rmse.toFixed(4) + '</span></div>' +
+      '<div style="height:7px;border-radius:4px;background:#1A2530;overflow:hidden;margin-bottom:4px">' +
+      '<div style="height:100%;width:' + w.toFixed(1) + '%;background:linear-gradient(90deg,' + col + 'CC,' + col + ');border-radius:4px"></div></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:11px;color:#9FB3C8;flex-wrap:wrap;gap:4px">' +
+      '<span>' + (isWin ? '<b style="color:#FFD75E">best of selected</b>' : '+' + pct.toFixed(1) + '% vs best') + '</span>' +
+      '<span>+1d <b style="color:#DDE6EE">' + (r.plus1 == null ? '\u2014' : r.plus1.toLocaleString('en-US')) + '</b> cfs \u00b7 +7d <b style="color:#DDE6EE">' + (r.plus7 == null ? '\u2014' : r.plus7.toLocaleString('en-US')) + '</b> cfs</span></div></div>';
+  });
+  html += '<div style="font-size:10px;color:#5B6B7D;margin-top:2px">RMSE on held-out test period \u00b7 LiveAR is a continual in-browser learner (5 station wins)</div></div>';
+  html += '<div id="cmpstats"></div>';
+    dv.innerHTML = html;
+}
+
 function cmpShowPanel(show) {
   let dv = document.getElementById('cmppanel');
   if (show && !dv) {
@@ -1688,6 +1742,7 @@ function cmpShowPanel(show) {
         CMP.models = Array.from(dv.querySelectorAll('input[data-cmpm]:checked')).map(x => +x.dataset.cmpm);
         CMP.on = CMP.models.length > 0;
         drawFlow(); levelDirty = true;
+        cmpRenderStats();
       };
     });
   } else if (!show && dv) {
