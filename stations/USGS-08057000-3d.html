@@ -909,14 +909,18 @@ const DIAGCHIP = document.createElement('button');
 DIAGCHIP.textContent = 'log';
 DIAGCHIP.title = 'toggle diagnostics console';
 DIAGCHIP.style.cssText = 'position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:61;padding:6px 12px;border-radius:8px;border:1px solid #5A2E2E;background:rgba(24,6,6,.85);color:#FFC9C9;font:12px monospace;cursor:pointer;display:none';
-DIAGCHIP.onclick = () => { DIAG.style.display = DIAG.style.display === 'block' ? 'none' : 'block'; };
+DIAGCHIP.addEventListener('click', (e) => { e.stopPropagation(); e.preventDefault(); DIAG.style.display = (DIAG.style.display === 'block') ? 'none' : 'block'; });
+DIAGCHIP.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
 document.body.appendChild(DIAGCHIP);
 let diagN = 0;
 const diagShow = (t) => { DIAG.textContent += t + '\n'; DIAG.scrollTop = 1e6; diagN++; DIAGCHIP.style.display = 'block'; DIAGCHIP.textContent = 'log (' + diagN + ')'; };
 addEventListener('error', (e) => diagShow('JS ERROR: ' + (e.message || e.error)));
 addEventListener('unhandledrejection', (e) => diagShow('PROMISE REJECTED: ' + ((e.reason && e.reason.message) || e.reason)));
-try { const gl = renderer.getContext(); diagShow('webgl ok: ' + gl.getParameter(gl.VERSION) + ' | ' + gl.getParameter(gl.RENDERER)); }
-catch (e) { diagShow('WEBGL FAILED: ' + e.message); }
+try { const gl = renderer.getContext(); diagShow('webgl ok: ' + gl.getParameter(gl.VERSION) + ' | ' + gl.getParameter(gl.RENDERER)); } catch (e) { diagShow('WEBGL FAILED: ' + e.message); }
+setTimeout(() => { try {
+  let n = 0; scene.traverse(() => n++);
+  diagShow('3D diag: scene children=' + n + ' camera=[' + camera.position.x.toFixed(0) + ',' + camera.position.y.toFixed(0) + ',' + camera.position.z.toFixed(0) + ']' + ' canvas=' + renderer.domElement.width + 'x' + renderer.domElement.height + ' mode=' + S2.mode + ' tableRoot.visible=' + tableRoot.visible + ' groundRoot.visible=' + groundRoot.visible);
+} catch (e) { diagShow('3D diag FAILED: ' + e.message); } }, 8000);
 { let lastSt = ''; setInterval(() => { const s = document.getElementById('status'); const t = s ? s.textContent : ''; if (t !== lastSt) { lastSt = t; if (t) diagShow('load: ' + t); } }, 4000); }
 // Patched into the 3D page module scope. Uses page internals: D, S2, BTN, act, drawFlow,
 // shownQ, flowP, scene, gaugeMark, gGaugeLabel, THREE, fmtQ, setDay, updateGaugeLabels.
