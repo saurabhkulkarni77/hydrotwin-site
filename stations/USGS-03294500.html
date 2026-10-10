@@ -755,4 +755,51 @@ window.HT = { mapBtn, S, setDay, setFocus, COLS, applyDay, act, level, gates, pr
 window.HT_READY = true;
 
 </script><a id="to3d" href="USGS-03294500-3d.html" style="position:fixed;right:150px;top:16px;padding:10px 16px;border-radius:10px;background:rgba(12,18,28,.85);color:#E6EDF5;font:600 15px Arial;text-decoration:none;z-index:9">3D terrain ▶</a><div id="ht-datewrap" style="position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(12,18,28,.88);color:#E6EDF5;font:600 14px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4);"><label for="ht-date" style="cursor:pointer;">Date</label><input id="ht-date" type="date" min="2016-10-01" max="2026-09-30" style="font:600 14px Arial;padding:5px 8px;border-radius:6px;border:1px solid #3A4A5E;background:#0E1A24;color:#E6EDF5;color-scheme:dark;"></div>
+
+<script>
+// ---------- feature ablation (classic page) ----------
+const ABLATION_C = {"6feat": {"GP Mat\u00e9rn": 0.4151, "Transformer": 0.4017, "LSTM": 0.4062, "PILSTMv2": 0.3993}, "7feat": {"GP Mat\u00e9rn": 0.415, "Transformer": 0.4086, "LSTM": 0.4031, "PILSTMv2": 0.401}, "8feat": {"GP Mat\u00e9rn": 0.4096, "Transformer": 0.398, "LSTM": 0.4184, "PILSTMv2": 0.4009}, "9feat": {"GP Mat\u00e9rn": 0.4091, "Transformer": 0.3928, "LSTM": 0.4256, "PILSTMv2": 0.3881}};
+const ABLATION_LBL = {"6feat": "USGS + Open-Meteo", "7feat": "USGS + Open-Meteo + Snow", "8feat": "USGS + Open-Meteo + Soil", "9feat": "USGS + Open-Meteo + Soil + Snow"};
+let FEATC = {usgs: true, om: true, soil: true, snow: true};
+function featSubsetKeyC() {
+  const s = FEATC.soil, n = FEATC.snow;
+  let key = (s && n) ? '9feat' : (s ? '8feat' : (n ? '7feat' : '6feat'));
+  return { key: key, exact: FEATC.usgs && FEATC.om };
+}
+function featToggleClassic() {
+  const r = featSubsetKeyC();
+  const abl = ABLATION_C[r.key] || {};
+  const lbl = document.getElementById('featclbl');
+  if (lbl) lbl.innerHTML = '<b>' + ABLATION_LBL[r.key] + '</b>' +
+    (r.exact ? '' : ' <span style="color:#E0852A">(closest pre-trained)</span>');
+  const tb = document.getElementById('featctbl');
+  if (tb) {
+    const rows = Object.keys(abl).sort((a,b) => abl[a]-abl[b]);
+    tb.innerHTML = rows.map(n =>
+      '<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:12px">' +
+      '<span>' + n + '</span><b>' + abl[n].toFixed(4) + '</b></div>').join('');
+  }
+}
+function featClassicInit() {
+  ['usgs','om','soil','snow'].forEach(k => {
+    const cb = document.getElementById('featc_'+k);
+    if (cb) cb.addEventListener('change', () => { FEATC[k] = cb.checked; featToggleClassic(); });
+  });
+  featToggleClassic();
+}
+</script>
+
+<div id="featcpanel" style="position:fixed;left:12px;bottom:12px;z-index:40;background:rgba(10,16,26,0.94);border:1px solid #2A3A4A;border-radius:10px;padding:10px 12px;color:#DDE6EE;font:13px Arial;max-width:240px;">
+<div style="color:#8FC1F2;font-weight:700;margin-bottom:6px;">⚙️ Features <span id="featclbl" style="font-weight:400;font-size:11px"></span></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+<label><input type="checkbox" id="featc_usgs" checked> USGS</label>
+<label><input type="checkbox" id="featc_om" checked> Open-Meteo</label>
+<label><input type="checkbox" id="featc_soil" checked> Soil</label>
+<label><input type="checkbox" id="featc_snow" checked> Snow</label>
+</div>
+<div id="featctbl"></div>
+<div style="font-size:10px;color:#5B6B7D;margin-top:4px;">Precomputed ablation RMSE (test)</div>
+</div>
+<script>if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', featClassicInit); else featClassicInit();</script>
+
 </body></html>

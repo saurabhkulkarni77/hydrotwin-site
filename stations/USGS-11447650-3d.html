@@ -1729,6 +1729,44 @@ const CMP_RMSE = {
   'SARIMA': { rmse: 0.6612, rank: 10 },
   'ARIMA': { rmse: 0.6715, rank: 11 },
 };
+
+// ---------- feature ablation: precomputed per-subset RMSE ----------
+const ABLATION = {"6feat": {"GP Mat\u00e9rn": 0.2206, "Transformer": 0.2134, "LSTM": 0.2276, "PILSTMv2": 0.2295}, "7feat": {"GP Mat\u00e9rn": 0.2264, "Transformer": 0.2203, "LSTM": 0.2274, "PILSTMv2": 0.2325}, "8feat": {"GP Mat\u00e9rn": 0.2298, "Transformer": 0.2232, "LSTM": 0.2304, "PILSTMv2": 0.2322}, "9feat": {"GP Mat\u00e9rn": 0.2228, "Transformer": 0.2311, "LSTM": 0.2256, "PILSTMv2": 0.2276}};
+const ABLATION_LABELS = {"6feat": "USGS + Open-Meteo", "7feat": "USGS + Open-Meteo + Snow", "8feat": "USGS + Open-Meteo + Soil", "9feat": "USGS + Open-Meteo + Soil + Snow"};
+let FEAT = {usgs: true, om: true, soil: true, snow: true};
+let activeSubset = '9feat';
+function featSubsetKey() {
+  const s = FEAT.soil, n = FEAT.snow;
+  let key = (s && n) ? '9feat' : (s ? '8feat' : (n ? '7feat' : '6feat'));
+  return { key: key, exact: FEAT.usgs && FEAT.om };
+}
+function applyFeatureSubset() {
+  const r = featSubsetKey();
+  activeSubset = r.key;
+  const abl = ABLATION[r.key] || {};
+  Object.keys(CMP_RMSE).forEach(function(name) {
+    if (abl[name] != null) CMP_RMSE[name].rmse = abl[name];
+  });
+  const sorted = Object.keys(CMP_RMSE).sort(function(a, b) { return CMP_RMSE[a].rmse - CMP_RMSE[b].rmse; });
+  sorted.forEach(function(name, i) { CMP_RMSE[name].rank = i + 1; });
+  const lbl = document.getElementById('featsubsetlbl');
+  if (lbl) {
+    lbl.innerHTML = '<b style="color:#8FC1F2">' + ABLATION_LABELS[r.key] + '</b>' +
+      (r.exact ? '' : ' <span style="color:#E0852A;font-size:11px">(closest pre-trained; USGS+Open-Meteo are core)</span>');
+  }
+  if (typeof cmpRenderStats === 'function') cmpRenderStats();
+  if (typeof v1v2Update === 'function') v1v2Update();
+}
+function featToggleInit() {
+  ['usgs', 'om', 'soil', 'snow'].forEach(function(k) {
+    const cb = document.getElementById('feat_' + k);
+    if (cb) cb.addEventListener('change', function() {
+      FEAT[k] = cb.checked;
+      applyFeatureSubset();
+    });
+  });
+}
+
 const CMP_MEDAL = { 1: '\uD83E\uDD47', 2: '\uD83E\uDD48', 3: '\uD83E\uDD49' };
 function cmpRenderStats() {
   const dv = document.getElementById('cmpstats');
@@ -1778,6 +1816,7 @@ function v1v2Update(){
   if(!(hasV1&&hasV2)){sec.style.display='none';return;}
   sec.style.display='block';
   var r1=CMP_RMSE['PILSTMv1'],r2=CMP_RMSE['PILSTMv2'];
+  var vsub = (typeof activeSubset !== 'undefined' && activeSubset !== '9feat') ? ' (v2: ' + ABLATION_LABELS[activeSubset] + '; v1: 9-feat only)' : '';
   var diff=Math.abs(r2.rmse-r1.rmse), pct=(diff/r1.rmse*100);
   var win=r1.rmse<r2.rmse?'v1':'v2';
   body.innerHTML='<div style="display:flex;gap:10px;flex-wrap:wrap">'
@@ -1798,6 +1837,16 @@ function cmpShowPanel(show) {
       '<b style="color:#8FC1F2">Compare models</b>' +
       '<button id="cmpx" style="background:none;border:none;color:#8AA;cursor:pointer;font-size:18px">\u00d7</button></div>' +
       '<div style="margin-bottom:8px;color:#9FB3C8;font-size:12px">7-day forecasts overlaid on the hydrograph</div>';
+    html += '<div style="margin:10px 0 8px;padding:8px;border:1px solid #2A3A4A;border-radius:8px;background:rgba(143,193,242,0.04)">' +
+      '<div style="color:#8FC1F2;font-weight:700;font-size:12px;margin-bottom:6px">\u2699\uFE0F Features <span id="featsubsetlbl" style="font-weight:400"></span></div>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;font-size:12px">' +
+      '<label style="cursor:pointer"><input type="checkbox" id="feat_usgs" checked style="width:14px;height:14px"> USGS</label>' +
+      '<label style="cursor:pointer"><input type="checkbox" id="feat_om" checked style="width:14px;height:14px"> Open-Meteo</label>' +
+      '<label style="cursor:pointer"><input type="checkbox" id="feat_soil" checked style="width:14px;height:14px"> Soil</label>' +
+      '<label style="cursor:pointer"><input type="checkbox" id="feat_snow" checked style="width:14px;height:14px"> Snow</label>' +
+      '</div>' +
+      '<div style="font-size:10px;color:#5B6B7D;margin-top:4px">Toggle to see how each feature set affects RMSE (precomputed ablation)</div></div>' +
+
     D.models.forEach((name, m) => {
       const isLAR = m === LAR_IDX;
       const trained = !isLAR || (LAR.fc && LAR.n > 0);
@@ -1836,6 +1885,7 @@ function cmpShowPanel(show) {
     drawFlow(); levelDirty = true;
   }
   return dv;
+  if (show && dv) featToggleInit();
 }
 (function(){ var ctop = document.getElementById('cmpTop'); if (ctop) ctop.onclick = function(){ const p = document.getElementById('cmppanel'); cmpShowPanel(!p); }; })();
 
