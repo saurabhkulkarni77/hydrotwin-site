@@ -124,7 +124,13 @@ async function getJSON(url, ms = 45000) {
 }
 
 // ------------------------------------------------------------------ renderer, sky, lights
-const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: !QUEST });
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: !QUEST });
+} catch (e) {
+  document.getElementById('status').textContent = 'WebGL failed: ' + e.message;
+  throw e;
+}
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(innerWidth, innerHeight); renderer.xr.enabled = true;
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.75;
 document.body.appendChild(renderer.domElement);
