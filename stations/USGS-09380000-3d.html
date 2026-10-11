@@ -106,7 +106,7 @@ const URL_SAT = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/servic
 const URL_TOPO = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}`;
 const URL_GEO = (z, x, y) => `https://tiles.macrostrat.org/carto/${z}/${x}/${y}.png`;
 const NLDI = `https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-${D.site}/`;
-async function img(url) { const r = await fetch(url); if (!r.ok) throw new Error(r.status); return createImageBitmap(await r.blob()); }
+async function img(url, ms = 30000) { const ac = new AbortController(); const t = setTimeout(() => ac.abort(), ms); try { const r = await fetch(url, { signal: ac.signal }); if (!r.ok) throw new Error(r.status); return createImageBitmap(await r.blob()); } finally { clearTimeout(t); } }
 async function mosaic(urlOf, z, n, x0, y0, size, onTile) {
   const c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d'); const t = size / n; let done = 0, fail = 0;
   const jobs = [];
