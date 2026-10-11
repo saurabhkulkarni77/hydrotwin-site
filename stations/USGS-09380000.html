@@ -758,7 +758,7 @@ window.HT_READY = true;
 
 <script>
 // ---------- feature ablation (classic page) ----------
-const ABLATION_C = {"6feat": {"GP Mat\u00e9rn": 0.0754, "Transformer": 0.063, "LSTM": 0.0672, "PILSTMv2": 0.0649}, "7feat": {"GP Mat\u00e9rn": 0.073, "Transformer": 0.0626, "LSTM": 0.068, "PILSTMv2": 0.0639}, "8feat": {"GP Mat\u00e9rn": 0.0742, "Transformer": 0.0673, "LSTM": 0.0737, "PILSTMv2": 0.0648}, "9feat": {"GP Mat\u00e9rn": 0.0756, "Transformer": 0.0677, "LSTM": 0.0699, "PILSTMv2": 0.0705}};
+const ABLATION_C = {"6feat":{"GP Mat\u00e9rn":0.0754,"Transformer":0.063,"LSTM":0.0672,"GCN":0.2971},"7feat":{"GP Mat\u00e9rn":0.073,"Transformer":0.0626,"LSTM":0.068,"GCN":0.2976},"8feat":{"GP Mat\u00e9rn":0.0742,"Transformer":0.0673,"LSTM":0.0737,"GCN":0.297},"9feat":{"GP Mat\u00e9rn":0.0756,"Transformer":0.0677,"LSTM":0.0699,"GCN":0.2963}};
 const ABLATION_LBL = {"6feat": "USGS + Open-Meteo", "7feat": "USGS + Open-Meteo + Snow", "8feat": "USGS + Open-Meteo + Soil", "9feat": "USGS + Open-Meteo + Soil + Snow"};
 let FEATC = {usgs: true, om: true, soil: true, snow: true};
 function featSubsetKeyC() {
