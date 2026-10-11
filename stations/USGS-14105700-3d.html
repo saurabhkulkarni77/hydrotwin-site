@@ -751,7 +751,7 @@ function anchorPanels() { if (S2.mode !== 'ground') return; panelGroup.position.
 
 // ------------------------------------------------------------------ day / level / actions
 let levelDirty = true, ghostKey = '';
-function setDay(i) { S2.day = Math.max(0, Math.min(D.n - 1, i)); levelDirty = true; drawFlow(); updateGaugeLabels(); htSyncDate(); if (typeof cmpRenderStats === 'function') cmpRenderStats(); if(typeof v1v2Update==='function') }
+function setDay(i) { S2.day = Math.max(0, Math.min(D.n - 1, i)); levelDirty = true; drawFlow(); updateGaugeLabels(); htSyncDate(); if (typeof cmpRenderStats === 'function') cmpRenderStats(); if(typeof v1v2Update==='function') v1v2Update(); }
 function htIsoDay(i){ return new Date(day0 + i*864e5).toISOString().slice(0,10); }
 function htSyncDate(){ var el = document.getElementById('ht-date'); if (el && document.activeElement !== el) el.value = htIsoDay(S2.day); }
 (function htDateInit(){ var el = document.getElementById('ht-date'); if(!el) return; el.value = htIsoDay(S2.day);
