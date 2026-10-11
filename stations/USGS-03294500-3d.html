@@ -21,23 +21,6 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0E1A24;font-family:Ar
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.min.js"></script>
-<script>
-window.addEventListener('error', function(e) {
-  var s = document.getElementById('status');
-  if (s && s.textContent.includes('loading')) {
-    s.textContent = 'Error: ' + (e.message || 'module failed to load');
-    s.style.color = '#ff6666';
-  }
-}, true);
-setTimeout(function() {
-  var s = document.getElementById('status');
-  var c = document.querySelectorAll('canvas').length;
-  if (s && s.textContent.includes('loading') && c === 0) {
-    s.textContent = 'Still loading after 15s - module may have failed. Check console (F12).';
-    s.style.color = '#ffaa00';
-  }
-}, 15000);
-</script>
 </head><body>
 <div id="hud"></div><div id="links"></div><div id="status">loading…</div><div id="pick"></div><div id="fcb"></div>
 <div id="dock"></div><div id="side"></div>
