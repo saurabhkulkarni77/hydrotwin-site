@@ -1758,8 +1758,7 @@ function applyFeatureSubset() {
       (r.exact ? '' : ' <span style="color:#E0852A;font-size:11px">(closest pre-trained; USGS+Open-Meteo are core)</span>');
   }
   if (typeof cmpRenderStats === 'function') cmpRenderStats();
-  if (typeof v1v2Update === 'function') 
-}
+  if (typeof v1v2Update === 'function') v1v2Update(); }
 function featToggleInit() {
   ['usgs', 'om', 'soil', 'snow'].forEach(function(k) {
     const cb = document.getElementById('feat_' + k);
