@@ -2,6 +2,9 @@ name: Setup dev bucket (one-time)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [dev]
+    paths: ['.github/workflows/setup-dev-bucket.yml']
 
 jobs:
   setup:
