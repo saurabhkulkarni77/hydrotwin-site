@@ -1,0 +1,1574 @@
+{
+ "windows": {
+  "baseline": [
+   "2016-10-01",
+   "2023-09-30"
+  ],
+  "recent": [
+   "2024-10-01",
+   "2026-09-30"
+  ],
+  "early_test": [
+   "2024-10-01",
+   "2025-09-30"
+  ],
+  "late_test": [
+   "2025-10-01",
+   "2026-09-30"
+  ]
+ },
+ "models": [
+  "Transformer",
+  "GP Mat\u00e9rn",
+  "GP RBF",
+  "TFT",
+  "LSTM",
+  "ARIMA",
+  "SARIMA",
+  "PatchTST",
+  "PILSTMv1",
+  "GCN"
+ ],
+ "stations": {
+  "01463500": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0491,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0281,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0469,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.012,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.4567,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.2107,
+     "rmse_late": 0.2183,
+     "pct_change": 3.6,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2240
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.2253,
+     "rmse_late": 0.2256,
+     "pct_change": 0.2,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2240
+    },
+    "GP RBF": {
+     "rmse_early": 0.2245,
+     "rmse_late": 0.217,
+     "pct_change": -3.3,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2240
+    },
+    "TFT": {
+     "rmse_early": 0.264,
+     "rmse_late": 0.2563,
+     "pct_change": -2.9,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2240
+    },
+    "LSTM": {
+     "rmse_early": 0.2539,
+     "rmse_late": 0.249,
+     "pct_change": -1.9,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2240
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.1625,
+     "rmse_late": 0.151,
+     "pct_change": -7.1,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2240
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.1799,
+     "rmse_late": 0.161,
+     "pct_change": -10.5,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2240
+    },
+    "GCN": {
+     "rmse_early": 0.194,
+     "rmse_late": 0.1865,
+     "pct_change": -3.9,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2240
+    }
+   }
+  },
+  "01646500": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0437,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0345,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0519,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.0081,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.4321,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.2777,
+     "rmse_late": 0.2623,
+     "pct_change": -5.6,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.3221,
+     "rmse_late": 0.3223,
+     "pct_change": 0.1,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "GP RBF": {
+     "rmse_early": 0.3101,
+     "rmse_late": 0.312,
+     "pct_change": 0.6,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "TFT": {
+     "rmse_early": 0.3032,
+     "rmse_late": 0.2891,
+     "pct_change": -4.7,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "LSTM": {
+     "rmse_early": 0.265,
+     "rmse_late": 0.2392,
+     "pct_change": -9.7,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.3306,
+     "rmse_late": 0.3054,
+     "pct_change": -7.6,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.1968,
+     "rmse_late": 0.2066,
+     "pct_change": 5.0,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "GCN": {
+     "rmse_early": 0.1848,
+     "rmse_late": 0.2289,
+     "pct_change": 23.9,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2506
+    }
+   }
+  },
+  "02320500": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0354,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0437,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.032,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.0107,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.5729,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.0836,
+     "rmse_late": 0.0335,
+     "pct_change": -60.0,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2240
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.1064,
+     "rmse_late": 0.0589,
+     "pct_change": -44.6,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2240
+    },
+    "GP RBF": {
+     "rmse_early": 0.1062,
+     "rmse_late": 0.0531,
+     "pct_change": -50.0,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2240
+    },
+    "TFT": {
+     "rmse_early": 0.0931,
+     "rmse_late": 0.0644,
+     "pct_change": -30.8,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2240
+    },
+    "LSTM": {
+     "rmse_early": 0.0895,
+     "rmse_late": 0.0457,
+     "pct_change": -48.9,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2240
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.0933,
+     "rmse_late": 0.0466,
+     "pct_change": -50.0,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2240
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.068,
+     "rmse_late": 0.0431,
+     "pct_change": -36.6,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2240
+    },
+    "GCN": {
+     "rmse_early": 0.0665,
+     "rmse_late": 0.0447,
+     "pct_change": -32.7,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2240
+    }
+   }
+  },
+  "03294500": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0443,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0726,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0923,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.004,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.1424,
+      "status": "watch"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "watch"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.308,
+     "rmse_late": 0.3269,
+     "pct_change": 6.2,
+     "status": "watch",
+     "n_early": 2296,
+     "n_late": 462
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.2983,
+     "rmse_late": 0.3109,
+     "pct_change": 4.2,
+     "status": "stable",
+     "n_early": 2296,
+     "n_late": 462
+    },
+    "GP RBF": {
+     "rmse_early": 0.293,
+     "rmse_late": 0.2889,
+     "pct_change": -1.4,
+     "status": "stable",
+     "n_early": 2296,
+     "n_late": 462
+    },
+    "TFT": {
+     "rmse_early": 0.3011,
+     "rmse_late": 0.3015,
+     "pct_change": 0.1,
+     "status": "stable",
+     "n_early": 2296,
+     "n_late": 462
+    },
+    "LSTM": {
+     "rmse_early": 0.3181,
+     "rmse_late": 0.2947,
+     "pct_change": -7.4,
+     "status": "improving",
+     "n_early": 2296,
+     "n_late": 462
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.2508,
+     "rmse_late": 0.233,
+     "pct_change": -7.1,
+     "status": "improving",
+     "n_early": 2296,
+     "n_late": 462
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.2527,
+     "rmse_late": 0.226,
+     "pct_change": -10.5,
+     "status": "improving",
+     "n_early": 2296,
+     "n_late": 462
+    },
+    "GCN": {
+     "rmse_early": 0.1255,
+     "rmse_late": 0.1143,
+     "pct_change": -9.0,
+     "status": "improving",
+     "n_early": 2296,
+     "n_late": 462
+    }
+   }
+  },
+  "05331000": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0679,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0421,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0552,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.0083,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.9714,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.0914,
+     "rmse_late": 0.0628,
+     "pct_change": -31.3,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.104,
+     "rmse_late": 0.0949,
+     "pct_change": -8.7,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "GP RBF": {
+     "rmse_early": 0.1,
+     "rmse_late": 0.0868,
+     "pct_change": -13.1,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "TFT": {
+     "rmse_early": 0.096,
+     "rmse_late": 0.0733,
+     "pct_change": -23.7,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "LSTM": {
+     "rmse_early": 0.0981,
+     "rmse_late": 0.0649,
+     "pct_change": -33.9,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.0834,
+     "rmse_late": 0.05,
+     "pct_change": -40.0,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.0852,
+     "rmse_late": 0.0614,
+     "pct_change": -28.0,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2506
+    },
+    "GCN": {
+     "rmse_early": 0.0436,
+     "rmse_late": 0.0463,
+     "pct_change": 6.1,
+     "status": "watch",
+     "n_early": 2555,
+     "n_late": 2506
+    }
+   }
+  },
+  "06214500": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0748,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0518,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0621,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.0259,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.3506,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.1492,
+     "rmse_late": 0.1582,
+     "pct_change": 6.0,
+     "status": "watch",
+     "n_early": 2352,
+     "n_late": 1946
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.1283,
+     "rmse_late": 0.12,
+     "pct_change": -6.5,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 1946
+    },
+    "GP RBF": {
+     "rmse_early": 0.1252,
+     "rmse_late": 0.1145,
+     "pct_change": -8.5,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 1946
+    },
+    "TFT": {
+     "rmse_early": 0.153,
+     "rmse_late": 0.1469,
+     "pct_change": -4.0,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 1946
+    },
+    "LSTM": {
+     "rmse_early": 0.1406,
+     "rmse_late": 0.146,
+     "pct_change": 3.8,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 1946
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.1202,
+     "rmse_late": 0.1148,
+     "pct_change": -4.5,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 1946
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.0755,
+     "rmse_late": 0.0741,
+     "pct_change": -1.7,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 1946
+    },
+    "GCN": {
+     "rmse_early": 0.0478,
+     "rmse_late": 0.0465,
+     "pct_change": -2.6,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 1946
+    }
+   }
+  },
+  "06934500": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0398,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0454,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0842,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.0052,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.4635,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.0927,
+     "rmse_late": 0.0943,
+     "pct_change": 1.7,
+     "status": "stable",
+     "n_early": 2156,
+     "n_late": 2093
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.1247,
+     "rmse_late": 0.1201,
+     "pct_change": -3.6,
+     "status": "stable",
+     "n_early": 2156,
+     "n_late": 2093
+    },
+    "GP RBF": {
+     "rmse_early": 0.1147,
+     "rmse_late": 0.1124,
+     "pct_change": -2.0,
+     "status": "stable",
+     "n_early": 2156,
+     "n_late": 2093
+    },
+    "TFT": {
+     "rmse_early": 0.0867,
+     "rmse_late": 0.0861,
+     "pct_change": -0.8,
+     "status": "stable",
+     "n_early": 2156,
+     "n_late": 2093
+    },
+    "LSTM": {
+     "rmse_early": 0.1072,
+     "rmse_late": 0.1066,
+     "pct_change": -0.6,
+     "status": "stable",
+     "n_early": 2156,
+     "n_late": 2093
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.0889,
+     "rmse_late": 0.0779,
+     "pct_change": -12.4,
+     "status": "improving",
+     "n_early": 2156,
+     "n_late": 2093
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.0914,
+     "rmse_late": 0.0898,
+     "pct_change": -1.8,
+     "status": "stable",
+     "n_early": 2156,
+     "n_late": 2093
+    },
+    "GCN": {
+     "rmse_early": 0.0514,
+     "rmse_late": 0.0544,
+     "pct_change": 5.8,
+     "status": "watch",
+     "n_early": 2156,
+     "n_late": 2093
+    }
+   }
+  },
+  "07374000": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0273,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0232,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.025,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.0052,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.6855,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.0602,
+     "rmse_late": 0.0586,
+     "pct_change": -2.7,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 1981
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.0519,
+     "rmse_late": 0.0594,
+     "pct_change": 14.4,
+     "status": "watch",
+     "n_early": 2352,
+     "n_late": 1981
+    },
+    "GP RBF": {
+     "rmse_early": 0.0823,
+     "rmse_late": 0.0804,
+     "pct_change": -2.3,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 1981
+    },
+    "TFT": {
+     "rmse_early": 0.0634,
+     "rmse_late": 0.0765,
+     "pct_change": 20.6,
+     "status": "drift",
+     "n_early": 2352,
+     "n_late": 1981
+    },
+    "LSTM": {
+     "rmse_early": 0.0579,
+     "rmse_late": 0.0662,
+     "pct_change": 14.4,
+     "status": "watch",
+     "n_early": 2352,
+     "n_late": 1981
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.0604,
+     "rmse_late": 0.0692,
+     "pct_change": 14.5,
+     "status": "watch",
+     "n_early": 2352,
+     "n_late": 1981
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.0528,
+     "rmse_late": 0.0538,
+     "pct_change": 1.9,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 1981
+    },
+    "GCN": {
+     "rmse_early": 0.0293,
+     "rmse_late": 0.0321,
+     "pct_change": 9.5,
+     "status": "watch",
+     "n_early": 2352,
+     "n_late": 1981
+    }
+   }
+  },
+  "08057000": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0315,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0262,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0345,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.0091,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.1109,
+      "status": "watch"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "watch"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.4242,
+     "rmse_late": 0.4301,
+     "pct_change": 1.4,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.4612,
+     "rmse_late": 0.4297,
+     "pct_change": -6.8,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "GP RBF": {
+     "rmse_early": 0.4456,
+     "rmse_late": 0.4093,
+     "pct_change": -8.1,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "TFT": {
+     "rmse_early": 0.5682,
+     "rmse_late": 0.527,
+     "pct_change": -7.2,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "LSTM": {
+     "rmse_early": 0.4743,
+     "rmse_late": 0.4211,
+     "pct_change": -11.2,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.3887,
+     "rmse_late": 0.4003,
+     "pct_change": 3.0,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.3799,
+     "rmse_late": 0.3723,
+     "pct_change": -2.0,
+     "status": "stable",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "GCN": {
+     "rmse_early": 0.3914,
+     "rmse_late": 0.3535,
+     "pct_change": -9.7,
+     "status": "improving",
+     "n_early": 2352,
+     "n_late": 2303
+    }
+   }
+  },
+  "08158000": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0728,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.044,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0516,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.006,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.3595,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.283,
+     "rmse_late": 0.344,
+     "pct_change": 21.5,
+     "status": "drift",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.2476,
+     "rmse_late": 0.2668,
+     "pct_change": 7.7,
+     "status": "watch",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "GP RBF": {
+     "rmse_early": 0.2308,
+     "rmse_late": 0.2443,
+     "pct_change": 5.8,
+     "status": "watch",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "TFT": {
+     "rmse_early": 0.2474,
+     "rmse_late": 0.2993,
+     "pct_change": 21.0,
+     "status": "drift",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "LSTM": {
+     "rmse_early": 0.25,
+     "rmse_late": 0.3034,
+     "pct_change": 21.3,
+     "status": "drift",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.1337,
+     "rmse_late": 0.2141,
+     "pct_change": 60.2,
+     "status": "drift",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.2148,
+     "rmse_late": 0.2511,
+     "pct_change": 16.9,
+     "status": "drift",
+     "n_early": 2352,
+     "n_late": 2303
+    },
+    "GCN": {
+     "rmse_early": 0.2036,
+     "rmse_late": 0.2644,
+     "pct_change": 29.8,
+     "status": "drift",
+     "n_early": 2352,
+     "n_late": 2303
+    }
+   }
+  },
+  "08313000": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0568,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0232,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0647,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": null,
+      "status": "no data"
+     },
+     "log10_flow": {
+      "psi": 1.334,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.0733,
+     "rmse_late": 0.0943,
+     "pct_change": 28.7,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2135
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.0726,
+     "rmse_late": 0.0576,
+     "pct_change": -20.6,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2135
+    },
+    "GP RBF": {
+     "rmse_early": 0.1106,
+     "rmse_late": 0.1243,
+     "pct_change": 12.4,
+     "status": "watch",
+     "n_early": 2555,
+     "n_late": 2135
+    },
+    "TFT": {
+     "rmse_early": 0.0724,
+     "rmse_late": 0.0789,
+     "pct_change": 8.9,
+     "status": "watch",
+     "n_early": 2555,
+     "n_late": 2135
+    },
+    "LSTM": {
+     "rmse_early": 0.091,
+     "rmse_late": 0.1166,
+     "pct_change": 28.1,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2135
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.0556,
+     "rmse_late": 0.0469,
+     "pct_change": -15.7,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2135
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.0737,
+     "rmse_late": 0.0968,
+     "pct_change": 31.3,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2135
+    },
+    "GCN": {
+     "rmse_early": 0.074,
+     "rmse_late": 0.1037,
+     "pct_change": 40.1,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2135
+    }
+   }
+  },
+  "09380000": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0367,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0454,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0293,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": null,
+      "status": "no data"
+     },
+     "log10_flow": {
+      "psi": 2.6451,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.0438,
+     "rmse_late": 0.0425,
+     "pct_change": -3.0,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2247
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.0614,
+     "rmse_late": 0.0782,
+     "pct_change": 27.3,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2247
+    },
+    "GP RBF": {
+     "rmse_early": 0.0577,
+     "rmse_late": 0.077,
+     "pct_change": 33.5,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2247
+    },
+    "TFT": {
+     "rmse_early": 0.0457,
+     "rmse_late": 0.045,
+     "pct_change": -1.7,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2247
+    },
+    "LSTM": {
+     "rmse_early": 0.0491,
+     "rmse_late": 0.0521,
+     "pct_change": 6.2,
+     "status": "watch",
+     "n_early": 2555,
+     "n_late": 2247
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.0547,
+     "rmse_late": 0.0386,
+     "pct_change": -29.3,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2247
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.0483,
+     "rmse_late": 0.0688,
+     "pct_change": 42.5,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2247
+    },
+    "GCN": {
+     "rmse_early": 0.0601,
+     "rmse_late": 0.0757,
+     "pct_change": 25.9,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2247
+    }
+   }
+  },
+  "11447650": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0167,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.0324,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.0452,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": null,
+      "status": "no data"
+     },
+     "log10_flow": {
+      "psi": 0.5712,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.1179,
+     "rmse_late": 0.134,
+     "pct_change": 13.7,
+     "status": "watch",
+     "n_early": 2555,
+     "n_late": 2079
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.1095,
+     "rmse_late": 0.1067,
+     "pct_change": -2.5,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2079
+    },
+    "GP RBF": {
+     "rmse_early": 0.1076,
+     "rmse_late": 0.1009,
+     "pct_change": -6.2,
+     "status": "improving",
+     "n_early": 2555,
+     "n_late": 2079
+    },
+    "TFT": {
+     "rmse_early": 0.0996,
+     "rmse_late": 0.1099,
+     "pct_change": 10.3,
+     "status": "watch",
+     "n_early": 2555,
+     "n_late": 2079
+    },
+    "LSTM": {
+     "rmse_early": 0.095,
+     "rmse_late": 0.1035,
+     "pct_change": 8.9,
+     "status": "watch",
+     "n_early": 2555,
+     "n_late": 2079
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.0838,
+     "rmse_late": 0.1018,
+     "pct_change": 21.5,
+     "status": "drift",
+     "n_early": 2555,
+     "n_late": 2079
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.0868,
+     "rmse_late": 0.0932,
+     "pct_change": 7.4,
+     "status": "watch",
+     "n_early": 2555,
+     "n_late": 2079
+    },
+    "GCN": {
+     "rmse_early": 0.0804,
+     "rmse_late": 0.0795,
+     "pct_change": -1.2,
+     "status": "stable",
+     "n_early": 2555,
+     "n_late": 2079
+    }
+   }
+  },
+  "14105700": {
+   "data_drift": {
+    "features": {
+     "tmax_c": {
+      "psi": 0.0439,
+      "status": "stable"
+     },
+     "tmin_c": {
+      "psi": 0.056,
+      "status": "stable"
+     },
+     "tmean_c": {
+      "psi": 0.014,
+      "status": "stable"
+     },
+     "precip_mm": {
+      "psi": 0.0003,
+      "status": "stable"
+     },
+     "log10_flow": {
+      "psi": 0.786,
+      "status": "drift"
+     }
+    },
+    "worst_feature": "log10_flow",
+    "status": "drift"
+   },
+   "concept_drift": {
+    "Transformer": {
+     "rmse_early": 0.0569,
+     "rmse_late": 0.0678,
+     "pct_change": 19.1,
+     "status": "drift",
+     "n_early": 1729,
+     "n_late": 1456
+    },
+    "GP Mat\u00e9rn": {
+     "rmse_early": 0.0546,
+     "rmse_late": 0.0505,
+     "pct_change": -7.6,
+     "status": "improving",
+     "n_early": 1729,
+     "n_late": 1456
+    },
+    "GP RBF": {
+     "rmse_early": 0.0521,
+     "rmse_late": 0.0472,
+     "pct_change": -9.4,
+     "status": "improving",
+     "n_early": 1729,
+     "n_late": 1456
+    },
+    "TFT": {
+     "rmse_early": 0.0829,
+     "rmse_late": 0.084,
+     "pct_change": 1.3,
+     "status": "stable",
+     "n_early": 1729,
+     "n_late": 1456
+    },
+    "LSTM": {
+     "rmse_early": 0.0669,
+     "rmse_late": 0.0761,
+     "pct_change": 13.8,
+     "status": "watch",
+     "n_early": 1729,
+     "n_late": 1456
+    },
+    "ARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "SARIMA": {
+     "rmse_early": null,
+     "rmse_late": null,
+     "pct_change": null,
+     "status": "no data",
+     "n_early": 0,
+     "n_late": 0
+    },
+    "PatchTST": {
+     "rmse_early": 0.0455,
+     "rmse_late": 0.0484,
+     "pct_change": 6.2,
+     "status": "watch",
+     "n_early": 1729,
+     "n_late": 1456
+    },
+    "PILSTMv1": {
+     "rmse_early": 0.0362,
+     "rmse_late": 0.0322,
+     "pct_change": -11.1,
+     "status": "improving",
+     "n_early": 1729,
+     "n_late": 1456
+    },
+    "GCN": {
+     "rmse_early": 0.0371,
+     "rmse_late": 0.0351,
+     "pct_change": -5.5,
+     "status": "improving",
+     "n_early": 1729,
+     "n_late": 1456
+    }
+   }
+  }
+ }
+}
