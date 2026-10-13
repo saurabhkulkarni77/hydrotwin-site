@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Apply 25-year data to station pages (dev only)
+        run: python3 build25/apply25.py
+
       - name: Inject drift panel into station pages (dev only)
         run: python3 drift/patch_pages.py
 
@@ -24,7 +27,7 @@ jobs:
             git config user.name "hydrotwin-dev"
             git config user.email "actions@github.com"
             git add stations
-            git commit -m "Bake drift panel into station pages (dev)"
+            git commit -m "Bake station pages (dev)"
             git push
           else
             echo "Pages already baked; nothing to commit."
@@ -42,4 +45,5 @@ jobs:
           aws s3 sync . s3://hydrotwin-site-dev-2026/ \
             --exclude ".git/*" \
             --exclude ".github/*" \
+            --exclude "build25/*" \
             --delete
