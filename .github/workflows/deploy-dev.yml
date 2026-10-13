@@ -5,11 +5,30 @@ on:
     branches: [dev]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Inject drift panel into station pages (dev only)
+        run: python3 drift/patch_pages.py
+
+      - name: Commit baked pages back to dev (best effort)
+        continue-on-error: true
+        run: |
+          if [ -n "$(git status --porcelain stations)" ]; then
+            git config user.name "hydrotwin-dev"
+            git config user.email "actions@github.com"
+            git add stations
+            git commit -m "Bake drift panel into station pages (dev)"
+            git push
+          else
+            echo "Pages already baked; nothing to commit."
+          fi
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
