@@ -1322,15 +1322,63 @@ async function fetchLiveSoilSnow() {
   return fb;
 }
 
-async function bigModelLive() {
-  const mname = D.models[S2.model];
-  const onnxName = BIGMAP[mname];
-  const paramName = PARAMMAP[mname];
-  if (!onnxName && !paramName) { $st('big model: ' + mname + ' has no browser build'); return; }
-  if (BIG.busy) return;
-  BIG.busy = true; drawFlow();
-  $st('big model: fetching newest daily data\u2026');
-  try {
+/* ht-live-gap v1 - true-live gap fill (dev). Builds the forecast window
+ * from the baked daily series (window.HT3D) extended to today with small
+ * live fetches, instead of re-downloading 10 years on every click.
+ * Flow: USGS NWIS daily values, last 45 days; fresh values override baked
+ * on overlap (revised values win). Sacramento 11447650 reports tidally
+ * filtered flow as parameter 72137 in the modern era (its 00060 ended
+ * 2015), so it is fetched with 72137.
+ * Weather: Open-Meteo forecast API (past_days) fills the newest days
+ * including today; the archive API (last 400 days) then overwrites
+ * wherever it has observed values. A missing flow day breaks the
+ * consecutive run honestly - no value is ever fabricated.
+ * Soil/snow still comes from fetchLiveSoilSnow() at forecast time. */
+async function htGapAssemble() {
+  const H = window.HT3D || {};
+  const today = new Date().toISOString().slice(0, 10);
+  const dayMs = 864e5;
+  const iso = (t) => new Date(t).toISOString().slice(0, 10);
+  const J = async (u, ms) => { try { return await fetchJson(u, ms); } catch (e) { return null; } };
+  const flows = {}, wx = {};
+  const fl = H.flow || [];
+  const t0 = Date.parse((H.start || '2001-10-01') + 'T00:00:00Z');
+  for (let i = 0; i < fl.length; i++) {
+    const q = fl[i];
+    if (q != null && q > 0) flows[iso(t0 + i * dayMs)] = q;
+  }
+  const pcd = (D.site === '11447650') ? '72137' : '00060';
+  const fStart = iso(Date.parse(today + 'T00:00:00Z') - 45 * dayMs);
+  const wStart = iso(Date.parse(today + 'T00:00:00Z') - 400 * dayMs);
+  const [ru, wf, wa] = await Promise.all([
+    J(`https://waterservices.usgs.gov/nwis/dv/?format=json&sites=${D.site}&parameterCd=${pcd}&startDT=${fStart}&endDT=${today}`, 30000),
+    J(`https://api.open-meteo.com/v1/forecast?latitude=${D.lat}&longitude=${D.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&temperature_unit=celsius&precipitation_unit=mm&timezone=auto&past_days=10&forecast_days=1`, 30000),
+    J(`https://archive-api.open-meteo.com/v1/archive?latitude=${D.lat}&longitude=${D.lon}&start_date=${wStart}&end_date=${today}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&temperature_unit=celsius&precipitation_unit=mm&timezone=auto`, 30000)
+  ]);
+  if (ru && ru.value) for (const ts of ru.value.timeSeries) for (const v of ts.values[0].value) {
+    const q = parseFloat(v.value);
+    if (q > 0) flows[v.dateTime.slice(0, 10)] = q;
+  }
+  const putWx = (w) => {
+    const d = w && w.daily; if (!d || !d.time) return;
+    for (let i = 0; i < d.time.length; i++) {
+      const tx = d.temperature_2m_max[i], tn = d.temperature_2m_min[i];
+      if (tx == null || tn == null) continue;
+      wx[d.time[i]] = [tx, tn, d.precipitation_sum[i] || 0];
+    }
+  };
+  putWx(wf); putWx(wa);
+  const dates = Object.keys(flows).filter(dt => wx[dt]).sort();
+  if (dates.length < 30) throw new Error('only ' + dates.length + ' aligned days');
+  const dn = dates.map(dt => Math.round(Date.parse(dt + 'T00:00:00Z') / 864e5));
+  let k = dates.length - 1;
+  while (k > 0 && dn[k] - dn[k - 1] === 1) k--;
+  const run = dates.slice(k);
+  if (run.length < 30) throw new Error('no 30-day consecutive run at the end');
+  return { flows: flows, wx: wx, run: run, win30: run.slice(-30) };
+}
+
+async function htBakedAssemble() {
     const today = new Date().toISOString().slice(0, 10);
     const ru = await fetchJson(`https://waterservices.usgs.gov/nwis/dv/?format=json&sites=${D.site}&parameterCd=00060&startDT=2016-10-01&endDT=${today}`, 90000);
     const flows = {};
@@ -1354,7 +1402,30 @@ async function bigModelLive() {
     while (k > 0 && dn[k] - dn[k - 1] === 1) k--;
     const run = dates.slice(k);
     if (run.length < 30) throw new Error('no 30-day consecutive run at the end');
-    const win30 = run.slice(-30);
+    return { flows: flows, wx: wx, run: run, win30: run.slice(-30) };
+}
+
+async function bigModelLive() {
+  const mname = D.models[S2.model];
+  const onnxName = BIGMAP[mname];
+  const paramName = PARAMMAP[mname];
+  if (!onnxName && !paramName) { $st('big model: ' + mname + ' has no browser build'); return; }
+  if (BIG.busy) return;
+  BIG.busy = true; drawFlow();
+  $st('big model: fetching newest daily data\u2026');
+  try {
+    // ht-live-gap v1: gap-fill first; fall back to the original assembly
+    // (htBakedAssemble) whenever the live window cannot beat the baked end.
+    let flows, wx, run, win30;
+    {
+      let A = null;
+      try { A = await htGapAssemble(); } catch (e1) { A = null; }
+      const H3 = window.HT3D || {};
+      const bN = (H3.flow || []).length;
+      const bEnd = (H3.start && bN) ? new Date(Date.parse(H3.start + 'T00:00:00Z') + (bN - 1) * 864e5).toISOString().slice(0, 10) : '';
+      if (A && A.win30[29] >= bEnd) { flows = A.flows; wx = A.wx; run = A.run; win30 = A.win30; }
+      else { const B = await htBakedAssemble(); flows = B.flows; wx = B.wx; run = B.run; win30 = B.win30; }
+    }
     const { mu, sd, tsd } = BIGSTATS;
     let fc, fcsrc;
     if (onnxName) {
@@ -1414,9 +1485,9 @@ async function bigModelLive() {
     }
     const hh = new Date().toTimeString().slice(0, 5);
     BIG.fit = { model: mname, fc, at: hh, end: win30[29] };
-    $st(`${mname} live: +1d ${Math.round(fc[0]).toLocaleString('en-US')} \u2026 +7d ${Math.round(fc[6]).toLocaleString('en-US')} cfs (${fcsrc}, live data${(BIG.src === 'github' || BIG.psrc === 'github') ? ', fresh model' : ''})`);
+    $st(`${mname} live: +1d ${Math.round(fc[0]).toLocaleString('en-US')} \u2026 +7d ${Math.round(fc[6]).toLocaleString('en-US')} cfs (${fcsrc}, live data, ends ${win30[29]}${(BIG.src === 'github' || BIG.psrc === 'github') ? ', fresh model' : ''})`);
     const lv = document.getElementById('livetxt');
-    if (lv) lv.innerHTML += `<br><b style="color:#7AE07A">${mname} live</b> <span style="opacity:.7">(${fcsrc} \u00b7 live data \u00b7 ${hh})</span><br>` +
+    if (lv) lv.innerHTML += `<br><b style="color:#7AE07A">${mname} live</b> <span style="opacity:.7">(${fcsrc} \u00b7 live data \u00b7 ${hh} \u00b7 ends ${win30[29]})</span><br>` +
       fc.map((v, l) => `+${l + 1}d ${Math.round(v).toLocaleString('en-US')}`).join(' \u00b7 ') + ' cfs';
   } catch (e) {
     $st('big model: ' + (e.message || e));
@@ -1965,6 +2036,7 @@ window.HT3_READY = true;
 </script>
 <div id="ht-datewrap" style="position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(12,18,28,.88);color:#E6EDF5;font:600 14px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4);"><label for="ht-date" style="cursor:pointer;">Date</label><input id="ht-date" type="date" min="2001-10-01" max="2026-09-30" style="font:600 14px Arial;padding:5px 8px;border-radius:6px;border:1px solid #3A4A5E;background:#0E1A24;color:#E6EDF5;color-scheme:dark;"></div>
 <div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button><button id="cmpTop" title="Overlay 7-day forecasts of multiple models" style="padding:6px 14px;border-radius:10px;border:1px solid #8FC1F2;background:rgba(12,18,28,.88);color:#8FC1F2;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Δ Compare models</button></div>
+
 
 
 
