@@ -29,6 +29,9 @@ jobs:
       - name: DACP confidence intervals for station pages (dev only)
         run: python3 build25/patch_dacp.py
 
+      - name: Rebuild classic pages as statistics pages (dev only)
+        run: python3 build25/patch_statsview.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
