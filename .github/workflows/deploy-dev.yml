@@ -26,6 +26,9 @@ jobs:
       - name: True-live gap fill for 3D pages (dev only)
         run: python3 build25/patch_live_gap.py
 
+      - name: DACP confidence intervals for station pages (dev only)
+        run: python3 build25/patch_dacp.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
