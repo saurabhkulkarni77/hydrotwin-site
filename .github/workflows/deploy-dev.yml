@@ -17,6 +17,9 @@ jobs:
       - name: Apply 25-year data to station pages (dev only)
         run: python3 build25/apply25.py
 
+      - name: Update model statistics table in 3D pages (dev only)
+        run: python3 build25/patch_stats.py
+
       - name: Inject drift panel into station pages (dev only)
         run: python3 drift/patch_pages.py
 
