@@ -1731,7 +1731,7 @@ const CMP_RMSE = {
 };
 
 // ---------- feature ablation: precomputed per-subset RMSE ----------
-const ABLATION = {"6feat":{"GP Mat\u00e9rn":0.1807,"Transformer":0.1837,"LSTM":0.1781,"GCN":0.2971},"7feat":{"GP Mat\u00e9rn":0.1792,"Transformer":0.1813,"LSTM":0.173,"GCN":0.2976},"8feat":{"GP Mat\u00e9rn":0.1783,"Transformer":0.1813,"LSTM":0.187,"GCN":0.297},"9feat":{"GP Mat\u00e9rn":0.1783,"Transformer":0.1836,"LSTM":0.1875,"GCN":0.2963}};
+const ABLATION = {"6feat":{"GP Mat\u00e9rn":0.1812,"Transformer":0.1864,"LSTM":0.1866,"GCN":0.1913},"7feat":{"GP Mat\u00e9rn":0.1812,"Transformer":0.1709,"LSTM":0.1825,"GCN":0.1912},"8feat":{"GP Mat\u00e9rn":0.1796,"Transformer":0.1759,"LSTM":0.1873,"GCN":0.1914},"9feat":{"GP Mat\u00e9rn":0.1796,"Transformer":0.1876,"LSTM":0.1861,"GCN":0.1936}};
 const ABLATION_LABELS = {"6feat": "USGS + Open-Meteo", "7feat": "USGS + Open-Meteo + Snow", "8feat": "USGS + Open-Meteo + Soil", "9feat": "USGS + Open-Meteo + Soil + Snow"};
 let FEAT = {usgs: true, om: true, soil: true, snow: true};
 let activeSubset = '9feat';
@@ -1965,6 +1965,7 @@ window.HT3_READY = true;
 </script>
 <div id="ht-datewrap" style="position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(12,18,28,.88);color:#E6EDF5;font:600 14px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4);"><label for="ht-date" style="cursor:pointer;">Date</label><input id="ht-date" type="date" min="2001-10-01" max="2026-09-30" style="font:600 14px Arial;padding:5px 8px;border-radius:6px;border:1px solid #3A4A5E;background:#0E1A24;color:#E6EDF5;color-scheme:dark;"></div>
 <div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button><button id="cmpTop" title="Overlay 7-day forecasts of multiple models" style="padding:6px 14px;border-radius:10px;border:1px solid #8FC1F2;background:rgba(12,18,28,.88);color:#8FC1F2;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Δ Compare models</button></div>
+
 
 
 
