@@ -3,7 +3,11 @@
 
 Reads drift/drift_bake.json (repo-relative), renders a static per-station
 panel, and inserts it before </body> in stations/USGS-*.html.
-Pages already containing the panel marker are skipped.
+Pages already containing the panel div are skipped. (The check must be
+the div markup itself: the bare "ht-drift-panel" string also occurs in
+the stats-view CSS overrides and moveEl call on classic pages, which
+false-positived the old `MARKER in html` check after apply25 stripped
+the panel block — the panel was then never re-added. Fixed 2026-10-15.)
 """
 import json
 from pathlib import Path
@@ -11,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 BAKE = ROOT / "drift" / "drift_bake.json"
 MARKER = "ht-drift-panel"
+PANEL_DIV = '<div id="ht-drift-panel">'  # injected markup; the only safe skip check
 
 FEAT_NAMES = {"tmax_c": "Tmax", "tmin_c": "Tmin", "tmean_c": "Tmean",
               "precip_mm": "Precip", "log10_flow": "Flow (log)"}
@@ -88,7 +93,7 @@ def main():
             print("skip (no drift data):", page.name)
             continue
         html = page.read_text(errors="ignore")
-        if MARKER in html:
+        if PANEL_DIV in html:
             print("already patched:", page.name)
             continue
         block = render(station, bake[station])
