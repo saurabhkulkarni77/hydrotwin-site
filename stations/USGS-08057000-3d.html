@@ -2159,42 +2159,7 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.7053,6851.6],"80":[0.8027,8322.1
 
 
 
-<style>
-#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
- background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
- border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
- box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
-#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
- padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
-#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
- padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
-#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
- color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
-#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
-#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
-#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
-#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
-#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
-#ht-drift-panel .htd-line{opacity:.85}
-#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
-#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
- display:inline-block;min-width:52px;text-align:center}
-</style>
-<div id="ht-drift-panel">
-  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
-  <button id="htd-toggle" aria-label="collapse">–</button></div>
-  <div class="htd-body" id="htd-body">
-    <div class="htd-sec">Data drift <span class="pill" style="background:#2e9e5b">stable</span></div>
-    <div class="htd-line">Inputs 2024–26 vs training era (2001–23). Worst: Flow (log), PSI 0.09.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.068</td></tr><tr><td>Tmin</td><td>0.037</td></tr><tr><td>Tmean</td><td>0.045</td></tr><tr><td>Precip</td><td>0.013</td></tr><tr><td>Flow (log)</td><td>0.087</td></tr></table>
-    <div class="htd-sec">Concept drift</div>
-    <div class="htd-line">Forecast RMSE (log flow), water year 2025 → 2026:</div>
-    <table><tr><th>Model</th><th>WY25</th><th>WY26</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.697</td><td>0.673</td><td>-3.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.740</td><td>0.683</td><td>-7.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.733</td><td>0.684</td><td>-6.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.698</td><td>0.679</td><td>-2.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.698</td><td>0.667</td><td>-4.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>1.179</td><td>1.262</td><td>+7.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>1.179</td><td>1.262</td><td>+7.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.771</td><td>0.731</td><td>-5.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.696</td><td>0.670</td><td>-3.8%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.719</td><td>0.665</td><td>-7.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
-    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
-    Computed 2026-10-13 from the served 25-year forecast series + station data.</div>
-  </div>
-</div>
-<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+
 
 <script>
 /* ht-uiux v1 - movable + expandable floating panels (dev). Vanilla JS.
@@ -2363,12 +2328,17 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.7053,6851.6],"80":[0.8027,8322.1
     new MutationObserver(function () { mirror(cv, wrap); }).observe(cv, { attributes: true, attributeFilter: ['style'] });
     dragify(wrap, head);
   }
+  function isFloating(el) { var p = getComputedStyle(el).position; return p === 'fixed' || p === 'absolute'; }
+  function unenhance(el) {  // panel pinned into the document flow (classic stats view): leave it a clean static section
+    Array.prototype.forEach.call(el.querySelectorAll('.htux-ctl'), function (c) { c.remove(); });
+    el.classList.remove('htux-max'); el.classList.remove('htux-min');
+  }
   function scan() {
     try {
       var el;
       el = document.getElementById('hud'); if (el) enhHud(el);
-      el = document.getElementById('ht-drift-panel'); if (el) enhDrift(el);
-      el = document.getElementById('ht-dacp-panel'); if (el) enhDacp(el);
+      el = document.getElementById('ht-drift-panel'); if (el) { if (isFloating(el)) enhDrift(el); else unenhance(el); }
+      el = document.getElementById('ht-dacp-panel'); if (el) { if (isFloating(el)) enhDacp(el); else unenhance(el); }
       el = document.getElementById('larpanel'); if (el) enhHeadPanel(el);
       el = document.getElementById('cmppanel'); if (el) enhHeadPanel(el);
       el = document.getElementById('livepanel'); if (el) enhLive(el);
@@ -2381,4 +2351,40 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.7053,6851.6],"80":[0.8027,8322.1
 })();
 </script>
 
+<style>
+#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
+ background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
+ border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+ box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
+ padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
+#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
+ padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
+#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
+ color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
+#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
+#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
+#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
+#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
+#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
+#ht-drift-panel .htd-line{opacity:.85}
+#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
+#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
+ display:inline-block;min-width:52px;text-align:center}
+</style>
+<div id="ht-drift-panel">
+  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
+  <button id="htd-toggle" aria-label="collapse">–</button></div>
+  <div class="htd-body" id="htd-body">
+    <div class="htd-sec">Data drift <span class="pill" style="background:#2e9e5b">stable</span></div>
+    <div class="htd-line">Inputs 2024–26 vs training era (2001–23). Worst: Flow (log), PSI 0.09.</div>
+    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.068</td></tr><tr><td>Tmin</td><td>0.037</td></tr><tr><td>Tmean</td><td>0.045</td></tr><tr><td>Precip</td><td>0.013</td></tr><tr><td>Flow (log)</td><td>0.087</td></tr></table>
+    <div class="htd-sec">Concept drift</div>
+    <div class="htd-line">Forecast RMSE (log flow), water year 2025 → 2026:</div>
+    <table><tr><th>Model</th><th>WY25</th><th>WY26</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.697</td><td>0.673</td><td>-3.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.740</td><td>0.683</td><td>-7.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.733</td><td>0.684</td><td>-6.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.698</td><td>0.679</td><td>-2.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.698</td><td>0.667</td><td>-4.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>1.179</td><td>1.262</td><td>+7.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>1.179</td><td>1.262</td><td>+7.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.771</td><td>0.731</td><td>-5.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.696</td><td>0.670</td><td>-3.8%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.719</td><td>0.665</td><td>-7.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
+    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
+    Computed 2026-10-13 from the served 25-year forecast series + station data.</div>
+  </div>
+</div>
+<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
 </body></html>
