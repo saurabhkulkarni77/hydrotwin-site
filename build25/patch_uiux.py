@@ -235,12 +235,17 @@ JS_BODY = r"""
     new MutationObserver(function () { mirror(cv, wrap); }).observe(cv, { attributes: true, attributeFilter: ['style'] });
     dragify(wrap, head);
   }
+  function isFloating(el) { var p = getComputedStyle(el).position; return p === 'fixed' || p === 'absolute'; }
+  function unenhance(el) {  // panel pinned into the document flow (classic stats view): leave it a clean static section
+    Array.prototype.forEach.call(el.querySelectorAll('.htux-ctl'), function (c) { c.remove(); });
+    el.classList.remove('htux-max'); el.classList.remove('htux-min');
+  }
   function scan() {
     try {
       var el;
       el = document.getElementById('hud'); if (el) enhHud(el);
-      el = document.getElementById('ht-drift-panel'); if (el) enhDrift(el);
-      el = document.getElementById('ht-dacp-panel'); if (el) enhDacp(el);
+      el = document.getElementById('ht-drift-panel'); if (el) { if (isFloating(el)) enhDrift(el); else unenhance(el); }
+      el = document.getElementById('ht-dacp-panel'); if (el) { if (isFloating(el)) enhDacp(el); else unenhance(el); }
       el = document.getElementById('larpanel'); if (el) enhHeadPanel(el);
       el = document.getElementById('cmppanel'); if (el) enhHeadPanel(el);
       el = document.getElementById('livepanel'); if (el) enhLive(el);
@@ -281,14 +286,26 @@ def patch_3d_legend(s):
     return s
 
 
+BLOCK_START = "<script>\n/* ht-uiux v1"
+
+
 def patch_page(s):
-    if MARKER in s:
-        return s
     out = s
     if "window.HT3D =" in s:  # payload assignment: only real 3D pages (both types merely reference it in the DACP script)
-        out = patch_3d_legend(out)
-        if out is None:
-            return None
+        if "legItems" not in out:
+            out = patch_3d_legend(out)
+            if out is None:
+                return None
+    if BLOCK_START in out:
+        # A previous run's block is baked in: swap it if its content differs
+        # (keeps the patcher upgrade-safe whether or not apply25 regenerates
+        # the pages clean on each deploy).
+        i = out.index(BLOCK_START)
+        j = out.index("</script>", i) + len("</script>")
+        new_block = JS_BODY.strip()
+        if out[i:j] != new_block:
+            out = out[:i] + new_block + out[j:]
+        return out
     if out.count("</body>") != 1:
         return None
     out = out.replace("</body>", JS_BODY + "\n</body>", 1)
@@ -305,11 +322,11 @@ def main():
     n_new = n_skip = n_warn = 0
     for p in pages:
         s = p.read_text(encoding="utf-8")
-        if MARKER in s:
+        out = patch_page(s)
+        if out is not None and out == s and MARKER in s:
             n_skip += 1
             print(f"already patched: {p.name}")
             continue
-        out = patch_page(s)
         if out is None:
             n_warn += 1
             print(f"WARNING: anchors not as expected, skipped: {p.name}")
