@@ -165,6 +165,9 @@ const COLS = [
   { key: 'precip', col: 'precip_mm', name: 'Total precipitation', src: 'NOAA GHCN-Daily · PRCP', unit: 'mm', color: '#2F80D1', v: D.precip, why: 'Water arriving at the surface' },
   { key: 'flow', col: 'flow_cfs', name: "Today's river flow", src: 'USGS 08057000 · 00060 daily mean', unit: 'cfs', color: '#1BA3A3', v: D.flow, why: 'Where the river stands and, shifted forward, the variable being predicted' },
   { key: 'rising', col: 'rising', name: 'Rising or falling', src: 'USGS 08057000 · flow > yesterday', unit: '', color: '#2E9B57', v: D.rising, why: 'A climbing river and a draining one behave differently at the same level' },
+  { key: 'sms', col: 'sms_pct', name: 'Soil moisture', src: 'NRCS AWDB · SCAN/SNOTEL · SMS -8 in', unit: '%', color: '#AD7A2A', v: [], why: 'Water stored in the soil — the catchment remembers recent rain and melt' },
+  { key: 'stmp', col: 'stmp_f', name: 'Soil temperature', src: 'NRCS AWDB · SCAN/SNOTEL · STO -2 in', unit: '°F', color: '#8E6CC8', v: [], why: 'Warm soil takes meltwater in; frozen soil sheds it as runoff' },
+  { key: 'swe', col: 'swe_in', name: 'Snow water equivalent', src: 'NRCS AWDB · SNOTEL WTEQ basin mean', unit: 'in', color: '#7FD1E8', v: [], why: 'Water held in the snowpack — runoff already on its way' },
 ];
 if (D.station && D.station.columnSources) COLS.forEach((c) => { if (D.station.columnSources[c.col]) c.src = D.station.columnSources[c.col]; });
 COLS.forEach((c) => {
@@ -173,8 +176,30 @@ COLS.forEach((c) => {
   if (last >= WIN) { let s = 0, s2 = 0; for (let i = 0; i <= last; i++) { s += c.v[i]; s2 += c.v[i] * c.v[i]; }
     c.mu = s / (last + 1); c.sd = Math.sqrt(Math.max(1e-9, s2 / (last + 1) - c.mu * c.mu)); }
   c.norm = c.key === 'flow' ? lnorm : c.key === 'rising' ? (x) => (x ? 0.5 : 0.1) : (x) => (x - c.min) / ((c.max - c.min) || 1);
-  c.fmt = (x) => c.key === 'rising' ? (x ? 'rising (1)' : 'falling (0)') : c.key === 'flow' ? `${Math.round(x).toLocaleString('en-US')} cfs` : `${(+x).toFixed(1)} ${c.unit}`;
+  c.fmt = (x) => c.key === 'rising' ? (x ? 'rising (1)' : 'falling (0)') : c.key === 'flow' ? `${Math.round(x).toLocaleString('en-US')} cfs` : c.key === 'swe' ? `${(+x).toFixed(2)} ${c.unit}` : `${(+x).toFixed(1)} ${c.unit}`;
 });
+// ---------------------------------------------------------------- soil & snow columns (ht-soilsnow v1)
+// Daily sms_pct / stmp_f / swe_in (data25/nrcs_daily.csv) ship as the
+// sidecar ../soilsnow/14105700.json and fill the three columns above
+// in place. Days with no NRCS record stay null -> the panel's 'no data';
+// display values are never gap-filled or median-filled.
+{
+  const ssCols = COLS.filter((c) => c.key === 'sms' || c.key === 'stmp' || c.key === 'swe');
+  ssCols.forEach((c) => { c.v = new Array(N).fill(null); RAWV[c.key] = c.v; c.mu = null; });
+  const ssStats = (c) => {
+    const vals = c.v.filter((v) => v != null);
+    if (vals.length) { c.min = Math.min(...vals); c.max = Math.max(...vals); }
+    const last = Math.min(TRAIN_LAST, N - 1); let s = 0, s2 = 0, n = 0;
+    for (let i = 0; i <= last; i++) { const v = c.v[i]; if (v == null) continue; s += v; s2 += v * v; n++; }
+    if (n >= WIN) { c.mu = s / n; c.sd = Math.sqrt(Math.max(1e-9, s2 / n - c.mu * c.mu)); }
+    c.norm = (x) => (x - c.min) / ((c.max - c.min) || 1);
+  };
+  fetch('../soilsnow/14105700.json').then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then((J) => {
+    ssCols.forEach((c) => { const a = J[c.key]; if (Array.isArray(a)) for (let i = 0; i < N && i < a.length; i++) c.v[i] = a[i]; ssStats(c); });
+    applyDay();
+  }).catch(() => { /* sidecar unavailable: the three rows keep showing 'no data'; the page works as before */ });
+}
+
 
 // ---------------------------------------------------------------- state
 const params = new URLSearchParams(location.search);
@@ -229,14 +254,14 @@ function drawBoard() {
   B.tex.needsUpdate = true;
 }
 
-const dayPanel = canvasPlane(2.0, 1.35, 400);
+const dayPanel = canvasPlane(2.0, 1.85, 400);   // ht-soilsnow v1: taller, 9 column rows
 const fcPanel = canvasPlane(2.1, 1.45, 420);
 // period of the chosen issue day (pages built with periods = true)
 const periodOf = (i) => !D.periods ? null : i <= dayIndex(D.trainLast) ? ['TRAIN (seen)', '#B8C4D0'] : i <= dayIndex(D.valLast) ? ['VALIDATION', '#8FC1F2'] : ['TEST (unseen)', '#FFD24D'];
 
 const BTN = { next: [0.03, 0.83, 0.23, 0.14], lead: [0.27, 0.83, 0.23, 0.14], cmp: [0.51, 0.83, 0.23, 0.14], play: [0.75, 0.83, 0.22, 0.14] };
 const SLIDER = [0.05, 0.80, 0.9, 0.1];
-const ROW = (r) => [0.02, (140 + r * 52 - 40) / 540, 0.96, 52 / 540];   // day-panel row r (uv box)
+const ROW = (r) => [0.02, (140 + r * 52 - 40) / 740, 0.96, 52 / 740];   // day-panel row r (uv box)
 
 function drawDayPanel() {
   const { g, c } = dayPanel, W = c.width, H = c.height, i = S.day;
@@ -269,17 +294,17 @@ function drawColumnPanel() {
   const { g, c } = fcPanel, W = c.width, H = c.height, C = COLS[S.focus], i = S.day, k = S.focus;
   g.clearRect(0, 0, W, H); g.fillStyle = 'rgba(12,18,28,0.92)'; g.beginPath(); g.roundRect(0, 0, W, H, 30); g.fill();
   g.fillStyle = C.color; g.font = '600 50px Arial'; g.fillText(C.name, 40, 72);
-  g.font = '600 30px Courier New'; g.fillStyle = '#CFE0F2'; g.fillText(`${C.col} · input channel ${k + 1}/6`, 40, 118);
+  g.font = '600 30px Courier New'; g.fillStyle = '#CFE0F2'; g.fillText(`${C.col} · input channel ${k + 1}/${COLS.length}`, 40, 118);
   g.font = '30px Arial'; g.fillStyle = '#9FB3C8'; g.fillText('Source: ' + C.src, 40, 158);
   g.font = '28px Arial'; let y = wrapText(g, 'Why: ' + C.why, 40, 196, W - 80, 34);
-  const w0 = Math.max(0, i - WIN + 1), win = C.v.slice(w0, i + 1);
-  const mean = win.reduce((a, b) => a + b, 0) / win.length;
+  const w0 = Math.max(0, i - WIN + 1), winAll = C.v.slice(w0, i + 1), win = winAll.filter((v) => v != null);
+  const mean = win.length ? win.reduce((a, b) => a + b, 0) / win.length : 0;
   g.fillStyle = '#F5F6F2'; g.font = '600 34px Arial';
   g.fillText(`Today ${fmt(i, { day: '2-digit', month: 'short', year: 'numeric' })}:  ${fmtAt(C, i)}`, 40, y + 8); y += 50;
   g.fillStyle = '#9FB3C8'; g.font = '28px Arial';
   g.fillText(C.key === 'rising' ? `Window (${win.length} d): ${win.filter((v) => v).length} rising, ${win.filter((v) => !v).length} falling`
-    : `Window (${win.length} d): min ${C.fmt(Math.min(...win))} · max ${C.fmt(Math.max(...win))}`, 40, y); y += 40;
-  if (C.mu != null) g.fillText(`Scaled: (x − ${C.mu.toFixed(1)}) / ${C.sd.toFixed(1)}  →  today z = ${((C.v[i] - C.mu) / C.sd).toFixed(2)}`, 40, y);
+    : win.length ? `Window (${winAll.length} d${win.length < winAll.length ? ` · ${win.length} with data` : ''}): min ${C.fmt(Math.min(...win))} · max ${C.fmt(Math.max(...win))}` : `Window (${winAll.length} d): no data`, 40, y); y += 40;
+  if (C.mu != null) g.fillText(C.v[i] == null ? `Scaled: (x − ${C.mu.toFixed(1)}) / ${C.sd.toFixed(1)}  →  today: no data` : `Scaled: (x − ${C.mu.toFixed(1)}) / ${C.sd.toFixed(1)}  →  today z = ${((C.v[i] - C.mu) / C.sd).toFixed(2)}`, 40, y);
   else g.fillText('Scaled with training-day mean and sd only', 40, y);
   y += 40;
   if (C.key === 'flow') { g.fillStyle = COL[S.model]; g.fillText(`Also the target: ${D.models[S.model]} forecasts +1…+7 d`, 40, y); }
@@ -596,40 +621,5 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.7053,6851.6],"80":[0.8027,8322.1
 })();
 </script>
 
-<style>
-#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
- background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
- border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
- box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
-#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
- padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
-#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
- padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
-#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
- color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
-#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
-#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
-#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
-#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
-#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
-#ht-drift-panel .htd-line{opacity:.85}
-#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
-#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
- display:inline-block;min-width:52px;text-align:center}
-</style>
-<div id="ht-drift-panel">
-  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
-  <button id="htd-toggle" aria-label="collapse">–</button></div>
-  <div class="htd-body" id="htd-body">
-    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
-    <div class="htd-line">Inputs 2024–26 vs training era (2001–23). Worst: Flow (log), PSI 0.79.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.021</td></tr><tr><td>Tmin</td><td>0.037</td></tr><tr><td>Tmean</td><td>0.011</td></tr><tr><td>Precip</td><td>0.013</td></tr><tr><td>Flow (log)</td><td>0.791</td></tr></table>
-    <div class="htd-sec">Concept drift</div>
-    <div class="htd-line">Forecast RMSE (log flow), water year 2025 → 2026:</div>
-    <table><tr><th>Model</th><th>WY25</th><th>WY26</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.116</td><td>0.113</td><td>-2.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.126</td><td>0.122</td><td>-3.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.123</td><td>0.120</td><td>-1.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.118</td><td>0.109</td><td>-7.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.115</td><td>0.112</td><td>-2.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.269</td><td>0.261</td><td>-3.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>0.269</td><td>0.261</td><td>-3.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.127</td><td>0.125</td><td>-1.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.113</td><td>0.111</td><td>-1.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.119</td><td>0.110</td><td>-7.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
-    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
-    Computed 2026-10-13 from the served 25-year forecast series + station data.</div>
-  </div>
-</div>
-<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+
 </body></html>
