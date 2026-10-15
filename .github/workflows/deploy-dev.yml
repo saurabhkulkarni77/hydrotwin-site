@@ -1,0 +1,66 @@
+name: Deploy DEV to AWS S3
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply 25-year data to station pages (dev only)
+        run: python3 build25/apply25.py
+
+      - name: Update model statistics table in 3D pages (dev only)
+        run: python3 build25/patch_stats.py
+
+      - name: Inject drift panel into station pages (dev only)
+        run: python3 drift/patch_pages.py
+
+      - name: True-live gap fill for 3D pages (dev only)
+        run: python3 build25/patch_live_gap.py
+
+      - name: DACP confidence intervals for station pages (dev only)
+        run: python3 build25/patch_dacp.py
+
+      - name: Rebuild classic pages as statistics pages (dev only)
+        run: python3 build25/patch_statsview.py
+      - name: Soil & snow columns in the day panel (dev only)
+        run: python3 build25/patch_soilsnow.py
+
+      - name: UI fixes - legend band + movable/expandable panels (dev only)
+        run: python3 build25/patch_uiux.py
+
+      - name: Commit baked pages back to dev (best effort)
+        continue-on-error: true
+        run: |
+          if [ -n "$(git status --porcelain stations)" ]; then
+            git config user.name "hydrotwin-dev"
+            git config user.email "actions@github.com"
+            git add stations
+            git commit -m "Bake station pages (dev)"
+            git push
+          else
+            echo "Pages already baked; nothing to commit."
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Sync site to DEV S3 bucket
+        run: |
+          aws s3 sync . s3://hydrotwin-site-dev-2026/ \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "build25/*" \
+            --delete
