@@ -31,6 +31,8 @@ jobs:
 
       - name: Rebuild classic pages as statistics pages (dev only)
         run: python3 build25/patch_statsview.py
+      - name: Soil & snow columns in the day panel (dev only)
+        run: python3 build25/patch_soilsnow.py
 
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
