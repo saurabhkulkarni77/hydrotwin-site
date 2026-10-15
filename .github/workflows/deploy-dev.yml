@@ -34,6 +34,9 @@ jobs:
       - name: Soil & snow columns in the day panel (dev only)
         run: python3 build25/patch_soilsnow.py
 
+      - name: UI fixes - legend band + movable/expandable panels (dev only)
+        run: python3 build25/patch_uiux.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
