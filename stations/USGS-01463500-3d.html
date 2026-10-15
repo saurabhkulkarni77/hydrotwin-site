@@ -1831,7 +1831,26 @@ function applyFeatureSubset() {
       (r.exact ? '' : ' <span style="color:#E0852A;font-size:11px">(closest pre-trained; USGS+Open-Meteo are core)</span>');
   }
   if (typeof cmpRenderStats === 'function') cmpRenderStats();
-  if (typeof v1v2Update === 'function') v1v2Update(); }
+  if (typeof v1v2Update === 'function') v1v2Update();
+  if (typeof ablRenderStats === 'function') ablRenderStats(); }
+// ---------- ht-ablfix v1: always-visible ablation RMSE readout ----------
+// The compare panel's Model statistics block only renders ticked models, so
+// feature toggles alone changed no visible RMSE. This readout always shows
+// the active subset's per-station ablation RMSE (same values as ABLATION).
+function ablRenderStats() {
+  const dv = document.getElementById('ablstats');
+  if (!dv) return;
+  const abl = (typeof ABLATION !== 'undefined' && ABLATION[activeSubset]) || {};
+  const names = Object.keys(abl).sort(function(a, b) { return abl[a] - abl[b]; });
+  if (!names.length) { dv.innerHTML = ''; return; }
+  let html = '<div style="margin:10px 0 4px;border-top:1px solid #22303F;padding-top:8px">' +
+    '<div style="color:#8FC1F2;font-weight:700;font-size:12px;margin-bottom:4px">Feature ablation RMSE <span style="color:#6B7C8F;font-weight:400;font-size:11px">\u00B7 this station \u00B7 precomputed \u00B7 lower wins</span></div>';
+  names.forEach(function(n) {
+    html += '<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:12px"><span>' + n + '</span><b>' + abl[n].toFixed(4) + '</b></div>';
+  });
+  dv.innerHTML = html + '</div>';
+}
+
 function featToggleInit() {
   ['usgs', 'om', 'soil', 'snow'].forEach(function(k) {
     const cb = document.getElementById('feat_' + k);
@@ -1904,6 +1923,7 @@ function cmpShowPanel(show) {
       '<label style="cursor:pointer"><input type="checkbox" id="feat_snow" checked style="width:14px;height:14px"> Snow</label>' +
       '</div>' +
       '<div style="font-size:10px;color:#5B6B7D;margin-top:4px">Toggle to see how each feature set affects RMSE (precomputed ablation)</div></div>';
+    html += '<div id="ablstats"></div>';
 
     D.models.forEach((name, m) => {
       const isLAR = m === LAR_IDX;
@@ -1934,7 +1954,7 @@ function cmpShowPanel(show) {
     CMP.on = false; CMP.models = [];
     drawFlow(); levelDirty = true;
   }
-  if (show && dv) featToggleInit();
+  if (show && dv) { featToggleInit(); if (typeof ablRenderStats === 'function') ablRenderStats(); }
   return dv;
 }
 (function(){ var ctop = document.getElementById('cmpTop'); if (ctop) ctop.onclick = function(){ const p = document.getElementById('cmppanel'); cmpShowPanel(!p); }; })();
@@ -2347,6 +2367,7 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.7053,6851.6],"80":[0.8027,8322.1
   new MutationObserver(function () { scan(); }).observe(document.body, { childList: true, subtree: true });
 })();
 </script>
+
 
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
