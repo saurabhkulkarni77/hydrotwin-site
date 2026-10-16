@@ -43,7 +43,7 @@ jobs:
       - name: Weekly outlook - 12-week weekly mean flow panel (dev only)
         run: python3 build25/patch_weekly.py
 
-      - name: Akilan 3D forecast chart in the Data view (dev only)
+      - name: 3D forecast chart in the Data view (dev only)
         run: python3 build25/patch_3dchart.py
 
       - name: Commit baked pages back to dev (best effort)

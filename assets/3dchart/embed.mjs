@@ -1,6 +1,6 @@
 /**
- * HydroTwin Data-view host for Akilan Chithra Sathish's 3D river chart
- * (UTD RIDE). Adapted from his standalone app.mjs for embedding in the
+ * HydroTwin Data-view host for the 3D river chart. Adapted from the
+ * standalone app.mjs for embedding in the
  * classic statistics pages: one station per page (the dataset comes from
  * the page's own chart3d/<site>.json sidecar), all element lookups are
  * scoped to the section root, and initialisation is deferred until the

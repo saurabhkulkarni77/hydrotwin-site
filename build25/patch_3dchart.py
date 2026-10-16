@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Akilan's 3D forecast chart in the classic Data view (DEV only).
+"""3D forecast chart in the classic Data view (DEV only).
 
 Adds one section to the classic statistics pages (patch_statsview layout):
-an interactive Three.js chart by Akilan Chithra Sathish (UTD RIDE) --
+an interactive Three.js chart --
 X = forecast target date, Y = estimated gauge height from the station's
 stage-discharge fit (orange: forecast, blue: observed-flow estimate),
 Z = an environmental input on the issue date (rainfall, soil moisture,
@@ -20,8 +20,9 @@ Integration (string surgery, following the patch_soilsnow pattern):
     bundle (~1.3 MB of Three.js) and the station sidecar are fetched
     when the section first scrolls into view, so page load is unchanged;
   - the chart code (graph.mjs, graph-data.mjs, data.mjs, labels.mjs,
-    vendor three.module.js / OrbitControls.js) is Akilan's, unmodified;
-    only the host (assets/3dchart/embed.mjs) is adapted from his app.mjs
+    vendor three.module.js / OrbitControls.js) is included unmodified;
+    only the host (assets/3dchart/embed.mjs) is adapted from the original
+    app.mjs
     (one station per page, scoped element lookups, lazy mount).
 
 Only classic Data view pages are patched: the file must not be a -3d
@@ -40,7 +41,7 @@ SECTION = """
  <section class="hts-sec" id="hts-sec-3dchart">
   <!-- ht-3dchart v1 -->
   <h2>3D forecast chart</h2>
-  <p class="hts-note">Interactive 3D chart by <b>Akilan Chithra Sathish</b> (UTD RIDE), built for the HydroTwin Field Lab. X: forecast target date &middot; Y: estimated gauge height (ft) &middot; Z: the selected environmental reading on the earlier issue date. Orange is the forecast, blue is the observed-flow estimate; each line joins forecasts from successive issue dates at the same lead. Both height curves come from this station&rsquo;s stage&ndash;discharge fit &mdash; they are estimates, not measured water levels, depth, or absolute elevation. Environmental readings show associations, not causation; soil and snow sensors can be far from the gauge.</p>
+  <p class="hts-note">Interactive 3D chart built for the HydroTwin Field Lab. X: forecast target date &middot; Y: estimated gauge height (ft) &middot; Z: the selected environmental reading on the earlier issue date. Orange is the forecast, blue is the observed-flow estimate; each line joins forecasts from successive issue dates at the same lead. Both height curves come from this station&rsquo;s stage&ndash;discharge fit &mdash; they are estimates, not measured water levels, depth, or absolute elevation. Environmental readings show associations, not causation; soil and snow sensors can be far from the gauge.</p>
   <div id="ht3dc-root" data-site="__SITE__">
    <form class="ht3dc-form" aria-label="3D chart controls">
     <label>Forecast issued <input class="ht3dc-date" type="date"></label>
@@ -104,7 +105,7 @@ BOOT = """
 { "imports": { "three": "../assets/3dchart/three.module.js" } }
 </script>
 <script type="module">
-// ht-3dchart v1 boot: mount Akilan's chart only when its section nears the
+// ht-3dchart v1 boot: mount the 3D chart only when its section nears the
 // viewport, so the Three.js bundle and the station sidecar cost nothing
 // until the reader actually scrolls to the chart.
 {
