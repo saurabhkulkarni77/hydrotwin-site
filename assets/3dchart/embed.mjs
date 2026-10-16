@@ -14,6 +14,21 @@ import { createGraph } from './graph.mjs';
 import { graphVariables } from './graph-data.mjs';
 import { dateAt, indexAt, getComparison } from './data.mjs';
 
+// Model full forms for the model selector labels (ht-fullforms v1):
+// display text only -- option values stay the model indexes.
+const MODEL_FULL = {
+  'ARIMA': 'Autoregressive Integrated Moving Average',
+  'SARIMA': 'Seasonal Autoregressive Integrated Moving Average',
+  'GP Matérn': 'Gaussian Process (Matérn kernel)',
+  'GP RBF': 'Gaussian Process (Radial Basis Function kernel)',
+  'LSTM': 'Long Short-Term Memory network',
+  'Transformer': 'Transformer (self-attention neural network)',
+  'TFT': 'Temporal Fusion Transformer',
+  'PatchTST': 'Patch Time-Series Transformer',
+  'GCN': 'Graph Convolutional Network',
+  'PILSTMv1': 'Physics-Informed LSTM, version 1',
+};
+
 export function mount(root) {
   const el = (cls) => root.querySelector('.' + cls);
   const canvas = el('ht3dc-canvas');
@@ -98,7 +113,7 @@ export function mount(root) {
       dataset = await response.json();
       el('ht3dc-station-name').textContent = dataset.station.name;
       el('ht3dc-model').replaceChildren(...dataset.models.map((name, index) =>
-        new Option(name, index),
+        new Option(MODEL_FULL[name] ? name + ' — ' + MODEL_FULL[name] : name, index),
       ));
       el('ht3dc-model').value = String(selection.modelIndex);
       // Default view: the most recent 90 issue days of the record.

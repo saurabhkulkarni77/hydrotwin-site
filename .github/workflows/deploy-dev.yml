@@ -46,6 +46,12 @@ jobs:
       - name: 3D forecast chart in the Data view (dev only)
         run: python3 build25/patch_3dchart.py
 
+      - name: Multi-factor correlation matrix in the Data view (dev only)
+        run: python3 build25/patch_corr.py
+
+      - name: Model full forms in the Data view (dev only)
+        run: python3 build25/patch_fullforms.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
