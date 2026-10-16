@@ -29,9 +29,14 @@ Only classic Data view pages are patched: the file must not be a -3d
 page and must already carry the ht-statsview marker. The 3D terrain
 pages have their own scene and are never touched.
 
-Idempotent: pages carrying the MARKER are skipped.
+Idempotent with refresh: a page already carrying the MARKER has its
+existing 3D-chart section and boot script replaced in place by the
+current SECTION/BOOT text (so wording fixes in this file flow into
+already-baked pages on the next deploy); if both are already current
+the page is skipped unchanged.
 Run from the repo root: python3 build25/patch_3dchart.py
 """
+import re
 import sys
 from pathlib import Path
 
@@ -132,21 +137,18 @@ BOOT = """
 ANCHOR_SECTION = '<div id="hts-drift-slot"></div>\n </section>'
 ANCHOR_BODY = "</body>"
 
+# Spans of a previously inserted section / boot script, for the refresh
+# path. The section body contains no nested <section> and the boot block
+# is the importmap + module script pair this patcher puts before </body>.
+SECTION_RE = re.compile(
+    r' <section class="hts-sec" id="hts-sec-3dchart">.*?</section>', re.S)
+BOOT_RE = re.compile(
+    r'\n<script type="importmap">\n'
+    r'\{ "imports": \{ "three": "\.\./assets/3dchart/three\.module\.js" \} \}\n'
+    r'</script>\n<script type="module">.*?</script>\n</body>', re.S)
 
-def patch(path: Path) -> str:
-    s = path.read_text(encoding="utf-8")
-    if MARKER in s:
-        return "skip (marker)"
-    if "ht-statsview v1" not in s:
-        return "skip (not a Data view page)"
-    site = path.stem.replace("USGS-", "")
-    if s.count(ANCHOR_SECTION) != 1:
-        return f"FAIL anchor section: {s.count(ANCHOR_SECTION)} occurrences"
-    if s.count(ANCHOR_BODY) != 1:
-        return f"FAIL anchor body: {s.count(ANCHOR_BODY)} occurrences"
-    s = s.replace(ANCHOR_SECTION, ANCHOR_SECTION + SECTION.replace("__SITE__", site), 1)
-    s = s.replace(ANCHOR_BODY, BOOT, 1)
-    # post-checks: new section present once, all pre-existing sections intact
+
+def post_checks(s: str) -> str | None:
     for token in (MARKER, 'id="hts-sec-3dchart"', 'id="ht3dc-root"',
                   'id="hts-sec-hydro"', 'id="hts-sec-fc"', 'id="hts-sec-models"',
                   'id="hts-sec-ablation"', 'id="hts-sec-weekly"', 'id="hts-sec-drift"',
@@ -156,6 +158,42 @@ def patch(path: Path) -> str:
             return f"FAIL post-check missing {token}"
     if s.count('id="ht3dc-root"') != 1 or s.count("ht-3dchart v1") != 2:
         return "FAIL post-check duplication"
+    return None
+
+
+def patch(path: Path) -> str:
+    s = path.read_text(encoding="utf-8")
+    site = path.stem.replace("USGS-", "")
+    if MARKER in s:
+        # Refresh path: swap the previously inserted section + boot for
+        # the current text so source wording changes reach baked pages.
+        secs = SECTION_RE.findall(s)
+        boots = BOOT_RE.findall(s)
+        if len(secs) != 1 or len(boots) != 1:
+            return (f"FAIL refresh anchors: {len(secs)} section(s), "
+                    f"{len(boots)} boot(s)")
+        s2 = SECTION_RE.sub(lambda _: SECTION.lstrip("\n").replace(
+            "__SITE__", site), s, count=1)
+        s2 = BOOT_RE.sub(lambda _: BOOT, s2, count=1)
+        if s2 == s:
+            return "skip (marker)"
+        bad = post_checks(s2)
+        if bad:
+            return bad
+        path.write_text(s2, encoding="utf-8")
+        return "refreshed"
+    if "ht-statsview v1" not in s:
+        return "skip (not a Data view page)"
+    if s.count(ANCHOR_SECTION) != 1:
+        return f"FAIL anchor section: {s.count(ANCHOR_SECTION)} occurrences"
+    if s.count(ANCHOR_BODY) != 1:
+        return f"FAIL anchor body: {s.count(ANCHOR_BODY)} occurrences"
+    s = s.replace(ANCHOR_SECTION, ANCHOR_SECTION + SECTION.replace("__SITE__", site), 1)
+    s = s.replace(ANCHOR_BODY, BOOT, 1)
+    # post-checks: new section present once, all pre-existing sections intact
+    bad = post_checks(s)
+    if bad:
+        return bad
     path.write_text(s, encoding="utf-8")
     return "patched"
 
