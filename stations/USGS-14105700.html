@@ -1202,6 +1202,34 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 </script>
 
 
+
+
+<script type="importmap">
+{ "imports": { "three": "../assets/3dchart/three.module.js" } }
+</script>
+<script type="module">
+// ht-3dchart v1 boot: mount Akilan's chart only when its section nears the
+// viewport, so the Three.js bundle and the station sidecar cost nothing
+// until the reader actually scrolls to the chart.
+{
+  const root = document.getElementById('ht3dc-root');
+  if (root) {
+    const start = () => import('../assets/3dchart/embed.mjs')
+      .then((m) => m.mount(root))
+      .catch((e) => {
+        const l = root.querySelector('.ht3dc-loading');
+        if (l) { l.hidden = false; l.textContent = '3D chart unavailable: ' + e.message; }
+        console.error(e);
+      });
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => {
+        if (es.some((x) => x.isIntersecting)) { io.disconnect(); start(); }
+      }, { rootMargin: '300px' });
+      io.observe(root);
+    } else start();
+  }
+}
+</script>
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -1238,31 +1266,4 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
   </div>
 </div>
 <script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
-
-<script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js" } }
-</script>
-<script type="module">
-// ht-3dchart v1 boot: mount Akilan's chart only when its section nears the
-// viewport, so the Three.js bundle and the station sidecar cost nothing
-// until the reader actually scrolls to the chart.
-{
-  const root = document.getElementById('ht3dc-root');
-  if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs')
-      .then((m) => m.mount(root))
-      .catch((e) => {
-        const l = root.querySelector('.ht3dc-loading');
-        if (l) { l.hidden = false; l.textContent = '3D chart unavailable: ' + e.message; }
-        console.error(e);
-      });
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((es) => {
-        if (es.some((x) => x.isIntersecting)) { io.disconnect(); start(); }
-      }, { rootMargin: '300px' });
-      io.observe(root);
-    } else start();
-  }
-}
-</script>
 </body></html>
