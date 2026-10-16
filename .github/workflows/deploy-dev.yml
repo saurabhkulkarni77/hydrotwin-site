@@ -39,7 +39,9 @@ jobs:
 
       - name: Feature ablation RMSE readout fix (dev only)
         run: python3 build25/patch_ablfix.py
-      # NOTE: the weekly-outlook build adds its patch_weekly step AFTER this one.
+
+      - name: Weekly outlook - 12-week weekly mean flow panel (dev only)
+        run: python3 build25/patch_weekly.py
 
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
