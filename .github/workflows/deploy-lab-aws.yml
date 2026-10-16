@@ -1,20 +1,33 @@
 name: Deploy HydroTwin Lab to AWS S3
 
 # Manual-only helper workflow. Deploys the public saurabhkulkarni77/hydrotwin-lab
-# repo to its own AWS S3 website bucket using this repo's AWS secrets
-# (same names/conventions as deploy-aws.yml). It does NOT touch the
-# HydroTwin site, its buckets, or its deploy behavior in any way.
+# repo to an AWS S3 website bucket using this repo's AWS secrets
+# (same names/conventions as deploy-aws.yml). The target bucket is a
+# dispatch-time input: hydrotwin-lab-dev-2026 (the lab's own bucket,
+# default) or hydrotwin-site-dev-2026 (the HydroTwin dev bucket — the
+# lab site then replaces the dev build there until the next dev-branch
+# deploy overwrites it again). It does NOT touch the HydroTwin
+# production site, its bucket, or its deploy behavior in any way.
 # Only the lab SITE files are synced; repo tooling (.github, build25,
 # models, monitor, retrain, tests) stays out of the bucket.
 
 on:
   workflow_dispatch:
+    inputs:
+      target_bucket:
+        description: "S3 bucket to deploy the lab site to"
+        required: true
+        type: choice
+        default: hydrotwin-lab-dev-2026
+        options:
+          - hydrotwin-lab-dev-2026
+          - hydrotwin-site-dev-2026
 
 jobs:
   deploy-lab-aws:
     runs-on: ubuntu-latest
     env:
-      BUCKET: hydrotwin-lab-dev-2026
+      BUCKET: ${{ inputs.target_bucket }}
       AWS_REGION: us-east-1
     steps:
       - name: Check out HydroTwin Lab repo
