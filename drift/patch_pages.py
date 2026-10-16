@@ -20,7 +20,10 @@ PANEL_DIV = '<div id="ht-drift-panel">'  # injected markup; the only safe skip c
 FEAT_NAMES = {"tmax_c": "Tmax", "tmin_c": "Tmin", "tmean_c": "Tmean",
               "precip_mm": "Precip", "log10_flow": "Flow (log)"}
 PILL = {"stable": "#2e9e5b", "watch": "#d9930d", "drift": "#d64545",
-        "improving": "#2b7fd9", "no data": "#777"}
+        "improving": "#f5c518", "no data": "#777"}
+# Dark text on light pill backgrounds (yellow "improving": the .pill class
+# default #fff text is unreadable on #f5c518; same pairing as .htd-dev).
+PILL_FG = {"improving": "#111"}
 
 CSS = """
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
@@ -46,7 +49,10 @@ CSS = """
 
 
 def pill(status):
-    return f'<span class="pill" style="background:{PILL.get(status, "#777")}">{status}</span>'
+    style = f"background:{PILL.get(status, '#777')}"
+    if status in PILL_FG:
+        style += f";color:{PILL_FG[status]}"
+    return f'<span class="pill" style="{style}">{status}</span>'
 
 
 def render(station, d):
