@@ -52,6 +52,12 @@ jobs:
       - name: Model full forms in the Data view (dev only)
         run: python3 build25/patch_fullforms.py
 
+      - name: Monthly outlook - next 6 monthly mean flows panel (dev only)
+        run: python3 build25/patch_monthly.py
+
+      - name: Live-mode stall fix - per-stage timeouts (dev only)
+        run: python3 build25/patch_livefix.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
