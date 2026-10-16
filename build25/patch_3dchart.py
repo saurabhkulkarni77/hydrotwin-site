@@ -138,14 +138,19 @@ ANCHOR_SECTION = '<div id="hts-drift-slot"></div>\n </section>'
 ANCHOR_BODY = "</body>"
 
 # Spans of a previously inserted section / boot script, for the refresh
-# path. The section body contains no nested <section> and the boot block
-# is the importmap + module script pair this patcher puts before </body>.
+# path. Both patterns are tempered: they can never cross another
+# section/script boundary. This matters because other patchers keep
+# their own blocks (e.g. the drift panel) between this patcher's boot
+# script and </body> -- the boot span is ONLY the importmap + module
+# script pair, never anything that follows it.
 SECTION_RE = re.compile(
-    r' <section class="hts-sec" id="hts-sec-3dchart">.*?</section>', re.S)
+    r' <section class="hts-sec" id="hts-sec-3dchart">'
+    r'(?:(?!</?section).)*</section>', re.S)
 BOOT_RE = re.compile(
     r'\n<script type="importmap">\n'
     r'\{ "imports": \{ "three": "\.\./assets/3dchart/three\.module\.js" \} \}\n'
-    r'</script>\n<script type="module">.*?</script>\n</body>', re.S)
+    r'</script>\n<script type="module">(?:(?!</?script).)*</script>', re.S)
+BOOT_PAIR = BOOT.removesuffix("\n</body>")
 
 
 def post_checks(s: str) -> str | None:
@@ -153,7 +158,7 @@ def post_checks(s: str) -> str | None:
                   'id="hts-sec-hydro"', 'id="hts-sec-fc"', 'id="hts-sec-models"',
                   'id="hts-sec-ablation"', 'id="hts-sec-weekly"', 'id="hts-sec-drift"',
                   "ht-statsview v1", "ht-soilsnow v1", "ht-dacp v1", "ht-weekly v1",
-                  "ht-drift-panel", "window.HT_DATA"):
+                  "ht-drift-panel", 'id="ht-drift-panel"', "window.HT_DATA"):
         if token not in s:
             return f"FAIL post-check missing {token}"
     if s.count('id="ht3dc-root"') != 1 or s.count("ht-3dchart v1") != 2:
@@ -172,9 +177,11 @@ def patch(path: Path) -> str:
         if len(secs) != 1 or len(boots) != 1:
             return (f"FAIL refresh anchors: {len(secs)} section(s), "
                     f"{len(boots)} boot(s)")
+        if "<div" in boots[0] or "ht-drift" in boots[0] or "<section" in boots[0]:
+            return "FAIL refresh boot span over-matched; refusing to write"
         s2 = SECTION_RE.sub(lambda _: SECTION.lstrip("\n").replace(
             "__SITE__", site), s, count=1)
-        s2 = BOOT_RE.sub(lambda _: BOOT, s2, count=1)
+        s2 = BOOT_RE.sub(lambda _: BOOT_PAIR, s2, count=1)
         if s2 == s:
             return "skip (marker)"
         bad = post_checks(s2)
