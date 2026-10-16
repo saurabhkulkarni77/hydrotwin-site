@@ -112,7 +112,7 @@ canvas.hts-cv{width:100%;height:auto;display:block}
  <section class="hts-sec" id="hts-sec-3dchart">
   <!-- ht-3dchart v1 -->
   <h2>3D forecast chart</h2>
-  <p class="hts-note">Interactive 3D chart by <b>Akilan Chithra Sathish</b> (UTD RIDE), built for the HydroTwin Field Lab. X: forecast target date &middot; Y: estimated gauge height (ft) &middot; Z: the selected environmental reading on the earlier issue date. Orange is the forecast, blue is the observed-flow estimate; each line joins forecasts from successive issue dates at the same lead. Both height curves come from this station&rsquo;s stage&ndash;discharge fit &mdash; they are estimates, not measured water levels, depth, or absolute elevation. Environmental readings show associations, not causation; soil and snow sensors can be far from the gauge.</p>
+  <p class="hts-note">Interactive 3D chart built for the HydroTwin Field Lab. X: forecast target date &middot; Y: estimated gauge height (ft) &middot; Z: the selected environmental reading on the earlier issue date. Orange is the forecast, blue is the observed-flow estimate; each line joins forecasts from successive issue dates at the same lead. Both height curves come from this station&rsquo;s stage&ndash;discharge fit &mdash; they are estimates, not measured water levels, depth, or absolute elevation. Environmental readings show associations, not causation; soil and snow sensors can be far from the gauge.</p>
   <div id="ht3dc-root" data-site="08158000">
    <form class="ht3dc-form" aria-label="3D chart controls">
     <label>Forecast issued <input class="ht3dc-date" type="date"></label>
@@ -1208,7 +1208,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 { "imports": { "three": "../assets/3dchart/three.module.js" } }
 </script>
 <script type="module">
-// ht-3dchart v1 boot: mount Akilan's chart only when its section nears the
+// ht-3dchart v1 boot: mount the 3D chart only when its section nears the
 // viewport, so the Three.js bundle and the station sidecar cost nothing
 // until the reader actually scrolls to the chart.
 {
@@ -1230,40 +1230,4 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
   }
 }
 </script>
-<style>
-#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
- background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
- border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
- box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
-#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
- padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
-#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
- padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
-#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
- color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
-#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
-#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
-#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
-#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
-#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
-#ht-drift-panel .htd-line{opacity:.85}
-#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
-#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
- display:inline-block;min-width:52px;text-align:center}
-</style>
-<div id="ht-drift-panel">
-  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
-  <button id="htd-toggle" aria-label="collapse">–</button></div>
-  <div class="htd-body" id="htd-body">
-    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
-    <div class="htd-line">Inputs 2024–26 vs training era (2001–23). Worst: Flow (log), PSI 0.85.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.065</td></tr><tr><td>Tmin</td><td>0.064</td></tr><tr><td>Tmean</td><td>0.056</td></tr><tr><td>Precip</td><td>0.021</td></tr><tr><td>Flow (log)</td><td>0.854</td></tr></table>
-    <div class="htd-sec">Concept drift</div>
-    <div class="htd-line">Forecast RMSE (log flow), water year 2025 → 2026:</div>
-    <table><tr><th>Model</th><th>WY25</th><th>WY26</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.422</td><td>0.665</td><td>+57.7%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>GP Matérn</td><td>0.447</td><td>0.661</td><td>+48.1%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>GP RBF</td><td>0.442</td><td>0.661</td><td>+49.6%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>TFT</td><td>0.414</td><td>0.659</td><td>+59.1%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>LSTM</td><td>0.379</td><td>0.617</td><td>+62.6%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>ARIMA</td><td>0.892</td><td>1.100</td><td>+23.4%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>SARIMA</td><td>0.892</td><td>1.100</td><td>+23.4%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>PatchTST</td><td>0.453</td><td>0.668</td><td>+47.5%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>PILSTMv1</td><td>0.386</td><td>0.603</td><td>+56.2%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>GCN</td><td>0.429</td><td>0.643</td><td>+49.8%</td><td><span class="pill" style="background:#777">degrading</span></td></tr></table>
-    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
-    Computed 2026-10-13 from the served 25-year forecast series + station data.</div>
-  </div>
-</div>
-<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
 </body></html>
