@@ -14,10 +14,18 @@ connection freezes Live mode forever with the status stuck at
   * bigModelLive():  raw fetch() of GP/ARIMA params; ort session create
   * weekly/monthly runLive(): ort.InferenceSession.create()
 
-This patcher APPENDS one guarded script (no edits to existing code).
-At page load it wraps the window-visible live entry points with
-Promise.race timeouts so every live stage is bounded and failures
-surface as honest status text instead of a silent hang:
+Fix, in two parts:
+
+Part 1 (source patch, 3D module code): the three raw fetches are
+replaced with the module's own timed fetchJson() helper (or an
+AbortController-timed fetch where the response object is needed), so
+the module-internal callers (act() -> loadLive / bigModelLive, which
+are module-scoped and unreachable from window) are bounded too.
+
+Part 2 (appended guarded script, all pages): wraps the window-visible
+live entry points with Promise.race timeouts so every live stage is
+bounded and failures surface as honest status text instead of a
+silent hang:
 
   * fetchLiveSoilSnow -> 45 s cap, then training-median fallback
     (preserves its "never throws" contract)
@@ -37,17 +45,42 @@ It also annotates the weekly/monthly live status line with elapsed
 seconds while a live run is in flight, so a slow-but-working run no
 longer looks frozen.
 
-Idempotent: pages carrying the MARKER are skipped.
+It also annotates the weekly/monthly live status line with elapsed
+seconds while a live run is in flight, so a slow-but-working run no
+longer looks frozen.
+
+Idempotent: pages carrying the v2 MARKER with no old anchors left are
+skipped; pages carrying only the v1 append (first deploy) are upgraded
+in place (part 1 applied, marker bumped).
 Run from the repo root: python3 build25/patch_livefix.py
 """
 import sys
 from pathlib import Path
 
-MARKER = "ht-livefix v1"
+MARKER = "ht-livefix v2"
+OLD_MARKER = "ht-livefix v1"
+
+# ---------------- part 1: timed-fetch source replacements ----------------
+# Each (old, new) must occur exactly once on pages that carry the 3D
+# module's live code; pages without the code are skipped per-anchor.
+PART1 = [
+    # fetchLiveSoilSnow: Open-Meteo current conditions (was raw fetch)
+    ("const rw = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${D.lat}&longitude=${D.lon}&current=soil_temperature_6cm,soil_moisture_3_9cm,snow_depth&timezone=auto`).then(r => r.json()).catch(() => null);",
+     "const rw = await fetchJson(`https://api.open-meteo.com/v1/forecast?latitude=${D.lat}&longitude=${D.lon}&current=soil_temperature_6cm,soil_moisture_3_9cm,snow_depth&timezone=auto`, 20000).catch(() => null);"),
+    # loadLive: USGS instantaneous values (was raw fetch, no catch)
+    ("fetch(`https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${D.site}&parameterCd=00060&siteStatus=all`).then(r => r.json()),",
+     "fetchJson(`https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${D.site}&parameterCd=00060&siteStatus=all`, 30000),"),
+    # loadLive: Open-Meteo current conditions (was raw fetch)
+    ("fetch(`https://api.open-meteo.com/v1/forecast?latitude=${D.lat}&longitude=${D.lon}&current=temperature_2m,precipitation,weather_code,wind_speed_10m,soil_temperature_6cm,soil_moisture_3_9cm,snow_depth&timezone=auto`).then(r => r.json()).catch(() => null)",
+     "fetchJson(`https://api.open-meteo.com/v1/forecast?latitude=${D.lat}&longitude=${D.lon}&current=temperature_2m,precipitation,weather_code,wind_speed_10m,soil_temperature_6cm,soil_moisture_3_9cm,snow_depth&timezone=auto`, 20000).catch(() => null)"),
+    # bigModelLive: GP/ARIMA params fetch (was raw fetch; response object needed)
+    ("const r = await fetch(u); if (!r.ok) continue; P = await r.json();",
+     "const r = await fetch(u, { signal: (function () { const c = new AbortController(); setTimeout(() => c.abort(), 20000); return c.signal; })() }); if (!r.ok) continue; P = await r.json();"),
+]
 
 JS_BODY = r"""
 <script>
-/* ht-livefix v1 - bound every live stage with a timeout (dev).
+/* ht-livefix v2 - bound every live stage with a timeout (dev).
  * See build25/patch_livefix.py for the diagnosis. Wrappers only:
  * the original functions keep their behaviour when they answer in
  * time; a stall now ends in an honest status message, not a hang. */
@@ -163,14 +196,32 @@ JS_BODY = r"""
 
 
 def patch_page(s):
-    if MARKER in s:
-        return s
-    if s.count("</body>") != 1:
-        return None
-    out = s.replace("</body>", JS_BODY.strip() + "\n</body>", 1)
+    """Returns (new_text, n_part1_applied) or None on anchor trouble."""
+    has_v2 = MARKER in s
+    has_v1 = OLD_MARKER in s
+    olds_left = [old for old, _new in PART1 if old in s]
+    if has_v2 and not olds_left:
+        return s, 0
+    out = s
+    n1 = 0
+    for old, new in PART1:
+        c = out.count(old)
+        if c == 1:
+            out = out.replace(old, new, 1)
+            n1 += 1
+        elif c > 1:
+            return None
+    if not has_v1 and not has_v2:
+        if out.count("</body>") != 1:
+            return None
+        out = out.replace("</body>", JS_BODY.strip() + "\n</body>", 1)
+    if OLD_MARKER in out:
+        out = out.replace(OLD_MARKER, MARKER)
     if MARKER not in out:
         return None
-    return out
+    if any(old in out for old, _new in PART1):
+        return None
+    return out, n1
 
 
 def main():
@@ -181,18 +232,19 @@ def main():
     n_new = n_skip = n_warn = 0
     for p in pages:
         s = p.read_text(encoding="utf-8")
-        if MARKER in s:
-            n_skip += 1
-            print(f"already patched: {p.name}")
-            continue
-        out = patch_page(s)
-        if out is None:
+        res = patch_page(s)
+        if res is None:
             n_warn += 1
             print(f"WARNING: anchors not as expected, skipped: {p.name}")
             continue
+        out, n1 = res
+        if out == s:
+            n_skip += 1
+            print(f"already patched: {p.name}")
+            continue
         p.write_text(out, encoding="utf-8")
         n_new += 1
-        print(f"patched: {p.name}")
+        print(f"patched: {p.name} (part1 replacements: {n1})")
     print(f"patch_livefix: {n_new} page(s) newly patched, {n_skip} already, "
           f"{n_warn} skipped-with-warning, {len(pages)} pages scanned")
     return 0
