@@ -46,7 +46,7 @@ SECTION = """
  <section class="hts-sec" id="hts-sec-3dchart">
   <!-- ht-3dchart v1 -->
   <h2>3D forecast chart</h2>
-  <p class="hts-note">Interactive 3D chart built for the HydroTwin Field Lab. X: forecast target date &middot; Y: estimated gauge height (ft) &middot; Z: the selected environmental reading on the earlier issue date. Orange is the forecast, blue is the observed-flow estimate; each line joins forecasts from successive issue dates at the same lead. Both height curves come from this station&rsquo;s stage&ndash;discharge fit &mdash; they are estimates, not measured water levels, depth, or absolute elevation. Environmental readings show associations, not causation; soil and snow sensors can be far from the gauge.</p>
+  <p class="hts-note">Interactive 3D chart built for HydroTwin. X: forecast target date &middot; Y: estimated gauge height (ft) &middot; Z: the selected environmental reading on the earlier issue date. Orange is the forecast, blue is the observed-flow estimate; each line joins forecasts from successive issue dates at the same lead. Both height curves come from this station&rsquo;s stage&ndash;discharge fit &mdash; they are estimates, not measured water levels, depth, or absolute elevation. Environmental readings show associations, not causation; soil and snow sensors can be far from the gauge.</p>
   <div id="ht3dc-root" data-site="__SITE__">
    <form class="ht3dc-form" aria-label="3D chart controls">
     <label>Forecast issued <input class="ht3dc-date" type="date"></label>
