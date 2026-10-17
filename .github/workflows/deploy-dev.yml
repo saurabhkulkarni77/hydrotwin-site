@@ -58,6 +58,9 @@ jobs:
       - name: Live-mode stall fix - per-stage timeouts (dev only)
         run: python3 build25/patch_livefix.py
 
+      - name: Weekly + monthly model compare panels (dev only)
+        run: python3 build25/patch_compare_wm.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
