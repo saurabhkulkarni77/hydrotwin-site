@@ -61,6 +61,11 @@ jobs:
       - name: Weekly + monthly model compare panels (dev only)
         run: python3 build25/patch_compare_wm.py
 
+      - name: Cache-busting build stamp (dev only)
+        env:
+          HT_BUILD_ID: ${{ github.run_id }}-${{ github.sha }}
+        run: python3 build25/patch_cachebust.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
@@ -88,3 +93,9 @@ jobs:
             --exclude ".github/*" \
             --exclude "build25/*" \
             --delete
+
+      - name: HTML cache headers on DEV bucket (dev only)
+        run: |
+          aws s3 cp . s3://hydrotwin-site-dev-2026/ --recursive \
+            --exclude "*" --include "index.html" --include "stations/*.html" \
+            --cache-control "no-cache" --content-type "text/html"
