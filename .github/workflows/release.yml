@@ -1,6 +1,6 @@
 name: Release — site ZIP
 
-# Builds the GitHub-flavor site ZIP (the dev-branch tree, excluding
+# Builds the GitHub-flavor site ZIP (the full site tree, excluding
 # .github/ and .git/) and publishes it as a GitHub Release with
 # auto-generated notes. Trigger by pushing a version tag (v*) or by
 # manual dispatch. Manual dispatch defaults to a dry run (ZIP built
