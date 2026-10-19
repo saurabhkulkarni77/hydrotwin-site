@@ -148,7 +148,7 @@ SECTION_RE = re.compile(
     r'(?:(?!</?section).)*</section>', re.S)
 BOOT_RE = re.compile(
     r'\n<script type="importmap">\n'
-    r'\{ "imports": \{ "three": "\.\./assets/3dchart/three\.module\.js" \} \}\n'
+    r'\{ "imports": \{ "three": "\.\./assets/3dchart/three\.module\.js(?:\?htv=[^"\s]*)?" \} \}\n'
     r'</script>\n<script type="module">(?:(?!</?script).)*</script>', re.S)
 BOOT_PAIR = BOOT.removesuffix("\n</body>")
 
