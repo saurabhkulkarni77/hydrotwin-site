@@ -61,6 +61,15 @@ jobs:
       - name: Weekly + monthly model compare panels (dev only)
         run: python3 build25/patch_compare_wm.py
 
+      - name: Monthly outlook - Flow & forecast panel treatment (dev only)
+        run: python3 build25/patch_ffmonthly.py
+
+      - name: Yearly outlook - next 12 x 30-day mean flows panel (dev only)
+        run: python3 build25/patch_yearly.py
+
+      - name: Yearly model compare panel (dev only)
+        run: python3 build25/patch_compare_y.py
+
       - name: Cache-busting build stamp (dev only)
         env:
           HT_BUILD_ID: ${{ github.run_id }}-${{ github.sha }}
