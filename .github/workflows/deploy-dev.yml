@@ -75,6 +75,9 @@ jobs:
           HT_BUILD_ID: ${{ github.run_id }}-${{ github.sha }}
         run: python3 build25/patch_cachebust.py
 
+      - name: One Live action for all charts + old-weights series (dev)
+        run: python3 build25/patch_liveall.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |

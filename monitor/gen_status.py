@@ -85,7 +85,7 @@ TRIGGERS = [
     {
         "automation": "CI test suite",
         "fires_when": "Every pull request, and every push to the dev branch",
-        "what_happens": "252 pytest checks: station-page patch-marker "
+        "what_happens": "267 pytest checks: station-page patch-marker "
                         "integrity, HT_DATA contracts (n=9131 from "
                         "2001-10-01), sidecar schemas, internal links.",
         "workflow": ".github/workflows/ci.yml",

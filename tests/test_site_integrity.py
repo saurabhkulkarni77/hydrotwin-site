@@ -33,6 +33,7 @@ CLASSIC_MARKERS = {
     "ht-fullforms v1": 1,            # model full-form glossary block
     "ht-uiux v1": 1,                 # UI enhancer
     "ht-livefix v2": 1,              # live-stall fix wrappers
+    "ht-liveall v1": 1,              # one Live action for all charts + old weights
     "ht-cachebust v1": 3,            # per-deploy build stamp (3 stamps)
     '<div id="ht-drift-panel">': 1,  # drift panel (canonical anchor)
     'id="hts-top"': 1,               # statsview layout root
@@ -58,6 +59,7 @@ THREED_MARKERS = {
     "ht-live-gap v1": 2,             # true-live gap fill (3D only)
     "ht-ablfix v1": 1,               # ablation readout fix (3D only)
     "ht-livefix v2": 1,              # live-stall fix wrappers
+    "ht-liveall v1": 1,              # one Live action for all charts + old weights
     "ht-cachebust v1": 3,            # per-deploy build stamp (3 stamps)
     '<div id="ht-drift-panel">': 1,  # drift panel (canonical anchor)
     'id="htdc-on"': 1,               # DACP band toggle control

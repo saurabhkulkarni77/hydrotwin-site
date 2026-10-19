@@ -43,14 +43,14 @@ the current state of that system, pre-rendered from
 <a href="mlops-status.json"><code>mlops-status.json</code></a> &mdash; see
 <a href="https://github.com/saurabhkulkarni77/hydrotwin-site/blob/dev/MLOPS.md">MLOPS.md</a>
 for the full design.</p>
-<p class="muted" id="gen" data-generated-at="2026-10-19T21:47:38Z">Snapshot generated 2026-10-19 21:47:38 UTC &middot; source repo saurabhkulkarni77/hydrotwin-site &middot; data file mlops-status.json</p>
+<p class="muted" id="gen" data-generated-at="2026-10-19T22:51:58Z">Snapshot generated 2026-10-19 22:51:58 UTC &middot; source repo saurabhkulkarni77/hydrotwin-site &middot; data file mlops-status.json</p>
 <div class="banner warnb" id="stale" hidden></div>
 </header>
 <main>
 <section id="sec-triggers"><h2>Automation triggers</h2>
 <table><thead><tr><th>Automation</th><th>Fires when</th><th>What happens</th><th>Workflow</th></tr></thead>
 <tbody id="tb-triggers">
-<tr><td><b>CI test suite</b></td><td>Every pull request, and every push to the dev branch</td><td>252 pytest checks: station-page patch-marker integrity, HT_DATA contracts (n=9131 from 2001-10-01), sidecar schemas, internal links.</td><td><code>ci.yml</code></td></tr>
+<tr><td><b>CI test suite</b></td><td>Every pull request, and every push to the dev branch</td><td>267 pytest checks: station-page patch-marker integrity, HT_DATA contracts (n=9131 from 2001-10-01), sidecar schemas, internal links.</td><td><code>ci.yml</code></td></tr>
 <tr><td><b>Model validation gate</b></td><td>Pull requests touching models/** — including when the allow-regression label is added</td><td>Fails the PR if a production-stage model&#x27;s pooled RMSE regresses more than 1% (relative) against models/baselines.json, unless the PR carries the allow-regression label.</td><td><code>model-gate.yml</code></td></tr>
 <tr><td><b>Drift &amp; freshness monitor</b></td><td>Schedule: Mondays 09:17 UTC · or manual dispatch</td><td>Recomputes PSI drift, freshness and sidecar coverage from this repo&#x27;s baked data; on any breach it opens (or updates) the single mlops-monitor tracking issue. Silent otherwise.</td><td><code>monitor.yml</code></td></tr>
 <tr><td><b>Retrain handoff (CT)</b></td><td>Manual dispatch</td><td>Validates a retrain request (model + data window) against models/registry.json and records the handoff to hydrotwin-models, where the heavy training actually runs.</td><td><code>retrain.yml</code></td></tr>
@@ -100,12 +100,12 @@ for the full design.</p>
 <section id="sec-pipeline"><h2>Pipeline status &mdash; latest workflow runs</h2>
 <table><thead><tr><th>Workflow</th><th>Latest run</th><th>Result</th><th>Event</th><th>Finished (UTC)</th><th></th></tr></thead>
 <tbody id="tb-pipeline">
-<tr><td><b>CI — site, data &amp; model tests</b></td><td>MLOps Level 2 on dev: port of the hydrotwin-lab overlay</td><td><span class="pill ok">success</span></td><td>push</td><td>2026-10-19 21:42:24</td><td><a href="https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39329467447">run #39329467447</a></td></tr>
+<tr><td><b>CI — site, data &amp; model tests</b></td><td>Fix release.yml YAML (env/run block indentation) so the release workf…</td><td><span class="pill ok">success</span></td><td>push</td><td>2026-10-19 21:50:35</td><td><a href="https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39330510622">run #39330510622</a></td></tr>
 <tr><td><b>Model validation gate</b></td><td>MLOps Level 2 on dev: port of the hydrotwin-lab overlay</td><td><span class="pill ok">success</span></td><td>push</td><td>2026-10-19 21:42:15</td><td><a href="https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39329467524">run #39329467524</a></td></tr>
 <tr><td><b>MLOps monitor — drift &amp; freshness</b></td><td>—</td><td><span class="pill neut">no runs recorded</span></td><td>—</td><td>—</td><td></td></tr>
 <tr><td><b>CT — retrain handoff (stub)</b></td><td>—</td><td><span class="pill neut">no runs recorded</span></td><td>—</td><td>—</td><td></td></tr>
-<tr><td><b>Release — site ZIP</b></td><td>—</td><td><span class="pill neut">no runs recorded</span></td><td>—</td><td>—</td><td></td></tr>
-<tr><td><b>Deploy DEV to AWS S3</b></td><td>MLOps Level 2 on dev: port of the hydrotwin-lab overlay</td><td><span class="pill ok">success</span></td><td>push</td><td>2026-10-19 21:42:49</td><td><a href="https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39329467404">run #39329467404</a></td></tr>
+<tr><td><b>Release — site ZIP</b></td><td>Fix release.yml YAML (env/run block indentation) so the release workf…</td><td><span class="pill ok">success</span></td><td>push</td><td>2026-10-19 21:50:55</td><td><a href="https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39330516971">run #39330516971</a></td></tr>
+<tr><td><b>Deploy DEV to AWS S3</b></td><td>Fix release.yml YAML (env/run block indentation) so the release workf…</td><td><span class="pill ok">success</span></td><td>push</td><td>2026-10-19 21:51:02</td><td><a href="https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39330510740">run #39330510740</a></td></tr>
 </tbody></table>
 <p class="muted">Full history: <a href="https://github.com/saurabhkulkarni77/hydrotwin-site/actions">Actions tab</a> &middot;
 <a href="https://github.com/saurabhkulkarni77/hydrotwin-site/releases">Releases</a></p></section>

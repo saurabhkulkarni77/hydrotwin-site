@@ -39,7 +39,7 @@ def _load(repo_root, *parts):
 
 @pytest.mark.parametrize("family", ["dacp", "dacpw", "dacpm", "dacpy",
                                     "weekly", "monthly", "yearly",
-                                    "soilsnow", "corr", "chart3d"])
+                                    "soilsnow", "corr", "chart3d", "oldfc"])
 def test_sidecar_coverage(repo_root, family):
     files = sorted(p.stem for p in (repo_root / family).glob("*.json"))
     assert files == sorted(STATIONS), f"{family}/ must hold one file per station"
@@ -151,3 +151,24 @@ def test_drift_report_contract(repo_root):
     assert report["windows"]["recent"][1] == AXIS_END
     assert report["models"] == MODELS
     assert sorted(report["stations"]) == sorted(STATIONS)
+
+
+@pytest.mark.parametrize("station", STATIONS)
+def test_oldfc_contract(repo_root, station):
+    """Old-weights sidecars: pre-drift-fix baked forecast tails.
+
+    pred holds the last 400 issue days of the pre-fix HT_DATA.pred
+    (commit 0908430a8e), 7 leads per issue, one row set per model.
+    """
+    obj = _load(repo_root, "oldfc", f"{station}.json")
+    assert obj["site"] == station
+    assert obj["v"] == "ht-oldfc v1"
+    assert obj["src_commit"] == "0908430a8e"
+    assert obj["start"] == AXIS_START
+    assert obj["n"] == AXIS_N
+    assert obj["from_issue"] == AXIS_N - 400
+    assert obj["models"] == MODELS
+    for model in MODELS:
+        rows = obj["pred"][model]
+        assert len(rows) == 400
+        assert all(len(r) == 7 for r in rows)
