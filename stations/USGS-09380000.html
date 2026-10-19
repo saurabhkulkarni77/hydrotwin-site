@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39337939986-db8afa9bca086de7009a803278a61e43cf2dbdf4";
+  var BID = "39338292252-2c92f31469e241e20e0780415080f0a38f8386ac";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -1304,7 +1305,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39337939986-db8afa9bca086de7009a803278a61e43cf2dbdf4" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39338292252-2c92f31469e241e20e0780415080f0a38f8386ac" } }
 </script>
 <script type="module">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1313,7 +1314,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=39337939986-db8afa9bca086de7009a803278a61e43cf2dbdf4')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=39338292252-2c92f31469e241e20e0780415080f0a38f8386ac')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -2933,42 +2934,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 </script>
 
 
-<style>
-#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
- background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
- border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
- box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
-#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
- padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
-#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
- padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
-#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
- color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
-#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
-#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
-#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
-#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
-#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
-#ht-drift-panel .htd-line{opacity:.85}
-#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
-#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
- display:inline-block;min-width:52px;text-align:center}
-</style>
-<div id="ht-drift-panel">
-  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
-  <button id="htd-toggle" aria-label="collapse">–</button></div>
-  <div class="htd-body" id="htd-body">
-    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
-    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 5.14.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.089</td></tr><tr><td>Tmin</td><td>0.140</td></tr><tr><td>Tmean</td><td>0.102</td></tr><tr><td>Precip</td><td>0.002</td></tr><tr><td>Flow (log)</td><td>5.142</td></tr></table>
-    <div class="htd-sec">Concept drift</div>
-    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
-    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.068</td><td>0.056</td><td>-16.4%</td><td><span class="pill" style="background:#f5c518;color:#111">improving</span></td></tr><tr><td>GP Matérn</td><td>0.090</td><td>0.079</td><td>-12.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.079</td><td>0.073</td><td>-7.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.063</td><td>0.063</td><td>-0.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.065</td><td>0.063</td><td>-2.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.143</td><td>0.130</td><td>-9.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>0.143</td><td>0.132</td><td>-7.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.059</td><td>0.058</td><td>-1.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.064</td><td>0.062</td><td>-2.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.073</td><td>0.069</td><td>-5.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
-    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
-    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
-  </div>
-</div>
-<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+
 
 <script>
 
@@ -3868,4 +3834,40 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 })();
 
 </script>
+<style>
+#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
+ background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
+ border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+ box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
+ padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
+#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
+ padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
+#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
+ color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
+#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
+#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
+#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
+#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
+#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
+#ht-drift-panel .htd-line{opacity:.85}
+#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
+#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
+ display:inline-block;min-width:52px;text-align:center}
+</style>
+<div id="ht-drift-panel">
+  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
+  <button id="htd-toggle" aria-label="collapse">–</button></div>
+  <div class="htd-body" id="htd-body">
+    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
+    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 5.14.</div>
+    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.089</td></tr><tr><td>Tmin</td><td>0.140</td></tr><tr><td>Tmean</td><td>0.102</td></tr><tr><td>Precip</td><td>0.002</td></tr><tr><td>Flow (log)</td><td>5.142</td></tr></table>
+    <div class="htd-sec">Concept drift</div>
+    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
+    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.068</td><td>0.056</td><td>-16.4%</td><td><span class="pill" style="background:#f5c518;color:#111">improving</span></td></tr><tr><td>GP Matérn</td><td>0.090</td><td>0.079</td><td>-12.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.079</td><td>0.073</td><td>-7.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.063</td><td>0.063</td><td>-0.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.065</td><td>0.063</td><td>-2.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.143</td><td>0.130</td><td>-9.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>0.143</td><td>0.132</td><td>-7.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.059</td><td>0.058</td><td>-1.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.064</td><td>0.062</td><td>-2.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.073</td><td>0.069</td><td>-5.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
+    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
+    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
+  </div>
+</div>
+<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
 </body></html>
