@@ -70,13 +70,13 @@ def render(station, d):
   <button id="htd-toggle" aria-label="collapse">–</button></div>
   <div class="htd-body" id="htd-body">
     <div class="htd-sec">Data drift {pill(data['status'])}</div>
-    <div class="htd-line">Inputs 2024–26 vs training era (2001–23). Worst: {worst}, PSI {psi_txt}.</div>
+    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: {worst}, PSI {psi_txt}.</div>
     <table><tr><th>Feature</th><th>PSI</th></tr>{frows}</table>
     <div class="htd-sec">Concept drift</div>
-    <div class="htd-line">Forecast RMSE (log flow), water year 2025 → 2026:</div>
-    <table><tr><th>Model</th><th>WY25</th><th>WY26</th><th>Δ</th><th></th></tr>{mrows}</table>
+    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
+    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr>{mrows}</table>
     <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
-    Computed 2026-10-13 from the served 25-year forecast series + station data.</div>
+    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
   </div>
 </div>
 <script>document.getElementById('htd-toggle').addEventListener('click',function(){{var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';}});</script>
