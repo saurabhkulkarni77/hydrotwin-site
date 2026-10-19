@@ -1,0 +1,53 @@
+name: CT — retrain handoff (stub)
+
+# Continuous-training *request* side. Heavy training runs in
+# saurabhkulkarni77/hydrotwin-models (daily-retrain.yml); this workflow
+# validates a retrain request against models/registry.json and records
+# the handoff. It deliberately does NOT train anything — see
+# retrain/README.md and MLOPS.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Model to retrain"
+        type: choice
+        default: all
+        options:
+          - all
+          - Transformer
+          - GP Matérn
+          - GP RBF
+          - TFT
+          - LSTM
+          - ARIMA
+          - SARIMA
+          - PatchTST
+          - PILSTMv1
+          - GCN
+      data_end:
+        description: "Training data end date (YYYY-MM-DD)"
+        type: string
+        default: "2026-09-30"
+      reason:
+        description: "Why is this retrain requested?"
+        type: string
+        default: "manual"
+
+permissions:
+  contents: read
+
+jobs:
+  handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate retrain request + emit handoff
+        run: >
+          python retrain/handoff.py
+          --model "${{ inputs.model }}"
+          --data-end "${{ inputs.data_end }}"
+          --reason "${{ inputs.reason }}"

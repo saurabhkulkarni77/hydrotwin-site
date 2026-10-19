@@ -1,0 +1,62 @@
+name: MLOps status page data
+
+# Regenerates mlops-status.json (the data behind mlops.html) after any
+# of the pipeline workflows completes, and on manual dispatch. The
+# snapshot is built from models/registry.json + models/baselines.json,
+# the baked drift data and sidecars, and the latest Actions runs —
+# see monitor/gen_status.py. The commit carries [skip ci], and pushes
+# made with GITHUB_TOKEN do not start new workflow runs, so this
+# cannot loop.
+
+on:
+  workflow_run:
+    workflows:
+      - "CI — site, data & model tests"
+      - "Model validation gate"
+      - "MLOps monitor — drift & freshness"
+      - "CT — retrain handoff (stub)"
+      - "Release — site ZIP"
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+  issues: read
+
+concurrency:
+  group: mlops-status
+  cancel-in-progress: false
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      # Pin the dev branch: on workflow_run events a bare checkout would
+      # take the default branch (main), which does not carry this overlay.
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Snapshot latest workflow runs + monitor issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/actions/runs?per_page=50" > runs.json
+          gh api "repos/${{ github.repository }}/issues?labels=mlops-monitor&state=all&per_page=5" > issues.json
+      - name: Regenerate mlops-status.json
+        run: python monitor/gen_status.py --runs runs.json --issues issues.json
+      - name: Commit snapshot if it changed
+        run: |
+          rm -f runs.json issues.json
+          if git diff --quiet -- mlops-status.json mlops.html; then
+            echo "mlops-status.json + mlops.html unchanged — nothing to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mlops-status.json mlops.html
+          git commit -m "chore: refresh MLOps status snapshot [skip ci]"
+          git push

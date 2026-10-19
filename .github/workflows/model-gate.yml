@@ -1,0 +1,35 @@
+name: Model validation gate
+
+# Blocks a models/** change when a production-stage model's pooled
+# RMSE regresses >1% (relative) against models/baselines.json.
+# Deliberate regressions are accepted by adding the `allow-regression`
+# label to the PR (the `labeled` trigger re-runs the gate).
+# See models/gate.py and MLOPS.md.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    paths: ["models/**"]
+  push:
+    branches: [dev]
+    paths: ["models/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run metric gate
+        run: |
+          ARGS=""
+          if [ "${{ github.event_name }}" = "pull_request" ] && [ "${{ contains(github.event.pull_request.labels.*.name, 'allow-regression') }}" = "true" ]; then
+            ARGS="--allow-regression"
+            echo "allow-regression label present — regressions will be warnings"
+          fi
+          python models/gate.py $ARGS
