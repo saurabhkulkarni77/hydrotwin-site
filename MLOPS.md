@@ -87,16 +87,23 @@ re-runs the generator and commits the refreshed snapshot (with
 `[skip ci]`) whenever the CI, gate, monitor, retrain or release
 workflows complete, and on manual dispatch; the page shows the
 snapshot's generation time and flags itself when the snapshot is
-stale.
+stale. On this branch its automatic triggers are promotion-gated
+(see Honest limitations), so until promotion the snapshot is
+refreshed by committing a locally regenerated one.
 
 ## Honest limitations (dev-specific)
 
 * The training stage is a validated handoff, not a training run —
   this repo intentionally contains no training code or data pipeline.
-* GitHub **scheduled** workflows only run from a repo's default
-  branch. The monitor's weekly cron is therefore armed only once
-  this overlay is promoted to `main`; on dev the monitor runs on
-  manual dispatch (and the status page refreshes on its completion).
+* GitHub **scheduled** workflows, `workflow_run` triggers, and the
+  `workflow_dispatch` API all resolve workflow files from the repo's
+  **default branch**. The monitor's weekly cron, the status page's
+  automatic refresh, and manual dispatch of the monitor/retrain/
+  status workflows therefore arm only once this overlay is promoted
+  to `main`. Push/PR-triggered workflows (CI, the model gate, and the
+  tag-triggered release) work from `dev` today; until promotion, the
+  monitor and the snapshot generator run locally against the same
+  committed data (identical code paths).
 * The status snapshot commits back with `GITHUB_TOKEN`, and token
   pushes do not start new workflow runs — so after an automatic
   snapshot refresh lands on `dev`, the S3 copy of the page updates

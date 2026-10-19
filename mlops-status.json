@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-19T21:40:23Z",
+  "generated_at": "2026-10-19T21:47:38Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -349,12 +349,30 @@
     {
       "file": ".github/workflows/ci.yml",
       "name": "CI \u2014 site, data & model tests",
-      "latest": null
+      "latest": {
+        "run_id": 39329467447,
+        "title": "MLOps Level 2 on dev: port of the hydrotwin-lab overlay",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-19T21:41:33Z",
+        "updated_at": "2026-10-19T21:42:24Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39329467447"
+      }
     },
     {
       "file": ".github/workflows/model-gate.yml",
       "name": "Model validation gate",
-      "latest": null
+      "latest": {
+        "run_id": 39329467524,
+        "title": "MLOps Level 2 on dev: port of the hydrotwin-lab overlay",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-19T21:41:33Z",
+        "updated_at": "2026-10-19T21:42:15Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39329467524"
+      }
     },
     {
       "file": ".github/workflows/monitor.yml",
@@ -375,14 +393,14 @@
       "file": ".github/workflows/deploy-dev.yml",
       "name": "Deploy DEV to AWS S3",
       "latest": {
-        "run_id": 39264505690,
-        "title": "ht-yearly v1 + ht-ffmo v1 + ht-cmpy v1 (dev): yearly outlook (next 12\u2026",
+        "run_id": 39329467404,
+        "title": "MLOps Level 2 on dev: port of the hydrotwin-lab overlay",
         "event": "push",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-10-19T13:56:39Z",
-        "updated_at": "2026-10-19T13:57:47Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39264505690"
+        "created_at": "2026-10-19T21:41:33Z",
+        "updated_at": "2026-10-19T21:42:49Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39329467404"
       }
     }
   ]
