@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39329467404-27edd54f834403ad6dc2824015ad8a3336cc0794";
+  var BID = "39330510740-dc823e2dae891ed756b0398e0677ee73afd9aa0f";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -1302,7 +1303,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39329467404-27edd54f834403ad6dc2824015ad8a3336cc0794" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39330510740-dc823e2dae891ed756b0398e0677ee73afd9aa0f" } }
 </script>
 <script type="module">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1311,7 +1312,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=39329467404-27edd54f834403ad6dc2824015ad8a3336cc0794')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=39330510740-dc823e2dae891ed756b0398e0677ee73afd9aa0f')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -2929,6 +2930,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
             ticks: [-4, -2, 0, 3, 6, 9, 12], tickUnit: 'mo' });
 })();
 </script>
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
