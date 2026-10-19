@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39264505690-f836c6eb4c23110cb4d1585a6af582c301883db4";
+  var BID = "39329467404-27edd54f834403ad6dc2824015ad8a3336cc0794";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 <meta charset="utf-8">
@@ -3414,42 +3415,7 @@ window.__moMeta = {"leader":{"PILSTMv1":0.507,"LSTM":0.5206,"Transformer":0.4988
 </script>
 
 
-<style>
-#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
- background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
- border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
- box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
-#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
- padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
-#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
- padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
-#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
- color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
-#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
-#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
-#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
-#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
-#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
-#ht-drift-panel .htd-line{opacity:.85}
-#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
-#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
- display:inline-block;min-width:52px;text-align:center}
-</style>
-<div id="ht-drift-panel">
-  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
-  <button id="htd-toggle" aria-label="collapse">–</button></div>
-  <div class="htd-body" id="htd-body">
-    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
-    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 4.36.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.041</td></tr><tr><td>Tmin</td><td>0.062</td></tr><tr><td>Tmean</td><td>0.070</td></tr><tr><td>Precip</td><td>0.024</td></tr><tr><td>Flow (log)</td><td>4.363</td></tr></table>
-    <div class="htd-sec">Concept drift</div>
-    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
-    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.056</td><td>0.058</td><td>+2.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.052</td><td>0.057</td><td>+9.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.052</td><td>0.054</td><td>+3.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.060</td><td>0.059</td><td>-2.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.060</td><td>0.062</td><td>+3.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.195</td><td>0.213</td><td>+9.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>0.194</td><td>0.215</td><td>+10.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.064</td><td>0.057</td><td>-10.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.060</td><td>0.057</td><td>-5.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.060</td><td>0.060</td><td>+0.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
-    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
-    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
-  </div>
-</div>
-<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+
 <script>
 /* ht-ffmo v1 - Monthly outlook: Flow & forecast lead treatment (dev).
  * Adds full model names to the monthly panel's model selector and a
@@ -4311,4 +4277,40 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
             ticks: [-4, -2, 0, 3, 6, 9, 12], tickUnit: 'mo' });
 })();
 </script>
+<style>
+#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
+ background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
+ border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+ box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
+ padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
+#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
+ padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
+#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
+ color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
+#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
+#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
+#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
+#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
+#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
+#ht-drift-panel .htd-line{opacity:.85}
+#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
+#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
+ display:inline-block;min-width:52px;text-align:center}
+</style>
+<div id="ht-drift-panel">
+  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
+  <button id="htd-toggle" aria-label="collapse">–</button></div>
+  <div class="htd-body" id="htd-body">
+    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
+    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 4.36.</div>
+    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.041</td></tr><tr><td>Tmin</td><td>0.062</td></tr><tr><td>Tmean</td><td>0.070</td></tr><tr><td>Precip</td><td>0.024</td></tr><tr><td>Flow (log)</td><td>4.363</td></tr></table>
+    <div class="htd-sec">Concept drift</div>
+    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
+    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.056</td><td>0.058</td><td>+2.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.052</td><td>0.057</td><td>+9.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.052</td><td>0.054</td><td>+3.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.060</td><td>0.059</td><td>-2.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.060</td><td>0.062</td><td>+3.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.195</td><td>0.213</td><td>+9.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>0.194</td><td>0.215</td><td>+10.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.064</td><td>0.057</td><td>-10.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.060</td><td>0.057</td><td>-5.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.060</td><td>0.060</td><td>+0.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
+    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
+    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
+  </div>
+</div>
+<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
 </body></html>
