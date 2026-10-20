@@ -82,7 +82,7 @@ for (const s of M.stations) {
   const base = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.004, 24), mat(col)); g.add(base);
   const hit = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, h + 0.08, 12), new THREE.MeshBasicMaterial({ visible: false })); hit.position.y = (h + 0.08) / 2; g.add(hit);
   const lab = label(s.short, 0.036); lab.position.y = h + 0.075; g.add(lab);
-  const p = { s, g, head, hit, lab, h, st, col }; hit.userData.pin = p; pins.push(p);
+  const p = { s, g, head, hit, lab, h, st, col }; hit.userData.pin = p; head.userData.pin = p; lab.userData.pin = p; pins.push(p);
 }
 
 // legend
@@ -129,14 +129,14 @@ const open = (p) => { if (p) location.href = p.s.url; };
 // ---------------------------------------------------------------- desktop: orbit + mouse picking
 const orbit = new OrbitControls(camera, renderer.domElement);
 camera.position.set(0, 3.7, 0.45); orbit.target.set(0, TABLE, -2.45); orbit.update();   // camera lives in the rig (rig at z = 2.3)
-const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), hits = pins.map((p) => p.hit);
+const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), hits = pins.flatMap((p) => [p.hit, p.head, p.lab]);
 let down = null;
 renderer.domElement.addEventListener('pointermove', (e) => {
   mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(mouse, camera);
   const h = ray.intersectObjects(hits)[0]; setHover(h ? h.object.userData.pin : null);
 });
 renderer.domElement.addEventListener('pointerdown', (e) => { down = [e.clientX, e.clientY]; });
-renderer.domElement.addEventListener('pointerup', (e) => { if (down && Math.hypot(e.clientX - down[0], e.clientY - down[1]) < 5 && hover) open(hover); down = null; });
+renderer.domElement.addEventListener('pointerup', (e) => { if (down && Math.hypot(e.clientX - down[0], e.clientY - down[1]) < 10) { let p = hover; if (!p) { mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(mouse, camera); const hh = ray.intersectObjects(hits)[0]; p = hh ? hh.object.userData.pin : null; } if (p) open(p); } down = null; });
 addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 
 // ---------------------------------------------------------------- VR: controller rays, trigger opens, sticks move/turn
