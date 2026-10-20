@@ -5,12 +5,15 @@ Adds one section to the classic statistics pages (patch_statsview
 layout): the flow-regime clustering of all 14 stations, baked offline
 by gen_clusters.py into ONE shared sidecar, clusters/clusters.json
 (k-means on standardized regime features, k = 5 by silhouette; Ward
-hierarchical clustering for the dendrogram). The section shows:
+hierarchical clustering for the dendrogram). The section shows the
+clusters themselves:
 
-  - regime curves: each cluster's mean monthly log-flow pattern with
-    this station's own pattern overlaid (thick, dashed);
-  - a scatter of all stations (peak-flow month vs mean log10 flow),
-    colored by cluster, this station ringed;
+  - a PCA scatter of all stations in trait space (first two principal
+    components of the same standardized features), colored by cluster
+    with a shaded hull around each group, this station ringed;
+  - a geographic map (US nation outline from the homepage's own
+    window.MAP asset) with the stations plotted by lat/lon in the
+    same cluster colors, this station ringed;
   - the Ward dendrogram, leaves colored by cluster, cut line at k = 5;
   - a line naming this station's cluster and its sibling stations,
     plus a plain-language description of the cluster.
@@ -39,17 +42,17 @@ SECTION = """
  <section class="hts-sec" id="hts-sec-clusters">
   <!-- ht-clusters v1 -->
   <h2>Station clusters</h2>
-  <p class="hts-note">Fourteen stations, grouped by how their rivers behave &mdash; not by geography. Each station is described by its flow regime over the full daily record (2001&ndash;2026): average flow, flashiness, low-flow share, peak month, seasonal swing, plus soil moisture, soil temperature and snowpack from the NRCS gauges. A k-means clustering on those traits (k&nbsp;=&nbsp;5, chosen by silhouette score) finds five regimes; a Ward hierarchical clustering draws the family tree below.</p>
+  <p class="hts-note">Fourteen stations, grouped by how their rivers behave &mdash; not by geography. Each station is described by its flow regime over the full daily record (2001&ndash;2026): average flow, flashiness, low-flow share, peak month, seasonal swing, plus soil moisture, soil temperature and snowpack from the NRCS gauges. A k-means clustering on those traits (k&nbsp;=&nbsp;5, chosen by silhouette score) finds five regimes. The first chart shows the groups themselves in trait space &mdash; the first two principal components of the same traits, so stations that plot close together genuinely behave alike; the map shows where each regime lives; a Ward hierarchical clustering draws the family tree below.</p>
   <div id="htclusters-root" data-site="__SITE__">
    <div class="htclusters-loading" role="status">Loading the station clusters&hellip;</div>
    <div class="htclusters-wrap" hidden>
     <p class="htclusters-this" role="status"></p>
     <p class="htclusters-blurb hts-note"></p>
-    <h3 class="htclusters-h">Regime curves &mdash; mean monthly flow by cluster</h3>
-    <div class="htclusters-chart htclusters-curves"></div>
+    <h3 class="htclusters-h">The clusters &mdash; stations in trait space (PCA)</h3>
+    <div class="htclusters-chart htclusters-pca"></div>
     <div class="htclusters-legend"></div>
-    <h3 class="htclusters-h">Where the stations sit &mdash; peak month vs average flow</h3>
-    <div class="htclusters-chart htclusters-scatter"></div>
+    <h3 class="htclusters-h">Where the clusters live &mdash; station map</h3>
+    <div class="htclusters-chart htclusters-map"></div>
     <h3 class="htclusters-h">Family tree &mdash; Ward dendrogram</h3>
     <div class="htclusters-chart htclusters-dendro"></div>
     <p class="htclusters-note hts-note"></p>
@@ -70,13 +73,13 @@ SECTION = """
 BOOT = """
 <script>
 // ht-clusters v1 boot: fetch the shared clusters sidecar and draw the
-// regime curves, scatter and dendrogram when the section nears view.
+// PCA cluster scatter, the station map and the dendrogram when the
+// section nears view.
 {
   const root = document.getElementById('htclusters-root');
   if (root) {
     let started = false;
     const NS = 'http://www.w3.org/2000/svg';
-    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const el = (tag, attrs, parent) => {
       const n = document.createElementNS(NS, tag);
       for (const k in attrs) n.setAttribute(k, attrs[k]);
@@ -87,11 +90,6 @@ BOOT = """
       const t = el('text', Object.assign({ x: x, y: y }, attrs || {}), parent);
       t.textContent = s;
       return t;
-    };
-    const fmtFlow = (v) => {
-      const f = Math.pow(10, v);
-      if (f >= 1000) return Math.round(f / 100) / 10 + 'k';
-      return '' + Math.round(f);
     };
     const start = async () => {
       if (started) return; started = true;
@@ -112,42 +110,77 @@ BOOT = """
             ? ' &mdash; grouped with ' + sibs.join(', ') + '.'
             : ' &mdash; it stands alone; no other station groups with it.');
         root.querySelector('.htclusters-blurb').textContent = myC.blurb;
-        const allCurves = [];
-        d.clusters.forEach((c) => allCurves.push(c.monthly_log10));
-        allCurves.push(me.monthly_log10);
-        let lo = Infinity, hi = -Infinity;
-        allCurves.forEach((cv) => cv.forEach((v) => {
-          if (v < lo) lo = v; if (v > hi) hi = v;
-        }));
-        lo = Math.floor((lo - 0.08) * 10) / 10; hi = Math.ceil((hi + 0.08) * 10) / 10;
-
-        // ---- regime curves -------------------------------------------
+        // ---- PCA scatter: the clusters in trait space ------------------
         {
-          const W = 680, H = 216, L = 44, R = 8, T = 8, B = 24;
+          const W = 680, H = 324, L = 48, R = 12, T = 12, B = 38;
           const svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img' },
-            root.querySelector('.htclusters-curves'));
-          const X = (m) => L + (m / 11) * (W - L - R);
-          const Y = (v) => T + (1 - (v - lo) / (hi - lo)) * (H - T - B);
-          for (let g = Math.ceil(lo * 2) / 2; g <= hi; g += 0.5) {
-            el('line', { x1: L, x2: W - R, y1: Y(g), y2: Y(g), stroke: '#22344a', 'stroke-width': 1 }, svg);
-            txt(svg, L - 5, Y(g) + 3, fmtFlow(g), { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
-          }
-          for (let m = 0; m < 12; m++)
-            txt(svg, X(m), H - 8, MON[m], { 'text-anchor': 'middle', 'font-size': 9, fill: '#9FB3C8' });
-          txt(svg, 4, T + 8, 'cfs', { 'font-size': 9, fill: '#9FB3C8' });
-          const line = (vals, attrs) => {
-            const pts = vals.map((v, m) => X(m).toFixed(1) + ',' + Y(v).toFixed(1)).join(' ');
-            el('polyline', Object.assign({ points: pts, fill: 'none' }, attrs), svg);
-          };
-          d.clusters.forEach((c) => {
-            if (c.id !== me.cluster)
-              line(c.monthly_log10, { stroke: c.color, 'stroke-width': 2, opacity: 0.75 });
+            root.querySelector('.htclusters-pca'));
+          const pts = Object.entries(d.stations).map(([s2, st]) => ({
+            s2: s2, st: st, px: st.pca[0], py: st.pca[1], cx: 0, cy: 0, ly: 0
+          }));
+          let xlo = Infinity, xhi = -Infinity, ylo = Infinity, yhi = -Infinity;
+          pts.forEach((p) => {
+            if (p.px < xlo) xlo = p.px; if (p.px > xhi) xhi = p.px;
+            if (p.py < ylo) ylo = p.py; if (p.py > yhi) yhi = p.py;
           });
-          line(myC.monthly_log10, { stroke: myC.color, 'stroke-width': 2.4, opacity: 0.95 });
-          line(me.monthly_log10, { stroke: '#ffffff', 'stroke-width': 5, opacity: 0.35, 'stroke-dasharray': '7 4', 'stroke-linecap': 'round' });
-          line(me.monthly_log10, { stroke: myC.color, 'stroke-width': 3.2, 'stroke-dasharray': '7 4', 'stroke-linecap': 'round' });
-          me.monthly_log10.forEach((v, m) =>
-            el('circle', { cx: X(m), cy: Y(v), r: 2.6, fill: myC.color, stroke: '#0b1622', 'stroke-width': 1 }, svg));
+          const padx = (xhi - xlo) * 0.13 + 0.1, pady = (yhi - ylo) * 0.13 + 0.1;
+          xlo -= padx; xhi += padx; ylo -= pady; yhi += pady;
+          const X = (v) => L + ((v - xlo) / (xhi - xlo)) * (W - L - R);
+          const Y = (v) => T + (1 - (v - ylo) / (yhi - ylo)) * (H - T - B);
+          for (let g = Math.ceil(xlo); g <= Math.floor(xhi); g++) {
+            el('line', { x1: X(g), x2: X(g), y1: T, y2: H - B, stroke: g === 0 ? '#33507a' : '#22344a', 'stroke-width': 1 }, svg);
+            txt(svg, X(g), H - 24, '' + g, { 'text-anchor': 'middle', 'font-size': 9, fill: '#9FB3C8' });
+          }
+          for (let g = Math.ceil(ylo); g <= Math.floor(yhi); g++) {
+            el('line', { x1: L, x2: W - R, y1: Y(g), y2: Y(g), stroke: g === 0 ? '#33507a' : '#22344a', 'stroke-width': 1 }, svg);
+            txt(svg, L - 5, Y(g) + 3, '' + g, { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
+          }
+          txt(svg, (L + W - R) / 2, H - 8,
+            'PC1 \u2014 ' + d.pca.variance_pct[0].toFixed(1) + '% of variance \u00b7 snowpack & cold soils increase to the right',
+            { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
+          const ylab = txt(svg, 13, (T + H - B) / 2,
+            'PC2 \u2014 ' + d.pca.variance_pct[1].toFixed(1) + '% \u00b7 bigger, steadier rivers higher',
+            { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
+          ylab.setAttribute('transform', 'rotate(-90 13 ' + ((T + H - B) / 2) + ')');
+          // shaded hulls first, so points sit on top
+          d.clusters.forEach((c) => {
+            const hp = c.hull.map((s2) => d.stations[s2]);
+            if (hp.length >= 3) {
+              const mx = hp.reduce((a, st) => a + st.pca[0], 0) / hp.length;
+              const my = hp.reduce((a, st) => a + st.pca[1], 0) / hp.length;
+              const poly = hp.map((st) => {
+                let vx = st.pca[0] - mx, vy = st.pca[1] - my;
+                const len = Math.hypot(vx, vy) || 1; vx /= len; vy /= len;
+                return X(st.pca[0] + vx * 0.38).toFixed(1) + ',' +
+                       Y(st.pca[1] + vy * 0.38).toFixed(1);
+              }).join(' ');
+              el('polygon', { points: poly, fill: c.color, opacity: 0.13, stroke: c.color, 'stroke-opacity': 0.55, 'stroke-width': 1.2, 'stroke-dasharray': '5 4', 'stroke-linejoin': 'round' }, svg);
+            } else if (hp.length === 2) {
+              el('line', { x1: X(hp[0].pca[0]), y1: Y(hp[0].pca[1]), x2: X(hp[1].pca[0]), y2: Y(hp[1].pca[1]), stroke: c.color, 'stroke-width': 30, opacity: 0.13, 'stroke-linecap': 'round' }, svg);
+            } else if (hp.length === 1) {
+              el('circle', { cx: X(hp[0].pca[0]), cy: Y(hp[0].pca[1]), r: 22, fill: c.color, opacity: 0.15 }, svg);
+            }
+          });
+          pts.forEach((p) => { p.cx = X(p.px); p.cy = Y(p.py); });
+          const sp = pts.slice().sort((a, b) => a.cy - b.cy);
+          sp.forEach((p, i2) => {
+            p.ly = p.cy + 3;
+            if (i2 > 0 && Math.abs(p.cx - sp[i2 - 1].cx) < 90 &&
+                p.ly - sp[i2 - 1].ly < 12) p.ly = sp[i2 - 1].ly + 12;
+          });
+          sp.forEach((p) => {
+            const c = d.clusters[p.st.cluster];
+            if (p.s2 === site)
+              el('circle', { cx: p.cx, cy: p.cy, r: 11.5, fill: 'none', stroke: '#ffffff', 'stroke-width': 2.4 }, svg);
+            el('circle', { cx: p.cx, cy: p.cy, r: 6, fill: c.color, stroke: '#0b1622', 'stroke-width': 1.4 }, svg);
+            const anchor = p.cx > W - 120 ? 'end' : 'start';
+            const dx = anchor === 'end' ? -10 : 10;
+            txt(svg, p.cx + dx, p.ly, p.st.place, {
+              'text-anchor': anchor, 'font-size': 10.5,
+              fill: p.s2 === site ? '#ffffff' : '#C7D3E2',
+              'font-weight': p.s2 === site ? 'bold' : 'normal'
+            });
+          });
         }
 
         // ---- legend ---------------------------------------------------
@@ -158,50 +191,34 @@ BOOT = """
             html += '<span><span class="sw" style="background:' + c.color + '"></span>' +
               c.label + ' (' + c.members.length + ')</span>';
           });
-          html += '<span><span class="sw" style="background:transparent;border:2px dashed #ffffff"></span>This station (' + me.place + ')</span>';
+          html += '<span><span class="sw" style="background:transparent;border:2px solid #ffffff;border-radius:50%"></span>This station (' + me.place + ')</span>';
           lg.innerHTML = html;
         }
 
-        // ---- scatter --------------------------------------------------
+        // ---- geographic map --------------------------------------------
         {
-          const W = 680, H = 300, L = 44, R = 10, T = 10, B = 34;
-          const svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img' },
-            root.querySelector('.htclusters-scatter'));
-          let ylo = Infinity, yhi = -Infinity;
-          Object.values(d.stations).forEach((s) => {
-            const v = s.features.mean_log10_flow;
-            if (v < ylo) ylo = v; if (v > yhi) yhi = v;
+          const MW = d.map.width, MH = d.map.height;
+          const svg = el('svg', { viewBox: '0 0 ' + MW + ' ' + MH, role: 'img' },
+            root.querySelector('.htclusters-map'));
+          d.map.outline.forEach((line) => {
+            el('path', {
+              d: 'M' + line.map((q) => q[0] + ' ' + q[1]).join(' L') + ' Z',
+              fill: '#132539', stroke: '#46618a', 'stroke-width': 1.6,
+              'stroke-linejoin': 'round'
+            }, svg);
           });
-          ylo = Math.floor((ylo - 0.15) * 10) / 10; yhi = Math.ceil((yhi + 0.15) * 10) / 10;
-          const X = (m) => L + ((m - 1) / 11) * (W - L - R);
-          const Y = (v) => T + (1 - (v - ylo) / (yhi - ylo)) * (H - T - B);
-          for (let g = Math.ceil(ylo * 2) / 2; g <= yhi; g += 0.5) {
-            el('line', { x1: L, x2: W - R, y1: Y(g), y2: Y(g), stroke: '#22344a', 'stroke-width': 1 }, svg);
-            txt(svg, L - 5, Y(g) + 3, fmtFlow(g), { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
-          }
-          for (let m = 1; m <= 12; m++)
-            txt(svg, X(m), H - 18, MON[m - 1], { 'text-anchor': 'middle', 'font-size': 9, fill: '#9FB3C8' });
-          txt(svg, (L + W - R) / 2, H - 4, 'Peak-flow month', { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
-          const pts = Object.entries(d.stations).map(([s2, s]) => ({
-            s2: s2, s: s, cx: X(s.features.peak_month),
-            cy: Y(s.features.mean_log10_flow), ly: 0
-          })).sort((a, b) => a.cy - b.cy);
-          pts.forEach((p, i) => {
-            p.ly = p.cy + 3;
-            if (i > 0 && Math.abs(p.cx - pts[i - 1].cx) < 90 &&
-                p.ly - pts[i - 1].ly < 12) p.ly = pts[i - 1].ly + 12;
-          });
-          pts.forEach((p) => {
-            const c = d.clusters[p.s.cluster];
-            if (p.s2 === site)
-              el('circle', { cx: p.cx, cy: p.cy, r: 11.5, fill: 'none', stroke: '#ffffff', 'stroke-width': 2.4 }, svg);
-            el('circle', { cx: p.cx, cy: p.cy, r: 6, fill: c.color, stroke: '#0b1622', 'stroke-width': 1.4 }, svg);
-            const anchor = p.cx > W - 120 ? 'end' : 'start';
-            const dx = anchor === 'end' ? -10 : 10;
-            txt(svg, p.cx + dx, p.ly, p.s.place, {
-              'text-anchor': anchor, 'font-size': 10.5,
-              fill: p.s2 === site ? '#ffffff' : '#C7D3E2',
-              'font-weight': p.s2 === site ? 'bold' : 'normal'
+          Object.entries(d.stations).forEach(([s2, st]) => {
+            const c = d.clusters[st.cluster];
+            const x = st.map_xy[0], y = st.map_xy[1];
+            if (s2 === site)
+              el('circle', { cx: x, cy: y, r: 15, fill: 'none', stroke: '#ffffff', 'stroke-width': 3 }, svg);
+            el('circle', { cx: x, cy: y, r: 8, fill: c.color, stroke: '#0b1622', 'stroke-width': 2 }, svg);
+            const anchor = x > MW - 170 ? 'end' : 'start';
+            const dx = anchor === 'end' ? -14 : 14;
+            txt(svg, x + dx, y + 5, st.place, {
+              'text-anchor': anchor, 'font-size': 19,
+              fill: s2 === site ? '#ffffff' : '#C7D3E2',
+              'font-weight': s2 === site ? 'bold' : 'normal'
             });
           });
         }
@@ -253,7 +270,13 @@ BOOT = """
 
         root.querySelector('.htclusters-note').textContent =
           'Method: k-means (k = ' + d.k + ', silhouette ' + d.silhouette_chosen +
-          ') on standardized features; Ward linkage above, dashed line = the cut that gives the same ' +
+          ') on standardized features. Trait space: the first two principal ' +
+          'components of the same features (PC1 ' +
+          d.pca.variance_pct[0].toFixed(1) + '%, PC2 ' +
+          d.pca.variance_pct[1].toFixed(1) + '% of the variance); shaded ' +
+          'hulls outline each cluster. Map: station locations on the US ' +
+          'outline from the homepage map (us-atlas), colored by cluster. ' +
+          'Ward linkage above, dashed line = the cut that gives the same ' +
           d.k + ' groups. One station (Freeport) forms a regime of its own. ' +
           'Full feature values are in the shared sidecar (clusters/clusters.json).';
         loading.hidden = true;

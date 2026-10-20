@@ -17,11 +17,18 @@ Features per station (standardized before clustering):
 
 Method: k-means (k-means++ init, 400 restarts, fixed seed) for k = 3..5,
 k chosen by mean silhouette score; Ward hierarchical clustering
-(scipy) cut at the same k supplies the dendrogram. Output:
+(scipy) cut at the same k supplies the dendrogram. The sidecar also
+carries a PCA projection of the same standardized features (first two
+components, per-cluster convex hulls) and a geographic layer: station
+lat/lon plus the US nation outline and projected station positions
+taken from the homepage's own map asset (window.MAP in index.html,
+us-atlas states-albers-10m), so the section can draw the actual
+clusters in feature space and on a map. Output:
 clusters/clusters.json (one shared sidecar for all station pages).
 
 Run from the repo root: python3 build25/gen_clusters.py
-(data25 is located via HT_DATA25, default ~/workspace/hydrotwin_25yr/data25)
+(data25 is located via HT_DATA25, default ~/workspace/hydrotwin_25yr/data25;
+the homepage is located via HT_INDEX, default ./index.html)
 """
 import json
 import os
@@ -30,6 +37,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from scipy.cluster.hierarchy import dendrogram, fcluster, linkage
+from scipy.spatial import ConvexHull
 from scipy.spatial.distance import pdist, squareform
 
 DATA25 = Path(os.environ.get(
@@ -169,8 +177,52 @@ def silhouette(Z, lab):
     return float(s.mean())
 
 
+FEATURE_NAMES = ['mean_log10_flow', 'cv_flow', 'lowflow_frac',
+                 'peak_sin', 'peak_cos', 'seas_amp', 'mean_sms',
+                 'mean_stmp', 'mean_swe', 'snow_frac']
+
+
+def homepage_map():
+    """Station coordinates + US outline from the homepage map asset.
+
+    index.html embeds window.MAP (us-atlas 3.0 states-albers-10m):
+    per-station lat/lon and projected x/y in the 975x610 map space,
+    plus the `nation` outline polylines. We keep polylines with >= 3
+    points, integer-rounded (the tiny 2-point fragments are dropped),
+    which leaves a clean lightweight outline for the sidecar.
+    """
+    path = Path(os.environ.get('HT_INDEX', 'index.html'))
+    s = path.read_text(encoding='utf-8')
+    i = s.find('window.MAP=')
+    if i < 0:
+        raise SystemExit(f'window.MAP not found in {path}')
+    blob = s[i + len('window.MAP='):s.find('</script>', i)]
+    m = json.loads(blob.rstrip().rstrip(';'))
+    outline = []
+    for line in m['nation']:
+        if len(line) < 3:
+            continue
+        pts = []
+        for x, y in line:
+            p = [int(round(x)), int(round(y))]
+            if not pts or pts[-1] != p:
+                pts.append(p)
+        if len(pts) >= 3:
+            outline.append(pts)
+    stations = {st['site']: {'lat': st['lat'], 'lon': st['lon'],
+                             'map_xy': [round(st['x'], 1),
+                                        round(st['y'], 1)]}
+                for st in m['stations']}
+    return {'width': m['width'], 'height': m['height'],
+            'source': m['source'], 'outline': outline}, stations
+
+
 def main():
     feats, monthly = station_features()
+    mapmeta, mapstations = homepage_map()
+    missing = [s for s in SITES if s not in mapstations]
+    if missing:
+        raise SystemExit(f'homepage map missing stations: {missing}')
     F = pd.DataFrame(feats).T
     cols = ['mean_log10_flow', 'cv_flow', 'lowflow_frac', 'seas_amp',
             'mean_sms', 'mean_stmp', 'mean_swe', 'snow_frac']
@@ -190,6 +242,22 @@ def main():
     lab = parts[k]
     print('silhouette:', {kk: round(v, 3) for kk, v in sil.items()},
           '-> k =', k)
+
+    # PCA of the same standardized features (SVD of Z). Sign
+    # conventions keep the axes oriented readably bake to bake: PC1
+    # loads positively on mean flow, PC2 on mean SWE.
+    _, sv, vt = np.linalg.svd(Z, full_matrices=False)
+    var_pct = 100.0 * sv ** 2 / np.sum(sv ** 2)
+    if vt[0, 0] < 0:
+        vt[0] = -vt[0]
+    if vt[1, 8] < 0:
+        vt[1] = -vt[1]
+    scores = Z @ vt[:2].T
+    pca_xy = {site: [round(float(scores[i, 0]), 3),
+                     round(float(scores[i, 1]), 3)]
+              for i, site in enumerate(SITES)}
+    print('PCA variance % (PC1..PC4):',
+          [round(float(v), 1) for v in var_pct[:4]])
 
     Zl = linkage(Z, method='ward')
     ward_lab = fcluster(Zl, t=k, criterion='maxclust')
@@ -217,9 +285,15 @@ def main():
         sig = next(NAMES[s][1] for s in members if NAMES[s][1] in LABELS)
         label, tag, blurb = LABELS[sig]
         curve = np.mean([monthly[s] for s in members], axis=0)
+        midx = [SITES.index(s) for s in members]
+        if len(midx) >= 3:
+            hull = [members[j] for j in
+                    ConvexHull(scores[midx]).vertices]
+        else:
+            hull = list(members)
         clusters.append({
             'id': new, 'label': label, 'tag': tag, 'blurb': blurb,
-            'color': COLORS[new], 'members': members,
+            'color': COLORS[new], 'members': members, 'hull': hull,
             'centroid': {c2: round(v, 3) for c2, v in cents[old].items()},
             'monthly_log10': [round(float(v), 4) for v in curve],
         })
@@ -231,6 +305,10 @@ def main():
             'river': NAMES[site][0], 'place': NAMES[site][1],
             'cluster': remap[int(lab[i])],
             'ward_cluster': int(ward_lab[i]),
+            'lat': mapstations[site]['lat'],
+            'lon': mapstations[site]['lon'],
+            'map_xy': mapstations[site]['map_xy'],
+            'pca': pca_xy[site],
             'monthly_log10': monthly[site],
             'features': {c2: round(float(F.loc[site, c2]), 4) for c2 in
                          ['mean_log10_flow', 'mean_flow_cfs', 'cv_flow',
@@ -259,6 +337,15 @@ def main():
             'mean_swe': 'mean snow water equivalent (in) - NRCS',
             'snow_frac': 'share of days with SWE > 0 - NRCS',
         },
+        'pca': {
+            'features': FEATURE_NAMES,
+            'variance_pct': [round(float(v), 2) for v in var_pct[:2]],
+            'loadings': {
+                'pc1': [round(float(v), 3) for v in vt[0]],
+                'pc2': [round(float(v), 3) for v in vt[1]],
+            },
+        },
+        'map': mapmeta,
         'clusters': clusters,
         'stations': stations,
         'dendrogram': {
