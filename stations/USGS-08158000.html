@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39338660252-d2e44b3e8204d689086bba6f6e6792ea3ad35287";
+  var BID = "39352903417-37fb8aaf79eea003ad521865ebc3e6bb013f3c67";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -1036,7 +1037,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
   }
   function boardHTML(sel) {
     var L = META.leader || {};
-    var names = Object.keys(L).sort(function (a, b) { return L[a] - L[b]; });
+    var names = Object.keys(L).sort(function (a, b) { return L[a] - L[b]; }).filter(function (n) { return n !== 'Climatology'; }); /* ht-noclim */
     if (!names.length) return '';
     var rows = names.map(function (n) {
       var ref = (n === 'Climatology' || n === 'Persistence');
@@ -1306,7 +1307,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39338660252-d2e44b3e8204d689086bba6f6e6792ea3ad35287" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39352903417-37fb8aaf79eea003ad521865ebc3e6bb013f3c67" } }
 </script>
 <script type="module">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1315,7 +1316,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=39338660252-d2e44b3e8204d689086bba6f6e6792ea3ad35287')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=39352903417-37fb8aaf79eea003ad521865ebc3e6bb013f3c67')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -1464,7 +1465,7 @@ window.__moMeta = {"leader":{"PILSTMv1":0.507,"LSTM":0.5206,"Transformer":0.4988
   }
   function boardHTML(sel) {
     var L = META.leader || {};
-    var names = Object.keys(L).sort(function (a, b) { return L[a] - L[b]; });
+    var names = Object.keys(L).sort(function (a, b) { return L[a] - L[b]; }).filter(function (n) { return n !== 'Climatology'; }); /* ht-noclim */
     if (!names.length) return '';
     var rows = names.map(function (n) {
       var ref = (n === 'Climatology' || n === 'Persistence');
@@ -2329,7 +2330,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
   function boardHTML(sel) {
     var L = META.leader || {};
-    var names = Object.keys(L).sort(function (a, b) { return L[a] - L[b]; });
+    var names = Object.keys(L).sort(function (a, b) { return L[a] - L[b]; }).filter(function (n) { return n !== 'Climatology'; }); /* ht-noclim */
     if (!names.length) return '';
     var rows = names.map(function (n) {
       var ref = (n === 'Climatology' || n === 'Persistence');
@@ -2409,7 +2410,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     var r = rows[W.lead - 1];
     if (!r) { el.textContent = rows.length ? '' : 'no forecast to inspect for this date'; return; }
     var txt = 'Mo ' + r[0] + ' · ' + r[1] + ' – ' + r[2] + ' · forecast ' + fmt(r[3]) + ' cfs';
-    if (r[6] != null) txt += ' · climatology ' + fmt(r[6]) + ' cfs';
+    /* ht-noclim: climatology hover segment removed */
     if (r[4]) txt += ' · ' + W.lvl + '% DACP ' + fmt(r[4][0]) + ' – ' + fmt(r[4][1]) + ' cfs';
     if (r[5] != null && r[3] != null) {
       var err = (r[3] - r[5]) / r[5] * 100;
@@ -2457,7 +2458,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     W.climTab = { sm: sm, doyOf: doyOf };
     return W.climTab;
   }
-  function climSeries(P, day) {
+  function climSeries(P, day) { return null; /* ht-noclim: climatology reference display removed (data kept) */
     var T = climTable(P); if (!T) return null;
     var out = [];
     for (var k = 0; k < NL; k++) { var v = T.sm[T.doyOf(day + 1 + 30 * k)]; out.push(v == null || !isFinite(v) ? null : Math.exp(v)); }
@@ -2937,9 +2938,47 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
+<style>
+#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
+ background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
+ border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+ box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
+ padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
+#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
+ padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
+#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
+ color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
+#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
+#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
+#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
+#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
+#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
+#ht-drift-panel .htd-line{opacity:.85}
+#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
+#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
+ display:inline-block;min-width:52px;text-align:center}
+</style>
+<div id="ht-drift-panel">
+  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
+  <button id="htd-toggle" aria-label="collapse">–</button></div>
+  <div class="htd-body" id="htd-body">
+    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
+    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 0.60.</div>
+    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.065</td></tr><tr><td>Tmin</td><td>0.056</td></tr><tr><td>Tmean</td><td>0.087</td></tr><tr><td>Precip</td><td>0.026</td></tr><tr><td>Flow (log)</td><td>0.599</td></tr></table>
+    <div class="htd-sec">Concept drift</div>
+    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
+    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.667</td><td>0.677</td><td>+1.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.664</td><td>0.651</td><td>-2.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.664</td><td>0.650</td><td>-2.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.662</td><td>0.612</td><td>-7.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.619</td><td>0.644</td><td>+4.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>1.105</td><td>1.076</td><td>-2.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>1.105</td><td>1.073</td><td>-2.8%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.671</td><td>0.675</td><td>+0.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.605</td><td>0.626</td><td>+3.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.646</td><td>0.649</td><td>+0.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
+    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
+    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
+  </div>
+</div>
+<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+
 <script>
 
-/* ht-liveall v1 */
+/* ht-liveall v2 */
 (function () {
   'use strict';
   if (window.__htlaOn) return;
@@ -3141,13 +3180,20 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     + '#htla-back{background:#33404F;color:#DDE6EE;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:6px 10px;cursor:pointer;font:600 12.5px system-ui}'
     + '#htla-oldtable{flex-basis:100%;font:500 12px system-ui;color:#C9CED6}'
     + '#htla-oldtable table{border-collapse:collapse;margin-top:4px}#htla-oldtable td,#htla-oldtable th{padding:1px 8px 1px 0;text-align:right}'
-    + '#htla-oldtable td:first-child,#htla-oldtable th:first-child{text-align:left;color:#E6EDF5}';
+    + '#htla-oldtable td:first-child,#htla-oldtable th:first-child{text-align:left;color:#E6EDF5}'
+    /* v2: the bar is draggable (grip or any non-interactive part) so it
+       never has to cover the pages' own top buttons. */
+    + '#htla-bar{touch-action:none}'
+    + '#htla-grip{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;color:#7AE07A;font-size:17px;line-height:1;padding:2px 3px}'
+    + '#htla-grip:active{cursor:grabbing}'
+    + '#htla-bar.htla-moved{position:fixed;margin:0;border:2px solid #2E9B57;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55)}';
   var style = document.createElement('style');
   style.textContent = css;
   document.head.appendChild(style);
   var bar = document.createElement('div');
   bar.id = 'htla-bar';
-  bar.innerHTML = '<button type="button" id="htla-go">▶ LIVE — pull today\'s data · all charts</button>'
+  bar.innerHTML = '<span id="htla-grip" title="Drag to move this bar · double-click to reset">⠿</span>'
+    + '<button type="button" id="htla-go">▶ LIVE — pull today\'s data · all charts</button>'
     + '<span id="htla-badge" style="display:none">● LIVE</span>'
     + '<span id="htla-note">baked data through ' + BAKED_END + '</span>'
     + '<label id="htla-oldlab"><input type="checkbox" id="htla-old"> old weights (pre-drift-fix)</label>'
@@ -3157,6 +3203,91 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   document.body.insertBefore(bar, document.body.firstChild);
   function note(t) { var el = $('htla-note'); if (el) el.textContent = t; }
   function oldNote(t) { var el = $('htla-oldnote'); if (el) el.textContent = t; }
+
+  /* ---------------- v2: drag the bar out of the way ----------------
+     The sticky bar covers the pages' own top strip (title chip + top
+     buttons). Drag it by the ⠿ grip or any non-interactive part (label
+     / status text, badge, table): drags never start from the bar's
+     buttons, the old-weights checkbox/label, or links, so those keep
+     working as clicks. While dragging the bar is position:fixed and
+     clamped fully inside the viewport; on release it stays put and
+     the spot is kept in sessionStorage for the page session, so Live
+     runs / re-renders don't snap it back. Double-click the grip to
+     reset to the default top position. The bar only ever receives
+     pointer events on its own box, so the 3D scene below is safe. */
+  var HTLA_POS_KEY = 'htla-bar-pos';
+  function htlaClampPos(l, t) {
+    var w = bar.offsetWidth, h = bar.offsetHeight;
+    return [Math.max(0, Math.min(l, Math.max(0, window.innerWidth - w))),
+            Math.max(0, Math.min(t, Math.max(0, window.innerHeight - h)))];
+  }
+  function htlaApplyPos(l, t, w) {
+    var p = htlaClampPos(l, t);
+    bar.classList.add('htla-moved');
+    bar.style.left = p[0] + 'px';
+    bar.style.top = p[1] + 'px';
+    if (w) bar.style.width = w + 'px';
+    return p;
+  }
+  function htlaSavePos() {
+    try {
+      var r = bar.getBoundingClientRect();
+      sessionStorage.setItem(HTLA_POS_KEY, JSON.stringify({ l: Math.round(r.left), t: Math.round(r.top), w: Math.round(r.width) }));
+    } catch (e) { /* storage is best-effort */ }
+  }
+  function htlaResetPos() {
+    bar.classList.remove('htla-moved');
+    bar.style.left = ''; bar.style.top = ''; bar.style.width = '';
+    try { sessionStorage.removeItem(HTLA_POS_KEY); } catch (e) {}
+  }
+  (function htlaRestorePos() {
+    try {
+      var s = sessionStorage.getItem(HTLA_POS_KEY);
+      if (!s) return;
+      var p = JSON.parse(s);
+      if (p && isFinite(p.l) && isFinite(p.t)) htlaApplyPos(p.l, p.t, p.w);
+    } catch (e) { /* ignore */ }
+  })();
+  var htlaDrag = null, htlaLastGripTap = 0;
+  bar.addEventListener('pointerdown', function (e) {
+    if (e.button != null && e.button !== 0) return;
+    if (e.target.closest('button, a, input, select, textarea, label')) return;
+    var r = bar.getBoundingClientRect();
+    if (!bar.classList.contains('htla-moved')) htlaApplyPos(r.left, r.top, r.width);
+    htlaDrag = { id: e.pointerId, dx: e.clientX - r.left, dy: e.clientY - r.top,
+      sx: e.clientX, sy: e.clientY, grip: !!(e.target.closest && e.target.closest('#htla-grip')) };
+    try { bar.setPointerCapture(e.pointerId); } catch (err) {}
+    e.preventDefault();
+  });
+  bar.addEventListener('pointermove', function (e) {
+    if (!htlaDrag || e.pointerId !== htlaDrag.id) return;
+    htlaApplyPos(e.clientX - htlaDrag.dx, e.clientY - htlaDrag.dy);
+  });
+  function htlaEndDrag(e) {
+    if (!htlaDrag || (e && e.pointerId !== htlaDrag.id)) return;
+    /* Reset is detected here, not via dblclick: the pointerdown
+       preventDefault above suppresses the compatibility dblclick event.
+       Two quick low-movement taps on the grip = reset. */
+    var wasGrip = htlaDrag.grip;
+    var movedPx = (e && isFinite(e.clientX)) ? Math.hypot(e.clientX - htlaDrag.sx, e.clientY - htlaDrag.sy) : 99;
+    htlaDrag = null;
+    if (wasGrip && movedPx < 5) {
+      var now = Date.now();
+      if (now - htlaLastGripTap < 900) { htlaLastGripTap = 0; htlaResetPos(); return; }
+      htlaLastGripTap = now;
+    }
+    htlaSavePos();
+  }
+  bar.addEventListener('pointerup', htlaEndDrag);
+  bar.addEventListener('pointercancel', htlaEndDrag);
+  var htlaGrip = $('htla-grip');
+  if (htlaGrip) htlaGrip.addEventListener('dblclick', function () { htlaResetPos(); });
+  window.addEventListener('resize', function () {
+    if (!bar.classList.contains('htla-moved')) return;
+    var r = bar.getBoundingClientRect();
+    htlaApplyPos(r.left, r.top);
+    htlaSavePos();
+  });
 
   var LA = { busy: false, on: false, issue: null, A: null, fc: {}, fcErr: {}, out: {}, old: null, oldOn: false, oldAppended: false };
   window.__htla = LA;
@@ -3766,6 +3897,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     key('g');
     setTimeout(function () { key('b'); }, 1500);
     ['htwk-live', 'htmo-live', 'htyr-live'].forEach(function (id) { var b = $(id); if (b) b.click(); });
+    panelLive3D();
     var tries = 0;
     var iv = setInterval(function () {
       tries++;
@@ -3789,6 +3921,81 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
       if (tries >= 40 || (dailyEnd && issued.length >= 3)) clearInterval(iv);
     }, 6000);
   }
+  /* ---------------- 3D daily panel live integration (Part 6) --------------
+     The master Live on 3D drives the app readout (loadLive/bigModelLive)
+     but the Flow & forecast panel reads only the baked D.pred/D.flow, whose
+     last forecast issue is 2026-09-23 and last day 2026-09-30 — so after a
+     Live run the panel stayed stuck at Sep 30 with "No model forecast on
+     this day". Here the classic live engine (the same dailyFc used on the
+     classic pages) computes every model fan for the live issue and the
+     result is written into the app data: D.flow gains the live observed
+     days and D.pred[m][l][liveIdx] the live fan, then the panel day is
+     stepped to the live issue through the app own ArrowRight routing so
+     drawFlow() renders it. Baked restore swaps the pristine snapshot back. */
+  var panelBak3D = null, bakDay3D = null;
+  function stepNext() {
+    /* one single window-level dispatch: the shared key() helper fires on
+       document+window+body, which would step the day up to 3 times */
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true, cancelable: true }));
+  }
+  async function panelLive3D() {
+    try {
+      var D3 = window.HT3D, S = window.__htS;
+      if (!D3 || !S) return;
+      if (bakDay3D == null) bakDay3D = S.day;
+      var A = null;
+      try { A = await window.htGapAssemble(); } catch (e) { A = null; }
+      if (!A || !A.win30 || A.win30[29] < BAKED_END) return;
+      var ss = { sms: HTLA_STATS.med_sms, stmpF: HTLA_STATS.med_stmp, swe: 0 };
+      try { var s2 = await window.fetchLiveSoilSnow(window.HT3D); if (s2) ss = s2; } catch (e) { /* medians */ }
+      LA.A = A; LA.issue = A.win30[29];
+      LA.fc = {}; LA.fcErr = {};
+      for (var mi = 0; mi < D3.models.length; mi++) {
+        var m = D3.models[mi];
+        try { LA.fc[m] = await dailyFc(m, A, ss); }
+        catch (e) { LA.fc[m] = null; LA.fcErr[m] = (e && e.message) || String(e); }
+      }
+      var liveIdx = Math.round((Date.parse(LA.issue + "T00:00:00Z") - Date.parse(D3.start + "T00:00:00Z")) / 86400000);
+      if (liveIdx < D3.n) return;
+      if (!panelBak3D) {
+        panelBak3D = { n: D3.n, flow: D3.flow.slice(),
+          pred: D3.pred.map(function (mdl) { return mdl.map(function (ld) { return ld.slice(); }); }) };
+      }
+      var nf = panelBak3D.flow.slice();
+      for (var k = panelBak3D.n; k <= liveIdx; k++) {
+        var ds = addDays(D3.start, k);
+        nf[k] = (A.flows[ds] != null) ? A.flows[ds] : null;
+      }
+      D3.flow = nf;
+      D3.pred = panelBak3D.pred.map(function (mdl, mi2) {
+        var fc = LA.fc[D3.models[mi2]];
+        return mdl.map(function (ld, li) {
+          var c = ld.slice();
+          if (fc && fc[li] != null) c[liveIdx] = fc[li];
+          return c;
+        });
+      });
+      D3.n = liveIdx + 1;
+      LA.on = true;
+      var bk = $("htla-back"); if (bk) bk.style.display = "";
+      S.day = liveIdx - 1;
+      stepNext();
+      var nt = $("htla-note");
+      if (nt && nt.textContent.indexOf("daily panel live") < 0) nt.textContent += " · daily panel live @ " + LA.issue;
+    } catch (e) { /* panel stays baked; the readout live path is unaffected */ }
+  }
+  function restorePanel3D() {
+    if (!panelBak3D) return;
+    var D3 = window.HT3D, S = window.__htS;
+    if (D3) { D3.flow = panelBak3D.flow; D3.pred = panelBak3D.pred; D3.n = panelBak3D.n; }
+    panelBak3D = null;
+    if (D3 && S) {
+      var bd = (bakDay3D != null) ? bakDay3D : D3.n - 8;
+      bd = Math.max(1, Math.min(bd, D3.n - 1));
+      S.day = bd - 1;
+      stepNext();
+    }
+  }
   async function goLive() {
     if (LA.busy) return;
     LA.busy = true;
@@ -3808,6 +4015,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     $('htla-badge').style.display = 'none';
     $('htla-back').style.display = 'none';
     note('baked data through ' + BAKED_END);
+    if (IS3D) restorePanel3D();
     if (!IS3D && window.HT) window.HT.applyDay();
     ['htwk-back', 'htmo-back', 'htyr-back'].forEach(function (id) { var b = $(id); if (b) b.click(); });
   });
@@ -3836,40 +4044,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 </script>
 
-<style>
-#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
- background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
- border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
- box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
-#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
- padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
-#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
- padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
-#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
- color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
-#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
-#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
-#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
-#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
-#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
-#ht-drift-panel .htd-line{opacity:.85}
-#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
-#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
- display:inline-block;min-width:52px;text-align:center}
-</style>
-<div id="ht-drift-panel">
-  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
-  <button id="htd-toggle" aria-label="collapse">–</button></div>
-  <div class="htd-body" id="htd-body">
-    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
-    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 0.60.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.065</td></tr><tr><td>Tmin</td><td>0.056</td></tr><tr><td>Tmean</td><td>0.087</td></tr><tr><td>Precip</td><td>0.026</td></tr><tr><td>Flow (log)</td><td>0.599</td></tr></table>
-    <div class="htd-sec">Concept drift</div>
-    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
-    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.667</td><td>0.677</td><td>+1.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.664</td><td>0.651</td><td>-2.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.664</td><td>0.650</td><td>-2.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.662</td><td>0.612</td><td>-7.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.619</td><td>0.644</td><td>+4.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>1.105</td><td>1.076</td><td>-2.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>1.105</td><td>1.073</td><td>-2.8%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.671</td><td>0.675</td><td>+0.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.605</td><td>0.626</td><td>+3.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.646</td><td>0.649</td><td>+0.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
-    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
-    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
-  </div>
-</div>
-<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+<script>
+/* ht-noclim v1 */
+</script>
 </body></html>
