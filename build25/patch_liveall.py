@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One Live action for every chart on the page (ht-liveall v1, dev only).
+"""One Live action for every chart on the page (ht-liveall v2, dev only).
 
 Diagnosis (2026-10-19, browser-verified): on the CLASSIC station pages
 Live did not exist at all — no daily live engine (window.loadLive /
@@ -48,14 +48,34 @@ This patch adds, to every station page (classic + 3D):
     old weights to run live — in Live mode the old series is the old
     baked fan at its true issue dates, labelled as such.
 
-Idempotent: pages carrying the MARKER are skipped.
+v2 (2026-10-19, user request): the master bar is DRAGGABLE. On the 3D
+pages the sticky bar covers the page's own top strip (station title
+chip and the top buttons — LiveAR demo / retrain on GitHub / Compare
+models), and the user could not reach them. The bar now carries a ⠿
+grip at its left end and can be pointer-dragged (mouse + touch, via
+Pointer Events) from the grip or any non-interactive part of the bar —
+never from its buttons, the old-weights checkbox/label, or links, which
+keep working as clicks. While dragged the bar is position:fixed and
+clamped fully inside the viewport; on release it stays where dropped
+and the position is remembered in sessionStorage for the page session,
+so Live runs and panel re-renders do not snap it back to the top.
+Double-clicking the grip resets it to the default sticky top position.
+
+Idempotent: pages carrying the v2 MARKER are skipped; pages carrying
+only the v1 block are upgraded in place (the v1 <script> block is
+removed and the v2 block appended, exactly one block either way).
 Run from the repo root: python3 build25/patch_liveall.py
 """
 import re
 import sys
 from pathlib import Path
 
-MARKER = "ht-liveall v1"
+MARKER = "ht-liveall v2"
+OLD_MARKER = "ht-liveall v1"
+# The v1 block was inserted as "\n<script>\n" + JS + "\n</script>\n" with
+# the JS starting "\n/* ht-liveall v1 */"; the JS contains no literal
+# "</script>", so a non-greedy match to the first close tag is exact.
+OLD_BLOCK_RE = re.compile(r"\n?<script>\s*/\* ht-liveall v1 \*/.*?</script>\n?", re.S)
 ROOT = Path(__file__).resolve().parent.parent
 STATIONS = ROOT / "stations"
 
@@ -99,7 +119,7 @@ def _bigstats(src):
 
 
 JS_TEMPLATE = r"""
-/* ht-liveall v1 */
+/* ht-liveall v2 */
 (function () {
   'use strict';
   if (window.__htlaOn) return;
@@ -154,13 +174,20 @@ JS_TEMPLATE = r"""
     + '#htla-back{background:#33404F;color:#DDE6EE;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:6px 10px;cursor:pointer;font:600 12.5px system-ui}'
     + '#htla-oldtable{flex-basis:100%;font:500 12px system-ui;color:#C9CED6}'
     + '#htla-oldtable table{border-collapse:collapse;margin-top:4px}#htla-oldtable td,#htla-oldtable th{padding:1px 8px 1px 0;text-align:right}'
-    + '#htla-oldtable td:first-child,#htla-oldtable th:first-child{text-align:left;color:#E6EDF5}';
+    + '#htla-oldtable td:first-child,#htla-oldtable th:first-child{text-align:left;color:#E6EDF5}'
+    /* v2: the bar is draggable (grip or any non-interactive part) so it
+       never has to cover the pages' own top buttons. */
+    + '#htla-bar{touch-action:none}'
+    + '#htla-grip{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;color:#7AE07A;font-size:17px;line-height:1;padding:2px 3px}'
+    + '#htla-grip:active{cursor:grabbing}'
+    + '#htla-bar.htla-moved{position:fixed;margin:0;border:2px solid #2E9B57;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55)}';
   var style = document.createElement('style');
   style.textContent = css;
   document.head.appendChild(style);
   var bar = document.createElement('div');
   bar.id = 'htla-bar';
-  bar.innerHTML = '<button type="button" id="htla-go">▶ LIVE — pull today\'s data · all charts</button>'
+  bar.innerHTML = '<span id="htla-grip" title="Drag to move this bar · double-click to reset">⠿</span>'
+    + '<button type="button" id="htla-go">▶ LIVE — pull today\'s data · all charts</button>'
     + '<span id="htla-badge" style="display:none">● LIVE</span>'
     + '<span id="htla-note">baked data through ' + BAKED_END + '</span>'
     + '<label id="htla-oldlab"><input type="checkbox" id="htla-old"> old weights (pre-drift-fix)</label>'
@@ -170,6 +197,91 @@ JS_TEMPLATE = r"""
   document.body.insertBefore(bar, document.body.firstChild);
   function note(t) { var el = $('htla-note'); if (el) el.textContent = t; }
   function oldNote(t) { var el = $('htla-oldnote'); if (el) el.textContent = t; }
+
+  /* ---------------- v2: drag the bar out of the way ----------------
+     The sticky bar covers the pages' own top strip (title chip + top
+     buttons). Drag it by the ⠿ grip or any non-interactive part (label
+     / status text, badge, table): drags never start from the bar's
+     buttons, the old-weights checkbox/label, or links, so those keep
+     working as clicks. While dragging the bar is position:fixed and
+     clamped fully inside the viewport; on release it stays put and
+     the spot is kept in sessionStorage for the page session, so Live
+     runs / re-renders don't snap it back. Double-click the grip to
+     reset to the default top position. The bar only ever receives
+     pointer events on its own box, so the 3D scene below is safe. */
+  var HTLA_POS_KEY = 'htla-bar-pos';
+  function htlaClampPos(l, t) {
+    var w = bar.offsetWidth, h = bar.offsetHeight;
+    return [Math.max(0, Math.min(l, Math.max(0, window.innerWidth - w))),
+            Math.max(0, Math.min(t, Math.max(0, window.innerHeight - h)))];
+  }
+  function htlaApplyPos(l, t, w) {
+    var p = htlaClampPos(l, t);
+    bar.classList.add('htla-moved');
+    bar.style.left = p[0] + 'px';
+    bar.style.top = p[1] + 'px';
+    if (w) bar.style.width = w + 'px';
+    return p;
+  }
+  function htlaSavePos() {
+    try {
+      var r = bar.getBoundingClientRect();
+      sessionStorage.setItem(HTLA_POS_KEY, JSON.stringify({ l: Math.round(r.left), t: Math.round(r.top), w: Math.round(r.width) }));
+    } catch (e) { /* storage is best-effort */ }
+  }
+  function htlaResetPos() {
+    bar.classList.remove('htla-moved');
+    bar.style.left = ''; bar.style.top = ''; bar.style.width = '';
+    try { sessionStorage.removeItem(HTLA_POS_KEY); } catch (e) {}
+  }
+  (function htlaRestorePos() {
+    try {
+      var s = sessionStorage.getItem(HTLA_POS_KEY);
+      if (!s) return;
+      var p = JSON.parse(s);
+      if (p && isFinite(p.l) && isFinite(p.t)) htlaApplyPos(p.l, p.t, p.w);
+    } catch (e) { /* ignore */ }
+  })();
+  var htlaDrag = null, htlaLastGripTap = 0;
+  bar.addEventListener('pointerdown', function (e) {
+    if (e.button != null && e.button !== 0) return;
+    if (e.target.closest('button, a, input, select, textarea, label')) return;
+    var r = bar.getBoundingClientRect();
+    if (!bar.classList.contains('htla-moved')) htlaApplyPos(r.left, r.top, r.width);
+    htlaDrag = { id: e.pointerId, dx: e.clientX - r.left, dy: e.clientY - r.top,
+      sx: e.clientX, sy: e.clientY, grip: !!(e.target.closest && e.target.closest('#htla-grip')) };
+    try { bar.setPointerCapture(e.pointerId); } catch (err) {}
+    e.preventDefault();
+  });
+  bar.addEventListener('pointermove', function (e) {
+    if (!htlaDrag || e.pointerId !== htlaDrag.id) return;
+    htlaApplyPos(e.clientX - htlaDrag.dx, e.clientY - htlaDrag.dy);
+  });
+  function htlaEndDrag(e) {
+    if (!htlaDrag || (e && e.pointerId !== htlaDrag.id)) return;
+    /* Reset is detected here, not via dblclick: the pointerdown
+       preventDefault above suppresses the compatibility dblclick event.
+       Two quick low-movement taps on the grip = reset. */
+    var wasGrip = htlaDrag.grip;
+    var movedPx = (e && isFinite(e.clientX)) ? Math.hypot(e.clientX - htlaDrag.sx, e.clientY - htlaDrag.sy) : 99;
+    htlaDrag = null;
+    if (wasGrip && movedPx < 5) {
+      var now = Date.now();
+      if (now - htlaLastGripTap < 900) { htlaLastGripTap = 0; htlaResetPos(); return; }
+      htlaLastGripTap = now;
+    }
+    htlaSavePos();
+  }
+  bar.addEventListener('pointerup', htlaEndDrag);
+  bar.addEventListener('pointercancel', htlaEndDrag);
+  var htlaGrip = $('htla-grip');
+  if (htlaGrip) htlaGrip.addEventListener('dblclick', function () { htlaResetPos(); });
+  window.addEventListener('resize', function () {
+    if (!bar.classList.contains('htla-moved')) return;
+    var r = bar.getBoundingClientRect();
+    htlaApplyPos(r.left, r.top);
+    htlaSavePos();
+  });
 
   var LA = { busy: false, on: false, issue: null, A: null, fc: {}, fcErr: {}, out: {}, old: null, oldOn: false, oldAppended: false };
   window.__htla = LA;
@@ -779,6 +891,7 @@ JS_TEMPLATE = r"""
     key('g');
     setTimeout(function () { key('b'); }, 1500);
     ['htwk-live', 'htmo-live', 'htyr-live'].forEach(function (id) { var b = $(id); if (b) b.click(); });
+    panelLive3D();
     var tries = 0;
     var iv = setInterval(function () {
       tries++;
@@ -802,6 +915,81 @@ JS_TEMPLATE = r"""
       if (tries >= 40 || (dailyEnd && issued.length >= 3)) clearInterval(iv);
     }, 6000);
   }
+  /* ---------------- 3D daily panel live integration (Part 6) --------------
+     The master Live on 3D drives the app readout (loadLive/bigModelLive)
+     but the Flow & forecast panel reads only the baked D.pred/D.flow, whose
+     last forecast issue is 2026-09-23 and last day 2026-09-30 — so after a
+     Live run the panel stayed stuck at Sep 30 with "No model forecast on
+     this day". Here the classic live engine (the same dailyFc used on the
+     classic pages) computes every model fan for the live issue and the
+     result is written into the app data: D.flow gains the live observed
+     days and D.pred[m][l][liveIdx] the live fan, then the panel day is
+     stepped to the live issue through the app own ArrowRight routing so
+     drawFlow() renders it. Baked restore swaps the pristine snapshot back. */
+  var panelBak3D = null, bakDay3D = null;
+  function stepNext() {
+    /* one single window-level dispatch: the shared key() helper fires on
+       document+window+body, which would step the day up to 3 times */
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true, cancelable: true }));
+  }
+  async function panelLive3D() {
+    try {
+      var D3 = window.HT3D, S = window.__htS;
+      if (!D3 || !S) return;
+      if (bakDay3D == null) bakDay3D = S.day;
+      var A = null;
+      try { A = await window.htGapAssemble(); } catch (e) { A = null; }
+      if (!A || !A.win30 || A.win30[29] < BAKED_END) return;
+      var ss = { sms: HTLA_STATS.med_sms, stmpF: HTLA_STATS.med_stmp, swe: 0 };
+      try { var s2 = await window.fetchLiveSoilSnow(window.HT3D); if (s2) ss = s2; } catch (e) { /* medians */ }
+      LA.A = A; LA.issue = A.win30[29];
+      LA.fc = {}; LA.fcErr = {};
+      for (var mi = 0; mi < D3.models.length; mi++) {
+        var m = D3.models[mi];
+        try { LA.fc[m] = await dailyFc(m, A, ss); }
+        catch (e) { LA.fc[m] = null; LA.fcErr[m] = (e && e.message) || String(e); }
+      }
+      var liveIdx = Math.round((Date.parse(LA.issue + "T00:00:00Z") - Date.parse(D3.start + "T00:00:00Z")) / 86400000);
+      if (liveIdx < D3.n) return;
+      if (!panelBak3D) {
+        panelBak3D = { n: D3.n, flow: D3.flow.slice(),
+          pred: D3.pred.map(function (mdl) { return mdl.map(function (ld) { return ld.slice(); }); }) };
+      }
+      var nf = panelBak3D.flow.slice();
+      for (var k = panelBak3D.n; k <= liveIdx; k++) {
+        var ds = addDays(D3.start, k);
+        nf[k] = (A.flows[ds] != null) ? A.flows[ds] : null;
+      }
+      D3.flow = nf;
+      D3.pred = panelBak3D.pred.map(function (mdl, mi2) {
+        var fc = LA.fc[D3.models[mi2]];
+        return mdl.map(function (ld, li) {
+          var c = ld.slice();
+          if (fc && fc[li] != null) c[liveIdx] = fc[li];
+          return c;
+        });
+      });
+      D3.n = liveIdx + 1;
+      LA.on = true;
+      var bk = $("htla-back"); if (bk) bk.style.display = "";
+      S.day = liveIdx - 1;
+      stepNext();
+      var nt = $("htla-note");
+      if (nt && nt.textContent.indexOf("daily panel live") < 0) nt.textContent += " · daily panel live @ " + LA.issue;
+    } catch (e) { /* panel stays baked; the readout live path is unaffected */ }
+  }
+  function restorePanel3D() {
+    if (!panelBak3D) return;
+    var D3 = window.HT3D, S = window.__htS;
+    if (D3) { D3.flow = panelBak3D.flow; D3.pred = panelBak3D.pred; D3.n = panelBak3D.n; }
+    panelBak3D = null;
+    if (D3 && S) {
+      var bd = (bakDay3D != null) ? bakDay3D : D3.n - 8;
+      bd = Math.max(1, Math.min(bd, D3.n - 1));
+      S.day = bd - 1;
+      stepNext();
+    }
+  }
   async function goLive() {
     if (LA.busy) return;
     LA.busy = true;
@@ -821,6 +1009,7 @@ JS_TEMPLATE = r"""
     $('htla-badge').style.display = 'none';
     $('htla-back').style.display = 'none';
     note('baked data through ' + BAKED_END);
+    if (IS3D) restorePanel3D();
     if (!IS3D && window.HT) window.HT.applyDay();
     ['htwk-back', 'htmo-back', 'htyr-back'].forEach(function (id) { var b = $(id); if (b) b.click(); });
   });
@@ -861,12 +1050,18 @@ def main():
     arma_fn = _extract_fn(donor, "function armaMean")
 
     pages = sorted(STATIONS.glob("*.html"))
-    done = skipped = 0
+    done = skipped = upgraded = 0
     for page in pages:
         html = page.read_text(encoding="utf-8")
         if MARKER in html:
             skipped += 1
             continue
+        if OLD_MARKER in html:
+            html, n_old = OLD_BLOCK_RE.subn("", html)
+            if n_old != 1:
+                print(f"  !! {page.name}: v1 block removal matched {n_old} blocks")
+                continue
+            upgraded += 1
         if page.name.endswith("-3d.html"):
             stats = _bigstats(html)
         else:
@@ -889,7 +1084,7 @@ def main():
             continue
         page.write_text(html[:i] + block + html[i:], encoding="utf-8")
         done += 1
-    print(f"patch_liveall: patched {done}, skipped {skipped} (already marked)")
+    print(f"patch_liveall: patched {done} (upgraded {upgraded}), skipped {skipped} (already marked)")
 
 
 if __name__ == "__main__":
