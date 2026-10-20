@@ -39,7 +39,47 @@ jobs:
 
       - name: Feature ablation RMSE readout fix (dev only)
         run: python3 build25/patch_ablfix.py
-      # NOTE: the weekly-outlook build adds its patch_weekly step AFTER this one.
+
+      - name: Weekly outlook - 12-week weekly mean flow panel (dev only)
+        run: python3 build25/patch_weekly.py
+
+      - name: 3D forecast chart in the Data view (dev only)
+        run: python3 build25/patch_3dchart.py
+
+      - name: Multi-factor correlation matrix in the Data view (dev only)
+        run: python3 build25/patch_corr.py
+
+      - name: Model full forms in the Data view (dev only)
+        run: python3 build25/patch_fullforms.py
+
+      - name: Monthly outlook - next 6 monthly mean flows panel (dev only)
+        run: python3 build25/patch_monthly.py
+
+      - name: Live-mode stall fix - per-stage timeouts (dev only)
+        run: python3 build25/patch_livefix.py
+
+      - name: Weekly + monthly model compare panels (dev only)
+        run: python3 build25/patch_compare_wm.py
+
+      - name: Monthly outlook - Flow & forecast panel treatment (dev only)
+        run: python3 build25/patch_ffmonthly.py
+
+      - name: Yearly outlook - next 12 x 30-day mean flows panel (dev only)
+        run: python3 build25/patch_yearly.py
+
+      - name: Yearly model compare panel (dev only)
+        run: python3 build25/patch_compare_y.py
+
+      - name: Cache-busting build stamp (dev only)
+        env:
+          HT_BUILD_ID: ${{ github.run_id }}-${{ github.sha }}
+        run: python3 build25/patch_cachebust.py
+
+      - name: One Live action for all charts + old-weights series (dev)
+        run: python3 build25/patch_liveall.py
+
+      - name: Remove climatology from the station-page UI (dev)
+        run: python3 build25/patch_noclim.py
 
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
@@ -68,3 +108,9 @@ jobs:
             --exclude ".github/*" \
             --exclude "build25/*" \
             --delete
+
+      - name: HTML cache headers on DEV bucket (dev only)
+        run: |
+          aws s3 cp . s3://hydrotwin-site-dev-2026/ --recursive \
+            --exclude "*" --include "index.html" --include "stations/*.html" \
+            --cache-control "no-cache" --content-type "text/html"

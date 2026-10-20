@@ -1,0 +1,60 @@
+name: Release — site ZIP
+
+# Builds the GitHub-flavor site ZIP (the full site tree, excluding
+# .github/ and .git/) and publishes it as a GitHub Release with
+# auto-generated notes. Trigger by pushing a version tag (v*) or by
+# manual dispatch. Manual dispatch defaults to a dry run (ZIP built
+# and uploaded as a run artifact only); set dry_run=false to publish.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v1.0.0)"
+        type: string
+        required: true
+      dry_run:
+        description: "Build the ZIP but do not publish a release"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve tag and mode
+        id: cfg
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            echo "dry=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+            echo "dry=${{ inputs.dry_run }}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Build site ZIP (GitHub flavor — no .github)
+        run: |
+          mkdir -p dist
+          zip -rq "dist/HydroTwin_dev_${{ steps.cfg.outputs.tag }}.zip" . \
+            -x '.git/*' '.github/*' 'dist/*'
+          ls -lh dist/
+      - name: Upload ZIP as run artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-zip-${{ steps.cfg.outputs.tag }}
+          path: dist/*.zip
+      - name: Publish GitHub Release
+        if: steps.cfg.outputs.dry == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "${{ steps.cfg.outputs.tag }}"
+          dist/*.zip
+          --title "HydroTwin Dev ${{ steps.cfg.outputs.tag }}"
+          --generate-notes

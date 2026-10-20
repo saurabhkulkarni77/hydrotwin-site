@@ -1,0 +1,416 @@
+{
+  "schema": 1,
+  "generated_at": "2026-10-19T22:59:08Z",
+  "repo": "saurabhkulkarni77/hydrotwin-site",
+  "links": {
+    "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
+    "actions": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions",
+    "monitor_issues": "https://github.com/saurabhkulkarni77/hydrotwin-site/issues?q=label%3Amlops-monitor",
+    "releases": "https://github.com/saurabhkulkarni77/hydrotwin-site/releases",
+    "mlops_doc": "MLOPS.md",
+    "status_json": "mlops-status.json"
+  },
+  "triggers": [
+    {
+      "automation": "CI test suite",
+      "fires_when": "Every pull request, and every push to the dev branch",
+      "what_happens": "267 pytest checks: station-page patch-marker integrity, HT_DATA contracts (n=9131 from 2001-10-01), sidecar schemas, internal links.",
+      "workflow": ".github/workflows/ci.yml"
+    },
+    {
+      "automation": "Model validation gate",
+      "fires_when": "Pull requests touching models/** \u2014 including when the allow-regression label is added",
+      "what_happens": "Fails the PR if a production-stage model's pooled RMSE regresses more than 1% (relative) against models/baselines.json, unless the PR carries the allow-regression label.",
+      "workflow": ".github/workflows/model-gate.yml"
+    },
+    {
+      "automation": "Drift & freshness monitor",
+      "fires_when": "Schedule: Mondays 09:17 UTC \u00b7 or manual dispatch",
+      "what_happens": "Recomputes PSI drift, freshness and sidecar coverage from this repo's baked data; on any breach it opens (or updates) the single mlops-monitor tracking issue. Silent otherwise.",
+      "workflow": ".github/workflows/monitor.yml"
+    },
+    {
+      "automation": "Retrain handoff (CT)",
+      "fires_when": "Manual dispatch",
+      "what_happens": "Validates a retrain request (model + data window) against models/registry.json and records the handoff to hydrotwin-models, where the heavy training actually runs.",
+      "workflow": ".github/workflows/retrain.yml"
+    },
+    {
+      "automation": "Release",
+      "fires_when": "Push of a version tag (v*) \u00b7 or manual dispatch",
+      "what_happens": "Builds the GitHub-flavor site ZIP (no .github/) and publishes it as a GitHub Release with auto-generated notes.",
+      "workflow": ".github/workflows/release.yml"
+    },
+    {
+      "automation": "Status snapshot (this page)",
+      "fires_when": "When the CI, gate, monitor, retrain or release workflows complete \u00b7 or manual dispatch",
+      "what_happens": "Regenerates mlops-status.json from the registry, baked drift data and the latest Actions runs, and commits it back ([skip ci]) so this page stays current.",
+      "workflow": ".github/workflows/status.yml"
+    }
+  ],
+  "registry": {
+    "dataset_window": "2001-10-01/2026-09-30",
+    "train": "WY2002-2023",
+    "validation": "WY2024",
+    "test": "WY2025-2026",
+    "champions": {
+      "daily": "PILSTMv1",
+      "weekly": "Transformer"
+    },
+    "gate": {
+      "tolerance_rel": 0.01,
+      "override_label": "allow-regression"
+    },
+    "baselines_frozen_at": "2026-10-15",
+    "models": [
+      {
+        "name": "Transformer",
+        "version": "25yr.1",
+        "stage": "production",
+        "daily_rmse": 0.2737,
+        "weekly_rmse": 0.4857,
+        "baseline_daily_rmse": 0.2737,
+        "baseline_weekly_rmse": 0.4857,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      },
+      {
+        "name": "GP Mat\u00e9rn",
+        "version": "25yr.1",
+        "stage": "candidate",
+        "daily_rmse": 0.29,
+        "weekly_rmse": 0.5439,
+        "baseline_daily_rmse": 0.29,
+        "baseline_weekly_rmse": 0.5439,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      },
+      {
+        "name": "GP RBF",
+        "version": "25yr.1",
+        "stage": "candidate",
+        "daily_rmse": 0.2858,
+        "weekly_rmse": 0.5363,
+        "baseline_daily_rmse": 0.2858,
+        "baseline_weekly_rmse": 0.5363,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      },
+      {
+        "name": "TFT",
+        "version": "25yr.1",
+        "stage": "candidate",
+        "daily_rmse": 0.276,
+        "weekly_rmse": 0.5027,
+        "baseline_daily_rmse": 0.276,
+        "baseline_weekly_rmse": 0.5027,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      },
+      {
+        "name": "LSTM",
+        "version": "25yr.1",
+        "stage": "candidate",
+        "daily_rmse": 0.2723,
+        "weekly_rmse": 0.5124,
+        "baseline_daily_rmse": 0.2723,
+        "baseline_weekly_rmse": 0.5124,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      },
+      {
+        "name": "ARIMA",
+        "version": "25yr.1",
+        "stage": "candidate",
+        "daily_rmse": 0.6832,
+        "weekly_rmse": 0.626,
+        "baseline_daily_rmse": 0.6832,
+        "baseline_weekly_rmse": 0.626,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      },
+      {
+        "name": "SARIMA",
+        "version": "25yr.1",
+        "stage": "candidate",
+        "daily_rmse": 0.6745,
+        "weekly_rmse": 0.544,
+        "baseline_daily_rmse": 0.6745,
+        "baseline_weekly_rmse": 0.544,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      },
+      {
+        "name": "PatchTST",
+        "version": "25yr.1",
+        "stage": "candidate",
+        "daily_rmse": 0.2896,
+        "weekly_rmse": 0.5169,
+        "baseline_daily_rmse": 0.2896,
+        "baseline_weekly_rmse": 0.5169,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      },
+      {
+        "name": "PILSTMv1",
+        "version": "25yr.1",
+        "stage": "production",
+        "daily_rmse": 0.2703,
+        "weekly_rmse": 0.4987,
+        "baseline_daily_rmse": 0.2703,
+        "baseline_weekly_rmse": 0.4987,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      },
+      {
+        "name": "GCN",
+        "version": "25yr.1",
+        "stage": "candidate",
+        "daily_rmse": 0.2848,
+        "weekly_rmse": 0.5239,
+        "baseline_daily_rmse": 0.2848,
+        "baseline_weekly_rmse": 0.5239,
+        "daily_delta_rel": 0.0,
+        "weekly_delta_rel": 0.0,
+        "vs_baseline": "at baseline"
+      }
+    ]
+  },
+  "monitoring": {
+    "psi_threshold": 0.25,
+    "stations_total": 14,
+    "breach_count": 10,
+    "breach_feature": "log10_flow",
+    "stations": [
+      {
+        "site": "09380000",
+        "name": "Colorado River at Lees Ferry, AZ",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 5.1422,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "02320500",
+        "name": "Suwannee River at Branford, FL",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 4.3632,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "07374000",
+        "name": "Mississippi River at Baton Rouge, LA",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 1.9492,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "05331000",
+        "name": "Mississippi River at St. Paul, MN",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 1.3723,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "08313000",
+        "name": "Rio Grande at Otowi Bridge, NM",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 1.0733,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "01646500",
+        "name": "Potomac River at Little Falls, MD",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 0.8297,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "14105700",
+        "name": "Columbia River at The Dalles, OR",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 0.7393,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "08158000",
+        "name": "Colorado River at Austin, TX",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 0.5992,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "01463500",
+        "name": "Delaware River at Trenton, NJ",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 0.4424,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "06934500",
+        "name": "Missouri River at Hermann, MO",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 0.2653,
+        "baked_status": "drift",
+        "breach": true
+      },
+      {
+        "site": "11447650",
+        "name": "Sacramento River at Freeport, CA",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 0.2441,
+        "baked_status": "watch",
+        "breach": false
+      },
+      {
+        "site": "06214500",
+        "name": "Yellowstone River at Billings, MT",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 0.2352,
+        "baked_status": "watch",
+        "breach": false
+      },
+      {
+        "site": "08057000",
+        "name": "Trinity River at Dallas, TX",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 0.2132,
+        "baked_status": "watch",
+        "breach": false
+      },
+      {
+        "site": "03294500",
+        "name": "Ohio River at Louisville, KY",
+        "worst_feature": "log10_flow",
+        "worst_feature_label": "log10 flow",
+        "psi": 0.1518,
+        "baked_status": "watch",
+        "breach": false
+      }
+    ],
+    "freshness": {
+      "axis_start": "2001-10-01",
+      "axis_end": "2026-09-30",
+      "drift_report_recent_end": "2026-09-30",
+      "drift_report_current": true,
+      "dacp_latest": "2026-09-23",
+      "dacp_lag_days": 7,
+      "dacp_ok": true
+    },
+    "coverage": {
+      "families": [
+        "dacp",
+        "dacpw",
+        "dacpm",
+        "dacpy",
+        "weekly",
+        "monthly",
+        "yearly",
+        "soilsnow",
+        "corr",
+        "chart3d"
+      ],
+      "ok": true,
+      "problems": []
+    },
+    "issue": null
+  },
+  "workflows": [
+    {
+      "file": ".github/workflows/ci.yml",
+      "name": "CI \u2014 site, data & model tests",
+      "latest": {
+        "run_id": 39338292312,
+        "title": "MLOps status snapshot refresh (post liveall deploy)",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-19T22:55:48Z",
+        "updated_at": "2026-10-19T22:56:34Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39338292312"
+      }
+    },
+    {
+      "file": ".github/workflows/model-gate.yml",
+      "name": "Model validation gate",
+      "latest": {
+        "run_id": 39329467524,
+        "title": "MLOps Level 2 on dev: port of the hydrotwin-lab overlay",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-19T21:41:33Z",
+        "updated_at": "2026-10-19T21:42:15Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39329467524"
+      }
+    },
+    {
+      "file": ".github/workflows/monitor.yml",
+      "name": "MLOps monitor \u2014 drift & freshness",
+      "latest": null
+    },
+    {
+      "file": ".github/workflows/retrain.yml",
+      "name": "CT \u2014 retrain handoff (stub)",
+      "latest": null
+    },
+    {
+      "file": ".github/workflows/release.yml",
+      "name": "Release \u2014 site ZIP",
+      "latest": {
+        "run_id": 39330516971,
+        "title": "Fix release.yml YAML (env/run block indentation) so the release workf\u2026",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-19T21:49:47Z",
+        "updated_at": "2026-10-19T21:50:55Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39330516971"
+      }
+    },
+    {
+      "file": ".github/workflows/deploy-dev.yml",
+      "name": "Deploy DEV to AWS S3",
+      "latest": {
+        "run_id": 39338292252,
+        "title": "MLOps status snapshot refresh (post liveall deploy)",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-19T22:55:47Z",
+        "updated_at": "2026-10-19T22:57:03Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39338292252"
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+name: CI — site, data & model tests
+
+# Level-2 CI: on every PR and every push to the dev branch, validate the baked
+# site (patch-marker integrity), the baked data (sidecar contracts,
+# drift files), the model registry gate inputs, and internal links.
+# A red run blocks merge/deploy confidence — see MLOPS.md.
+
+on:
+  pull_request:
+  push:
+    branches: [dev]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: pip install pytest
+      - name: Run test suite
+        run: python -m pytest tests/ -q
