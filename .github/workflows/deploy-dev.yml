@@ -84,13 +84,16 @@ jobs:
       - name: Remove climatology from the station-page UI (dev)
         run: python3 build25/patch_noclim.py
 
+      - name: Login gate on every page (dev only)
+        run: python3 build25/patch_auth.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
-          if [ -n "$(git status --porcelain stations)" ]; then
+          if [ -n "$(git status --porcelain stations index.html mlops.html)" ]; then
             git config user.name "hydrotwin-dev"
             git config user.email "actions@github.com"
-            git add stations
+            git add stations index.html mlops.html
             git commit -m "Bake station pages (dev)"
             git push
           else
