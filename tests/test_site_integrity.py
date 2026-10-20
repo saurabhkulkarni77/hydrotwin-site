@@ -23,6 +23,7 @@ CLASSIC_MARKERS = {
     "ht-soilsnow v1": 2,             # soil/snow day-panel rows (classic only)
     "ht-3dchart v1": 2,              # 3D forecast chart in Data view (classic only)
     "ht-corr v1": 2,                 # multi-factor correlation section + boot
+    "ht-clusters v1": 2,             # station regime clusters section + boot
     "ht-dacp v1": 1,                 # DACP daily intervals
     "ht-weekly v1": 1,               # weekly outlook section (classic form)
     "ht-monthly v1": 1,              # monthly outlook section
@@ -41,6 +42,7 @@ CLASSIC_MARKERS = {
     'id="hts-sec-weekly"': 1,        # weekly section in the stats layout
     'id="hts-sec-monthly"': 1,       # monthly section in the stats layout
     'id="hts-sec-yearly"': 1,        # yearly section in the stats layout
+    'id="hts-sec-clusters"': 1,      # station clusters section in the stats layout
     'id="htdc-on"': 1,               # DACP band toggle control
     'id="htwk-live"': 1,             # weekly outlook Live button
     'id="htmo-live"': 1,             # monthly outlook Live button
@@ -75,7 +77,8 @@ THREED_MARKERS = {
 # Patches that must NOT leak across page classes.
 CLASSIC_FORBIDDEN = ("ht-live-gap v1", "ht-ablfix v1")
 THREED_FORBIDDEN = ("ht-statsview v1", "ht-soilsnow v1", "ht-3dchart v1",
-                    "ht-corr v1", "ht-fullforms v1", 'id="hts-top"')
+                    "ht-corr v1", "ht-clusters v1", "ht-fullforms v1",
+                    'id="hts-top"')
 
 
 def _extract_ht_data(html):

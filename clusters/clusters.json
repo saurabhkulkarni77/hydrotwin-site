@@ -1,0 +1,794 @@
+{
+ "version": "ht-clusters v1",
+ "data_window": "2001-10-01..2026-09-30 (daily)",
+ "method": "k-means on standardized regime features (k-means++, 400 restarts); Ward hierarchical clustering for the dendrogram, cut at the same k",
+ "k": 5,
+ "silhouette": {
+  "3": 0.224,
+  "4": 0.215,
+  "5": 0.267
+ },
+ "silhouette_chosen": 0.267,
+ "feature_defs": {
+  "mean_log10_flow": "mean of log10 daily flow (cfs)",
+  "cv_flow": "std / mean of daily flow (flashiness)",
+  "lowflow_frac": "share of days below 10% of median flow",
+  "peak_month": "month of highest monthly-mean log flow",
+  "seas_amp": "max - min monthly-mean log10 flow",
+  "mean_sms": "mean soil moisture (%) - NRCS",
+  "mean_stmp": "mean soil temperature (F) - NRCS",
+  "mean_swe": "mean snow water equivalent (in) - NRCS",
+  "snow_frac": "share of days with SWE > 0 - NRCS"
+ },
+ "clusters": [
+  {
+   "id": 0,
+   "label": "Giant mainstems",
+   "tag": "Steady giants, snowmelt-buffered",
+   "blurb": "The continent\u2019s big plumbing. Mean flows run from about 12,000 to 550,000 cfs, yet these are the steadiest rivers of the fourteen (flow CV 0.27\u20130.70): upstream snowmelt and reservoirs smooth the year, and the crest comes late, in May\u2013July.",
+   "color": "#4db2ff",
+   "members": [
+    "06934500",
+    "07374000",
+    "09380000",
+    "14105700"
+   ],
+   "centroid": {
+    "mean_log10_flow": 4.946,
+    "mean_flow_cfs": 203650.158,
+    "cv_flow": 0.488,
+    "lowflow_frac": 0.0,
+    "peak_month": 5.75,
+    "seas_amp": 0.366,
+    "mean_sms": 26.629,
+    "mean_stmp": 52.412,
+    "mean_swe": 2.803,
+    "snow_frac": 0.548
+   },
+   "monthly_log10": [
+    4.9236,
+    4.9373,
+    4.9858,
+    5.0455,
+    5.1057,
+    5.0999,
+    5.012,
+    4.9184,
+    4.8146,
+    4.8,
+    4.8346,
+    4.8704
+   ]
+  },
+  {
+   "id": 1,
+   "label": "Eastern rain belt",
+   "tag": "Wet soils, late-winter peak",
+   "blurb": "Big eastern rivers with no snowpack to speak of. Their soils are the wettest of the fourteen (about 31\u201336% moisture) and winter rain drives a sharp March crest \u2014 the strongest seasonal swing of any large-river group.",
+   "color": "#5fd68a",
+   "members": [
+    "01646500",
+    "03294500"
+   ],
+   "centroid": {
+    "mean_log10_flow": 4.395,
+    "mean_flow_cfs": 73902.612,
+    "cv_flow": 1.083,
+    "lowflow_frac": 0.008,
+    "peak_month": 3.0,
+    "seas_amp": 0.734,
+    "mean_sms": 33.633,
+    "mean_stmp": 60.67,
+    "mean_swe": 0.0,
+    "snow_frac": 0.0
+   },
+   "monthly_log10": [
+    4.565,
+    4.6471,
+    4.7359,
+    4.697,
+    4.657,
+    4.3874,
+    4.1737,
+    4.0321,
+    4.0035,
+    4.0765,
+    4.2722,
+    4.5038
+   ]
+  },
+  {
+   "id": 2,
+   "label": "Sierra snowmelt",
+   "tag": "Deepest snowpack, a class of its own",
+   "blurb": "The Sacramento at Freeport drains the Sierra Nevada and matches no other station: the deepest average snowpack of the fourteen (about 7.8 in of snow water), cold soils, and an early crest in March as the pack begins to go.",
+   "color": "#ff8a5c",
+   "members": [
+    "11447650"
+   ],
+   "centroid": {
+    "mean_log10_flow": 4.221,
+    "mean_flow_cfs": 20646.119,
+    "cv_flow": 0.783,
+    "lowflow_frac": 0.0,
+    "peak_month": 3.0,
+    "seas_amp": 0.381,
+    "mean_sms": 13.441,
+    "mean_stmp": 43.342,
+    "mean_swe": 7.774,
+    "snow_frac": 0.579
+   },
+   "monthly_log10": [
+    4.3682,
+    4.3805,
+    4.3962,
+    4.312,
+    4.2042,
+    4.1758,
+    4.206,
+    4.1919,
+    4.1557,
+    4.0152,
+    4.0168,
+    4.2379
+   ]
+  },
+  {
+   "id": 3,
+   "label": "Northern snowmelt",
+   "tag": "Cold soils, early-summer peak",
+   "blurb": "Cold-soil northern and mountain basins. Snow is a standing feature of the headwaters (on the ground half the year or more at the Billings and Otowi gauges), soils stay cold (about 44\u201347 \u00b0F), and the rivers crest in May\u2013June as the pack melts. Billings shows the largest seasonal swing of all fourteen stations.",
+   "color": "#b48ce8",
+   "members": [
+    "05331000",
+    "06214500",
+    "08313000"
+   ],
+   "centroid": {
+    "mean_log10_flow": 3.566,
+    "mean_flow_cfs": 8712.02,
+    "cv_flow": 1.022,
+    "lowflow_frac": 0.0,
+    "peak_month": 5.333,
+    "seas_amp": 0.719,
+    "mean_sms": 17.75,
+    "mean_stmp": 45.706,
+    "mean_swe": 2.179,
+    "snow_frac": 0.41
+   },
+   "monthly_log10": [
+    3.3451,
+    3.3381,
+    3.5012,
+    3.7318,
+    3.9454,
+    3.9823,
+    3.7211,
+    3.4808,
+    3.4087,
+    3.4566,
+    3.4686,
+    3.4066
+   ]
+  },
+  {
+   "id": 4,
+   "label": "Warm and flashy",
+   "tag": "Rain-driven, no snow",
+   "blurb": "Warm, snow-free basins where rain alone sets the flow. This is the flashiest group (flow CV 0.86\u20132.41): modest rivers that jump with storms and sag between them, cresting in spring. Austin swings hardest of all fourteen stations.",
+   "color": "#ffd24d",
+   "members": [
+    "01463500",
+    "02320500",
+    "08057000",
+    "08158000"
+   ],
+   "centroid": {
+    "mean_log10_flow": 3.352,
+    "mean_flow_cfs": 5779.927,
+    "cv_flow": 1.446,
+    "lowflow_frac": 0.0,
+    "peak_month": 4.5,
+    "seas_amp": 0.457,
+    "mean_sms": 24.402,
+    "mean_stmp": 65.03,
+    "mean_swe": 0.0,
+    "snow_frac": 0.0
+   },
+   "monthly_log10": [
+    3.3027,
+    3.3323,
+    3.4609,
+    3.5092,
+    3.5039,
+    3.4748,
+    3.3601,
+    3.3017,
+    3.2917,
+    3.2239,
+    3.2096,
+    3.258
+   ]
+  }
+ ],
+ "stations": {
+  "01463500": {
+   "name": "Delaware River at Trenton",
+   "river": "Delaware River",
+   "place": "Trenton",
+   "cluster": 4,
+   "ward_cluster": 5,
+   "monthly_log10": [
+    4.0988,
+    4.0293,
+    4.1943,
+    4.1994,
+    4.1004,
+    3.956,
+    3.8504,
+    3.8319,
+    3.8064,
+    3.87,
+    3.9483,
+    4.1147
+   ],
+   "features": {
+    "mean_log10_flow": 4.0,
+    "mean_flow_cfs": 13383.9577,
+    "cv_flow": 0.9663,
+    "lowflow_frac": 0.0,
+    "peak_month": 4.0,
+    "seas_amp": 0.393,
+    "mean_sms": 36.263,
+    "mean_stmp": 59.4808,
+    "mean_swe": 0.0,
+    "snow_frac": 0.0
+   }
+  },
+  "01646500": {
+   "name": "Potomac River at Little Falls",
+   "river": "Potomac River",
+   "place": "Little Falls",
+   "cluster": 1,
+   "ward_cluster": 4,
+   "monthly_log10": [
+    3.9524,
+    4.0439,
+    4.1483,
+    4.134,
+    4.1406,
+    3.861,
+    3.5941,
+    3.4658,
+    3.4685,
+    3.5591,
+    3.6857,
+    3.9018
+   ],
+   "features": {
+    "mean_log10_flow": 3.8284,
+    "mean_flow_cfs": 11424.5181,
+    "cv_flow": 1.2868,
+    "lowflow_frac": 0.0061,
+    "peak_month": 3.0,
+    "seas_amp": 0.6826,
+    "mean_sms": 36.263,
+    "mean_stmp": 59.4808,
+    "mean_swe": 0.0,
+    "snow_frac": 0.0
+   }
+  },
+  "02320500": {
+   "name": "Suwannee River at Branford",
+   "river": "Suwannee River",
+   "place": "Branford",
+   "cluster": 4,
+   "ward_cluster": 5,
+   "monthly_log10": [
+    3.656,
+    3.7631,
+    3.8878,
+    3.8417,
+    3.6658,
+    3.5974,
+    3.6392,
+    3.6537,
+    3.6935,
+    3.5914,
+    3.5007,
+    3.5336
+   ],
+   "features": {
+    "mean_log10_flow": 3.6681,
+    "mean_flow_cfs": 6181.8282,
+    "cv_flow": 0.8548,
+    "lowflow_frac": 0.0,
+    "peak_month": 3.0,
+    "seas_amp": 0.3871,
+    "mean_sms": 6.5166,
+    "mean_stmp": 73.085,
+    "mean_swe": 0.0,
+    "snow_frac": 0.0
+   }
+  },
+  "03294500": {
+   "name": "Ohio River at Louisville",
+   "river": "Ohio River",
+   "place": "Louisville",
+   "cluster": 1,
+   "ward_cluster": 4,
+   "monthly_log10": [
+    5.1777,
+    5.2503,
+    5.3234,
+    5.2599,
+    5.1734,
+    4.9137,
+    4.7532,
+    4.5985,
+    4.5385,
+    4.5939,
+    4.8588,
+    5.1057
+   ],
+   "features": {
+    "mean_log10_flow": 4.9608,
+    "mean_flow_cfs": 136380.7055,
+    "cv_flow": 0.8801,
+    "lowflow_frac": 0.0093,
+    "peak_month": 3.0,
+    "seas_amp": 0.7848,
+    "mean_sms": 31.0034,
+    "mean_stmp": 61.8585,
+    "mean_swe": 0.0,
+    "snow_frac": 0.0
+   }
+  },
+  "05331000": {
+   "name": "Mississippi River at St. Paul",
+   "river": "Mississippi River",
+   "place": "St. Paul",
+   "cluster": 3,
+   "ward_cluster": 5,
+   "monthly_log10": [
+    3.849,
+    3.8077,
+    4.0867,
+    4.4426,
+    4.4696,
+    4.4105,
+    4.2458,
+    3.9972,
+    3.9358,
+    4.0302,
+    4.0169,
+    3.9108
+   ],
+   "features": {
+    "mean_log10_flow": 4.1013,
+    "mean_flow_cfs": 18152.8102,
+    "cv_flow": 0.9411,
+    "lowflow_frac": 0.0,
+    "peak_month": 5.0,
+    "seas_amp": 0.6618,
+    "mean_sms": 15.6211,
+    "mean_stmp": 47.004,
+    "mean_swe": 0.0,
+    "snow_frac": 0.0
+   }
+  },
+  "06214500": {
+   "name": "Yellowstone River at Billings",
+   "river": "Yellowstone River",
+   "place": "Billings",
+   "cluster": 3,
+   "ward_cluster": 2,
+   "monthly_log10": [
+    3.3886,
+    3.3781,
+    3.4523,
+    3.6209,
+    4.0904,
+    4.3632,
+    3.9737,
+    3.5626,
+    3.4889,
+    3.575,
+    3.5474,
+    3.4353
+   ],
+   "features": {
+    "mean_log10_flow": 3.6574,
+    "mean_flow_cfs": 6898.1905,
+    "cv_flow": 1.237,
+    "lowflow_frac": 0.0,
+    "peak_month": 6.0,
+    "seas_amp": 0.9851,
+    "mean_sms": 24.8289,
+    "mean_stmp": 46.4438,
+    "mean_swe": 4.5926,
+    "snow_frac": 0.7264
+   }
+  },
+  "06934500": {
+   "name": "Missouri River at Hermann",
+   "river": "Missouri River",
+   "place": "Hermann",
+   "cluster": 0,
+   "ward_cluster": 1,
+   "monthly_log10": [
+    4.6874,
+    4.7395,
+    4.8568,
+    4.9704,
+    5.0854,
+    5.0955,
+    4.9704,
+    4.8627,
+    4.8219,
+    4.7951,
+    4.7561,
+    4.6913
+   ],
+   "features": {
+    "mean_log10_flow": 4.8614,
+    "mean_flow_cfs": 88254.1343,
+    "cv_flow": 0.6961,
+    "lowflow_frac": 0.0,
+    "peak_month": 6.0,
+    "seas_amp": 0.4081,
+    "mean_sms": 33.2905,
+    "mean_stmp": 58.041,
+    "mean_swe": 1.7204,
+    "snow_frac": 0.5366
+   }
+  },
+  "07374000": {
+   "name": "Mississippi River at Baton Rouge",
+   "river": "Mississippi River",
+   "place": "Baton Rouge",
+   "cluster": 0,
+   "ward_cluster": 1,
+   "monthly_log10": [
+    5.727,
+    5.7667,
+    5.8485,
+    5.879,
+    5.8819,
+    5.7996,
+    5.6908,
+    5.5386,
+    5.4569,
+    5.4446,
+    5.4927,
+    5.5832
+   ],
+   "features": {
+    "mean_log10_flow": 5.6764,
+    "mean_flow_cfs": 546653.949,
+    "cv_flow": 0.5211,
+    "lowflow_frac": 0.0,
+    "peak_month": 5.0,
+    "seas_amp": 0.4373,
+    "mean_sms": 35.2188,
+    "mean_stmp": 64.7296,
+    "mean_swe": 1.9826,
+    "snow_frac": 0.5325
+   }
+  },
+  "08057000": {
+   "name": "Trinity River at Dallas",
+   "river": "Trinity River",
+   "place": "Dallas",
+   "cluster": 4,
+   "ward_cluster": 5,
+   "monthly_log10": [
+    3.0114,
+    3.1077,
+    3.2197,
+    3.25,
+    3.3062,
+    3.3014,
+    3.0431,
+    2.8918,
+    2.8943,
+    2.9172,
+    2.9629,
+    2.9742
+   ],
+   "features": {
+    "mean_log10_flow": 3.0728,
+    "mean_flow_cfs": 2501.1554,
+    "cv_flow": 1.5584,
+    "lowflow_frac": 0.0,
+    "peak_month": 5.0,
+    "seas_amp": 0.4144,
+    "mean_sms": 23.4731,
+    "mean_stmp": 59.6118,
+    "mean_swe": 0.0,
+    "snow_frac": 0.0
+   }
+  },
+  "08158000": {
+   "name": "Colorado River at Austin",
+   "river": "Colorado River",
+   "place": "Austin",
+   "cluster": 4,
+   "ward_cluster": 5,
+   "monthly_log10": [
+    2.4445,
+    2.4292,
+    2.542,
+    2.7456,
+    2.9433,
+    3.0442,
+    2.9076,
+    2.8295,
+    2.7726,
+    2.5169,
+    2.4266,
+    2.4095
+   ],
+   "features": {
+    "mean_log10_flow": 2.6686,
+    "mean_flow_cfs": 1052.7657,
+    "cv_flow": 2.4065,
+    "lowflow_frac": 0.0,
+    "peak_month": 6.0,
+    "seas_amp": 0.6346,
+    "mean_sms": 31.3563,
+    "mean_stmp": 67.9407,
+    "mean_swe": 0.0,
+    "snow_frac": 0.0
+   }
+  },
+  "08313000": {
+   "name": "Rio Grande at Otowi",
+   "river": "Rio Grande",
+   "place": "Otowi",
+   "cluster": 3,
+   "ward_cluster": 5,
+   "monthly_log10": [
+    2.7978,
+    2.8286,
+    2.9645,
+    3.132,
+    3.2761,
+    3.1732,
+    2.9437,
+    2.8826,
+    2.8013,
+    2.7647,
+    2.8416,
+    2.8738
+   ],
+   "features": {
+    "mean_log10_flow": 2.9403,
+    "mean_flow_cfs": 1085.0579,
+    "cv_flow": 0.8887,
+    "lowflow_frac": 0.0,
+    "peak_month": 5.0,
+    "seas_amp": 0.5115,
+    "mean_sms": 12.7998,
+    "mean_stmp": 43.6717,
+    "mean_swe": 1.943,
+    "snow_frac": 0.5024
+   }
+  },
+  "09380000": {
+   "name": "Colorado River at Lees Ferry",
+   "river": "Colorado River",
+   "place": "Lees Ferry",
+   "cluster": 0,
+   "ward_cluster": 1,
+   "monthly_log10": [
+    4.1088,
+    4.0702,
+    4.0354,
+    4.0224,
+    4.0283,
+    4.1022,
+    4.1433,
+    4.1395,
+    3.9976,
+    3.9694,
+    4.0014,
+    4.0773
+   ],
+   "features": {
+    "mean_log10_flow": 4.0582,
+    "mean_flow_cfs": 11796.5367,
+    "cv_flow": 0.2743,
+    "lowflow_frac": 0.0,
+    "peak_month": 7.0,
+    "seas_amp": 0.1738,
+    "mean_sms": 6.3396,
+    "mean_stmp": 47.4842,
+    "mean_swe": 2.2973,
+    "snow_frac": 0.5294
+   }
+  },
+  "11447650": {
+   "name": "Sacramento River at Freeport",
+   "river": "Sacramento River",
+   "place": "Freeport",
+   "cluster": 2,
+   "ward_cluster": 3,
+   "monthly_log10": [
+    4.3682,
+    4.3805,
+    4.3962,
+    4.312,
+    4.2042,
+    4.1758,
+    4.206,
+    4.1919,
+    4.1557,
+    4.0152,
+    4.0168,
+    4.2379
+   ],
+   "features": {
+    "mean_log10_flow": 4.2211,
+    "mean_flow_cfs": 20646.1187,
+    "cv_flow": 0.7827,
+    "lowflow_frac": 0.0,
+    "peak_month": 3.0,
+    "seas_amp": 0.381,
+    "mean_sms": 13.4406,
+    "mean_stmp": 43.342,
+    "mean_swe": 7.774,
+    "snow_frac": 0.5789
+   }
+  },
+  "14105700": {
+   "name": "Columbia River at The Dalles",
+   "river": "Columbia River",
+   "place": "The Dalles",
+   "cluster": 0,
+   "ward_cluster": 1,
+   "monthly_log10": [
+    5.1712,
+    5.1728,
+    5.2024,
+    5.3101,
+    5.4271,
+    5.4024,
+    5.2434,
+    5.133,
+    4.9819,
+    4.991,
+    5.0883,
+    5.1296
+   ],
+   "features": {
+    "mean_log10_flow": 5.1878,
+    "mean_flow_cfs": 167896.0131,
+    "cv_flow": 0.4617,
+    "lowflow_frac": 0.0,
+    "peak_month": 5.0,
+    "seas_amp": 0.4452,
+    "mean_sms": 31.6677,
+    "mean_stmp": 39.3926,
+    "mean_swe": 5.2123,
+    "snow_frac": 0.592
+   }
+  }
+ },
+ "dendrogram": {
+  "merges": [
+   [
+    6,
+    7,
+    1.6378,
+    2
+   ],
+   [
+    1,
+    3,
+    2.0069,
+    2
+   ],
+   [
+    0,
+    8,
+    2.2492,
+    2
+   ],
+   [
+    4,
+    10,
+    2.4279,
+    2
+   ],
+   [
+    13,
+    14,
+    3.0199,
+    3
+   ],
+   [
+    16,
+    17,
+    3.5381,
+    4
+   ],
+   [
+    2,
+    19,
+    4.1321,
+    5
+   ],
+   [
+    11,
+    18,
+    4.4558,
+    4
+   ],
+   [
+    9,
+    20,
+    4.7753,
+    6
+   ],
+   [
+    5,
+    12,
+    4.7756,
+    2
+   ],
+   [
+    21,
+    23,
+    4.9443,
+    6
+   ],
+   [
+    15,
+    22,
+    6.6596,
+    8
+   ],
+   [
+    24,
+    25,
+    8.3285,
+    14
+   ]
+  ],
+  "leaf_order": [
+   11,
+   13,
+   6,
+   7,
+   5,
+   12,
+   1,
+   3,
+   9,
+   2,
+   0,
+   8,
+   4,
+   10
+  ],
+  "leaf_sites": [
+   "01463500",
+   "01646500",
+   "02320500",
+   "03294500",
+   "05331000",
+   "06214500",
+   "06934500",
+   "07374000",
+   "08057000",
+   "08158000",
+   "08313000",
+   "09380000",
+   "11447650",
+   "14105700"
+  ],
+  "cut_height": 4.7755,
+  "max_height": 8.3285
+ }
+}
