@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39478023422-c07a99e266932d86b915abc98bd4bcafacb4648c";
+  var BID = "39487475858-797da3f413f18a6bbc438d2a1e5880ac325574c6";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -277,17 +278,17 @@ canvas.hts-cv{width:100%;height:auto;display:block}
  <section class="hts-sec" id="hts-sec-clusters">
   <!-- ht-clusters v1 -->
   <h2>Station clusters</h2>
-  <p class="hts-note">Fourteen stations, grouped by how their rivers behave &mdash; not by geography. Each station is described by its flow regime over the full daily record (2001&ndash;2026): average flow, flashiness, low-flow share, peak month, seasonal swing, plus soil moisture, soil temperature and snowpack from the NRCS gauges. A k-means clustering on those traits (k&nbsp;=&nbsp;5, chosen by silhouette score) finds five regimes; a Ward hierarchical clustering draws the family tree below.</p>
+  <p class="hts-note">Fourteen stations, grouped by how their rivers behave &mdash; not by geography. Each station is described by its flow regime over the full daily record (2001&ndash;2026): average flow, flashiness, low-flow share, peak month, seasonal swing, plus soil moisture, soil temperature and snowpack from the NRCS gauges. A k-means clustering on those traits (k&nbsp;=&nbsp;5, chosen by silhouette score) finds five regimes. The first chart shows the groups themselves in trait space &mdash; the first two principal components of the same traits, so stations that plot close together genuinely behave alike; the map shows where each regime lives; a Ward hierarchical clustering draws the family tree below.</p>
   <div id="htclusters-root" data-site="03294500">
    <div class="htclusters-loading" role="status">Loading the station clusters&hellip;</div>
    <div class="htclusters-wrap" hidden>
     <p class="htclusters-this" role="status"></p>
     <p class="htclusters-blurb hts-note"></p>
-    <h3 class="htclusters-h">Regime curves &mdash; mean monthly flow by cluster</h3>
-    <div class="htclusters-chart htclusters-curves"></div>
+    <h3 class="htclusters-h">The clusters &mdash; stations in trait space (PCA)</h3>
+    <div class="htclusters-chart htclusters-pca"></div>
     <div class="htclusters-legend"></div>
-    <h3 class="htclusters-h">Where the stations sit &mdash; peak month vs average flow</h3>
-    <div class="htclusters-chart htclusters-scatter"></div>
+    <h3 class="htclusters-h">Where the clusters live &mdash; station map</h3>
+    <div class="htclusters-chart htclusters-map"></div>
     <h3 class="htclusters-h">Family tree &mdash; Ward dendrogram</h3>
     <div class="htclusters-chart htclusters-dendro"></div>
     <p class="htclusters-note hts-note"></p>
@@ -1339,7 +1340,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39478023422-c07a99e266932d86b915abc98bd4bcafacb4648c" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39487475858-797da3f413f18a6bbc438d2a1e5880ac325574c6" } }
 </script>
 <script type="module">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1348,7 +1349,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=39478023422-c07a99e266932d86b915abc98bd4bcafacb4648c')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=39487475858-797da3f413f18a6bbc438d2a1e5880ac325574c6')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -4045,52 +4046,17 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 /* ht-noclim v1 */
 </script>
 
-<style>
-#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
- background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
- border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
- box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
-#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
- padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
-#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
- padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
-#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
- color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
-#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
-#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
-#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
-#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
-#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
-#ht-drift-panel .htd-line{opacity:.85}
-#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
-#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
- display:inline-block;min-width:52px;text-align:center}
-</style>
-<div id="ht-drift-panel">
-  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
-  <button id="htd-toggle" aria-label="collapse">–</button></div>
-  <div class="htd-body" id="htd-body">
-    <div class="htd-sec">Data drift <span class="pill" style="background:#d9930d">watch</span></div>
-    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 0.15.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.067</td></tr><tr><td>Tmin</td><td>0.071</td></tr><tr><td>Tmean</td><td>0.083</td></tr><tr><td>Precip</td><td>0.017</td></tr><tr><td>Flow (log)</td><td>0.152</td></tr></table>
-    <div class="htd-sec">Concept drift</div>
-    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
-    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.352</td><td>0.352</td><td>-0.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.366</td><td>0.392</td><td>+7.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.376</td><td>0.393</td><td>+4.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.366</td><td>0.359</td><td>-1.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.379</td><td>0.359</td><td>-5.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.706</td><td>1.003</td><td>+42.0%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>SARIMA</td><td>0.711</td><td>0.550</td><td>-22.6%</td><td><span class="pill" style="background:#f5c518;color:#111">improving</span></td></tr><tr><td>PatchTST</td><td>0.382</td><td>0.401</td><td>+4.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.350</td><td>0.384</td><td>+9.8%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.427</td><td>0.420</td><td>-1.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
-    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
-    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
-  </div>
-</div>
-<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+
 
 <script>
 // ht-clusters v1 boot: fetch the shared clusters sidecar and draw the
-// regime curves, scatter and dendrogram when the section nears view.
+// PCA cluster scatter, the station map and the dendrogram when the
+// section nears view.
 {
   const root = document.getElementById('htclusters-root');
   if (root) {
     let started = false;
     const NS = 'http://www.w3.org/2000/svg';
-    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const el = (tag, attrs, parent) => {
       const n = document.createElementNS(NS, tag);
       for (const k in attrs) n.setAttribute(k, attrs[k]);
@@ -4101,11 +4067,6 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
       const t = el('text', Object.assign({ x: x, y: y }, attrs || {}), parent);
       t.textContent = s;
       return t;
-    };
-    const fmtFlow = (v) => {
-      const f = Math.pow(10, v);
-      if (f >= 1000) return Math.round(f / 100) / 10 + 'k';
-      return '' + Math.round(f);
     };
     const start = async () => {
       if (started) return; started = true;
@@ -4126,42 +4087,77 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
             ? ' &mdash; grouped with ' + sibs.join(', ') + '.'
             : ' &mdash; it stands alone; no other station groups with it.');
         root.querySelector('.htclusters-blurb').textContent = myC.blurb;
-        const allCurves = [];
-        d.clusters.forEach((c) => allCurves.push(c.monthly_log10));
-        allCurves.push(me.monthly_log10);
-        let lo = Infinity, hi = -Infinity;
-        allCurves.forEach((cv) => cv.forEach((v) => {
-          if (v < lo) lo = v; if (v > hi) hi = v;
-        }));
-        lo = Math.floor((lo - 0.08) * 10) / 10; hi = Math.ceil((hi + 0.08) * 10) / 10;
-
-        // ---- regime curves -------------------------------------------
+        // ---- PCA scatter: the clusters in trait space ------------------
         {
-          const W = 680, H = 216, L = 44, R = 8, T = 8, B = 24;
+          const W = 680, H = 324, L = 48, R = 12, T = 12, B = 38;
           const svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img' },
-            root.querySelector('.htclusters-curves'));
-          const X = (m) => L + (m / 11) * (W - L - R);
-          const Y = (v) => T + (1 - (v - lo) / (hi - lo)) * (H - T - B);
-          for (let g = Math.ceil(lo * 2) / 2; g <= hi; g += 0.5) {
-            el('line', { x1: L, x2: W - R, y1: Y(g), y2: Y(g), stroke: '#22344a', 'stroke-width': 1 }, svg);
-            txt(svg, L - 5, Y(g) + 3, fmtFlow(g), { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
-          }
-          for (let m = 0; m < 12; m++)
-            txt(svg, X(m), H - 8, MON[m], { 'text-anchor': 'middle', 'font-size': 9, fill: '#9FB3C8' });
-          txt(svg, 4, T + 8, 'cfs', { 'font-size': 9, fill: '#9FB3C8' });
-          const line = (vals, attrs) => {
-            const pts = vals.map((v, m) => X(m).toFixed(1) + ',' + Y(v).toFixed(1)).join(' ');
-            el('polyline', Object.assign({ points: pts, fill: 'none' }, attrs), svg);
-          };
-          d.clusters.forEach((c) => {
-            if (c.id !== me.cluster)
-              line(c.monthly_log10, { stroke: c.color, 'stroke-width': 2, opacity: 0.75 });
+            root.querySelector('.htclusters-pca'));
+          const pts = Object.entries(d.stations).map(([s2, st]) => ({
+            s2: s2, st: st, px: st.pca[0], py: st.pca[1], cx: 0, cy: 0, ly: 0
+          }));
+          let xlo = Infinity, xhi = -Infinity, ylo = Infinity, yhi = -Infinity;
+          pts.forEach((p) => {
+            if (p.px < xlo) xlo = p.px; if (p.px > xhi) xhi = p.px;
+            if (p.py < ylo) ylo = p.py; if (p.py > yhi) yhi = p.py;
           });
-          line(myC.monthly_log10, { stroke: myC.color, 'stroke-width': 2.4, opacity: 0.95 });
-          line(me.monthly_log10, { stroke: '#ffffff', 'stroke-width': 5, opacity: 0.35, 'stroke-dasharray': '7 4', 'stroke-linecap': 'round' });
-          line(me.monthly_log10, { stroke: myC.color, 'stroke-width': 3.2, 'stroke-dasharray': '7 4', 'stroke-linecap': 'round' });
-          me.monthly_log10.forEach((v, m) =>
-            el('circle', { cx: X(m), cy: Y(v), r: 2.6, fill: myC.color, stroke: '#0b1622', 'stroke-width': 1 }, svg));
+          const padx = (xhi - xlo) * 0.13 + 0.1, pady = (yhi - ylo) * 0.13 + 0.1;
+          xlo -= padx; xhi += padx; ylo -= pady; yhi += pady;
+          const X = (v) => L + ((v - xlo) / (xhi - xlo)) * (W - L - R);
+          const Y = (v) => T + (1 - (v - ylo) / (yhi - ylo)) * (H - T - B);
+          for (let g = Math.ceil(xlo); g <= Math.floor(xhi); g++) {
+            el('line', { x1: X(g), x2: X(g), y1: T, y2: H - B, stroke: g === 0 ? '#33507a' : '#22344a', 'stroke-width': 1 }, svg);
+            txt(svg, X(g), H - 24, '' + g, { 'text-anchor': 'middle', 'font-size': 9, fill: '#9FB3C8' });
+          }
+          for (let g = Math.ceil(ylo); g <= Math.floor(yhi); g++) {
+            el('line', { x1: L, x2: W - R, y1: Y(g), y2: Y(g), stroke: g === 0 ? '#33507a' : '#22344a', 'stroke-width': 1 }, svg);
+            txt(svg, L - 5, Y(g) + 3, '' + g, { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
+          }
+          txt(svg, (L + W - R) / 2, H - 8,
+            'PC1 — ' + d.pca.variance_pct[0].toFixed(1) + '% of variance · snowpack & cold soils increase to the right',
+            { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
+          const ylab = txt(svg, 13, (T + H - B) / 2,
+            'PC2 — ' + d.pca.variance_pct[1].toFixed(1) + '% · bigger, steadier rivers higher',
+            { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
+          ylab.setAttribute('transform', 'rotate(-90 13 ' + ((T + H - B) / 2) + ')');
+          // shaded hulls first, so points sit on top
+          d.clusters.forEach((c) => {
+            const hp = c.hull.map((s2) => d.stations[s2]);
+            if (hp.length >= 3) {
+              const mx = hp.reduce((a, st) => a + st.pca[0], 0) / hp.length;
+              const my = hp.reduce((a, st) => a + st.pca[1], 0) / hp.length;
+              const poly = hp.map((st) => {
+                let vx = st.pca[0] - mx, vy = st.pca[1] - my;
+                const len = Math.hypot(vx, vy) || 1; vx /= len; vy /= len;
+                return X(st.pca[0] + vx * 0.38).toFixed(1) + ',' +
+                       Y(st.pca[1] + vy * 0.38).toFixed(1);
+              }).join(' ');
+              el('polygon', { points: poly, fill: c.color, opacity: 0.13, stroke: c.color, 'stroke-opacity': 0.55, 'stroke-width': 1.2, 'stroke-dasharray': '5 4', 'stroke-linejoin': 'round' }, svg);
+            } else if (hp.length === 2) {
+              el('line', { x1: X(hp[0].pca[0]), y1: Y(hp[0].pca[1]), x2: X(hp[1].pca[0]), y2: Y(hp[1].pca[1]), stroke: c.color, 'stroke-width': 30, opacity: 0.13, 'stroke-linecap': 'round' }, svg);
+            } else if (hp.length === 1) {
+              el('circle', { cx: X(hp[0].pca[0]), cy: Y(hp[0].pca[1]), r: 22, fill: c.color, opacity: 0.15 }, svg);
+            }
+          });
+          pts.forEach((p) => { p.cx = X(p.px); p.cy = Y(p.py); });
+          const sp = pts.slice().sort((a, b) => a.cy - b.cy);
+          sp.forEach((p, i2) => {
+            p.ly = p.cy + 3;
+            if (i2 > 0 && Math.abs(p.cx - sp[i2 - 1].cx) < 90 &&
+                p.ly - sp[i2 - 1].ly < 12) p.ly = sp[i2 - 1].ly + 12;
+          });
+          sp.forEach((p) => {
+            const c = d.clusters[p.st.cluster];
+            if (p.s2 === site)
+              el('circle', { cx: p.cx, cy: p.cy, r: 11.5, fill: 'none', stroke: '#ffffff', 'stroke-width': 2.4 }, svg);
+            el('circle', { cx: p.cx, cy: p.cy, r: 6, fill: c.color, stroke: '#0b1622', 'stroke-width': 1.4 }, svg);
+            const anchor = p.cx > W - 120 ? 'end' : 'start';
+            const dx = anchor === 'end' ? -10 : 10;
+            txt(svg, p.cx + dx, p.ly, p.st.place, {
+              'text-anchor': anchor, 'font-size': 10.5,
+              fill: p.s2 === site ? '#ffffff' : '#C7D3E2',
+              'font-weight': p.s2 === site ? 'bold' : 'normal'
+            });
+          });
         }
 
         // ---- legend ---------------------------------------------------
@@ -4172,50 +4168,34 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
             html += '<span><span class="sw" style="background:' + c.color + '"></span>' +
               c.label + ' (' + c.members.length + ')</span>';
           });
-          html += '<span><span class="sw" style="background:transparent;border:2px dashed #ffffff"></span>This station (' + me.place + ')</span>';
+          html += '<span><span class="sw" style="background:transparent;border:2px solid #ffffff;border-radius:50%"></span>This station (' + me.place + ')</span>';
           lg.innerHTML = html;
         }
 
-        // ---- scatter --------------------------------------------------
+        // ---- geographic map --------------------------------------------
         {
-          const W = 680, H = 300, L = 44, R = 10, T = 10, B = 34;
-          const svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img' },
-            root.querySelector('.htclusters-scatter'));
-          let ylo = Infinity, yhi = -Infinity;
-          Object.values(d.stations).forEach((s) => {
-            const v = s.features.mean_log10_flow;
-            if (v < ylo) ylo = v; if (v > yhi) yhi = v;
+          const MW = d.map.width, MH = d.map.height;
+          const svg = el('svg', { viewBox: '0 0 ' + MW + ' ' + MH, role: 'img' },
+            root.querySelector('.htclusters-map'));
+          d.map.outline.forEach((line) => {
+            el('path', {
+              d: 'M' + line.map((q) => q[0] + ' ' + q[1]).join(' L') + ' Z',
+              fill: '#132539', stroke: '#46618a', 'stroke-width': 1.6,
+              'stroke-linejoin': 'round'
+            }, svg);
           });
-          ylo = Math.floor((ylo - 0.15) * 10) / 10; yhi = Math.ceil((yhi + 0.15) * 10) / 10;
-          const X = (m) => L + ((m - 1) / 11) * (W - L - R);
-          const Y = (v) => T + (1 - (v - ylo) / (yhi - ylo)) * (H - T - B);
-          for (let g = Math.ceil(ylo * 2) / 2; g <= yhi; g += 0.5) {
-            el('line', { x1: L, x2: W - R, y1: Y(g), y2: Y(g), stroke: '#22344a', 'stroke-width': 1 }, svg);
-            txt(svg, L - 5, Y(g) + 3, fmtFlow(g), { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
-          }
-          for (let m = 1; m <= 12; m++)
-            txt(svg, X(m), H - 18, MON[m - 1], { 'text-anchor': 'middle', 'font-size': 9, fill: '#9FB3C8' });
-          txt(svg, (L + W - R) / 2, H - 4, 'Peak-flow month', { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
-          const pts = Object.entries(d.stations).map(([s2, s]) => ({
-            s2: s2, s: s, cx: X(s.features.peak_month),
-            cy: Y(s.features.mean_log10_flow), ly: 0
-          })).sort((a, b) => a.cy - b.cy);
-          pts.forEach((p, i) => {
-            p.ly = p.cy + 3;
-            if (i > 0 && Math.abs(p.cx - pts[i - 1].cx) < 90 &&
-                p.ly - pts[i - 1].ly < 12) p.ly = pts[i - 1].ly + 12;
-          });
-          pts.forEach((p) => {
-            const c = d.clusters[p.s.cluster];
-            if (p.s2 === site)
-              el('circle', { cx: p.cx, cy: p.cy, r: 11.5, fill: 'none', stroke: '#ffffff', 'stroke-width': 2.4 }, svg);
-            el('circle', { cx: p.cx, cy: p.cy, r: 6, fill: c.color, stroke: '#0b1622', 'stroke-width': 1.4 }, svg);
-            const anchor = p.cx > W - 120 ? 'end' : 'start';
-            const dx = anchor === 'end' ? -10 : 10;
-            txt(svg, p.cx + dx, p.ly, p.s.place, {
-              'text-anchor': anchor, 'font-size': 10.5,
-              fill: p.s2 === site ? '#ffffff' : '#C7D3E2',
-              'font-weight': p.s2 === site ? 'bold' : 'normal'
+          Object.entries(d.stations).forEach(([s2, st]) => {
+            const c = d.clusters[st.cluster];
+            const x = st.map_xy[0], y = st.map_xy[1];
+            if (s2 === site)
+              el('circle', { cx: x, cy: y, r: 15, fill: 'none', stroke: '#ffffff', 'stroke-width': 3 }, svg);
+            el('circle', { cx: x, cy: y, r: 8, fill: c.color, stroke: '#0b1622', 'stroke-width': 2 }, svg);
+            const anchor = x > MW - 170 ? 'end' : 'start';
+            const dx = anchor === 'end' ? -14 : 14;
+            txt(svg, x + dx, y + 5, st.place, {
+              'text-anchor': anchor, 'font-size': 19,
+              fill: s2 === site ? '#ffffff' : '#C7D3E2',
+              'font-weight': s2 === site ? 'bold' : 'normal'
             });
           });
         }
@@ -4267,7 +4247,13 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
         root.querySelector('.htclusters-note').textContent =
           'Method: k-means (k = ' + d.k + ', silhouette ' + d.silhouette_chosen +
-          ') on standardized features; Ward linkage above, dashed line = the cut that gives the same ' +
+          ') on standardized features. Trait space: the first two principal ' +
+          'components of the same features (PC1 ' +
+          d.pca.variance_pct[0].toFixed(1) + '%, PC2 ' +
+          d.pca.variance_pct[1].toFixed(1) + '% of the variance); shaded ' +
+          'hulls outline each cluster. Map: station locations on the US ' +
+          'outline from the homepage map (us-atlas), colored by cluster. ' +
+          'Ward linkage above, dashed line = the cut that gives the same ' +
           d.k + ' groups. One station (Freeport) forms a regime of its own. ' +
           'Full feature values are in the shared sidecar (clusters/clusters.json).';
         loading.hidden = true;
@@ -4286,4 +4272,40 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
 }
 </script>
+<style>
+#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
+ background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
+ border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+ box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
+ padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
+#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
+ padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
+#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
+ color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
+#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
+#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
+#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
+#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
+#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
+#ht-drift-panel .htd-line{opacity:.85}
+#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
+#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
+ display:inline-block;min-width:52px;text-align:center}
+</style>
+<div id="ht-drift-panel">
+  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
+  <button id="htd-toggle" aria-label="collapse">–</button></div>
+  <div class="htd-body" id="htd-body">
+    <div class="htd-sec">Data drift <span class="pill" style="background:#d9930d">watch</span></div>
+    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 0.15.</div>
+    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.067</td></tr><tr><td>Tmin</td><td>0.071</td></tr><tr><td>Tmean</td><td>0.083</td></tr><tr><td>Precip</td><td>0.017</td></tr><tr><td>Flow (log)</td><td>0.152</td></tr></table>
+    <div class="htd-sec">Concept drift</div>
+    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
+    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.352</td><td>0.352</td><td>-0.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.366</td><td>0.392</td><td>+7.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.376</td><td>0.393</td><td>+4.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.366</td><td>0.359</td><td>-1.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.379</td><td>0.359</td><td>-5.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.706</td><td>1.003</td><td>+42.0%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>SARIMA</td><td>0.711</td><td>0.550</td><td>-22.6%</td><td><span class="pill" style="background:#f5c518;color:#111">improving</span></td></tr><tr><td>PatchTST</td><td>0.382</td><td>0.401</td><td>+4.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.350</td><td>0.384</td><td>+9.8%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.427</td><td>0.420</td><td>-1.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
+    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
+    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
+  </div>
+</div>
+<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
 </body></html>
