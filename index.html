@@ -111,13 +111,18 @@ function show(p) {
   pg.fillText(`USGS ${s.site} · ${s.start} to ${s.end} (${s.days} days)`, 36, 120);
   pg.fillText(`Latest ${fmt(s.latest)} cfs · median ${fmt(s.median)} · range ${fmt(s.min)}–${fmt(s.max)}`, 36, 165);
   pg.fillText(`Weather: ${s.weather}${s.drainage ? ' · drains ' + s.drainage : ''}`, 36, 210);
-  pg.fillText(`In the scene: ${s.model}${s.tidal ? ' · tidally filtered flow' : ''}`, 36, 255);
-  spark(pg, s, 36, 285, 828, 150, p.col);
+  const bl = window.htBasinLines ? window.htBasinLines(s) : [];
+  pg.font = '25px Arial'; pg.fillStyle = '#BFD0E0';
+  bl.forEach((t, i) => pg.fillText(t, 36, 238 + i * 30));
+  pg.font = '30px Arial'; pg.fillStyle = '#9FB3C8';
+  pg.fillText(`In the scene: ${s.model}${s.tidal ? ' · tidally filtered flow' : ''}`, 36, 306);
+  spark(pg, s, 36, 330, 828, 108, p.col);
   pg.fillStyle = '#F5F6F2'; pg.font = '600 32px Arial'; pg.fillText('Trigger / click to open this station ▶', 36, 490);
   panelT.needsUpdate = true; panel.visible = renderer.xr.isPresenting;
   card.innerHTML = `<h3>${s.name}</h3><span class="k">USGS ${s.site} · ${s.start} → ${s.end}</span><br>Latest <b>${fmt(s.latest)} cfs</b> (${p.st}) · median ${fmt(s.median)}<br>`
-    + `<span class="k">Weather:</span> ${s.weather}${s.drainage ? '<br><span class="k">Drainage:</span> ' + s.drainage : ''}<br><span class="k">Scene:</span> ${s.model}${s.tidal ? ' · tidally filtered flow' : ''}<canvas id="sp" width="560" height="110"></canvas><b>Click the pin to open ▶</b>`;
+    + `<span class="k">Weather:</span> ${s.weather}${s.drainage ? '<br><span class="k">Drainage:</span> ' + s.drainage : ''}<br><span class="k">Scene:</span> ${s.model}${s.tidal ? ' · tidally filtered flow' : ''}${window.htBasinHTML ? window.htBasinHTML(s) : ''}<canvas id="sp" width="560" height="110"></canvas><b>Click the pin to open ▶</b>`;
   const c = document.getElementById('sp'); spark(c.getContext('2d'), s, 4, 6, 552, 98, p.col); card.style.display = 'block';
+  const bc = document.getElementById('bmap'); if (bc && window.htBasinDraw) window.htBasinDraw(bc, s);
 }
 let hover = null;
 function setHover(p) {
@@ -175,4 +180,68 @@ renderer.setAnimationLoop(() => {
 });
 window.MAPVIEW = { pins, show, setHover, camera, orbit, rig, THREE };
 window.MAP_READY = true;
-</script></body></html>
+</script><!-- ht-mapbasin v1 start -->
+<style>
+#card{width:min(336px,88vw)}
+#basinbox{margin-top:8px;border-top:1px solid rgba(140,190,240,.25);padding-top:7px}
+#basinbox .bh{color:#8FC1F2;font-weight:600;margin-bottom:2px}
+#basinbox canvas{width:100%;height:118px;margin:2px 0 4px}
+#basinbox .bd{color:#BFD0E0;font-size:12px}
+</style>
+<script>
+/* ht-mapbasin v1 - basin info on the homepage map-pin hover card.
+   Data: basins/basins.json (USGS NLDI basin + NHDPlus V2 flowlines,
+   baked by build25/gen_basin_hover.py). */
+(function () {
+  var B = null;
+  function fmtN(n) { return n == null ? 'not available' : Math.round(n).toLocaleString('en-US'); }
+  function esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function boxHTML(s) {
+    var b = B && B[s.site];
+    if (!B) return '<div class="bh">Basin</div><span class="bd">loading basin data&hellip;</span>';
+    if (!b) return '<div class="bh">Basin</div><span class="bd">not available</span>';
+    var h = '<div class="bh">Basin &middot; USGS NLDI</div><canvas id="bmap" width="560" height="230"></canvas>';
+    h += '<span class="k">Watershed area:</span> ' + fmtN(b.area_km2) + ' km&sup2;' + (s.drainage ? ' (USGS drainage ' + esc(s.drainage) + ')' : '') + '<br>';
+    h += '<span class="k">River path:</span> ' + fmtN(b.dm_km) + ' km downstream &middot; ' + fmtN(b.um_km) + ' km upstream<br>';
+    h += '<span class="k">Next gauges downstream:</span>';
+    if (b.down && b.down.length) b.down.forEach(function (d) { h += '<br><span class="bd">' + fmtN(d.km) + ' km &middot; USGS ' + esc(d.site) + ' &middot; ' + esc(String(d.name).slice(0, 40)) + '</span>'; });
+    else h += '<br><span class="bd">none within the path shown</span>';
+    return h;
+  }
+  window.htBasinHTML = function (s) { return '<div id="basinbox" data-site="' + s.site + '">' + boxHTML(s) + '</div>'; };
+  window.htBasinLines = function (s) {
+    var b = B && B[s.site]; if (!b) return [];
+    var L = ['Basin: ' + fmtN(b.area_km2) + ' km\u00b2 watershed \u00b7 ' + fmtN(b.dm_km) + ' km downstream path'];
+    if (b.down && b.down.length) { var d = b.down[0]; L.push('Next gauge downstream: ' + fmtN(d.km) + ' km \u00b7 USGS ' + d.site); }
+    return L;
+  };
+  window.htBasinDraw = function (cv, s) {
+    var b = B && B[s.site]; if (!b || !b.rings || !b.rings.length) return;
+    var g = cv.getContext('2d'), W = cv.width, H = cv.height;
+    g.clearRect(0, 0, W, H); g.fillStyle = 'rgba(255,255,255,0.04)'; g.fillRect(0, 0, W, H);
+    var pts = []; b.rings.forEach(function (r) { r.forEach(function (p) { pts.push(p); }); });
+    (b.dm || []).forEach(function (p) { pts.push(p); }); (b.um || []).forEach(function (p) { pts.push(p); });
+    pts.push([s.lon, s.lat]);
+    var lo0 = Math.min.apply(null, pts.map(function (p) { return p[0]; })), lo1 = Math.max.apply(null, pts.map(function (p) { return p[0]; }));
+    var la0 = Math.min.apply(null, pts.map(function (p) { return p[1]; })), la1 = Math.max.apply(null, pts.map(function (p) { return p[1]; }));
+    var k = Math.cos((la0 + la1) / 2 * Math.PI / 180), sx = Math.max((lo1 - lo0) * k, 1e-6), sy = Math.max(la1 - la0, 1e-6);
+    var sc = Math.min((W - 16) / sx, (H - 16) / sy), cx = W / 2, cy = H / 2;
+    var X = function (lo) { return cx + (lo - (lo0 + lo1) / 2) * k * sc; }, Y = function (la) { return cy - (la - (la0 + la1) / 2) * sc; };
+    function poly(p, stroke, w, fill) { if (!p || p.length < 2) return; g.beginPath(); p.forEach(function (q, n) { n ? g.lineTo(X(q[0]), Y(q[1])) : g.moveTo(X(q[0]), Y(q[1])); }); if (fill) { g.fillStyle = fill; g.fill(); } g.strokeStyle = stroke; g.lineWidth = w; g.stroke(); }
+    b.rings.forEach(function (r) { poly(r, '#FFE680', 2, 'rgba(255,230,128,0.10)'); });
+    poly(b.um, '#5CB8FF', 2); poly(b.dm, '#1E6FE0', 3);
+    g.fillStyle = '#FFD24D'; g.beginPath(); g.arc(X(s.lon), Y(s.lat), 5, 0, 7); g.fill();
+  };
+  function refresh() {
+    var box = document.getElementById('basinbox'); if (!box) return;
+    var site = box.getAttribute('data-site');
+    var st = (window.MAP && window.MAP.stations || []).filter(function (x) { return x.site === site; })[0];
+    if (!st) return;
+    box.innerHTML = boxHTML(st);
+    var bc = document.getElementById('bmap'); if (bc) window.htBasinDraw(bc, st);
+  }
+  fetch('basins/basins.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) { B = j; refresh(); }).catch(function () { B = {}; refresh(); });
+})();
+</script>
+<!-- ht-mapbasin v1 end -->
+</body></html>
