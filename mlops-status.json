@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-21T18:03:09Z",
+  "generated_at": "2026-10-21T22:02:31Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -350,14 +350,14 @@
       "file": ".github/workflows/ci.yml",
       "name": "CI \u2014 site, data & model tests",
       "latest": {
-        "run_id": 39648949771,
-        "title": "Station clusters: remove hyphens from the section text (ht-clusters v\u2026",
+        "run_id": 39683391720,
+        "title": "Panels load on click only (ht-lazypanels v1, dev)",
         "event": "push",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-10-21T18:01:14Z",
-        "updated_at": "2026-10-21T18:02:29Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39648949771"
+        "created_at": "2026-10-21T22:01:32Z",
+        "updated_at": "2026-10-21T22:02:15Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39683391720"
       }
     },
     {
@@ -402,14 +402,14 @@
       "file": ".github/workflows/deploy-dev.yml",
       "name": "Deploy DEV to AWS S3",
       "latest": {
-        "run_id": 39648949906,
-        "title": "Station clusters: remove hyphens from the section text (ht-clusters v\u2026",
+        "run_id": 39683391469,
+        "title": "Panels load on click only (ht-lazypanels v1, dev)",
         "event": "push",
-        "status": "completed",
-        "conclusion": "success",
-        "created_at": "2026-10-21T18:01:14Z",
-        "updated_at": "2026-10-21T18:02:43Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39648949906"
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-10-21T22:01:32Z",
+        "updated_at": "2026-10-21T22:01:35Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39683391469"
       }
     }
   ]
