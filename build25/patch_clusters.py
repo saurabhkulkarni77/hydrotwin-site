@@ -1,12 +1,34 @@
 #!/usr/bin/env python3
 """Station clusters in the classic Data view (ht-clusters v1).
 
+NOSOIL VARIANT (2026-10-21, prepared, not yet pushed): identical to
+patch_clusters_basin.py except the section copy now matches the
+nosoil sidecar baked by gen_clusters_nosoil.py (regime features plus
+USGS NLDI basin traits, with the two NRCS soil traits removed at the
+user's order, and the k rule landing on 6 instead of 5). Diffs vs the
+basin patcher: the intro no longer names soil moisture or soil
+temperature (snowpack only), the intro counts six regimes at
+k = 6, the PC1 caption reflects the new loadings (snowpack, basin
+size and later crests), and the closing note names two singleton
+stations (Billings and Freeport) instead of one. PC2 caption,
+layout, marker and sidecar fetch path are unchanged. On push this
+file replaces build25/patch_clusters.py and clusters_nosoil.json
+replaces clusters/clusters.json.
+
+K DESC ADDITION (2026-10-21, user order: "also add description of
+all Ks"): the section gains an "All k values" part after the
+dendrogram, one line per k tried (3 to 6) rendered from the
+sidecar's k_options block: the silhouette score and a description
+of how that grouping differs from the chosen one, the chosen k
+marked as the grouping shown above. Same marker, same fetch path,
+same layout otherwise.
+
 Adds one section to the classic statistics pages (patch_statsview
 layout): the flow-regime clustering of all 14 stations, baked offline
 by gen_clusters.py into ONE shared sidecar, clusters/clusters.json
-(k-means on standardized regime features, k = 5 by silhouette; Ward
-hierarchical clustering for the dendrogram). The section shows the
-clusters themselves:
+(k-means on standardized regime features, k chosen by silhouette;
+Ward hierarchical clustering for the dendrogram). The section shows
+the clusters themselves:
 
   - a PCA scatter of all stations in trait space (first two principal
     components of the same standardized features), colored by cluster
@@ -14,7 +36,7 @@ clusters themselves:
   - a geographic map (US nation outline from the homepage's own
     window.MAP asset) with the stations plotted by lat/lon in the
     same cluster colors, this station ringed;
-  - the Ward dendrogram, leaves colored by cluster, cut line at k = 5;
+  - the Ward dendrogram, leaves colored by cluster, cut line at k;
   - a line naming this station's cluster and its sibling stations,
     plus a plain-language description of the cluster.
 
@@ -42,7 +64,7 @@ SECTION = """
  <section class="hts-sec" id="hts-sec-clusters">
   <!-- ht-clusters v1 -->
   <h2>Station clusters</h2>
-  <p class="hts-note">Fourteen stations, grouped by how their rivers behave, not by geography. Each station is described by its flow regime over the full daily record (2001 to 2026): average flow, flashiness, low flow share, peak month, seasonal swing, plus soil moisture, soil temperature and snowpack from the NRCS gauges. A k means clustering on those traits (k&nbsp;=&nbsp;5, chosen by silhouette score) finds five regimes. The first chart shows the groups themselves in trait space, the first two principal components of the same traits, so stations that plot close together genuinely behave alike; the map shows where each regime lives; a Ward hierarchical clustering draws the family tree below.</p>
+  <p class="hts-note">Fourteen stations, grouped by how their rivers behave, not by geography. Each station is described by its flow regime over the full daily record (2001 to 2026): average flow, flashiness, low flow share, peak month, seasonal swing, plus snowpack from the NRCS gauges, plus basin traits from the USGS NLDI: watershed area, the length of river below the gauge, and the flow each square kilometre of basin yields. A k means clustering on those traits (k&nbsp;=&nbsp;6, chosen by silhouette score) finds six regimes. The first chart shows the groups themselves in trait space, the first two principal components of the same traits, so stations that plot close together genuinely behave alike; the map shows where each regime lives; a Ward hierarchical clustering draws the family tree below.</p>
   <div id="htclusters-root" data-site="__SITE__">
    <div class="htclusters-loading" role="status">Loading the station clusters&hellip;</div>
    <div class="htclusters-wrap" hidden>
@@ -55,6 +77,8 @@ SECTION = """
     <div class="htclusters-chart htclusters-map"></div>
     <h3 class="htclusters-h">Family tree, Ward dendrogram</h3>
     <div class="htclusters-chart htclusters-dendro"></div>
+    <h3 class="htclusters-h">All k values, how the grouping changes with k</h3>
+    <div class="htclusters-kall"></div>
     <p class="htclusters-note hts-note"></p>
    </div>
   </div>
@@ -66,6 +90,7 @@ SECTION = """
    #htclusters-root .htclusters-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:11px;color:#9FB3C8}
    #htclusters-root .htclusters-legend .sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
    #htclusters-root .htclusters-loading{color:#9FB3C8;font-size:13px;padding:10px 0}
+   #htclusters-root .htclusters-kall p{margin:3px 0;font-size:12.5px;color:#C7D3E2}
    #htclusters-root .htclusters-note{margin-top:10px}
   </style>
  </section>"""
@@ -136,7 +161,7 @@ BOOT = """
             txt(svg, L - 5, Y(g) + 3, (g < 0 ? 'minus ' + -g : '' + g), { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
           }
           txt(svg, (L + W - R) / 2, H - 8,
-            'PC1, ' + d.pca.variance_pct[0].toFixed(1) + '% of variance \u00b7 snowpack & cold soils increase to the right',
+            'PC1, ' + d.pca.variance_pct[0].toFixed(1) + '% of variance \u00b7 snowpack, basin size and later crests increase to the right',
             { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
           const ylab = txt(svg, 13, (T + H - B) / 2,
             'PC2, ' + d.pca.variance_pct[1].toFixed(1) + '% \u00b7 bigger, steadier rivers higher',
@@ -268,6 +293,18 @@ BOOT = """
           });
         }
 
+        // ---- all k values: one line per k tried ---------------------
+        {
+          const box = root.querySelector('.htclusters-kall');
+          (d.k_options || []).forEach((o) => {
+            const p = document.createElement('p');
+            p.textContent = 'k = ' + o.k +
+              (o.chosen ? ' (the grouping shown above)' : '') +
+              ': ' + o.description;
+            box.appendChild(p);
+          });
+        }
+
         root.querySelector('.htclusters-note').textContent =
           'Method: k means (k = ' + d.k + ', silhouette ' + d.silhouette_chosen +
           ') on standardized features. Trait space: the first two principal ' +
@@ -277,7 +314,7 @@ BOOT = """
           'hulls outline each cluster. Map: station locations on the US ' +
           'outline from the homepage map (us atlas), colored by cluster. ' +
           'Ward linkage above, dashed line = the cut that gives the same ' +
-          d.k + ' groups. One station (Freeport) forms a regime of its own. ' +
+          d.k + ' groups. Two stations (Billings and Freeport) each form a regime of their own. ' +
           'Full feature values are in the shared sidecar (clusters/clusters.json).';
         loading.hidden = true;
         root.querySelector('.htclusters-wrap').hidden = false;
