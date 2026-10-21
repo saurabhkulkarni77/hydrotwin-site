@@ -68,34 +68,34 @@ SITES = sorted(NAMES)
 LABELS = {
     'Baton Rouge': (
         'Giant mainstems',
-        'Steady giants, snowmelt-buffered',
+        'Steady giants, snowmelt buffered',
         'The continent\u2019s big plumbing. Mean flows run from about '
         '12,000 to 550,000 cfs, yet these are the steadiest rivers of '
-        'the fourteen (flow CV 0.27\u20130.70): upstream snowmelt and '
+        'the fourteen (flow CV 0.27 to 0.70): upstream snowmelt and '
         'reservoirs smooth the year, and the crest comes late, in '
-        'May\u2013July.'),
+        'May to July.'),
     'Louisville': (
         'Eastern rain belt',
-        'Wet soils, late-winter peak',
+        'Wet soils, late winter peak',
         'Big eastern rivers with no snowpack to speak of. Their soils '
-        'are the wettest of the fourteen (about 31\u201336% moisture) '
-        'and winter rain drives a sharp March crest \u2014 the '
-        'strongest seasonal swing of any large-river group.'),
+        'are the wettest of the fourteen (about 31 to 36% moisture) '
+        'and winter rain drives a sharp March crest, the '
+        'strongest seasonal swing of any large river group.'),
     'Austin': (
         'Warm and flashy',
-        'Rain-driven, no snow',
-        'Warm, snow-free basins where rain alone sets the flow. This '
-        'is the flashiest group (flow CV 0.86\u20132.41): modest '
+        'Rain driven, no snow',
+        'Warm, snow free basins where rain alone sets the flow. This '
+        'is the flashiest group (flow CV 0.86 to 2.41): modest '
         'rivers that jump with storms and sag between them, cresting '
         'in spring. Austin swings hardest of all fourteen stations.'),
     'Billings': (
         'Northern snowmelt',
-        'Cold soils, early-summer peak',
-        'Cold-soil northern and mountain basins. Snow is a standing '
+        'Cold soils, early summer peak',
+        'Cold soil northern and mountain basins. Snow is a standing '
         'feature of the headwaters (on the ground half the year or '
         'more at the Billings and Otowi gauges), soils stay cold '
-        '(about 44\u201347 \u00b0F), and the rivers crest in '
-        'May\u2013June '
+        '(about 44 to 47 \u00b0F), and the rivers crest in '
+        'May to June '
         'as the pack melts. Billings shows the largest seasonal '
         'swing of all fourteen stations.'),
     'Freeport': (

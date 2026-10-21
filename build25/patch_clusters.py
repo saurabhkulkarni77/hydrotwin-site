@@ -42,18 +42,18 @@ SECTION = """
  <section class="hts-sec" id="hts-sec-clusters">
   <!-- ht-clusters v1 -->
   <h2>Station clusters</h2>
-  <p class="hts-note">Fourteen stations, grouped by how their rivers behave &mdash; not by geography. Each station is described by its flow regime over the full daily record (2001&ndash;2026): average flow, flashiness, low-flow share, peak month, seasonal swing, plus soil moisture, soil temperature and snowpack from the NRCS gauges. A k-means clustering on those traits (k&nbsp;=&nbsp;5, chosen by silhouette score) finds five regimes. The first chart shows the groups themselves in trait space &mdash; the first two principal components of the same traits, so stations that plot close together genuinely behave alike; the map shows where each regime lives; a Ward hierarchical clustering draws the family tree below.</p>
+  <p class="hts-note">Fourteen stations, grouped by how their rivers behave, not by geography. Each station is described by its flow regime over the full daily record (2001 to 2026): average flow, flashiness, low flow share, peak month, seasonal swing, plus soil moisture, soil temperature and snowpack from the NRCS gauges. A k means clustering on those traits (k&nbsp;=&nbsp;5, chosen by silhouette score) finds five regimes. The first chart shows the groups themselves in trait space, the first two principal components of the same traits, so stations that plot close together genuinely behave alike; the map shows where each regime lives; a Ward hierarchical clustering draws the family tree below.</p>
   <div id="htclusters-root" data-site="__SITE__">
    <div class="htclusters-loading" role="status">Loading the station clusters&hellip;</div>
    <div class="htclusters-wrap" hidden>
     <p class="htclusters-this" role="status"></p>
     <p class="htclusters-blurb hts-note"></p>
-    <h3 class="htclusters-h">The clusters &mdash; stations in trait space (PCA)</h3>
+    <h3 class="htclusters-h">The clusters, stations in trait space (PCA)</h3>
     <div class="htclusters-chart htclusters-pca"></div>
     <div class="htclusters-legend"></div>
-    <h3 class="htclusters-h">Where the clusters live &mdash; station map</h3>
+    <h3 class="htclusters-h">Where the clusters live, station map</h3>
     <div class="htclusters-chart htclusters-map"></div>
-    <h3 class="htclusters-h">Family tree &mdash; Ward dendrogram</h3>
+    <h3 class="htclusters-h">Family tree, Ward dendrogram</h3>
     <div class="htclusters-chart htclusters-dendro"></div>
     <p class="htclusters-note hts-note"></p>
    </div>
@@ -105,10 +105,10 @@ BOOT = """
         const sibs = myC.members.filter((s) => s !== site)
           .map((s) => d.stations[s].place);
         root.querySelector('.htclusters-this').innerHTML =
-          'This station: <b>' + myC.label + '</b> &mdash; ' + myC.tag +
+          'This station: <b>' + myC.label + '</b>, ' + myC.tag +
           (sibs.length
-            ? ' &mdash; grouped with ' + sibs.join(', ') + '.'
-            : ' &mdash; it stands alone; no other station groups with it.');
+            ? ', grouped with ' + sibs.join(', ') + '.'
+            : ', it stands alone; no other station groups with it.');
         root.querySelector('.htclusters-blurb').textContent = myC.blurb;
         // ---- PCA scatter: the clusters in trait space ------------------
         {
@@ -129,17 +129,17 @@ BOOT = """
           const Y = (v) => T + (1 - (v - ylo) / (yhi - ylo)) * (H - T - B);
           for (let g = Math.ceil(xlo); g <= Math.floor(xhi); g++) {
             el('line', { x1: X(g), x2: X(g), y1: T, y2: H - B, stroke: g === 0 ? '#33507a' : '#22344a', 'stroke-width': 1 }, svg);
-            txt(svg, X(g), H - 24, '' + g, { 'text-anchor': 'middle', 'font-size': 9, fill: '#9FB3C8' });
+            txt(svg, X(g), H - 24, (g < 0 ? 'minus ' + -g : '' + g), { 'text-anchor': 'middle', 'font-size': 9, fill: '#9FB3C8' });
           }
           for (let g = Math.ceil(ylo); g <= Math.floor(yhi); g++) {
             el('line', { x1: L, x2: W - R, y1: Y(g), y2: Y(g), stroke: g === 0 ? '#33507a' : '#22344a', 'stroke-width': 1 }, svg);
-            txt(svg, L - 5, Y(g) + 3, '' + g, { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
+            txt(svg, L - 5, Y(g) + 3, (g < 0 ? 'minus ' + -g : '' + g), { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
           }
           txt(svg, (L + W - R) / 2, H - 8,
-            'PC1 \u2014 ' + d.pca.variance_pct[0].toFixed(1) + '% of variance \u00b7 snowpack & cold soils increase to the right',
+            'PC1, ' + d.pca.variance_pct[0].toFixed(1) + '% of variance \u00b7 snowpack & cold soils increase to the right',
             { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
           const ylab = txt(svg, 13, (T + H - B) / 2,
-            'PC2 \u2014 ' + d.pca.variance_pct[1].toFixed(1) + '% \u00b7 bigger, steadier rivers higher',
+            'PC2, ' + d.pca.variance_pct[1].toFixed(1) + '% \u00b7 bigger, steadier rivers higher',
             { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
           ylab.setAttribute('transform', 'rotate(-90 13 ' + ((T + H - B) / 2) + ')');
           // shaded hulls first, so points sit on top
@@ -269,13 +269,13 @@ BOOT = """
         }
 
         root.querySelector('.htclusters-note').textContent =
-          'Method: k-means (k = ' + d.k + ', silhouette ' + d.silhouette_chosen +
+          'Method: k means (k = ' + d.k + ', silhouette ' + d.silhouette_chosen +
           ') on standardized features. Trait space: the first two principal ' +
           'components of the same features (PC1 ' +
           d.pca.variance_pct[0].toFixed(1) + '%, PC2 ' +
           d.pca.variance_pct[1].toFixed(1) + '% of the variance); shaded ' +
           'hulls outline each cluster. Map: station locations on the US ' +
-          'outline from the homepage map (us-atlas), colored by cluster. ' +
+          'outline from the homepage map (us atlas), colored by cluster. ' +
           'Ward linkage above, dashed line = the cut that gives the same ' +
           d.k + ' groups. One station (Freeport) forms a regime of its own. ' +
           'Full feature values are in the shared sidecar (clusters/clusters.json).';
