@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39672477441-0bd29f1c315e419a5c828dffc9e385dcf9396fe1";
+  var BID = "39675775001-6a8c4b911465b81b9d166c7455fff000275d1353";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -283,7 +284,7 @@ canvas.hts-cv{width:100%;height:auto;display:block}
  <section class="hts-sec" id="hts-sec-clusters">
   <!-- ht-clusters v1 -->
   <h2>Station clusters</h2>
-  <p class="hts-note">Fourteen stations, grouped by how their rivers behave, not by geography. Each station is described by its flow regime over the full daily record (2001 to 2026): average flow, flashiness, low flow share, peak month, seasonal swing, plus soil moisture, soil temperature and snowpack from the NRCS gauges. A k means clustering on those traits (k&nbsp;=&nbsp;5, chosen by silhouette score) finds five regimes. The first chart shows the groups themselves in trait space, the first two principal components of the same traits, so stations that plot close together genuinely behave alike; the map shows where each regime lives; a Ward hierarchical clustering draws the family tree below.</p>
+  <p class="hts-note">Fourteen stations, grouped by how their rivers behave, not by geography. Each station is described by its flow regime over the full daily record (2001 to 2026): average flow, flashiness, low flow share, peak month, seasonal swing, plus snowpack from the NRCS gauges, plus basin traits from the USGS NLDI: watershed area, the length of river below the gauge, and the flow each square kilometre of basin yields. A k means clustering on those traits (k&nbsp;=&nbsp;6, chosen by silhouette score) finds six regimes. The first chart shows the groups themselves in trait space, the first two principal components of the same traits, so stations that plot close together genuinely behave alike; the map shows where each regime lives; a Ward hierarchical clustering draws the family tree below.</p>
   <div id="htclusters-root" data-site="05331000">
    <div class="htclusters-loading" role="status">Loading the station clusters&hellip;</div>
    <div class="htclusters-wrap" hidden>
@@ -296,6 +297,8 @@ canvas.hts-cv{width:100%;height:auto;display:block}
     <div class="htclusters-chart htclusters-map"></div>
     <h3 class="htclusters-h">Family tree, Ward dendrogram</h3>
     <div class="htclusters-chart htclusters-dendro"></div>
+    <h3 class="htclusters-h">All k values, how the grouping changes with k</h3>
+    <div class="htclusters-kall"></div>
     <p class="htclusters-note hts-note"></p>
    </div>
   </div>
@@ -307,6 +310,7 @@ canvas.hts-cv{width:100%;height:auto;display:block}
    #htclusters-root .htclusters-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:11px;color:#9FB3C8}
    #htclusters-root .htclusters-legend .sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
    #htclusters-root .htclusters-loading{color:#9FB3C8;font-size:13px;padding:10px 0}
+   #htclusters-root .htclusters-kall p{margin:3px 0;font-size:12.5px;color:#C7D3E2}
    #htclusters-root .htclusters-note{margin-top:10px}
   </style>
  </section>
@@ -1345,7 +1349,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39672477441-0bd29f1c315e419a5c828dffc9e385dcf9396fe1" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39675775001-6a8c4b911465b81b9d166c7455fff000275d1353" } }
 </script>
 <script type="module">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1354,7 +1358,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=39672477441-0bd29f1c315e419a5c828dffc9e385dcf9396fe1')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=39675775001-6a8c4b911465b81b9d166c7455fff000275d1353')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -4118,7 +4122,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
             txt(svg, L - 5, Y(g) + 3, (g < 0 ? 'minus ' + -g : '' + g), { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
           }
           txt(svg, (L + W - R) / 2, H - 8,
-            'PC1, ' + d.pca.variance_pct[0].toFixed(1) + '% of variance · snowpack & cold soils increase to the right',
+            'PC1, ' + d.pca.variance_pct[0].toFixed(1) + '% of variance · snowpack, basin size and later crests increase to the right',
             { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
           const ylab = txt(svg, 13, (T + H - B) / 2,
             'PC2, ' + d.pca.variance_pct[1].toFixed(1) + '% · bigger, steadier rivers higher',
@@ -4250,6 +4254,18 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
           });
         }
 
+        // ---- all k values: one line per k tried ---------------------
+        {
+          const box = root.querySelector('.htclusters-kall');
+          (d.k_options || []).forEach((o) => {
+            const p = document.createElement('p');
+            p.textContent = 'k = ' + o.k +
+              (o.chosen ? ' (the grouping shown above)' : '') +
+              ': ' + o.description;
+            box.appendChild(p);
+          });
+        }
+
         root.querySelector('.htclusters-note').textContent =
           'Method: k means (k = ' + d.k + ', silhouette ' + d.silhouette_chosen +
           ') on standardized features. Trait space: the first two principal ' +
@@ -4259,7 +4275,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
           'hulls outline each cluster. Map: station locations on the US ' +
           'outline from the homepage map (us atlas), colored by cluster. ' +
           'Ward linkage above, dashed line = the cut that gives the same ' +
-          d.k + ' groups. One station (Freeport) forms a regime of its own. ' +
+          d.k + ' groups. Two stations (Billings and Freeport) each form a regime of their own. ' +
           'Full feature values are in the shared sidecar (clusters/clusters.json).';
         loading.hidden = true;
         root.querySelector('.htclusters-wrap').hidden = false;
@@ -4277,6 +4293,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
 }
 </script>
+
 
 
 
