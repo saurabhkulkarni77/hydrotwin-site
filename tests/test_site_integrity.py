@@ -24,7 +24,6 @@ CLASSIC_MARKERS = {
     "ht-3dchart v1": 2,              # 3D forecast chart in Data view (classic only)
     "ht-corr v1": 2,                 # multi-factor correlation section + boot
     "ht-clusters v1": 2,             # station regime clusters section + boot
-    "ht-auth v1": 2,                 # login gate (head) + logout boot
     "ht-dacp v1": 1,                 # DACP daily intervals
     "ht-weekly v1": 1,               # weekly outlook section (classic form)
     "ht-monthly v1": 1,              # monthly outlook section
@@ -52,7 +51,6 @@ CLASSIC_MARKERS = {
 }
 
 THREED_MARKERS = {
-    "ht-auth v1": 2,                 # login gate (head) + logout boot
     "ht-dacp v1": 1,                 # DACP daily intervals
     "ht-weekly v1": 2,               # weekly outlook panel (3D form)
     "ht-monthly v1": 1,              # monthly outlook panel
@@ -160,20 +158,18 @@ def test_all_station_pages_exist(repo_root):
     assert pages == expected
 
 
-def test_root_pages_auth_gate(repo_root):
-    """The login gate covers the root pages too, and login.html itself
-    is never gated (it is the gate's destination; gating it would loop)
-    and carries the sign-in form."""
-    for name in ("index.html", "mlops.html"):
-        html = (repo_root / name).read_text(encoding="utf-8",
-                                            errors="replace")
-        assert html.count("ht-auth v1") == 2, (
-            f"{name}: auth gate marker found "
-            f"{html.count('ht-auth v1')}x, expected 2x")
-    login_path = repo_root / "login.html"
-    assert login_path.exists(), "login.html missing"
-    login = login_path.read_text(encoding="utf-8", errors="replace")
-    assert "ht-auth v1" not in login, "login.html must not be gated"
-    for token in ('id="ht-login-form"', 'id="ht-login-user"',
-                  'id="ht-login-pass"'):
-        assert token in login, f"login.html: missing {token}"
+def test_no_auth_gate_anywhere(repo_root):
+    """The ht-auth v1 login gate was removed on the owner's order
+    (2026-10-21): no page may carry the gate or logout blocks, any
+    ht_auth reference, or a link to login.html, and login.html
+    itself must not exist."""
+    pages = [repo_root / "index.html", repo_root / "mlops.html"]
+    pages += sorted((repo_root / "stations").glob("*.html"))
+    for p in pages:
+        html = p.read_text(encoding="utf-8", errors="replace")
+        assert "ht-auth" not in html, f"{p.name}: ht-auth remnant"
+        assert "ht_auth" not in html, f"{p.name}: ht_auth remnant"
+        assert "login.html" not in html, (
+            f"{p.name}: login.html reference remnant")
+    assert not (repo_root / "login.html").exists(), (
+        "login.html still present")

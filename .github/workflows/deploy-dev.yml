@@ -84,7 +84,7 @@ jobs:
       - name: Remove climatology from the station-page UI (dev)
         run: python3 build25/patch_noclim.py
 
-      - name: Login gate on every page (dev only)
+      - name: Remove login gate from every page (dev only)
         run: python3 build25/patch_auth.py
 
       - name: Commit baked pages back to dev (best effort)
