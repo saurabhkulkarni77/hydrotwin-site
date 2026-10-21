@@ -55,6 +55,9 @@ jobs:
       - name: Station clusters in the Data view (dev only)
         run: python3 build25/patch_clusters.py
 
+      - name: Basin info on the homepage map-pin hover card (dev only)
+        run: python3 build25/patch_mapbasin.py
+
       - name: Monthly outlook - next 6 monthly mean flows panel (dev only)
         run: python3 build25/patch_monthly.py
 
