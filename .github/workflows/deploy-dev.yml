@@ -126,3 +126,14 @@ jobs:
           aws s3 cp . s3://hydrotwin-site-dev-2026/ --recursive \
             --exclude "*" --include "index.html" --include "stations/*.html" \
             --cache-control "no-cache" --content-type "text/html"
+
+      - name: Invalidate DEV CloudFront cache (dev only)
+        run: |
+          INV_ID=$(aws cloudfront create-invalidation \
+            --distribution-id EW9JZR3H96ARN \
+            --paths "/*" \
+            --query 'Invalidation.Id' --output text)
+          echo "CloudFront invalidation submitted: $INV_ID"
+          aws cloudfront wait invalidation-completed \
+            --distribution-id EW9JZR3H96ARN --id "$INV_ID"
+          echo "CloudFront invalidation $INV_ID completed."
