@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39354852911-b3bd2d86bca794a40aa5d281029c34d715f733ff";
+  var BID = "39675775001-6a8c4b911465b81b9d166c7455fff000275d1353";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,14 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
+
+
+
+
+
+
+
 
 
 
@@ -271,6 +279,39 @@ canvas.hts-cv{width:100%;height:auto;display:block}
    #htcorr-root .htcorr-bar{display:inline-block;width:150px;height:9px;border-radius:4px;background:linear-gradient(to right,#2b7fd9,#101e30,#d5793d)}
    #htcorr-root .htcorr-read{font-size:12px;color:#E6EDF5;min-height:16px;margin:8px 0 0}
    #htcorr-root .htcorr-loading{color:#9FB3C8;font-size:13px;padding:10px 0}
+  </style>
+ </section>
+ <section class="hts-sec" id="hts-sec-clusters">
+  <!-- ht-clusters v1 -->
+  <h2>Station clusters</h2>
+  <p class="hts-note">Fourteen stations, grouped by how their rivers behave, not by geography. Each station is described by its flow regime over the full daily record (2001 to 2026): average flow, flashiness, low flow share, peak month, seasonal swing, plus snowpack from the NRCS gauges, plus basin traits from the USGS NLDI: watershed area, the length of river below the gauge, and the flow each square kilometre of basin yields. A k means clustering on those traits (k&nbsp;=&nbsp;6, chosen by silhouette score) finds six regimes. The first chart shows the groups themselves in trait space, the first two principal components of the same traits, so stations that plot close together genuinely behave alike; the map shows where each regime lives; a Ward hierarchical clustering draws the family tree below.</p>
+  <div id="htclusters-root" data-site="05331000">
+   <div class="htclusters-loading" role="status">Loading the station clusters&hellip;</div>
+   <div class="htclusters-wrap" hidden>
+    <p class="htclusters-this" role="status"></p>
+    <p class="htclusters-blurb hts-note"></p>
+    <h3 class="htclusters-h">The clusters, stations in trait space (PCA)</h3>
+    <div class="htclusters-chart htclusters-pca"></div>
+    <div class="htclusters-legend"></div>
+    <h3 class="htclusters-h">Where the clusters live, station map</h3>
+    <div class="htclusters-chart htclusters-map"></div>
+    <h3 class="htclusters-h">Family tree, Ward dendrogram</h3>
+    <div class="htclusters-chart htclusters-dendro"></div>
+    <h3 class="htclusters-h">All k values, how the grouping changes with k</h3>
+    <div class="htclusters-kall"></div>
+    <p class="htclusters-note hts-note"></p>
+   </div>
+  </div>
+  <style>
+   #htclusters-root .htclusters-h{font-size:13px;color:#E6EDF5;margin:16px 0 4px}
+   #htclusters-root .htclusters-this{font-size:14px;color:#E6EDF5;margin:6px 0 2px}
+   #htclusters-root .htclusters-this b{color:#FFD24D}
+   #htclusters-root .htclusters-chart svg{width:100%;height:auto;display:block}
+   #htclusters-root .htclusters-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:11px;color:#9FB3C8}
+   #htclusters-root .htclusters-legend .sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+   #htclusters-root .htclusters-loading{color:#9FB3C8;font-size:13px;padding:10px 0}
+   #htclusters-root .htclusters-kall p{margin:3px 0;font-size:12.5px;color:#C7D3E2}
+   #htclusters-root .htclusters-note{margin-top:10px}
   </style>
  </section>
 </div>
@@ -1308,7 +1349,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39354852911-b3bd2d86bca794a40aa5d281029c34d715f733ff" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39675775001-6a8c4b911465b81b9d166c7455fff000275d1353" } }
 </script>
 <script type="module">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1317,7 +1358,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=39354852911-b3bd2d86bca794a40aa5d281029c34d715f733ff')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=39675775001-6a8c4b911465b81b9d166c7455fff000275d1353')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -4013,6 +4054,250 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 <script>
 /* ht-noclim v1 */
 </script>
+
+
+
+<script>
+// ht-clusters v1 boot: fetch the shared clusters sidecar and draw the
+// PCA cluster scatter, the station map and the dendrogram when the
+// section nears view.
+{
+  const root = document.getElementById('htclusters-root');
+  if (root) {
+    let started = false;
+    const NS = 'http://www.w3.org/2000/svg';
+    const el = (tag, attrs, parent) => {
+      const n = document.createElementNS(NS, tag);
+      for (const k in attrs) n.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(n);
+      return n;
+    };
+    const txt = (parent, x, y, s, attrs) => {
+      const t = el('text', Object.assign({ x: x, y: y }, attrs || {}), parent);
+      t.textContent = s;
+      return t;
+    };
+    const start = async () => {
+      if (started) return; started = true;
+      const loading = root.querySelector('.htclusters-loading');
+      try {
+        const site = root.dataset.site;
+        const resp = await fetch('../clusters/clusters.json');
+        if (!resp.ok) throw new Error('sidecar ' + resp.status);
+        const d = await resp.json();
+        const me = d.stations[site];
+        if (!me) throw new Error('station not in sidecar');
+        const myC = d.clusters[me.cluster];
+        const sibs = myC.members.filter((s) => s !== site)
+          .map((s) => d.stations[s].place);
+        root.querySelector('.htclusters-this').innerHTML =
+          'This station: <b>' + myC.label + '</b>, ' + myC.tag +
+          (sibs.length
+            ? ', grouped with ' + sibs.join(', ') + '.'
+            : ', it stands alone; no other station groups with it.');
+        root.querySelector('.htclusters-blurb').textContent = myC.blurb;
+        // ---- PCA scatter: the clusters in trait space ------------------
+        {
+          const W = 680, H = 324, L = 48, R = 12, T = 12, B = 38;
+          const svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img' },
+            root.querySelector('.htclusters-pca'));
+          const pts = Object.entries(d.stations).map(([s2, st]) => ({
+            s2: s2, st: st, px: st.pca[0], py: st.pca[1], cx: 0, cy: 0, ly: 0
+          }));
+          let xlo = Infinity, xhi = -Infinity, ylo = Infinity, yhi = -Infinity;
+          pts.forEach((p) => {
+            if (p.px < xlo) xlo = p.px; if (p.px > xhi) xhi = p.px;
+            if (p.py < ylo) ylo = p.py; if (p.py > yhi) yhi = p.py;
+          });
+          const padx = (xhi - xlo) * 0.13 + 0.1, pady = (yhi - ylo) * 0.13 + 0.1;
+          xlo -= padx; xhi += padx; ylo -= pady; yhi += pady;
+          const X = (v) => L + ((v - xlo) / (xhi - xlo)) * (W - L - R);
+          const Y = (v) => T + (1 - (v - ylo) / (yhi - ylo)) * (H - T - B);
+          for (let g = Math.ceil(xlo); g <= Math.floor(xhi); g++) {
+            el('line', { x1: X(g), x2: X(g), y1: T, y2: H - B, stroke: g === 0 ? '#33507a' : '#22344a', 'stroke-width': 1 }, svg);
+            txt(svg, X(g), H - 24, (g < 0 ? 'minus ' + -g : '' + g), { 'text-anchor': 'middle', 'font-size': 9, fill: '#9FB3C8' });
+          }
+          for (let g = Math.ceil(ylo); g <= Math.floor(yhi); g++) {
+            el('line', { x1: L, x2: W - R, y1: Y(g), y2: Y(g), stroke: g === 0 ? '#33507a' : '#22344a', 'stroke-width': 1 }, svg);
+            txt(svg, L - 5, Y(g) + 3, (g < 0 ? 'minus ' + -g : '' + g), { 'text-anchor': 'end', 'font-size': 9, fill: '#9FB3C8' });
+          }
+          txt(svg, (L + W - R) / 2, H - 8,
+            'PC1, ' + d.pca.variance_pct[0].toFixed(1) + '% of variance · snowpack, basin size and later crests increase to the right',
+            { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
+          const ylab = txt(svg, 13, (T + H - B) / 2,
+            'PC2, ' + d.pca.variance_pct[1].toFixed(1) + '% · bigger, steadier rivers higher',
+            { 'text-anchor': 'middle', 'font-size': 10, fill: '#9FB3C8' });
+          ylab.setAttribute('transform', 'rotate(-90 13 ' + ((T + H - B) / 2) + ')');
+          // shaded hulls first, so points sit on top
+          d.clusters.forEach((c) => {
+            const hp = c.hull.map((s2) => d.stations[s2]);
+            if (hp.length >= 3) {
+              const mx = hp.reduce((a, st) => a + st.pca[0], 0) / hp.length;
+              const my = hp.reduce((a, st) => a + st.pca[1], 0) / hp.length;
+              const poly = hp.map((st) => {
+                let vx = st.pca[0] - mx, vy = st.pca[1] - my;
+                const len = Math.hypot(vx, vy) || 1; vx /= len; vy /= len;
+                return X(st.pca[0] + vx * 0.38).toFixed(1) + ',' +
+                       Y(st.pca[1] + vy * 0.38).toFixed(1);
+              }).join(' ');
+              el('polygon', { points: poly, fill: c.color, opacity: 0.13, stroke: c.color, 'stroke-opacity': 0.55, 'stroke-width': 1.2, 'stroke-dasharray': '5 4', 'stroke-linejoin': 'round' }, svg);
+            } else if (hp.length === 2) {
+              el('line', { x1: X(hp[0].pca[0]), y1: Y(hp[0].pca[1]), x2: X(hp[1].pca[0]), y2: Y(hp[1].pca[1]), stroke: c.color, 'stroke-width': 30, opacity: 0.13, 'stroke-linecap': 'round' }, svg);
+            } else if (hp.length === 1) {
+              el('circle', { cx: X(hp[0].pca[0]), cy: Y(hp[0].pca[1]), r: 22, fill: c.color, opacity: 0.15 }, svg);
+            }
+          });
+          pts.forEach((p) => { p.cx = X(p.px); p.cy = Y(p.py); });
+          const sp = pts.slice().sort((a, b) => a.cy - b.cy);
+          sp.forEach((p, i2) => {
+            p.ly = p.cy + 3;
+            if (i2 > 0 && Math.abs(p.cx - sp[i2 - 1].cx) < 90 &&
+                p.ly - sp[i2 - 1].ly < 12) p.ly = sp[i2 - 1].ly + 12;
+          });
+          sp.forEach((p) => {
+            const c = d.clusters[p.st.cluster];
+            if (p.s2 === site)
+              el('circle', { cx: p.cx, cy: p.cy, r: 11.5, fill: 'none', stroke: '#ffffff', 'stroke-width': 2.4 }, svg);
+            el('circle', { cx: p.cx, cy: p.cy, r: 6, fill: c.color, stroke: '#0b1622', 'stroke-width': 1.4 }, svg);
+            const anchor = p.cx > W - 120 ? 'end' : 'start';
+            const dx = anchor === 'end' ? -10 : 10;
+            txt(svg, p.cx + dx, p.ly, p.st.place, {
+              'text-anchor': anchor, 'font-size': 10.5,
+              fill: p.s2 === site ? '#ffffff' : '#C7D3E2',
+              'font-weight': p.s2 === site ? 'bold' : 'normal'
+            });
+          });
+        }
+
+        // ---- legend ---------------------------------------------------
+        {
+          const lg = root.querySelector('.htclusters-legend');
+          let html = '';
+          d.clusters.forEach((c) => {
+            html += '<span><span class="sw" style="background:' + c.color + '"></span>' +
+              c.label + ' (' + c.members.length + ')</span>';
+          });
+          html += '<span><span class="sw" style="background:transparent;border:2px solid #ffffff;border-radius:50%"></span>This station (' + me.place + ')</span>';
+          lg.innerHTML = html;
+        }
+
+        // ---- geographic map --------------------------------------------
+        {
+          const MW = d.map.width, MH = d.map.height;
+          const svg = el('svg', { viewBox: '0 0 ' + MW + ' ' + MH, role: 'img' },
+            root.querySelector('.htclusters-map'));
+          d.map.outline.forEach((line) => {
+            el('path', {
+              d: 'M' + line.map((q) => q[0] + ' ' + q[1]).join(' L') + ' Z',
+              fill: '#132539', stroke: '#46618a', 'stroke-width': 1.6,
+              'stroke-linejoin': 'round'
+            }, svg);
+          });
+          Object.entries(d.stations).forEach(([s2, st]) => {
+            const c = d.clusters[st.cluster];
+            const x = st.map_xy[0], y = st.map_xy[1];
+            if (s2 === site)
+              el('circle', { cx: x, cy: y, r: 15, fill: 'none', stroke: '#ffffff', 'stroke-width': 3 }, svg);
+            el('circle', { cx: x, cy: y, r: 8, fill: c.color, stroke: '#0b1622', 'stroke-width': 2 }, svg);
+            const anchor = x > MW - 170 ? 'end' : 'start';
+            const dx = anchor === 'end' ? -14 : 14;
+            txt(svg, x + dx, y + 5, st.place, {
+              'text-anchor': anchor, 'font-size': 19,
+              fill: s2 === site ? '#ffffff' : '#C7D3E2',
+              'font-weight': s2 === site ? 'bold' : 'normal'
+            });
+          });
+        }
+
+        // ---- dendrogram ------------------------------------------------
+        {
+          const dg = d.dendrogram, sites = dg.leaf_sites, n = sites.length;
+          const W = 680, T = 12, LAB = 58, H = T + 196 + LAB;
+          const svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img' },
+            root.querySelector('.htclusters-dendro'));
+          const pad = 26, slot = (W - 2 * pad) / n;
+          const pos = {};
+          dg.leaf_order.forEach((leaf, i) => { pos[leaf] = pad + (i + 0.5) * slot; });
+          const heightOf = {};
+          for (let i = 0; i < n; i++) heightOf[i] = 0;
+          const Y = (h) => T + (1 - h / dg.max_height) * 196;
+          const segs = [];
+          dg.merges.forEach((mg, i) => {
+            const node = n + i, a = mg[0], b = mg[1], h = mg[2];
+            pos[node] = (pos[a] + pos[b]) / 2;
+            heightOf[node] = h;
+            segs.push([pos[a], Y(heightOf[a]), pos[a], Y(h)]);
+            segs.push([pos[b], Y(heightOf[b]), pos[b], Y(h)]);
+            segs.push([pos[a], Y(h), pos[b], Y(h)]);
+          });
+          segs.forEach((sg) => el('line', {
+            x1: sg[0].toFixed(1), y1: sg[1].toFixed(1),
+            x2: sg[2].toFixed(1), y2: sg[3].toFixed(1),
+            stroke: '#5b7ba6', 'stroke-width': 1.4
+          }, svg));
+          el('line', {
+            x1: 0, x2: W, y1: Y(dg.cut_height), y2: Y(dg.cut_height),
+            stroke: '#FFD24D', 'stroke-width': 1.2, 'stroke-dasharray': '5 4', opacity: 0.85
+          }, svg);
+          txt(svg, W - 4, Y(dg.cut_height) - 4, 'cut at k = ' + d.k, {
+            'text-anchor': 'end', 'font-size': 9.5, fill: '#FFD24D'
+          });
+          dg.leaf_order.forEach((leaf) => {
+            const s = d.stations[sites[leaf]];
+            const c = d.clusters[s.cluster];
+            el('circle', { cx: pos[leaf], cy: Y(0), r: leaf === sites.indexOf(site) ? 4.6 : 3.4, fill: c.color, stroke: leaf === sites.indexOf(site) ? '#ffffff' : '#0b1622', 'stroke-width': leaf === sites.indexOf(site) ? 2 : 1 }, svg);
+            const t = txt(svg, pos[leaf] - 3, Y(0) + 10, s.place, {
+              'font-size': 9.5, fill: c.color, 'text-anchor': 'end',
+              transform: 'rotate(-38 ' + pos[leaf] + ' ' + (Y(0) + 10) + ')'
+            });
+            if (sites[leaf] === site) t.setAttribute('font-weight', 'bold');
+          });
+        }
+
+        // ---- all k values: one line per k tried ---------------------
+        {
+          const box = root.querySelector('.htclusters-kall');
+          (d.k_options || []).forEach((o) => {
+            const p = document.createElement('p');
+            p.textContent = 'k = ' + o.k +
+              (o.chosen ? ' (the grouping shown above)' : '') +
+              ': ' + o.description;
+            box.appendChild(p);
+          });
+        }
+
+        root.querySelector('.htclusters-note').textContent =
+          'Method: k means (k = ' + d.k + ', silhouette ' + d.silhouette_chosen +
+          ') on standardized features. Trait space: the first two principal ' +
+          'components of the same features (PC1 ' +
+          d.pca.variance_pct[0].toFixed(1) + '%, PC2 ' +
+          d.pca.variance_pct[1].toFixed(1) + '% of the variance); shaded ' +
+          'hulls outline each cluster. Map: station locations on the US ' +
+          'outline from the homepage map (us atlas), colored by cluster. ' +
+          'Ward linkage above, dashed line = the cut that gives the same ' +
+          d.k + ' groups. Two stations (Billings and Freeport) each form a regime of their own. ' +
+          'Full feature values are in the shared sidecar (clusters/clusters.json).';
+        loading.hidden = true;
+        root.querySelector('.htclusters-wrap').hidden = false;
+      } catch (e) {
+        loading.textContent = 'Station clusters unavailable: ' + e.message;
+        console.error(e);
+      }
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => {
+        if (es.some((x) => x.isIntersecting)) { io.disconnect(); start(); }
+      }, { rootMargin: '300px' });
+      io.observe(root);
+    } else start();
+  }
+}
+</script>
+
+
+
+
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);

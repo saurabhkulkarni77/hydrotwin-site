@@ -23,6 +23,7 @@ CLASSIC_MARKERS = {
     "ht-soilsnow v1": 2,             # soil/snow day-panel rows (classic only)
     "ht-3dchart v1": 2,              # 3D forecast chart in Data view (classic only)
     "ht-corr v1": 2,                 # multi-factor correlation section + boot
+    "ht-clusters v1": 2,             # station regime clusters section + boot
     "ht-dacp v1": 1,                 # DACP daily intervals
     "ht-weekly v1": 1,               # weekly outlook section (classic form)
     "ht-monthly v1": 1,              # monthly outlook section
@@ -41,6 +42,7 @@ CLASSIC_MARKERS = {
     'id="hts-sec-weekly"': 1,        # weekly section in the stats layout
     'id="hts-sec-monthly"': 1,       # monthly section in the stats layout
     'id="hts-sec-yearly"': 1,        # yearly section in the stats layout
+    'id="hts-sec-clusters"': 1,      # station clusters section in the stats layout
     'id="htdc-on"': 1,               # DACP band toggle control
     'id="htwk-live"': 1,             # weekly outlook Live button
     'id="htmo-live"': 1,             # monthly outlook Live button
@@ -75,7 +77,8 @@ THREED_MARKERS = {
 # Patches that must NOT leak across page classes.
 CLASSIC_FORBIDDEN = ("ht-live-gap v1", "ht-ablfix v1")
 THREED_FORBIDDEN = ("ht-statsview v1", "ht-soilsnow v1", "ht-3dchart v1",
-                    "ht-corr v1", "ht-fullforms v1", 'id="hts-top"')
+                    "ht-corr v1", "ht-clusters v1", "ht-fullforms v1",
+                    'id="hts-top"')
 
 
 def _extract_ht_data(html):
@@ -153,3 +156,20 @@ def test_all_station_pages_exist(repo_root):
         [f"USGS-{s}.html" for s in STATIONS]
         + [f"USGS-{s}-3d.html" for s in STATIONS])
     assert pages == expected
+
+
+def test_no_auth_gate_anywhere(repo_root):
+    """The ht-auth v1 login gate was removed on the owner's order
+    (2026-10-21): no page may carry the gate or logout blocks, any
+    ht_auth reference, or a link to login.html, and login.html
+    itself must not exist."""
+    pages = [repo_root / "index.html", repo_root / "mlops.html"]
+    pages += sorted((repo_root / "stations").glob("*.html"))
+    for p in pages:
+        html = p.read_text(encoding="utf-8", errors="replace")
+        assert "ht-auth" not in html, f"{p.name}: ht-auth remnant"
+        assert "ht_auth" not in html, f"{p.name}: ht_auth remnant"
+        assert "login.html" not in html, (
+            f"{p.name}: login.html reference remnant")
+    assert not (repo_root / "login.html").exists(), (
+        "login.html still present")

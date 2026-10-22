@@ -52,6 +52,12 @@ jobs:
       - name: Model full forms in the Data view (dev only)
         run: python3 build25/patch_fullforms.py
 
+      - name: Station clusters in the Data view (dev only)
+        run: python3 build25/patch_clusters.py
+
+      - name: Basin info on the homepage map-pin hover card (dev only)
+        run: python3 build25/patch_mapbasin.py
+
       - name: Monthly outlook - next 6 monthly mean flows panel (dev only)
         run: python3 build25/patch_monthly.py
 
@@ -81,13 +87,19 @@ jobs:
       - name: Remove climatology from the station-page UI (dev)
         run: python3 build25/patch_noclim.py
 
+      - name: Remove login gate from every page (dev only)
+        run: python3 build25/patch_auth.py
+
+      - name: Panels load on click only (dev only)
+        run: python3 build25/patch_lazy_panels.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
-          if [ -n "$(git status --porcelain stations)" ]; then
+          if [ -n "$(git status --porcelain stations index.html mlops.html)" ]; then
             git config user.name "hydrotwin-dev"
             git config user.email "actions@github.com"
-            git add stations
+            git add stations index.html mlops.html
             git commit -m "Bake station pages (dev)"
             git push
           else
