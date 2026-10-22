@@ -57,9 +57,16 @@ CLASSIC pages (stations/USGS-<id>.html, the statistics Data view):
   button only toggles it - no fetch exists for it. Inside the 3D
   scene module, the two eager panel-data loads are gated on the
   module's own buttons via a promise gate installed in <head>:
-    - the NLDI rivers/watershed IIFE waits for
+    - inside the NLDI rivers/watershed IIFE, only the basin fetch
+      (the one purely Watershed-panel datum in that IIFE) waits for
       window.__htlpGate('watershed'), released by the first click
-      on the module's Watershed button (#bShed);
+      on the module's Watershed button (#bShed). The flowline load
+      itself runs eagerly with the scene: it builds PATHM, without
+      which initTableFlood / initGroundFlood never run and the 3D
+      scene has NO water surface at all. (The whole-IIFE gate that
+      shipped 2026-10-21 was a regression — the river was missing on
+      every 3D page until the Watershed button was clicked; fixed
+      2026-10-22 by moving the gate down to the basin fetch.)
     - the Macrostrat geologyAt() call for the gauge point waits
       for window.__htlpGate('geo'), released by the first click on
       the Geology button (#bGeo - including the module's own
@@ -195,6 +202,12 @@ CLASSIC_SECTIONS = [  # (section id, loader group) in page order
 GATE_RIVERS_OLD = "(async () => {\n  setLoad('rivers', 'loading');"
 GATE_RIVERS_NEW = ("(async () => {\n  await window.__htlpGate('watershed');"
                    "\n  setLoad('rivers', 'loading');")
+# 2026-10-22 river fix: the gate moves from the IIFE head (which
+# starved the scene of its water - see the docstring) to just before
+# the basin fetch, the only Watershed-panel-only step in the IIFE.
+GATE_BASIN_OLD = "  drawShed();\n  setLoad('watershed', 'loading');"
+GATE_BASIN_NEW = ("  drawShed();\n  await window.__htlpGate('watershed');"
+                  "\n  setLoad('watershed', 'loading');")
 GATE_GEO_OLD = ("geologyAt(D.lon, D.lat).then((u) => { geoUnits.gauge = u; "
                 "drawGeo(); }).catch(() => { geoUnits.gauge = 'none'; "
                 "drawGeo(); });")
@@ -526,11 +539,18 @@ def patch_3d(path: Path) -> str:
     s, err = gate_boots(s, BOOT_GATES_3D)
     if err:
         return err
-    # scene-module data gates
-    if GATE_RIVERS_NEW in s:
+    # scene-module data gates. The rivers IIFE must NOT be gated as
+    # a whole: it builds PATHM, without which initTableFlood /
+    # initGroundFlood never run and the scene has no water surface at
+    # all (the 2026-10-21 whole-IIFE gate was the river regression,
+    # found 2026-10-22). Only the basin fetch waits for the gate.
+    if GATE_BASIN_NEW in s and GATE_RIVERS_NEW not in s:
         pass
-    elif s.count(GATE_RIVERS_OLD) == 1:
-        s = s.replace(GATE_RIVERS_OLD, GATE_RIVERS_NEW, 1)
+    elif s.count(GATE_RIVERS_NEW) == 1 and s.count(GATE_BASIN_OLD) == 1:
+        s = s.replace(GATE_RIVERS_NEW, GATE_RIVERS_OLD, 1)
+        s = s.replace(GATE_BASIN_OLD, GATE_BASIN_NEW, 1)
+    elif s.count(GATE_RIVERS_OLD) == 1 and s.count(GATE_BASIN_OLD) == 1:
+        s = s.replace(GATE_BASIN_OLD, GATE_BASIN_NEW, 1)
     else:
         return "FAIL rivers gate anchor"
     if GATE_GEO_NEW in s:
