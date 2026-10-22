@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39857392435-e784fdc7ac74ae6bf7aa686060857269ea24a5f1";
+  var BID = "39862348762-746e034a604205ed1fe309069b3539841cf2120a";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -176,8 +177,8 @@ USGS stage–discharge rating (${RT ? RT.n + ' field measurements since ' + RT.f
 <b>Headset:</b> Enter VR · trigger on panel buttons or the ground · left stick ←/→ day · right stick fly / turn · A / B down / up</div>`;
 $('hudtg').onclick = () => { $('hud').classList.toggle('min'); $('hudtg').textContent = $('hud').classList.contains('min') ? 'help' : 'hide help'; };
 setTimeout(() => { if (!$('hud').classList.contains('min')) $('hudtg').click(); }, 9000);
-$('links').innerHTML = `<button id="bView">Table view</button><button id="bDrone">Drone</button><button id="bBank">Riverbank</button><button id="bFc">▶ Forecast</button>
-<button id="bPanel" class="on">Panel</button><button id="bGeo">Geology</button><button id="bShed">Watershed</button><a href="${D.mapUrl}">◀ USA map</a><a href="${D.classicUrl}">Data view ▶</a>`;
+$('links').innerHTML = `<button id="bDrone">Drone</button><button id="bBank">Riverbank</button><button id="bFc">▶ Forecast</button>
+<button id="bPanel" class="on">Panel</button><button id="bGeo">Geology</button><button id="bShed">Watershed</button><a href="${D.mapUrl}">◀ USA map</a>`;
 
 // ------------------------------------------------------------------ geography helpers (Web Mercator)
 const TS = 256;
@@ -625,9 +626,8 @@ const flowP = canvasPanel(1.25, 0.9, 820), geoP = canvasPanel(0.9, 0.95, 700), s
 const S2 = { day: Math.max(0, Math.min(D.n - 1, D.openDay ? dayIndex(D.openDay) : D.n - 8)), model: 0, lead: 1, playing: false, mode: 'ground' };
 window.__htS = S2;
 const qp = new URLSearchParams(location.search); if (qp.has('day')) S2.day = Math.max(0, Math.min(D.n - 1, dayIndex(qp.get('day'))));
-if (qp.get('view') === 'table') S2.mode = 'table';
 const BTN = [[['◀ day', 'prev'], ['day ▶', 'next'], ['▶ play', 'play'], ['▶ forecast', 'fc'], ['model', 'model'], ['lead', 'lead']],
-             [['layer', 'layer'], ['view', 'view'], ['drone', 'drone'], ['riverbank', 'bank'], ['◀ map', 'map'], ['data ▶', 'data']]];
+             [['layer', 'layer'], ['drone', 'drone'], ['riverbank', 'bank'], ['◀ map', 'map']]];
 const BTNY = [0.77, 0.885], BTNH = 0.095;
 let qmin = Infinity, qmax = -Infinity; for (const v of D.flow) if (v != null && v > 0) { qmin = Math.min(qmin, v); qmax = Math.max(qmax, v); }
 const lq = (v) => (Math.log(v) - Math.log(qmin)) / (Math.log(qmax) - Math.log(qmin) || 1);
@@ -793,7 +793,7 @@ function clickFlow(u, v) { BTN.forEach((row, r) => { if (v >= BTNY[r] && v <= BT
 $('bGeo').onclick = () => { geoP.c.style.display = geoP.c.style.display === 'block' ? 'none' : 'block'; $('bGeo').classList.toggle('on'); };
 $('bShed').onclick = () => { shedP.c.style.display = shedP.c.style.display === 'block' ? 'none' : 'block'; $('bShed').classList.toggle('on'); };
 let dockHidden = false; $('bPanel').onclick = () => { dockHidden = !dockHidden; $('bPanel').classList.toggle('on', !dockHidden); layoutPanels(); };
-$('bView').onclick = () => act('view'); $('bDrone').onclick = () => act('drone'); $('bBank').onclick = () => act('bank'); $('bFc').onclick = () => act('fc');
+$('bDrone').onclick = () => act('drone'); $('bBank').onclick = () => act('bank'); $('bFc').onclick = () => act('fc');
 
 // ------------------------------------------------------------------ views
 const VIEWS = { drone: null, bank: null, bankDir: 0 };
@@ -825,7 +825,7 @@ function setMode(m) {
   groundRoot.visible = g; tableRoot.visible = !g; sky.visible = g;
   scene.fog = g ? FOG : null; scene.background = g ? null : new THREE.Color('#1B2633'); scene.environment = g ? envTex : null;
   camera.near = g ? 0.5 : 0.01; camera.far = g ? (QUEST ? 40000 : 150000) : 100; camera.updateProjectionMatrix();
-  $('bView').textContent = g ? 'Table view' : 'Ground view'; ['bDrone', 'bBank'].forEach((b) => { $(b).style.display = g ? '' : 'none'; });
+  ['bDrone', 'bBank'].forEach((b) => { $(b).style.display = g ? '' : 'none'; });
   layoutPanels(); levelDirty = true; ghostKey = '';
   if (!renderer.xr.isPresenting) {
     if (g) { orbit.maxDistance = 30000; orbit.maxPolarAngle = Math.PI * 0.495; if (VIEWS.drone) goView('drone'); else { camera.position.set(700, 400, 900); orbit.target.set(0, 0, 0); } }
@@ -866,9 +866,8 @@ function act(a) {
   else if (a === 'model') { S2.model = (S2.model + 1) % D.models.length; ghostKey = ''; levelDirty = true; drawFlow(); }
   else if (a === 'lead') { S2.lead = S2.lead % 7 + 1; ghostKey = ''; levelDirty = true; drawFlow(); }
   else if (a === 'layer') setLayer((layer + 1) % LAYERS.length);
-  else if (a === 'view') setMode(S2.mode === 'ground' ? 'table' : 'ground');
   else if (a === 'drone' || a === 'bank') { if (S2.mode !== 'ground') setMode('ground'); goView(a); }
-  else if (a === 'map') location.href = D.mapUrl; else if (a === 'data') location.href = D.classicUrl;
+  else if (a === 'map') location.href = D.mapUrl;
   else if (a === 'relief') { EXAG = EXAGS[(EXAGS.indexOf(EXAG) + 1) % EXAGS.length]; buildHeights(); buildOverlays(); levelDirty = true; ghostKey = ''; drawFlow(); }
 }
 addEventListener('keydown', (e) => { const k = e.key.toLowerCase();
@@ -5587,6 +5586,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
 })();
 </script>
+
 
 
 
