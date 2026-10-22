@@ -15,7 +15,7 @@ _Draft prepared 2026-10-13; lands in the hydrotwin-site repo once GitHub write a
 - **URL (HTTP):** http://hydrotwin-site-dev-2026.s3-website-us-east-1.amazonaws.com
 - **URL (HTTPS):** https://d36737oy6jvpd8.cloudfront.net — CloudFront distribution `EW9JZR3H96ARN`, added 2026-10-22 (needed for WebXR/VR testing and sharing; mirrors the production setup). Machine-readable record: `.github/infra/dev-cloudfront.json`.
 - **AWS:** separate S3 bucket `hydrotwin-site-dev-2026` (static website hosting), fronted by its own CloudFront distribution; nothing shared with production.
-- **Deploy:** push to `dev` triggers `.github/workflows/deploy-dev.yml` (syncs to the dev bucket only). Note: after a deploy, the HTTPS (CloudFront) copy can lag until its cache expires; the HTTP website URL always reflects the bucket's current content immediately.
+- **Deploy:** push to `dev` triggers `.github/workflows/deploy-dev.yml` (syncs to the dev bucket only, then auto-invalidates the dev CloudFront cache — the deploy waits for the invalidation to complete, so the HTTPS URL serves the fresh build as soon as the run is green).
 
 ## Workflow
 
