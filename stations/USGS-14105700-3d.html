@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39862348762-746e034a604205ed1fe309069b3539841cf2120a";
+  var BID = "39863961448-cda6d23333fc4fc0b4722f745650fde38be9881e";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -2166,7 +2167,6 @@ let SAT_O = null;
   loadBuildings().catch(() => setLoad('buildings', 'not available'));
 })().catch((e) => setLoad('terrain', 'failed: ' + e.message));
 (async () => {
-  await window.__htlpGate('watershed');
   setLoad('rivers', 'loading');
   const [um, dm, ut, upG, dnG] = await Promise.allSettled([
     getJSON(NLDI + 'navigation/UM/flowlines?distance=150&f=json'), getJSON(NLDI + 'navigation/DM/flowlines?distance=400&f=json'),
@@ -2184,6 +2184,7 @@ let SAT_O = null;
   if (elev.some((v) => v !== 0)) { buildOverlays(); initTableFlood(); placeViews(); }
   if (iDEM) { initGroundFlood(); buildGroundLabels(); }
   drawShed();
+  await window.__htlpGate('watershed');
   setLoad('watershed', 'loading');
   try { RIV.basin = await getJSON(NLDI + 'basin?f=json&simplified=true', 90000); shedInfo.area = basinArea(lines(RIV.basin)); setLoad('watershed', 'ok'); }
   catch (e) { RIV.basin = 'failed'; setLoad('watershed', 'not available'); }
@@ -5600,6 +5601,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
 })();
 </script>
+
 
 
 
