@@ -8,6 +8,13 @@ the div markup itself: the bare "ht-drift-panel" string also occurs in
 the stats-view CSS overrides and moveEl call on classic pages, which
 false-positived the old `MARKER in html` check after apply25 stripped
 the panel block — the panel was then never re-added. Fixed 2026-10-15.)
+
+Display update 2026-10-22: the Data drift section now shows the PSI
+drift cutoff explicitly — a count of features above the 0.25 cutoff at
+the top of the section, a per-feature status pill (drifting / moderate /
+stable against the standard PSI bands), and a legend line under the
+table. Display only: PSI values still come from drift_bake.json and no
+computation changes.
 """
 import json
 from pathlib import Path
@@ -20,7 +27,23 @@ PANEL_DIV = '<div id="ht-drift-panel">'  # injected markup; the only safe skip c
 FEAT_NAMES = {"tmax_c": "Tmax", "tmin_c": "Tmin", "tmean_c": "Tmean",
               "precip_mm": "Precip", "log10_flow": "Flow (log)"}
 PILL = {"stable": "#2e9e5b", "watch": "#d9930d", "drift": "#d64545",
-        "improving": "#f5c518", "no data": "#777"}
+        "improving": "#f5c518", "no data": "#777",
+        "drifting": "#d64545", "moderate": "#d9930d"}
+# Standard PSI interpretation bands: above PSI_CUT a feature counts as
+# drifting; at/above PSI_MOD (up to the cutoff) it is a moderate shift;
+# below PSI_MOD it is stable.
+PSI_CUT = 0.25
+PSI_MOD = 0.10
+
+
+def psi_status(v):
+    if v is None:
+        return "no data"
+    if v > PSI_CUT:
+        return "drifting"
+    if v >= PSI_MOD:
+        return "moderate"
+    return "stable"
 # Dark text on light pill backgrounds (yellow "improving": the .pill class
 # default #fff text is unreadable on #f5c518; same pairing as .htd-dev).
 PILL_FG = {"improving": "#111"}
@@ -60,7 +83,11 @@ def render(station, d):
     frows = ""
     for f, name in FEAT_NAMES.items():
         v = data["features"].get(f)
-        frows += f"<tr><td>{name}</td><td>{'—' if v is None else f'{v:.3f}'}</td></tr>"
+        frows += (f"<tr><td>{name}</td>"
+                  f"<td>{'—' if v is None else f'{v:.3f}'}</td>"
+                  f"<td>{pill(psi_status(v))}</td></tr>")
+    vals = [v for v in data["features"].values() if v is not None]
+    n_drift = sum(1 for v in vals if v > PSI_CUT)
     mrows = ""
     for m, mv in d["models"].items():
         e = "—" if mv["e"] is None else f"{mv['e']:.3f}"
@@ -76,8 +103,10 @@ def render(station, d):
   <button id="htd-toggle" aria-label="collapse">–</button></div>
   <div class="htd-body" id="htd-body">
     <div class="htd-sec">Data drift {pill(data['status'])}</div>
+    <div class="htd-line"><b>{n_drift} of {len(vals)}</b> features above the 0.25 drift cutoff.</div>
     <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: {worst}, PSI {psi_txt}.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr>{frows}</table>
+    <table><tr><th>Feature</th><th>PSI</th><th></th></tr>{frows}</table>
+    <div class="htd-line">Drift cutoff: PSI &gt; 0.25 = drifting · 0.10–0.25 = moderate shift · &lt; 0.10 = stable.</div>
     <div class="htd-sec">Concept drift</div>
     <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
     <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr>{mrows}</table>
