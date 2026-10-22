@@ -184,4 +184,10 @@ jobs:
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .github/infra/dev-cloudfront.json
           git commit -m 'Record dev CloudFront distribution (setup-dev-https one-off)' || echo 'nothing to commit'
-          git push origin HEAD:dev
+          # dev may have moved since checkout (deploy-dev bake-backs) — rebase and retry
+          for attempt in 1 2 3; do
+            git pull --rebase origin dev && git push origin HEAD:dev && break
+            echo "push attempt $attempt failed; retrying"
+            sleep 10
+          done
+          git ls-remote origin dev | head -1
