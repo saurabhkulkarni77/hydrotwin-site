@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39838708853-ca1417b0dddc8b35fcf1eecb747f4d36303b70c1";
+  var BID = "39844877912-3e1dc8fc9c50f01e50129cdd3293461303ccc9a6";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -2170,7 +2171,7 @@ window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater,
 window.HT3_READY = true;
 </script>
 <div id="ht-datewrap" style="position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(12,18,28,.88);color:#E6EDF5;font:600 14px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4);"><label for="ht-date" style="cursor:pointer;">Date</label><input id="ht-date" type="date" min="2001-10-01" max="2026-09-30" style="font:600 14px Arial;padding:5px 8px;border-radius:6px;border:1px solid #3A4A5E;background:#0E1A24;color:#E6EDF5;color-scheme:dark;"></div>
-<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button><button id="cmpTop" title="Overlay 7-day forecasts of multiple models" style="padding:6px 14px;border-radius:10px;border:1px solid #8FC1F2;background:rgba(12,18,28,.88);color:#8FC1F2;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Δ Compare models</button></div>
+<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button><button id="loadModelTop" title="Fetch the latest published model weights from hydrotwin-models and re-run the forecast with them" style="padding:6px 14px;border-radius:10px;border:1px solid #FFD24D;background:rgba(12,18,28,.88);color:#FFD24D;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Load new model</button><span id="loadModelStatus" style="align-self:center;font:600 12.5px Arial;color:#BFD0E0;max-width:360px;"></span><button id="cmpTop" title="Overlay 7-day forecasts of multiple models" style="padding:6px 14px;border-radius:10px;border:1px solid #8FC1F2;background:rgba(12,18,28,.88);color:#8FC1F2;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Δ Compare models</button></div>
 
 
 
@@ -5508,6 +5509,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -5546,4 +5548,257 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   </div>
 </div>
 <script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+<script>
+/* ht-loadmodel v1 - "Load new model": hot-load the latest published
+ * weights from the hydrotwin-models Pages source into the open page.
+ * The daily engine (ht-liveall) caches its ORT sessions privately and
+ * the big-model engine caches BIG.sess, so this block wraps
+ * ort.InferenceSession.create and hands those engines a proxy session
+ * for this station's artifacts; the proxy's inner real session is
+ * swapped atomically when the button loads fresh weights. A failed
+ * load changes nothing. See build25/patch_livefix.py (Part 3). */
+(function () {
+  'use strict';
+  if (window.__htlmOn) return;
+  window.__htlmOn = true;
+  var ONNX_BASE = 'https://saurabhkulkarni77.github.io/hydrotwin-models/onnx';
+  var MODELS_BASE = 'https://saurabhkulkarni77.github.io/hydrotwin-models/';
+  var NEURAL = ['LSTM', 'Transformer', 'TFT', 'PatchTST', 'PILSTMv1'];
+  var STATS = {"mu": [23.951317, 9.802238, 16.876776, 1.299755, 9.770886, 0.391047, 12.284435, 42.671355, 12.454993], "sd": [8.399204, 5.255385, 6.555306, 5.817925, 0.694342, 0.487986, 9.843441, 12.685135, 17.680813], "tsd": [0.065042, 0.121175, 0.166901, 0.203717, 0.233453, 0.257725, 0.277824], "med_sms": 11.7, "med_stmp": 34.0};
+  var D = window.HT_DATA || window.HT3D || {};
+  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
+  var epoch = 0;
+
+  /* After a successful load, models-source fetches (the classical
+   * params JSONs are fetched per live run) bypass the HTTP cache. */
+  if (window.fetch) {
+    var ofetch = window.fetch.bind(window);
+    window.fetch = function (input, init) {
+      try {
+        if (epoch) {
+          var u = (typeof input === 'string') ? input : (input && input.url) || '';
+          if (u.indexOf(MODELS_BASE) === 0 && u.indexOf('htlm=') < 0) {
+            var nu = u + (u.indexOf('?') >= 0 ? '&' : '?') + 'htlm=' + epoch;
+            input = (typeof input === 'string') ? nu : new Request(nu, input);
+          }
+        }
+      } catch (e) { /* passthrough */ }
+      return ofetch(input, init);
+    };
+  }
+
+  /* ---------------- session registry + proxy ---------------- */
+  var reg = {};
+  function modelOfUrl(u) {
+    if (typeof u !== 'string' || !SITE) return null;
+    var m = u.match(/\/onnx\/(\d{8})\/([A-Za-z0-9_]+)\.onnx(?:[?#].*)?$/);
+    if (!m || m[1] !== SITE) return null;
+    return m[2];
+  }
+  function curReal(model) {
+    var slot = reg[model];
+    if (!slot || !slot.real) throw new Error('ht-loadmodel: no live session for ' + model);
+    return slot.real;
+  }
+  function makeProxy(model) {
+    return {
+      get inputNames() { return curReal(model).inputNames; },
+      get outputNames() { return curReal(model).outputNames; },
+      run: function (feeds, opts) { return curReal(model).run(feeds, opts); },
+      release: function () { return Promise.resolve(); }
+    };
+  }
+  var rawCreate = null, wrapInstalled = false;
+  function tryInstall() {
+    if (wrapInstalled) return true;
+    if (typeof ort === 'undefined' || !ort.InferenceSession ||
+        typeof ort.InferenceSession.create !== 'function') return false;
+    if (ort.InferenceSession.create.__htlm) { wrapInstalled = true; return true; }
+    var orig = ort.InferenceSession.create.bind(ort.InferenceSession);
+    rawCreate = orig;
+    var wrapped = function (arg, opts) {
+      var model = modelOfUrl(arg);
+      if (!model) return orig(arg, opts);
+      var slot = reg[model];
+      if (!slot) {
+        slot = reg[model] = { real: null, proxy: makeProxy(model), pending: null };
+        slot.pending = orig(arg, opts).then(function (s) {
+          slot.real = s; slot.pending = null; return slot.proxy;
+        }, function (e) { delete reg[model]; throw e; });
+        return slot.pending;
+      }
+      if (slot.real) return Promise.resolve(slot.proxy);
+      if (!slot.pending) {
+        slot.pending = orig(arg, opts).then(function (s) {
+          slot.real = s; slot.pending = null; return slot.proxy;
+        }, function (e) { slot.pending = null; throw e; });
+      }
+      return slot.pending.then(function () { return slot.proxy; });
+    };
+    wrapped.__htlm = true;
+    ort.InferenceSession.create = wrapped;
+    wrapInstalled = true;
+    return true;
+  }
+  var pollTries = 0;
+  var poll = setInterval(function () {
+    if (tryInstall() || ++pollTries > 240) clearInterval(poll);
+  }, 500);
+  tryInstall();
+
+  function ensureOrt() {
+    return new Promise(function (res, rej) {
+      if (typeof ort !== 'undefined') return res();
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.min.js';
+      s.onload = function () { res(); };
+      s.onerror = function () { rej(new Error('onnxruntime failed to load (CDN blocked?)')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  /* ------------- selected-date recompute (mirrors htla dailyFc) ------------- */
+  function buildWindow(day) {
+    var flows = {}, wx = {}, win30 = [], i, dt;
+    var t0 = Date.parse((D.start || '2001-10-01') + 'T00:00:00Z');
+    for (i = day - 29; i <= day; i++) {
+      if (i < 0 || i >= D.n) return null;
+      dt = new Date(t0 + i * 864e5).toISOString().slice(0, 10);
+      var q = D.flow[i], tx = D.tmax[i], tn = D.tmin[i];
+      if (q == null || !(q > 0) || tx == null || tn == null) return null;
+      flows[dt] = q; wx[dt] = [tx, tn, D.precip[i] || 0]; win30.push(dt);
+    }
+    return { flows: flows, wx: wx, win30: win30 };
+  }
+  async function runFan(sess, A, ss) {
+    var mu = STATS.mu, sd = STATS.sd, tsd = STATS.tsd;
+    var flows = A.flows, wx = A.wx, win30 = A.win30, i, j;
+    var flat = new Float32Array(29 * 9);
+    var prev = flows[win30[0]];
+    for (i = 1; i < 30; i++) {
+      var dt = win30[i], t = wx[dt], q = flows[dt];
+      var row = [t[0], t[1], (t[0] + t[1]) / 2, t[2], q, q > prev ? 1 : 0, ss.sms, ss.stmpF, ss.swe];
+      prev = q;
+      for (j = 0; j < 9; j++) {
+        var x = j === 4 ? Math.log(row[j]) : row[j];
+        flat[(i - 1) * 9 + j] = (x - mu[j]) / sd[j];
+      }
+    }
+    var last = Math.log(flows[win30[29]]);
+    var feeds = {};
+    feeds[sess.inputNames[0]] = new ort.Tensor('float32', flat, [1, 29, 9]);
+    var out = await sess.run(feeds);
+    var diffs = Array.from(out[sess.outputNames[0]].data);
+    if (diffs.length !== 7 || diffs.some(function (v) { return !isFinite(v); })) {
+      throw new Error('bad model output');
+    }
+    return diffs.map(function (d, l) { return Math.exp(last + d * tsd[l]); });
+  }
+  function stepKey(k) {
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true }));
+  }
+  async function rerunSelectedDate(models) {
+    var S = window.__htS;
+    if (!S || !D.pred || !D.models || !D.flow) return '';
+    var day = S.day;
+    if (day == null || day < 29 || day >= D.n) {
+      return ' · this date has under 30 days of history - baked forecast kept';
+    }
+    var A = buildWindow(day);
+    if (!A) return ' · window has data gaps - baked forecast kept';
+    var ss = { sms: STATS.med_sms, stmpF: STATS.med_stmp, swe: 0 };
+    var done = 0;
+    for (var k = 0; k < models.length; k++) {
+      var m = models[k], mi = D.models.indexOf(m), slot = reg[m];
+      if (mi < 0 || !slot || !slot.real) continue;
+      try {
+        var fan = await runFan(slot.real, A, ss);
+        for (var l = 0; l < 7; l++) D.pred[mi][l][day] = fan[l];
+        done++;
+      } catch (e) { /* keep the baked fan for this model */ }
+    }
+    if (!done) return ' · recompute failed - baked forecast kept';
+    if (day > 0) { S.day = day - 1; stepKey('ArrowRight'); }
+    else { S.day = 0; stepKey('ArrowRight'); stepKey('ArrowLeft'); }
+    return ' · forecast for ' + A.win30[29] + ' recomputed (' + done + ' models)';
+  }
+
+  function exitOldWeights() {
+    var box = document.getElementById('htla-old');
+    if (box && box.checked) {
+      box.checked = false;
+      box.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  /* ---------------- the button ---------------- */
+  var btn = document.getElementById('loadModelTop');
+  var statusEl = document.getElementById('loadModelStatus');
+  function setStatus(t, ok) {
+    if (!statusEl) return;
+    statusEl.textContent = t;
+    statusEl.style.color = ok ? '#7AE07A' : '#FF8A7A';
+  }
+  var busy = false;
+  async function loadNewModel() {
+    if (busy) return;
+    busy = true;
+    var label = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Loading model...'; }
+    setStatus('', true);
+    try {
+      if (!SITE) throw new Error('station id unavailable on this page');
+      await ensureOrt();
+      if (!tryInstall() || !rawCreate) throw new Error('model runtime unavailable');
+      var models = NEURAL.filter(function (m) { return (D.models || []).indexOf(m) >= 0; });
+      if (!models.length) throw new Error('no neural models on this page');
+      var pend = models.map(function (m) { return reg[m] && reg[m].pending; })
+        .filter(function (p) { return !!p; });
+      if (pend.length) { try { await Promise.all(pend); } catch (e) { /* superseded below */ } }
+      var ts = Date.now(), built = {}, lastMod = null, k, m2;
+      for (k = 0; k < models.length; k++) {
+        m2 = models[k];
+        var url = ONNX_BASE + '/' + SITE + '/' + m2 + '.onnx?htlm=' + ts;
+        var r = await fetch(url, { cache: 'no-store' });
+        if (!r.ok) throw new Error(m2 + ': HTTP ' + r.status + ' from the models source');
+        var lm = r.headers.get('last-modified');
+        if (lm) lastMod = lm;
+        var buf = await r.arrayBuffer();
+        if (!buf.byteLength) throw new Error(m2 + ': empty model artifact');
+        built[m2] = await rawCreate(new Uint8Array(buf));
+      }
+      /* every new session built -> swap atomically */
+      for (k = 0; k < models.length; k++) {
+        m2 = models[k];
+        if (!reg[m2]) reg[m2] = { real: null, proxy: makeProxy(m2), pending: null };
+        var old = reg[m2].real;
+        reg[m2].real = built[m2];
+        reg[m2].pending = null;
+        if (old && old !== built[m2] && old.release) {
+          try { await old.release(); } catch (e) { /* best effort */ }
+        }
+      }
+      epoch = ts;
+      exitOldWeights();
+      var note = '';
+      try { note = await rerunSelectedDate(models); } catch (e) { note = ''; }
+      var stamp = '';
+      if (lastMod) {
+        var d = new Date(lastMod);
+        if (!isNaN(d)) stamp = ' · weights published ' + d.toUTCString().slice(0, 16);
+      }
+      setStatus('New model loaded ✓' + stamp + note, true);
+      if (window.__htla && window.__htla.on) {
+        var g = document.getElementById('htla-go');
+        if (g) { g.click(); setStatus('New model loaded ✓' + stamp + note + ' · live re-run started', true); }
+      }
+    } catch (e) {
+      setStatus('Load failed - previous model kept (' + ((e && e.message) || e) + ')', false);
+    }
+    if (btn) { btn.disabled = false; btn.textContent = label; }
+    busy = false;
+  }
+  if (btn) btn.addEventListener('click', loadNewModel);
+})();
+</script>
 </body></html>
