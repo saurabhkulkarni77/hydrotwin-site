@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39847635211-0cbcee46ad4e9dc5a0913562fe3e84c6d0ceece1";
+  var BID = "39855316404-3ea24d9dbaf17d7a87db0aeef7e5fb6f9be445bf";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -4546,7 +4547,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     + 'background:rgba(8,20,14,.96);border:2px solid #2E9B57;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55);padding:8px 12px;font:600 13.5px system-ui;color:#DDE6EE}'
     + '#htla-go{background:#14532D;color:#B7F4CB;border:1px solid #2E9B57;border-radius:8px;padding:7px 14px;cursor:pointer;font:700 13.5px system-ui}'
     + '#htla-go:hover{background:#1B6B3C}#htla-badge{color:#7AE07A;font-weight:800;letter-spacing:.4px}'
-    + '#htla-note{color:#BFD0E0;font-weight:500}#htla-oldlab{cursor:pointer;color:#C9CED6;font-weight:600}'
+    + '#htla-note{color:#BFD0E0;font-weight:500}#htla-oldlab{cursor:pointer;color:#C9CED6;font-weight:600}/* ht-rmsefield v1 */#htla-rmse{color:#9FB3C8;font-weight:600;font-size:12px;white-space:nowrap}'
     + '#htla-back{background:#33404F;color:#DDE6EE;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:6px 10px;cursor:pointer;font:600 12.5px system-ui}'
     + '#htla-oldtable{flex-basis:100%;font:500 12px system-ui;color:#C9CED6}'
     + '#htla-oldtable table{border-collapse:collapse;margin-top:4px}#htla-oldtable td,#htla-oldtable th{padding:1px 8px 1px 0;text-align:right}'
@@ -4567,6 +4568,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     + '<span id="htla-badge" style="display:none">● LIVE</span>'
     + '<span id="htla-note">baked data through ' + BAKED_END + '</span>'
     + '<label id="htla-oldlab"><input type="checkbox" id="htla-old"> old weights (pre-drift-fix)</label>'
+    + '<span id="htla-rmse" title="WY2026 backtest - mean RMSE (log10 cfs) across the 10 served daily models: old = pre-drift-fix weights, new = retrained weights (drift fix, Oct 2026). Same A-vs-B figures as the Model drift panel.">RMSE old 0.2460 · new 0.2386 · Δ -0.0074</span>'
     + '<span id="htla-oldnote"></span>'
     + '<button type="button" id="htla-back" style="display:none">↩ baked</button>'
     + '<div id="htla-oldtable" style="display:none"></div>';
@@ -5523,6 +5525,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
 })();
 </script>
+
 
 
 
