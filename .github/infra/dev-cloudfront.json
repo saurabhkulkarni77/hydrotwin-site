@@ -1,0 +1,9 @@
+{
+  "distribution_id": "EW9JZR3H96ARN",
+  "domain_name": "d36737oy6jvpd8.cloudfront.net",
+  "https_base_url": "https://d36737oy6jvpd8.cloudfront.net",
+  "status": "Deployed",
+  "origin": "hydrotwin-site-dev-2026.s3-website-us-east-1.amazonaws.com",
+  "recorded_utc": "2026-10-22T17:45:17.428980Z",
+  "note": "CloudFront front for the DEV bucket website endpoint; origin protocol http-only (mirrors prod E29IVO4IMQNKO6)."
+}
