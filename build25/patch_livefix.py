@@ -75,6 +75,36 @@ Only pages carrying id="retrainTop" (the 14 3D pages) get Part 3;
 classic pages are untouched by it. Its block and button are refreshed
 in place on every run (own marker), independent of Parts 1-2.
 
+Part 4 (ht-notableview v1, appended 2026-10-22): remove the Data view /
+Table view feature from the 3D pages (Saurabh's order: "remove table
+view"). The 3D module's top bar carried two entry points into
+data-table presentations, and the scene's forecast panel carried the
+same two as in-scene buttons:
+  * a "Table view" button (#bView) toggling the scene ground<->table
+    mode, wired via act('view'), with a mode label rewrite inside
+    setMode() and a ?view=table URL-param initialiser;
+  * a "Data view >" link to the classic statistics page
+    (D.classicUrl), mirrored by an in-scene 'data >' panel button and
+    an act('data') navigation branch.
+Part 4 strips every one of those entry points with exact,
+count-checked anchors (see NT_STRIPS): both top-bar elements, the
+#bView click wiring and its setMode() label line (either would throw
+on the missing element if left behind), the ?view=table initialiser,
+both in-scene panel button entries (the panel's draw/hit code derives
+slot widths from the row length, so the rows simply reflow), and both
+act() branches. The table-mode scene machinery itself (setMode,
+tableRoot, the second water body) is deliberately NOT excised: with
+no button, panel entry, action branch or URL param able to select it,
+it is unreachable, and the ground-mode code path is byte-identical to
+before. D.classicUrl stays in HT_DATA as inert data (HT_DATA is
+asserted byte-identical by other patchers; nothing reads the field
+once the two consumers above are gone). Classic pages carry none of
+these anchors - the classic page IS the statistics view (ht-statsview)
+- and are returned unchanged. Idempotent: a page with no anchors left
+is a no-op; a page whose anchors are only partially present is still
+stripped, and any residual UI trace fails the page loudly (skip +
+warning) instead of shipping a half-removed feature.
+
 Idempotent: pages carrying the v2 MARKER with no old anchors left are
 skipped; pages carrying only the v1 append (first deploy) are upgraded
 in place (part 1 applied, marker bumped).
@@ -544,6 +574,57 @@ def apply_loadmodel(s):
     return out
 
 
+# ---------------- part 4: ht-notableview v1 (remove Data/Table view) --------
+# Exact anchors in the 3D module, each occurring exactly once per 3D
+# page (census-verified on all 14). Removal only - nothing is added to
+# the page, so no other patcher's marker census changes.
+NT_STRIPS = [
+    # "Data view >" top-bar link to the classic statistics page
+    ('<a href="${D.classicUrl}">Data view ▶</a>', ''),
+    # "Table view" top-bar button (scene ground<->table mode toggle)
+    ('<button id="bView">Table view</button>', ''),
+    # #bView click wiring (would throw on the removed element)
+    ("$('bView').onclick = () => act('view'); ", ''),
+    # setMode()'s #bView label rewrite (same throw risk on every mode set)
+    ("$('bView').textContent = g ? 'Table view' : 'Ground view'; ", ''),
+    # ?view=table URL-param initialiser for the table mode
+    ("if (qp.get('view') === 'table') S2.mode = 'table';\n", ''),
+    # in-scene forecast-panel buttons for the same two actions
+    ("['view', 'view'], ", ''),
+    (", ['data ▶', 'data']", ''),
+    # act() navigation branch for 'data'
+    (" else if (a === 'data') location.href = D.classicUrl;", ''),
+    # act() mode-toggle branch for 'view'
+    ("\n  else if (a === 'view') setMode(S2.mode === 'ground' ? 'table' : 'ground');", ''),
+]
+# UI traces that must not survive a strip; a hit fails the page loudly.
+NT_RESIDUAL = ('id="bView"', "$('bView')", 'Data view', 'Table view',
+               "['data ▶', 'data']", "a === 'data'")
+
+
+def apply_notableview(s):
+    """Part 4: strip the Data view / Table view entry points (3D only).
+
+    Pages with no anchors (classic pages; already-stripped 3D pages)
+    are returned unchanged. Returns None on anchor trouble: an anchor
+    occurring more than once, anchors on a page that is not a 3D page,
+    or any residual UI trace after stripping."""
+    if not any(old in s for old, _new in NT_STRIPS):
+        return s
+    if 'id="retrainTop"' not in s:
+        return None
+    out = s
+    for old, new in NT_STRIPS:
+        c = out.count(old)
+        if c > 1:
+            return None
+        if c == 1:
+            out = out.replace(old, new, 1)
+    if any(bad in out for bad in NT_RESIDUAL):
+        return None
+    return out
+
+
 def patch_page(s):
     """Returns (new_text, n_part1_applied) or None on anchor trouble."""
     has_v2 = MARKER in s
@@ -572,6 +653,9 @@ def patch_page(s):
         if any(old in out for old, _new in PART1):
             return None
     out = apply_loadmodel(out)
+    if out is None:
+        return None
+    out = apply_notableview(out)
     if out is None:
         return None
     return out, n1
