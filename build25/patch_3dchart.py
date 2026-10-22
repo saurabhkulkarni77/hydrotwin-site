@@ -144,12 +144,18 @@ ANCHOR_BODY = "</body>"
 # script and </body> -- the boot span is ONLY the importmap + module
 # script pair, never anything that follows it.
 SECTION_RE = re.compile(
-    r' <section class="hts-sec" id="hts-sec-3dchart">'
+    r' <section class="hts-sec(?: htlp-off)?" id="hts-sec-3dchart">'
     r'(?:(?!</?section).)*</section>', re.S)
+# The boot span also matches the ht-lazypanels v1 gated form (the module
+# script rewritten to inert text/plain): baked pages carry the gate, and
+# the refresh restores the live boot; patch_lazy_panels re-gates it later
+# in the same deploy run.
 BOOT_RE = re.compile(
     r'\n<script type="importmap">\n'
     r'\{ "imports": \{ "three": "\.\./assets/3dchart/three\.module\.js(?:\?htv=[^"\s]*)?" \} \}\n'
-    r'</script>\n<script type="module">(?:(?!</?script).)*</script>', re.S)
+    r'</script>\n<script (?:type="module"|type="text/plain" '
+    r'data-htlp-boot="chart3d" data-htlp-module="1")>'
+    r'(?:(?!</?script).)*</script>', re.S)
 BOOT_PAIR = BOOT.removesuffix("\n</body>")
 
 

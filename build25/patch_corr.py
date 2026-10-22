@@ -147,10 +147,15 @@ ANCHOR_BODY = "</body>"
 # the 3D chart section (insertion anchor on pages that carry it). None
 # of these can cross another section/script boundary.
 CORR_SECTION_RE = re.compile(
-    r' <section class="hts-sec" id="hts-sec-corr">'
+    r' <section class="hts-sec(?: htlp-off)?" id="hts-sec-corr">'
     r'(?:(?!</?section).)*</section>', re.S)
+# The boot span also matches the ht-lazypanels v1 gated form (the boot
+# script rewritten to inert text/plain): baked pages carry the gate, and
+# the refresh restores the live boot; patch_lazy_panels re-gates it later
+# in the same deploy run.
 CORR_BOOT_RE = re.compile(
-    r'\n<script>\n// ht-corr v1 boot(?:(?!</?script).)*</script>', re.S)
+    r'\n<script(?: type="text/plain" data-htlp-boot="corr")?>\n'
+    r'// ht-corr v1 boot(?:(?!</?script).)*</script>', re.S)
 SEC3D_RE = re.compile(
     r' <section class="hts-sec" id="hts-sec-3dchart">'
     r'(?:(?!</?section).)*</section>', re.S)
