@@ -83,6 +83,20 @@ refresh is applied as an in-place CSS swap inside the existing v2
 block (anchors POS_OLD_* below, each asserted to match exactly once),
 not as a version bump.
 
+RMSE field (2026-10-22, user request): the bar also carries a small
+readout immediately after the old-weights checkbox label —
+"RMSE old <A> · new <B> · Δ <B-A>" for the page's station, from the
+drift fix's A-vs-B backtest (both protocols evaluated on the same
+untouched WY2026 windows; mean across the 10 served daily models,
+log10 cfs; the same per-model figures the Model drift panel shows).
+A tooltip on the field states that basis. Like the position refresh
+it is an in-place edit inside the existing v2 block (anchors
+RMSE_OLD_* below, signature ht-rmsefield v1 in the bar CSS),
+applied to v2 pages on the refresh path and to fresh installs
+alike. The values are a fixed historical backtest, so a later
+"Load new model" hot-load does not change them, and the tooltip
+never claims otherwise.
+
 Idempotent: pages carrying the v2 MARKER whose bar CSS already has
 the centered default are skipped; v2 pages with the old sticky CSS
 get the in-place position refresh; pages carrying only a v1 block
@@ -116,6 +130,38 @@ POS_NEW_BORDER = ("background:rgba(8,20,14,.96);border:2px solid #2E9B57;border-
                   "box-shadow:0 10px 30px rgba(0,0,0,.55);padding:8px 12px;")
 POS_OLD_MOVED = "#htla-bar.htla-moved{position:fixed;margin:0;"
 POS_NEW_MOVED = "#htla-bar.htla-moved{position:fixed;transform:none;margin:0;"
+# RMSE field refresh anchors (2026-10-22): exact fragments of the v2
+# block as baked into the branch pages. Each OLD fragment must occur
+# exactly once per page (asserted in _apply_rmse); RMSE_SIG (inside
+# the replacement CSS, as a CSS comment) marks a page as refreshed.
+RMSE_SIG = "ht-rmsefield v1"
+RMSE_TITLE = ("WY2026 backtest - mean RMSE (log10 cfs) across the 10 served "
+              "daily models: old = pre-drift-fix weights, new = retrained "
+              "weights (drift fix, Oct 2026). Same A-vs-B figures as the "
+              "Model drift panel.")
+RMSE_OLD_CSS = "#htla-oldlab{cursor:pointer;color:#C9CED6;font-weight:600}"
+RMSE_NEW_CSS = (RMSE_OLD_CSS
+                + "/* ht-rmsefield v1 */#htla-rmse{color:#9FB3C8;"
+                  "font-weight:600;font-size:12px;white-space:nowrap}")
+RMSE_OLD_HTML = ("old weights (pre-drift-fix)</label>'\n"
+                 "    + '<span id=\"htla-oldnote\"></span>'")
+# Per-station (old, new) mean RMSE in log10 cfs: the mean across the
+# 10 served daily models of the drift fix's A-vs-B backtest, both
+# protocols evaluated on the same untouched WY2026 windows (old =
+# protocol A, pre-drift-fix; new = protocol B, the retrained recipe
+# behind the served models). Source: hydrotwin_driftfix/work/
+# ab_eval.json; the identical per-model values are baked into
+# drift/drift_bake.json (models[*].e / .l) and shown per model in the
+# Model drift panel. Pooled across stations: 0.3506 -> 0.3479.
+RMSE_AB = {
+    "01463500": (0.4309, 0.4051), "01646500": (0.4968, 0.4845),
+    "02320500": (0.0854, 0.0891), "03294500": (0.4416, 0.4613),
+    "05331000": (0.2460, 0.2386), "06214500": (0.2818, 0.2900),
+    "06934500": (0.3478, 0.3583), "07374000": (0.1945, 0.1703),
+    "08057000": (0.7997, 0.7890), "08158000": (0.7406, 0.7335),
+    "08313000": (0.3647, 0.3478), "09380000": (0.0846, 0.0786),
+    "11447650": (0.2495, 0.2731), "14105700": (0.1449, 0.1517),
+}
 ROOT = Path(__file__).resolve().parent.parent
 STATIONS = ROOT / "stations"
 
@@ -1086,6 +1132,27 @@ JS_TEMPLATE = r"""
 # ------------------------------------------------------------------- main
 
 
+def _apply_rmse(html, page_name):
+    """Insert the ht-rmsefield v1 readout into a page's v2 bar block,
+    immediately after the old-weights checkbox label. Returns the new
+    html, or None when the page's station has no backtest row or
+    either anchor does not match exactly once (the caller then leaves
+    the page untouched and warns — the position-refresh precedent)."""
+    m = re.search(r"USGS-(\d{8})", page_name)
+    if not m or m.group(1) not in RMSE_AB:
+        return None
+    if (html.count(RMSE_OLD_CSS), html.count(RMSE_OLD_HTML)) != (1, 1):
+        return None
+    old, new = RMSE_AB[m.group(1)]
+    text = f"RMSE old {old:.4f} · new {new:.4f} · Δ {new - old:+.4f}"
+    span = f'<span id="htla-rmse" title="{RMSE_TITLE}">{text}</span>'
+    new_anchor = ("old weights (pre-drift-fix)</label>'\n"
+                  f"    + '{span}'\n"
+                  "    + '<span id=\"htla-oldnote\"></span>'")
+    return (html.replace(RMSE_OLD_CSS, RMSE_NEW_CSS)
+                .replace(RMSE_OLD_HTML, new_anchor))
+
+
 def main():
     donor_path = STATIONS / "USGS-08057000-3d.html"
     donor = donor_path.read_text(encoding="utf-8")
@@ -1096,24 +1163,38 @@ def main():
     arma_fn = _extract_fn(donor, "function armaMean")
 
     pages = sorted(STATIONS.glob("*.html"))
-    done = skipped = upgraded = refreshed = 0
+    done = skipped = upgraded = refreshed = rmse = 0
     for page in pages:
         html = page.read_text(encoding="utf-8")
         if MARKER in html:
-            if POS_SIG in html:
-                skipped += 1
-                continue
-            counts = (html.count(POS_OLD_BAR), html.count(POS_OLD_BORDER),
-                      html.count(POS_OLD_MOVED))
-            if counts == (1, 1, 1):
-                html = (html.replace(POS_OLD_BAR, POS_NEW_BAR)
-                            .replace(POS_OLD_BORDER, POS_NEW_BORDER)
-                            .replace(POS_OLD_MOVED, POS_NEW_MOVED))
+            dirty = False
+            if POS_SIG not in html:
+                counts = (html.count(POS_OLD_BAR), html.count(POS_OLD_BORDER),
+                          html.count(POS_OLD_MOVED))
+                if counts == (1, 1, 1):
+                    html = (html.replace(POS_OLD_BAR, POS_NEW_BAR)
+                                .replace(POS_OLD_BORDER, POS_NEW_BORDER)
+                                .replace(POS_OLD_MOVED, POS_NEW_MOVED))
+                    refreshed += 1
+                    dirty = True
+                else:
+                    print(f"  !! {page.name}: v2 block present but position "
+                          f"anchors matched {counts} (want (1, 1, 1)); left untouched")
+                    skipped += 1
+                    continue
+            if RMSE_SIG not in html:
+                new_html = _apply_rmse(html, page.name)
+                if new_html is None:
+                    print(f"  !! {page.name}: v2 block present but RMSE "
+                          f"anchors did not match exactly once; left untouched")
+                    skipped += 1
+                    continue
+                html = new_html
+                rmse += 1
+                dirty = True
+            if dirty:
                 page.write_text(html, encoding="utf-8")
-                refreshed += 1
             else:
-                print(f"  !! {page.name}: v2 block present but position "
-                      f"anchors matched {counts} (want (1, 1, 1)); left untouched")
                 skipped += 1
             continue
         if any(m in html for m in OLD_MARKERS):
@@ -1142,9 +1223,16 @@ def main():
         if i < 0:
             print(f"  !! {page.name}: no </body>")
             continue
-        page.write_text(html[:i] + block + html[i:], encoding="utf-8")
+        html = html[:i] + block + html[i:]
+        new_html = _apply_rmse(html, page.name)
+        if new_html is None:
+            print(f"  !! {page.name}: fresh v2 block built but RMSE "
+                  f"anchors did not match exactly once; left unpatched")
+            continue
+        page.write_text(new_html, encoding="utf-8")
         done += 1
-    print(f"patch_liveall: patched {done} (upgraded {upgraded}), refreshed {refreshed}, skipped {skipped} (already marked)")
+        rmse += 1
+    print(f"patch_liveall: patched {done} (upgraded {upgraded}), refreshed {refreshed}, rmse {rmse}, skipped {skipped} (already marked)")
 
 
 if __name__ == "__main__":
