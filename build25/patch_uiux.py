@@ -25,6 +25,19 @@
    (geometry via !important), so restore is exact. Panels created later
    (LiveAR/CMP/LIVE) are caught by a MutationObserver.
 
+3) 3D pages: the date control (#ht-datewrap) gets a new home
+   (ht-datedrag v1). It was baked top-center (left:50% + translateX),
+   where on narrower windows it sits on top of the #links button row.
+   The baked default is now far left, just under the station title card
+   (left:14px, top:88px), and the enhancer makes the control draggable
+   by its background/label (pointer events; mouse + touch) — never
+   from the date input itself, which keeps its native picker/typing.
+   The dropped position persists in localStorage under the shared key
+   ht-datewrap-pos-v1 and is clamped to the viewport on apply/drag.
+   Classic pages relocate the control into the statistics layout's
+   date slot (#hts-date-slot): there the enhancer leaves it untouched
+   (any float positioning is cleared when the control is slotted).
+
 Idempotent: pages carrying the MARKER are skipped.
 Run from the repo root: python3 build25/patch_uiux.py
 """
@@ -87,7 +100,9 @@ JS_BODY = r"""
     + '.htux-chead{display:flex;justify-content:space-between;align-items:center;background:rgba(12,18,28,.9);color:#BFD0E0;font:600 12px Arial;padding:4px 6px 4px 10px;border-radius:10px 10px 0 0;cursor:move;touch-action:none;user-select:none;-webkit-user-select:none}'
     + '#dock .htux-wrap > canvas,#side .htux-wrap > canvas{border-radius:0 0 10px 10px}'
     + '.htux-wrap.htux-max > canvas{width:100% !important;height:auto !important}'
-    + '.htux-raise{z-index:10040 !important}';
+    + '.htux-raise{z-index:10040 !important}'
+    + '#ht-datewrap{touch-action:none;cursor:move}'
+    + '#ht-datewrap input{cursor:auto}';
   var sty = document.createElement('style'); sty.textContent = CSS; document.head.appendChild(sty);
 
   function isInt(t) { return !!(t.closest && t.closest('button,input,select,textarea,label,a,.htux-ctl,.tg,#htd-toggle')); }
@@ -235,6 +250,61 @@ JS_BODY = r"""
     new MutationObserver(function () { mirror(cv, wrap); }).observe(cv, { attributes: true, attributeFilter: ['style'] });
     dragify(wrap, head);
   }
+  /* ht-datedrag v1: the date control (#ht-datewrap) is draggable by its
+   * background/label (pointer events, mouse + touch); the date input
+   * itself is never a drag surface, so its picker/typing are untouched.
+   * The dropped position persists in localStorage (shared key) and is
+   * clamped to the viewport. While the control is relocated into the
+   * statistics layout's date slot (classic pages), it is left alone. */
+  var DATE_KEY = 'ht-datewrap-pos-v1';
+  function dateSaved() {
+    try { var p = JSON.parse(localStorage.getItem(DATE_KEY) || 'null'); return (p && isFinite(p.l) && isFinite(p.t)) ? p : null; } catch (e) { return null; }
+  }
+  function dateApply(w, l, t) {
+    var ww = w.offsetWidth || 185, hh = w.offsetHeight || 46;
+    l = Math.max(0, Math.min(Math.max(0, window.innerWidth - Math.min(60, ww)), l));
+    t = Math.max(0, Math.min(Math.max(0, window.innerHeight - Math.min(34, hh)), t));
+    w.style.left = l + 'px'; w.style.top = t + 'px'; w.style.transform = 'none';
+  }
+  function bindDateDrag(w) {
+    w.addEventListener('pointerdown', function (e) {
+      if (e.button) return;
+      if (!w.dataset.htdd) return;
+      if (e.target.closest && e.target.closest('input,select,textarea,button,a')) return;
+      var r = w.getBoundingClientRect();
+      var offX = e.clientX - r.left, offY = e.clientY - r.top, sx = e.clientX, sy = e.clientY, moved = false;
+      function mv(ev) {
+        if (!moved && Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) < 4) return;
+        moved = true;
+        dateApply(w, ev.clientX - offX, ev.clientY - offY);
+        ev.preventDefault();
+      }
+      function up() {
+        document.removeEventListener('pointermove', mv, true);
+        document.removeEventListener('pointerup', up, true);
+        if (moved) {
+          swallowClick(w);
+          try { localStorage.setItem(DATE_KEY, JSON.stringify({ l: parseInt(w.style.left, 10), t: parseInt(w.style.top, 10) })); } catch (err) {}
+        }
+      }
+      document.addEventListener('pointermove', mv, true);
+      document.addEventListener('pointerup', up, true);
+      e.preventDefault();
+    });
+  }
+  function syncDate() {
+    var w = document.getElementById('ht-datewrap'); if (!w) return;
+    var slotted = !!(w.parentElement && w.parentElement.id === 'hts-date-slot');
+    if (slotted) {
+      if (w.dataset.htdd) { w.style.left = ''; w.style.top = ''; w.style.transform = ''; delete w.dataset.htdd; }
+      return;
+    }
+    if (!w.dataset.htdd) {
+      w.dataset.htdd = '1';
+      var p = dateSaved(); if (p) dateApply(w, p.l, p.t);
+      if (!w.__htddBound) { w.__htddBound = 1; bindDateDrag(w); }
+    }
+  }
   function isFloating(el) { var p = getComputedStyle(el).position; return p === 'fixed' || p === 'absolute'; }
   function unenhance(el) {  // panel pinned into the document flow (classic stats view): leave it a clean static section
     Array.prototype.forEach.call(el.querySelectorAll('.htux-ctl'), function (c) { c.remove(); });
@@ -242,6 +312,7 @@ JS_BODY = r"""
   }
   function scan() {
     try {
+      syncDate();
       var el;
       el = document.getElementById('hud'); if (el) enhHud(el);
       el = document.getElementById('ht-drift-panel'); if (el) { if (isFloating(el)) enhDrift(el); else unenhance(el); }
@@ -288,10 +359,29 @@ def patch_3d_legend(s):
 
 BLOCK_START = "<script>\n/* ht-uiux v1"
 
+# ht-datedrag v1: baked default spot for the date control on 3D pages —
+# far left under the station title card instead of top-center, where it
+# covered the #links button row on narrower windows. The enhancer's
+# drag (JS_BODY) takes over from there and persists the user's spot.
+DATE_OLD = ('id="ht-datewrap" style="position:fixed;left:50%;top:14px;'
+            'transform:translateX(-50%);z-index:30;')
+DATE_NEW = 'id="ht-datewrap" style="position:fixed;left:14px;top:88px;z-index:30;'
+
+
+def patch_date_default(s):
+    if DATE_NEW in s:
+        return s
+    if s.count(DATE_OLD) != 1:
+        return None
+    return s.replace(DATE_OLD, DATE_NEW, 1)
+
 
 def patch_page(s):
     out = s
     if "window.HT3D =" in s:  # payload assignment: only real 3D pages (both types merely reference it in the DACP script)
+        out = patch_date_default(out)
+        if out is None:
+            return None
         if "legItems" not in out:
             out = patch_3d_legend(out)
             if out is None:

@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39816405154-edc8b5958068ae5496c7dc9ce8a0660f8e540b91";
+  var BID = "39880573612-3ca66df38a980eee4603b9dfa9af48f4e4b7f890";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,20 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -118,6 +132,7 @@ window.__htlpRelease = window.__htlpRelease || function (key) {
 #htlp-bar.htlp-bar3d{position:fixed;left:12px;bottom:12px;z-index:9990;max-width:min(92vw,560px);margin:0;box-shadow:0 8px 30px rgba(0,0,0,.45)}
 #ht-drift-panel{display:none !important}
 html.htlp-drift-on #ht-drift-panel{display:block !important}
+html:not(.htlp-daily-on) #dock canvas,html:not(.htlp-daily-on) #dock .htux-wrap{display:none !important}
 </style>
 </head><body>
 <div id="hud"></div><div id="links"></div><div id="status">loading…</div><div id="pick"></div><div id="fcb"></div>
@@ -164,8 +179,8 @@ USGS stage–discharge rating (${RT ? RT.n + ' field measurements since ' + RT.f
 <b>Headset:</b> Enter VR · trigger on panel buttons or the ground · left stick ←/→ day · right stick fly / turn · A / B down / up</div>`;
 $('hudtg').onclick = () => { $('hud').classList.toggle('min'); $('hudtg').textContent = $('hud').classList.contains('min') ? 'help' : 'hide help'; };
 setTimeout(() => { if (!$('hud').classList.contains('min')) $('hudtg').click(); }, 9000);
-$('links').innerHTML = `<button id="bView">Table view</button><button id="bDrone">Drone</button><button id="bBank">Riverbank</button><button id="bFc">▶ Forecast</button>
-<button id="bPanel" class="on">Panel</button><button id="bGeo">Geology</button><button id="bShed">Watershed</button><a href="${D.mapUrl}">◀ USA map</a><a href="${D.classicUrl}">Data view ▶</a>`;
+$('links').innerHTML = `<button id="bDrone">Drone</button><button id="bBank">Riverbank</button><button id="bFc">▶ Forecast</button>
+<button id="bPanel" class="on">Panel</button><button id="bGeo">Geology</button><button id="bShed">Watershed</button><a href="${D.mapUrl}">◀ USA map</a>`;
 
 // ------------------------------------------------------------------ geography helpers (Web Mercator)
 const TS = 256;
@@ -613,9 +628,8 @@ const flowP = canvasPanel(1.25, 0.9, 820), geoP = canvasPanel(0.9, 0.95, 700), s
 const S2 = { day: Math.max(0, Math.min(D.n - 1, D.openDay ? dayIndex(D.openDay) : D.n - 8)), model: 0, lead: 1, playing: false, mode: 'ground' };
 window.__htS = S2;
 const qp = new URLSearchParams(location.search); if (qp.has('day')) S2.day = Math.max(0, Math.min(D.n - 1, dayIndex(qp.get('day'))));
-if (qp.get('view') === 'table') S2.mode = 'table';
 const BTN = [[['◀ day', 'prev'], ['day ▶', 'next'], ['▶ play', 'play'], ['▶ forecast', 'fc'], ['model', 'model'], ['lead', 'lead']],
-             [['layer', 'layer'], ['view', 'view'], ['drone', 'drone'], ['riverbank', 'bank'], ['◀ map', 'map'], ['data ▶', 'data']]];
+             [['layer', 'layer'], ['drone', 'drone'], ['riverbank', 'bank'], ['◀ map', 'map']]];
 const BTNY = [0.77, 0.885], BTNH = 0.095;
 let qmin = Infinity, qmax = -Infinity; for (const v of D.flow) if (v != null && v > 0) { qmin = Math.min(qmin, v); qmax = Math.max(qmax, v); }
 const lq = (v) => (Math.log(v) - Math.log(qmin)) / (Math.log(qmax) - Math.log(qmin) || 1);
@@ -781,7 +795,7 @@ function clickFlow(u, v) { BTN.forEach((row, r) => { if (v >= BTNY[r] && v <= BT
 $('bGeo').onclick = () => { geoP.c.style.display = geoP.c.style.display === 'block' ? 'none' : 'block'; $('bGeo').classList.toggle('on'); };
 $('bShed').onclick = () => { shedP.c.style.display = shedP.c.style.display === 'block' ? 'none' : 'block'; $('bShed').classList.toggle('on'); };
 let dockHidden = false; $('bPanel').onclick = () => { dockHidden = !dockHidden; $('bPanel').classList.toggle('on', !dockHidden); layoutPanels(); };
-$('bView').onclick = () => act('view'); $('bDrone').onclick = () => act('drone'); $('bBank').onclick = () => act('bank'); $('bFc').onclick = () => act('fc');
+$('bDrone').onclick = () => act('drone'); $('bBank').onclick = () => act('bank'); $('bFc').onclick = () => act('fc');
 
 // ------------------------------------------------------------------ views
 const VIEWS = { drone: null, bank: null, bankDir: 0 };
@@ -813,7 +827,7 @@ function setMode(m) {
   groundRoot.visible = g; tableRoot.visible = !g; sky.visible = g;
   scene.fog = g ? FOG : null; scene.background = g ? null : new THREE.Color('#1B2633'); scene.environment = g ? envTex : null;
   camera.near = g ? 0.5 : 0.01; camera.far = g ? (QUEST ? 40000 : 150000) : 100; camera.updateProjectionMatrix();
-  $('bView').textContent = g ? 'Table view' : 'Ground view'; ['bDrone', 'bBank'].forEach((b) => { $(b).style.display = g ? '' : 'none'; });
+  ['bDrone', 'bBank'].forEach((b) => { $(b).style.display = g ? '' : 'none'; });
   layoutPanels(); levelDirty = true; ghostKey = '';
   if (!renderer.xr.isPresenting) {
     if (g) { orbit.maxDistance = 30000; orbit.maxPolarAngle = Math.PI * 0.495; if (VIEWS.drone) goView('drone'); else { camera.position.set(700, 400, 900); orbit.target.set(0, 0, 0); } }
@@ -854,9 +868,8 @@ function act(a) {
   else if (a === 'model') { S2.model = (S2.model + 1) % D.models.length; ghostKey = ''; levelDirty = true; drawFlow(); }
   else if (a === 'lead') { S2.lead = S2.lead % 7 + 1; ghostKey = ''; levelDirty = true; drawFlow(); }
   else if (a === 'layer') setLayer((layer + 1) % LAYERS.length);
-  else if (a === 'view') setMode(S2.mode === 'ground' ? 'table' : 'ground');
   else if (a === 'drone' || a === 'bank') { if (S2.mode !== 'ground') setMode('ground'); goView(a); }
-  else if (a === 'map') location.href = D.mapUrl; else if (a === 'data') location.href = D.classicUrl;
+  else if (a === 'map') location.href = D.mapUrl;
   else if (a === 'relief') { EXAG = EXAGS[(EXAGS.indexOf(EXAG) + 1) % EXAGS.length]; buildHeights(); buildOverlays(); levelDirty = true; ghostKey = ''; drawFlow(); }
 }
 addEventListener('keydown', (e) => { const k = e.key.toLowerCase();
@@ -2060,6 +2073,15 @@ function cmpShowPanel(show) {
   return dv;
 }
 (function(){ var ctop = document.getElementById('cmpTop'); if (ctop) ctop.onclick = function(){ const p = document.getElementById('cmppanel'); cmpShowPanel(!p); }; })();
+// ht-lazypanels compare move: the Compare models toggle lives in the Flow &
+// forecast panel's control row (the top-row #cmpTop button is removed by
+// this patcher); the canvas button calls the same cmpShowPanel toggle.
+BTN[0].push(['Δ compare', 'compare']);
+const actCmp0 = act;
+act = function (a) {
+  if (a === 'compare') { const p = document.getElementById('cmppanel'); cmpShowPanel(!p); return; }
+  return actCmp0(a);
+};
 
 const actLAR0 = act;
 act = function (a) {
@@ -2129,7 +2151,6 @@ let SAT_O = null;
   loadBuildings().catch(() => setLoad('buildings', 'not available'));
 })().catch((e) => setLoad('terrain', 'failed: ' + e.message));
 (async () => {
-  await window.__htlpGate('watershed');
   setLoad('rivers', 'loading');
   const [um, dm, ut, upG, dnG] = await Promise.allSettled([
     getJSON(NLDI + 'navigation/UM/flowlines?distance=150&f=json'), getJSON(NLDI + 'navigation/DM/flowlines?distance=400&f=json'),
@@ -2147,6 +2168,7 @@ let SAT_O = null;
   if (elev.some((v) => v !== 0)) { buildOverlays(); initTableFlood(); placeViews(); }
   if (iDEM) { initGroundFlood(); buildGroundLabels(); }
   drawShed();
+  await window.__htlpGate('watershed');
   setLoad('watershed', 'loading');
   try { RIV.basin = await getJSON(NLDI + 'basin?f=json&simplified=true', 90000); shedInfo.area = basinArea(lines(RIV.basin)); setLoad('watershed', 'ok'); }
   catch (e) { RIV.basin = 'failed'; setLoad('watershed', 'not available'); }
@@ -2162,8 +2184,8 @@ window.__htlpGate('geo').then(() => geologyAt(D.lon, D.lat)).then((u) => { geoUn
 window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater, tWater, VIEWS, BLD, stageFt, dHof, goView, get REFE() { return REFE; }, get elevRange() { return [eMin, eMax, EXAG]; }, get curDH() { return curDH; }, get floods() { return floodsReady; } };
 window.HT3_READY = true;
 </script>
-<div id="ht-datewrap" style="position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(12,18,28,.88);color:#E6EDF5;font:600 14px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4);"><label for="ht-date" style="cursor:pointer;">Date</label><input id="ht-date" type="date" min="2001-10-01" max="2026-09-30" style="font:600 14px Arial;padding:5px 8px;border-radius:6px;border:1px solid #3A4A5E;background:#0E1A24;color:#E6EDF5;color-scheme:dark;"></div>
-<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button><button id="cmpTop" title="Overlay 7-day forecasts of multiple models" style="padding:6px 14px;border-radius:10px;border:1px solid #8FC1F2;background:rgba(12,18,28,.88);color:#8FC1F2;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Δ Compare models</button></div>
+<div id="ht-datewrap" style="position:fixed;left:14px;top:88px;z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(12,18,28,.88);color:#E6EDF5;font:600 14px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4);"><label for="ht-date" style="cursor:pointer;">Date</label><input id="ht-date" type="date" min="2001-10-01" max="2026-09-30" style="font:600 14px Arial;padding:5px 8px;border-radius:6px;border:1px solid #3A4A5E;background:#0E1A24;color:#E6EDF5;color-scheme:dark;"></div>
+<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button><button id="loadModelTop" title="Fetch the latest published model weights from hydrotwin-models and re-run the forecast with them" style="padding:6px 14px;border-radius:10px;border:1px solid #FFD24D;background:rgba(12,18,28,.88);color:#FFD24D;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Load new model</button><span id="loadModelStatus" style="align-self:center;font:600 12.5px Arial;color:#BFD0E0;max-width:360px;"></span></div><!-- ht-tuneanim v1 --><div id="tuneAnimBadge" class="htune htune-idle" role="status" title="Optuna + Ray Tune hyperparameter tuning (dev) — live status from the hydrotwin-models tuning registry"><span class="htune-gear" aria-hidden="true">⚙</span><span class="htune-txt" id="tuneAnimTxt">Optuna × Ray Tune · tuning status…</span><span class="htune-dots" aria-hidden="true"><i></i><i></i><i></i></span></div><style>.htune{position:fixed;left:50%;transform:translateX(-50%);top:146px;z-index:31;display:flex;align-items:center;gap:8px;max-width:min(700px,94vw);padding:7px 14px;border-radius:999px;background:rgba(12,18,28,.88);border:1px solid #3A4A5E;color:#BFD0E0;font:600 13px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4)}.htune-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.htune-gear{display:inline-block;font-size:15px;line-height:1;color:#8FC1F2}.htune-dots{display:none;gap:3px}.htune-dots i{width:5px;height:5px;border-radius:50%;background:#FFB84D;display:inline-block;animation:htuneBlink 1.2s infinite}.htune-dots i:nth-child(2){animation-delay:.2s}.htune-dots i:nth-child(3){animation-delay:.4s}.htune-run{border-color:#FFB84D;color:#FFE1A8;animation:htunePulse 1.6s ease-in-out infinite}.htune-run .htune-gear{color:#FFB84D;animation:htuneSpin 2.2s linear infinite}.htune-run .htune-dots{display:inline-flex}.htune-pass{color:#7AE07A}.htune-fail{color:#FF9A8A}@keyframes htuneSpin{to{transform:rotate(360deg)}}@keyframes htunePulse{0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.4)}50%{box-shadow:0 0 14px 2px rgba(255,184,77,.45),0 2px 10px rgba(0,0,0,.4)}}@keyframes htuneBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}</style>
 
 
 
@@ -2300,7 +2322,9 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.6961,4597.11],"80":[0.7975,6115.
     + '.htux-chead{display:flex;justify-content:space-between;align-items:center;background:rgba(12,18,28,.9);color:#BFD0E0;font:600 12px Arial;padding:4px 6px 4px 10px;border-radius:10px 10px 0 0;cursor:move;touch-action:none;user-select:none;-webkit-user-select:none}'
     + '#dock .htux-wrap > canvas,#side .htux-wrap > canvas{border-radius:0 0 10px 10px}'
     + '.htux-wrap.htux-max > canvas{width:100% !important;height:auto !important}'
-    + '.htux-raise{z-index:10040 !important}';
+    + '.htux-raise{z-index:10040 !important}'
+    + '#ht-datewrap{touch-action:none;cursor:move}'
+    + '#ht-datewrap input{cursor:auto}';
   var sty = document.createElement('style'); sty.textContent = CSS; document.head.appendChild(sty);
 
   function isInt(t) { return !!(t.closest && t.closest('button,input,select,textarea,label,a,.htux-ctl,.tg,#htd-toggle')); }
@@ -2448,6 +2472,61 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.6961,4597.11],"80":[0.7975,6115.
     new MutationObserver(function () { mirror(cv, wrap); }).observe(cv, { attributes: true, attributeFilter: ['style'] });
     dragify(wrap, head);
   }
+  /* ht-datedrag v1: the date control (#ht-datewrap) is draggable by its
+   * background/label (pointer events, mouse + touch); the date input
+   * itself is never a drag surface, so its picker/typing are untouched.
+   * The dropped position persists in localStorage (shared key) and is
+   * clamped to the viewport. While the control is relocated into the
+   * statistics layout's date slot (classic pages), it is left alone. */
+  var DATE_KEY = 'ht-datewrap-pos-v1';
+  function dateSaved() {
+    try { var p = JSON.parse(localStorage.getItem(DATE_KEY) || 'null'); return (p && isFinite(p.l) && isFinite(p.t)) ? p : null; } catch (e) { return null; }
+  }
+  function dateApply(w, l, t) {
+    var ww = w.offsetWidth || 185, hh = w.offsetHeight || 46;
+    l = Math.max(0, Math.min(Math.max(0, window.innerWidth - Math.min(60, ww)), l));
+    t = Math.max(0, Math.min(Math.max(0, window.innerHeight - Math.min(34, hh)), t));
+    w.style.left = l + 'px'; w.style.top = t + 'px'; w.style.transform = 'none';
+  }
+  function bindDateDrag(w) {
+    w.addEventListener('pointerdown', function (e) {
+      if (e.button) return;
+      if (!w.dataset.htdd) return;
+      if (e.target.closest && e.target.closest('input,select,textarea,button,a')) return;
+      var r = w.getBoundingClientRect();
+      var offX = e.clientX - r.left, offY = e.clientY - r.top, sx = e.clientX, sy = e.clientY, moved = false;
+      function mv(ev) {
+        if (!moved && Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) < 4) return;
+        moved = true;
+        dateApply(w, ev.clientX - offX, ev.clientY - offY);
+        ev.preventDefault();
+      }
+      function up() {
+        document.removeEventListener('pointermove', mv, true);
+        document.removeEventListener('pointerup', up, true);
+        if (moved) {
+          swallowClick(w);
+          try { localStorage.setItem(DATE_KEY, JSON.stringify({ l: parseInt(w.style.left, 10), t: parseInt(w.style.top, 10) })); } catch (err) {}
+        }
+      }
+      document.addEventListener('pointermove', mv, true);
+      document.addEventListener('pointerup', up, true);
+      e.preventDefault();
+    });
+  }
+  function syncDate() {
+    var w = document.getElementById('ht-datewrap'); if (!w) return;
+    var slotted = !!(w.parentElement && w.parentElement.id === 'hts-date-slot');
+    if (slotted) {
+      if (w.dataset.htdd) { w.style.left = ''; w.style.top = ''; w.style.transform = ''; delete w.dataset.htdd; }
+      return;
+    }
+    if (!w.dataset.htdd) {
+      w.dataset.htdd = '1';
+      var p = dateSaved(); if (p) dateApply(w, p.l, p.t);
+      if (!w.__htddBound) { w.__htddBound = 1; bindDateDrag(w); }
+    }
+  }
   function isFloating(el) { var p = getComputedStyle(el).position; return p === 'fixed' || p === 'absolute'; }
   function unenhance(el) {  // panel pinned into the document flow (classic stats view): leave it a clean static section
     Array.prototype.forEach.call(el.querySelectorAll('.htux-ctl'), function (c) { c.remove(); });
@@ -2455,6 +2534,7 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.6961,4597.11],"80":[0.7975,6115.
   }
   function scan() {
     try {
+      syncDate();
       var el;
       el = document.getElementById('hud'); if (el) enhHud(el);
       el = document.getElementById('ht-drift-panel'); if (el) { if (isFloating(el)) enhDrift(el); else unenhance(el); }
@@ -4523,11 +4603,11 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
 
   /* ------------------------------------------------ master bar */
-  var css = '#htla-bar{position:sticky;top:0;z-index:9999;display:flex;gap:10px;align-items:center;flex-wrap:wrap;'
-    + 'background:rgba(8,20,14,.96);border-bottom:2px solid #2E9B57;padding:8px 12px;font:600 13.5px system-ui;color:#DDE6EE}'
+  var css = '#htla-bar{position:fixed;left:50%;top:34%;transform:translate(-50%,-50%);z-index:9999;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;width:fit-content;max-width:min(600px,94vw);'
+    + 'background:rgba(8,20,14,.96);border:2px solid #2E9B57;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55);padding:8px 12px;font:600 13.5px system-ui;color:#DDE6EE}'
     + '#htla-go{background:#14532D;color:#B7F4CB;border:1px solid #2E9B57;border-radius:8px;padding:7px 14px;cursor:pointer;font:700 13.5px system-ui}'
     + '#htla-go:hover{background:#1B6B3C}#htla-badge{color:#7AE07A;font-weight:800;letter-spacing:.4px}'
-    + '#htla-note{color:#BFD0E0;font-weight:500}#htla-oldlab{cursor:pointer;color:#C9CED6;font-weight:600}'
+    + '#htla-note{color:#BFD0E0;font-weight:500}#htla-oldlab{cursor:pointer;color:#C9CED6;font-weight:600}/* ht-rmsefield v1 */#htla-rmse{color:#9FB3C8;font-weight:600;font-size:12px;white-space:nowrap}'
     + '#htla-back{background:#33404F;color:#DDE6EE;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:6px 10px;cursor:pointer;font:600 12.5px system-ui}'
     + '#htla-oldtable{flex-basis:100%;font:500 12px system-ui;color:#C9CED6}'
     + '#htla-oldtable table{border-collapse:collapse;margin-top:4px}#htla-oldtable td,#htla-oldtable th{padding:1px 8px 1px 0;text-align:right}'
@@ -4537,7 +4617,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     + '#htla-bar{touch-action:none}'
     + '#htla-grip{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;color:#7AE07A;font-size:17px;line-height:1;padding:2px 3px}'
     + '#htla-grip:active{cursor:grabbing}'
-    + '#htla-bar.htla-moved{position:fixed;margin:0;border:2px solid #2E9B57;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55)}';
+    + '#htla-bar.htla-moved{position:fixed;transform:none;margin:0;border:2px solid #2E9B57;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55)}';
   var style = document.createElement('style');
   style.textContent = css;
   document.head.appendChild(style);
@@ -4548,6 +4628,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     + '<span id="htla-badge" style="display:none">● LIVE</span>'
     + '<span id="htla-note">baked data through ' + BAKED_END + '</span>'
     + '<label id="htla-oldlab"><input type="checkbox" id="htla-old"> old weights (pre-drift-fix)</label>'
+    + '<span id="htla-rmse" title="WY2026 backtest - mean RMSE (log10 cfs) across the 10 served daily models: old = pre-drift-fix weights, new = retrained weights (drift fix, Oct 2026). Same A-vs-B figures as the Model drift panel.">RMSE old 0.2495 · new 0.2731 · Δ +0.0236</span>'
     + '<span id="htla-oldnote"></span>'
     + '<button type="button" id="htla-back" style="display:none">↩ baked</button>'
     + '<div id="htla-oldtable" style="display:none"></div>';
@@ -5407,12 +5488,12 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 <!-- ht-lazypanels v1 -->
-<div id="htlp-bar" class="htlp-bar3d" role="group" aria-label="Station panels"><span class="htlp-t">PANELS</span><button type="button" class="htlp-btn" aria-pressed="false">Weekly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Monthly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Yearly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Confidence interval</button><button type="button" class="htlp-btn" aria-pressed="false">Model drift</button></div>
+<div id="htlp-bar" class="htlp-bar3d" role="group" aria-label="Station panels"><span class="htlp-t">PANELS</span><button type="button" class="htlp-btn" aria-pressed="false">Daily forecast</button><button type="button" class="htlp-btn" aria-pressed="false">Weekly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Monthly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Yearly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Confidence interval</button><button type="button" class="htlp-btn" aria-pressed="false">Model drift</button></div>
 <script>
 // ht-lazypanels v1 loader: run each panel's gated boot scripts on its
 // first button click only; later clicks just toggle visibility.
 (function () {
-  var CFG = {"mode": "3d", "panels": [{"panel": "htwk-panel", "label": "Weekly outlook", "group": "weekly"}, {"panel": "htmo-panel", "label": "Monthly outlook", "group": "monthly"}, {"panel": "htyr-panel", "label": "Yearly outlook", "group": "yearly"}, {"panel": "ht-dacp-panel", "label": "Confidence interval", "group": "dacp"}, {"panel": "ht-drift-panel", "label": "Model drift", "group": null}]};
+  var CFG = {"mode": "3d", "panels": [{"panel": "dock", "label": "Daily forecast", "group": null, "daily": true}, {"panel": "htwk-panel", "label": "Weekly outlook", "group": "weekly"}, {"panel": "htmo-panel", "label": "Monthly outlook", "group": "monthly"}, {"panel": "htyr-panel", "label": "Yearly outlook", "group": "yearly"}, {"panel": "ht-dacp-panel", "label": "Confidence interval", "group": "dacp"}, {"panel": "ht-drift-panel", "label": "Model drift", "group": null}]};
   var ran = {};
   function runGroup(group) {
     if (!group || ran[group]) return; ran[group] = true;
@@ -5446,18 +5527,28 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     moveEl('ht-datewrap', 'hts-date-slot');
   }
   function panelEl(cfg) {
+    if (cfg.daily) return document.querySelector('#dock canvas');
     return document.getElementById(CFG.mode === 'classic' ? cfg.sec : cfg.panel);
   }
-  function isOff(el) {
+  function isOff(el, cfg) {
     if (!el) return true;
+    if (cfg && cfg.daily)
+      return !document.documentElement.classList.contains('htlp-daily-on');
     if (CFG.mode === '3d' && el.id === 'ht-drift-panel')
       return !document.documentElement.classList.contains('htlp-drift-on');
     if (CFG.mode === 'classic') return el.classList.contains('htlp-off');
     return el.style.display === 'none';
   }
-  function setOff(el, off) {
+  function setOff(el, off, cfg) {
     if (!el) return;
-    if (CFG.mode === 'classic') el.classList.toggle('htlp-off', off);
+    if (cfg && cfg.daily) {
+      // the html class lifts the stub CSS gate; the inline display
+      // mirrors the module's own Geology/Watershed canvas toggles
+      // and makes the ht-uiux wrap follow via its style observer.
+      document.documentElement.classList.toggle('htlp-daily-on', !off);
+      el.style.display = off ? 'none' : 'block';
+    }
+    else if (CFG.mode === 'classic') el.classList.toggle('htlp-off', off);
     else if (el.id === 'ht-drift-panel')
       document.documentElement.classList.toggle('htlp-drift-on', !off);
     else el.style.display = off ? 'none' : '';
@@ -5467,17 +5558,17 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     if (!btn) return;
     btn.addEventListener('click', function () {
       var el = panelEl(cfg);
-      var opening = isOff(el);
+      var opening = isOff(el, cfg);
       if (opening) {
-        setOff(el, false);
+        setOff(el, false, cfg);
         runGroup(cfg.group);
         el = panelEl(cfg);
-        setOff(el, false);
+        setOff(el, false, cfg);
         btn.classList.add('htlp-on'); btn.setAttribute('aria-pressed', 'true');
         if (CFG.mode === 'classic' && el)
           el.scrollIntoView({ block: 'start' });
       } else {
-        setOff(el, true);
+        setOff(el, true, cfg);
         btn.classList.remove('htlp-on'); btn.setAttribute('aria-pressed', 'false');
       }
     });
@@ -5494,6 +5585,20 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
 })();
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -5520,8 +5625,10 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   <button id="htd-toggle" aria-label="collapse">–</button></div>
   <div class="htd-body" id="htd-body">
     <div class="htd-sec">Data drift <span class="pill" style="background:#d9930d">watch</span></div>
+    <div class="htd-line"><b>0 of 5</b> features above the 0.25 drift cutoff.</div>
     <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 0.24.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.031</td></tr><tr><td>Tmin</td><td>0.151</td></tr><tr><td>Tmean</td><td>0.085</td></tr><tr><td>Precip</td><td>0.003</td></tr><tr><td>Flow (log)</td><td>0.244</td></tr></table>
+    <table><tr><th>Feature</th><th>PSI</th><th></th></tr><tr><td>Tmax</td><td>0.031</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Tmin</td><td>0.151</td><td><span class="pill" style="background:#d9930d">moderate</span></td></tr><tr><td>Tmean</td><td>0.085</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Precip</td><td>0.003</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Flow (log)</td><td>0.244</td><td><span class="pill" style="background:#d9930d">moderate</span></td></tr></table>
+    <div class="htd-line">Drift cutoff: PSI &gt; 0.25 = drifting · 0.10–0.25 = moderate shift · &lt; 0.10 = stable.</div>
     <div class="htd-sec">Concept drift</div>
     <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
     <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.205</td><td>0.203</td><td>-1.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.204</td><td>0.212</td><td>+3.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.201</td><td>0.211</td><td>+5.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.201</td><td>0.202</td><td>+0.7%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.203</td><td>0.217</td><td>+6.8%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.416</td><td>0.502</td><td>+20.8%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>SARIMA</td><td>0.416</td><td>0.536</td><td>+29.0%</td><td><span class="pill" style="background:#777">degrading</span></td></tr><tr><td>PatchTST</td><td>0.224</td><td>0.213</td><td>-4.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.203</td><td>0.213</td><td>+5.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.223</td><td>0.220</td><td>-1.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
@@ -5530,4 +5637,358 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   </div>
 </div>
 <script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+<script>
+/* ht-loadmodel v1 - "Load new model": hot-load the latest published
+ * weights from the hydrotwin-models Pages source into the open page.
+ * The daily engine (ht-liveall) caches its ORT sessions privately and
+ * the big-model engine caches BIG.sess, so this block wraps
+ * ort.InferenceSession.create and hands those engines a proxy session
+ * for this station's artifacts; the proxy's inner real session is
+ * swapped atomically when the button loads fresh weights. A failed
+ * load changes nothing. See build25/patch_livefix.py (Part 3). */
+(function () {
+  'use strict';
+  if (window.__htlmOn) return;
+  window.__htlmOn = true;
+  var ONNX_BASE = 'https://saurabhkulkarni77.github.io/hydrotwin-models/onnx';
+  var MODELS_BASE = 'https://saurabhkulkarni77.github.io/hydrotwin-models/';
+  var NEURAL = ['LSTM', 'Transformer', 'TFT', 'PatchTST', 'PILSTMv1'];
+  var STATS = {"mu": [23.951317, 9.802238, 16.876776, 1.299755, 9.770886, 0.391047, 12.284435, 42.671355, 12.454993], "sd": [8.399204, 5.255385, 6.555306, 5.817925, 0.694342, 0.487986, 9.843441, 12.685135, 17.680813], "tsd": [0.065042, 0.121175, 0.166901, 0.203717, 0.233453, 0.257725, 0.277824], "med_sms": 11.7, "med_stmp": 34.0};
+  var D = window.HT_DATA || window.HT3D || {};
+  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
+  var epoch = 0;
+
+  /* After a successful load, models-source fetches (the classical
+   * params JSONs are fetched per live run) bypass the HTTP cache. */
+  if (window.fetch) {
+    var ofetch = window.fetch.bind(window);
+    window.fetch = function (input, init) {
+      try {
+        if (epoch) {
+          var u = (typeof input === 'string') ? input : (input && input.url) || '';
+          if (u.indexOf(MODELS_BASE) === 0 && u.indexOf('htlm=') < 0) {
+            var nu = u + (u.indexOf('?') >= 0 ? '&' : '?') + 'htlm=' + epoch;
+            input = (typeof input === 'string') ? nu : new Request(nu, input);
+          }
+        }
+      } catch (e) { /* passthrough */ }
+      return ofetch(input, init);
+    };
+  }
+
+  /* ---------------- session registry + proxy ---------------- */
+  var reg = {};
+  function modelOfUrl(u) {
+    if (typeof u !== 'string' || !SITE) return null;
+    var m = u.match(/\/onnx\/(\d{8})\/([A-Za-z0-9_]+)\.onnx(?:[?#].*)?$/);
+    if (!m || m[1] !== SITE) return null;
+    return m[2];
+  }
+  function curReal(model) {
+    var slot = reg[model];
+    if (!slot || !slot.real) throw new Error('ht-loadmodel: no live session for ' + model);
+    return slot.real;
+  }
+  function makeProxy(model) {
+    return {
+      get inputNames() { return curReal(model).inputNames; },
+      get outputNames() { return curReal(model).outputNames; },
+      run: function (feeds, opts) { return curReal(model).run(feeds, opts); },
+      release: function () { return Promise.resolve(); }
+    };
+  }
+  var rawCreate = null, wrapInstalled = false;
+  function tryInstall() {
+    if (wrapInstalled) return true;
+    if (typeof ort === 'undefined' || !ort.InferenceSession ||
+        typeof ort.InferenceSession.create !== 'function') return false;
+    if (ort.InferenceSession.create.__htlm) { wrapInstalled = true; return true; }
+    var orig = ort.InferenceSession.create.bind(ort.InferenceSession);
+    rawCreate = orig;
+    var wrapped = function (arg, opts) {
+      var model = modelOfUrl(arg);
+      if (!model) return orig(arg, opts);
+      var slot = reg[model];
+      if (!slot) {
+        slot = reg[model] = { real: null, proxy: makeProxy(model), pending: null };
+        slot.pending = orig(arg, opts).then(function (s) {
+          slot.real = s; slot.pending = null; return slot.proxy;
+        }, function (e) { delete reg[model]; throw e; });
+        return slot.pending;
+      }
+      if (slot.real) return Promise.resolve(slot.proxy);
+      if (!slot.pending) {
+        slot.pending = orig(arg, opts).then(function (s) {
+          slot.real = s; slot.pending = null; return slot.proxy;
+        }, function (e) { slot.pending = null; throw e; });
+      }
+      return slot.pending.then(function () { return slot.proxy; });
+    };
+    wrapped.__htlm = true;
+    ort.InferenceSession.create = wrapped;
+    wrapInstalled = true;
+    return true;
+  }
+  var pollTries = 0;
+  var poll = setInterval(function () {
+    if (tryInstall() || ++pollTries > 240) clearInterval(poll);
+  }, 500);
+  tryInstall();
+
+  function ensureOrt() {
+    return new Promise(function (res, rej) {
+      if (typeof ort !== 'undefined') return res();
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.min.js';
+      s.onload = function () { res(); };
+      s.onerror = function () { rej(new Error('onnxruntime failed to load (CDN blocked?)')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  /* ------------- selected-date recompute (mirrors htla dailyFc) ------------- */
+  function buildWindow(day) {
+    var flows = {}, wx = {}, win30 = [], i, dt;
+    var t0 = Date.parse((D.start || '2001-10-01') + 'T00:00:00Z');
+    for (i = day - 29; i <= day; i++) {
+      if (i < 0 || i >= D.n) return null;
+      dt = new Date(t0 + i * 864e5).toISOString().slice(0, 10);
+      var q = D.flow[i], tx = D.tmax[i], tn = D.tmin[i];
+      if (q == null || !(q > 0) || tx == null || tn == null) return null;
+      flows[dt] = q; wx[dt] = [tx, tn, D.precip[i] || 0]; win30.push(dt);
+    }
+    return { flows: flows, wx: wx, win30: win30 };
+  }
+  async function runFan(sess, A, ss) {
+    var mu = STATS.mu, sd = STATS.sd, tsd = STATS.tsd;
+    var flows = A.flows, wx = A.wx, win30 = A.win30, i, j;
+    var flat = new Float32Array(29 * 9);
+    var prev = flows[win30[0]];
+    for (i = 1; i < 30; i++) {
+      var dt = win30[i], t = wx[dt], q = flows[dt];
+      var row = [t[0], t[1], (t[0] + t[1]) / 2, t[2], q, q > prev ? 1 : 0, ss.sms, ss.stmpF, ss.swe];
+      prev = q;
+      for (j = 0; j < 9; j++) {
+        var x = j === 4 ? Math.log(row[j]) : row[j];
+        flat[(i - 1) * 9 + j] = (x - mu[j]) / sd[j];
+      }
+    }
+    var last = Math.log(flows[win30[29]]);
+    var feeds = {};
+    feeds[sess.inputNames[0]] = new ort.Tensor('float32', flat, [1, 29, 9]);
+    var out = await sess.run(feeds);
+    var diffs = Array.from(out[sess.outputNames[0]].data);
+    if (diffs.length !== 7 || diffs.some(function (v) { return !isFinite(v); })) {
+      throw new Error('bad model output');
+    }
+    return diffs.map(function (d, l) { return Math.exp(last + d * tsd[l]); });
+  }
+  function stepKey(k) {
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true }));
+  }
+  async function rerunSelectedDate(models) {
+    var S = window.__htS;
+    if (!S || !D.pred || !D.models || !D.flow) return '';
+    var day = S.day;
+    if (day == null || day < 29 || day >= D.n) {
+      return ' · this date has under 30 days of history - baked forecast kept';
+    }
+    var A = buildWindow(day);
+    if (!A) return ' · window has data gaps - baked forecast kept';
+    var ss = { sms: STATS.med_sms, stmpF: STATS.med_stmp, swe: 0 };
+    var done = 0;
+    for (var k = 0; k < models.length; k++) {
+      var m = models[k], mi = D.models.indexOf(m), slot = reg[m];
+      if (mi < 0 || !slot || !slot.real) continue;
+      try {
+        var fan = await runFan(slot.real, A, ss);
+        for (var l = 0; l < 7; l++) D.pred[mi][l][day] = fan[l];
+        done++;
+      } catch (e) { /* keep the baked fan for this model */ }
+    }
+    if (!done) return ' · recompute failed - baked forecast kept';
+    if (day > 0) { S.day = day - 1; stepKey('ArrowRight'); }
+    else { S.day = 0; stepKey('ArrowRight'); stepKey('ArrowLeft'); }
+    return ' · forecast for ' + A.win30[29] + ' recomputed (' + done + ' models)';
+  }
+
+  function exitOldWeights() {
+    var box = document.getElementById('htla-old');
+    if (box && box.checked) {
+      box.checked = false;
+      box.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  /* ---------------- the button ---------------- */
+  var btn = document.getElementById('loadModelTop');
+  var statusEl = document.getElementById('loadModelStatus');
+  function setStatus(t, ok) {
+    if (!statusEl) return;
+    statusEl.textContent = t;
+    statusEl.style.color = ok ? '#7AE07A' : '#FF8A7A';
+  }
+  var busy = false;
+  async function loadNewModel() {
+    if (busy) return;
+    busy = true;
+    var label = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Loading model...'; }
+    setStatus('', true);
+    try {
+      if (!SITE) throw new Error('station id unavailable on this page');
+      await ensureOrt();
+      if (!tryInstall() || !rawCreate) throw new Error('model runtime unavailable');
+      var models = NEURAL.filter(function (m) { return (D.models || []).indexOf(m) >= 0; });
+      if (!models.length) throw new Error('no neural models on this page');
+      var pend = models.map(function (m) { return reg[m] && reg[m].pending; })
+        .filter(function (p) { return !!p; });
+      if (pend.length) { try { await Promise.all(pend); } catch (e) { /* superseded below */ } }
+      var ts = Date.now(), built = {}, lastMod = null, k, m2;
+      for (k = 0; k < models.length; k++) {
+        m2 = models[k];
+        var url = ONNX_BASE + '/' + SITE + '/' + m2 + '.onnx?htlm=' + ts;
+        var r = await fetch(url, { cache: 'no-store' });
+        if (!r.ok) throw new Error(m2 + ': HTTP ' + r.status + ' from the models source');
+        var lm = r.headers.get('last-modified');
+        if (lm) lastMod = lm;
+        var buf = await r.arrayBuffer();
+        if (!buf.byteLength) throw new Error(m2 + ': empty model artifact');
+        built[m2] = await rawCreate(new Uint8Array(buf));
+      }
+      /* every new session built -> swap atomically */
+      for (k = 0; k < models.length; k++) {
+        m2 = models[k];
+        if (!reg[m2]) reg[m2] = { real: null, proxy: makeProxy(m2), pending: null };
+        var old = reg[m2].real;
+        reg[m2].real = built[m2];
+        reg[m2].pending = null;
+        if (old && old !== built[m2] && old.release) {
+          try { await old.release(); } catch (e) { /* best effort */ }
+        }
+      }
+      epoch = ts;
+      exitOldWeights();
+      var note = '';
+      try { note = await rerunSelectedDate(models); } catch (e) { note = ''; }
+      var stamp = '';
+      if (lastMod) {
+        var d = new Date(lastMod);
+        if (!isNaN(d)) stamp = ' · weights published ' + d.toUTCString().slice(0, 16);
+      }
+      setStatus('New model loaded ✓' + stamp + note, true);
+      if (window.__htla && window.__htla.on) {
+        var g = document.getElementById('htla-go');
+        if (g) { g.click(); setStatus('New model loaded ✓' + stamp + note + ' · live re-run started', true); }
+      }
+    } catch (e) {
+      setStatus('Load failed - previous model kept (' + ((e && e.message) || e) + ')', false);
+    }
+    if (btn) { btn.disabled = false; btn.textContent = label; }
+    busy = false;
+  }
+  if (btn) btn.addEventListener('click', loadNewModel);
+})();
+</script>
+<script>
+/* ht-tuneanim v1 - "Optuna + Ray Tune" tuning badge: polls the tuning
+ * status JSON published from the hydrotwin-models tuning registry
+ * (dev) to the models Pages source and renders an animated RUNNING
+ * state while a tuning run is live, or this station's latest quality
+ * gate verdicts when idle. See build25/patch_livefix.py (Part 5). */
+(function () {
+  'use strict';
+  if (window.__httuneOn) return;
+  window.__httuneOn = true;
+  var STATUS_URL = 'https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json';
+  var D = window.HT_DATA || window.HT3D || {};
+  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
+  var badge = document.getElementById('tuneAnimBadge');
+  var txt = document.getElementById('tuneAnimTxt');
+  if (!badge || !txt) return;
+
+  function place() {
+    var y = 146;
+    var tw = document.getElementById('lardemo-topwrap');
+    if (tw) y = Math.max(y, Math.ceil(tw.getBoundingClientRect().bottom) + 8);
+    var fcb = document.getElementById('fcb');
+    if (fcb && fcb.getBoundingClientRect().height > 0 &&
+        window.getComputedStyle(fcb).display !== 'none') {
+      y = Math.max(y, Math.ceil(fcb.getBoundingClientRect().bottom) + 8);
+    }
+    badge.style.top = y + 'px';
+  }
+  function fmtPct(x) {
+    var n = Number(x);
+    if (!isFinite(n)) return '';
+    return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
+  }
+  function safeName(t) { return /^[A-Za-z0-9][A-Za-z0-9 _-]*$/.test(t) ? t : ''; }
+
+  function render(data) {
+    if (data && data.running && data.current) {
+      var c = data.current;
+      var fams = (c.families || []).map(safeName).filter(Boolean).join(' + ');
+      badge.classList.add('htune-run');
+      badge.classList.remove('htune-idle');
+      txt.textContent = 'Optuna × Ray Tune — TUNING ' + (c.station || '') +
+        (fams ? ' · ' + fams : '') + ' now';
+      badge.title = 'Hyperparameter tuning is RUNNING (dev): Optuna ' +
+        '(TPE search) driven by Ray Tune (parallel trials + ASHA) on ' +
+        'station ' + (c.station || '') + (fams ? ' — ' + fams : '') +
+        '. A candidate must pass the quality gate to replace dev weights.';
+      return;
+    }
+    badge.classList.remove('htune-run');
+    badge.classList.add('htune-idle');
+    var st = (data && data.stations && SITE) ? data.stations[SITE] : null;
+    var parts = [], tips = [];
+    if (st) {
+      Object.keys(st).forEach(function (fam) {
+        var name = safeName(fam);
+        var r = st[fam];
+        if (!name || !r || !r.verdict) return;
+        if (r.verdict === 'PASS') {
+          parts.push(name + ' tuned · <span class="htune-pass">gate PASS ' +
+            fmtPct(r.margin_pct) + '</span>');
+        } else {
+          parts.push(name + ' · <span class="htune-fail">gate FAIL — ' +
+            'incumbent kept</span>');
+        }
+        tips.push(name + ': candidate RMSE ' + r.candidate_rmse +
+          ' vs incumbent ' + r.incumbent_rmse + ' (WY2026 holdout), ' +
+          r.trials + ' trials, gate ' + r.verdict + ' ' + fmtPct(r.margin_pct));
+      });
+    }
+    if (parts.length) {
+      txt.innerHTML = 'Optuna × Ray Tune · ' + parts.join(' · ');
+      badge.title = 'Latest tuning for this station (dev, Optuna + ' +
+        'Ray Tune): ' + tips.join('; ') + '.';
+      return;
+    }
+    txt.textContent = 'Optuna × Ray Tune · hyperparameter tuning (dev)' +
+      (data ? ' — no runs yet for this station' : '');
+    badge.title = 'Optuna + Ray Tune hyperparameter tuning runs in the ' +
+      'hydrotwin-models dev environment; a candidate must beat the ' +
+      'incumbent on the WY2026 holdout (quality gate) before it can ' +
+      'replace dev weights.';
+  }
+
+  var got = false;
+  function poll() {
+    fetch(STATUS_URL + '?v=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+      })
+      .then(function (d) { got = true; render(d); },
+            function () { if (!got) render(null); });
+  }
+  place();
+  window.addEventListener('resize', place);
+  setInterval(place, 5000);
+  poll();
+  setInterval(poll, 60000);
+})();
+</script>
 </body></html>

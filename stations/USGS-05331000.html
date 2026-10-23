@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39816405154-edc8b5958068ae5496c7dc9ce8a0660f8e540b91";
+  var BID = "39880573612-3ca66df38a980eee4603b9dfa9af48f4e4b7f890";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,20 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -881,7 +895,9 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.6961,4597.11],"80":[0.7975,6115.
     + '.htux-chead{display:flex;justify-content:space-between;align-items:center;background:rgba(12,18,28,.9);color:#BFD0E0;font:600 12px Arial;padding:4px 6px 4px 10px;border-radius:10px 10px 0 0;cursor:move;touch-action:none;user-select:none;-webkit-user-select:none}'
     + '#dock .htux-wrap > canvas,#side .htux-wrap > canvas{border-radius:0 0 10px 10px}'
     + '.htux-wrap.htux-max > canvas{width:100% !important;height:auto !important}'
-    + '.htux-raise{z-index:10040 !important}';
+    + '.htux-raise{z-index:10040 !important}'
+    + '#ht-datewrap{touch-action:none;cursor:move}'
+    + '#ht-datewrap input{cursor:auto}';
   var sty = document.createElement('style'); sty.textContent = CSS; document.head.appendChild(sty);
 
   function isInt(t) { return !!(t.closest && t.closest('button,input,select,textarea,label,a,.htux-ctl,.tg,#htd-toggle')); }
@@ -1029,6 +1045,61 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.6961,4597.11],"80":[0.7975,6115.
     new MutationObserver(function () { mirror(cv, wrap); }).observe(cv, { attributes: true, attributeFilter: ['style'] });
     dragify(wrap, head);
   }
+  /* ht-datedrag v1: the date control (#ht-datewrap) is draggable by its
+   * background/label (pointer events, mouse + touch); the date input
+   * itself is never a drag surface, so its picker/typing are untouched.
+   * The dropped position persists in localStorage (shared key) and is
+   * clamped to the viewport. While the control is relocated into the
+   * statistics layout's date slot (classic pages), it is left alone. */
+  var DATE_KEY = 'ht-datewrap-pos-v1';
+  function dateSaved() {
+    try { var p = JSON.parse(localStorage.getItem(DATE_KEY) || 'null'); return (p && isFinite(p.l) && isFinite(p.t)) ? p : null; } catch (e) { return null; }
+  }
+  function dateApply(w, l, t) {
+    var ww = w.offsetWidth || 185, hh = w.offsetHeight || 46;
+    l = Math.max(0, Math.min(Math.max(0, window.innerWidth - Math.min(60, ww)), l));
+    t = Math.max(0, Math.min(Math.max(0, window.innerHeight - Math.min(34, hh)), t));
+    w.style.left = l + 'px'; w.style.top = t + 'px'; w.style.transform = 'none';
+  }
+  function bindDateDrag(w) {
+    w.addEventListener('pointerdown', function (e) {
+      if (e.button) return;
+      if (!w.dataset.htdd) return;
+      if (e.target.closest && e.target.closest('input,select,textarea,button,a')) return;
+      var r = w.getBoundingClientRect();
+      var offX = e.clientX - r.left, offY = e.clientY - r.top, sx = e.clientX, sy = e.clientY, moved = false;
+      function mv(ev) {
+        if (!moved && Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) < 4) return;
+        moved = true;
+        dateApply(w, ev.clientX - offX, ev.clientY - offY);
+        ev.preventDefault();
+      }
+      function up() {
+        document.removeEventListener('pointermove', mv, true);
+        document.removeEventListener('pointerup', up, true);
+        if (moved) {
+          swallowClick(w);
+          try { localStorage.setItem(DATE_KEY, JSON.stringify({ l: parseInt(w.style.left, 10), t: parseInt(w.style.top, 10) })); } catch (err) {}
+        }
+      }
+      document.addEventListener('pointermove', mv, true);
+      document.addEventListener('pointerup', up, true);
+      e.preventDefault();
+    });
+  }
+  function syncDate() {
+    var w = document.getElementById('ht-datewrap'); if (!w) return;
+    var slotted = !!(w.parentElement && w.parentElement.id === 'hts-date-slot');
+    if (slotted) {
+      if (w.dataset.htdd) { w.style.left = ''; w.style.top = ''; w.style.transform = ''; delete w.dataset.htdd; }
+      return;
+    }
+    if (!w.dataset.htdd) {
+      w.dataset.htdd = '1';
+      var p = dateSaved(); if (p) dateApply(w, p.l, p.t);
+      if (!w.__htddBound) { w.__htddBound = 1; bindDateDrag(w); }
+    }
+  }
   function isFloating(el) { var p = getComputedStyle(el).position; return p === 'fixed' || p === 'absolute'; }
   function unenhance(el) {  // panel pinned into the document flow (classic stats view): leave it a clean static section
     Array.prototype.forEach.call(el.querySelectorAll('.htux-ctl'), function (c) { c.remove(); });
@@ -1036,6 +1107,7 @@ window.__dacpSum = {"01463500":{"LSTM":{"70":[0.6961,4597.11],"80":[0.7975,6115.
   }
   function scan() {
     try {
+      syncDate();
       var el;
       el = document.getElementById('hud'); if (el) enhHud(el);
       el = document.getElementById('ht-drift-panel'); if (el) { if (isFloating(el)) enhDrift(el); else unenhance(el); }
@@ -1376,7 +1448,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39816405154-edc8b5958068ae5496c7dc9ce8a0660f8e540b91" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39880573612-3ca66df38a980eee4603b9dfa9af48f4e4b7f890" } }
 </script>
 <script type="text/plain" data-htlp-boot="chart3d" data-htlp-module="1">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1385,7 +1457,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=39816405154-edc8b5958068ae5496c7dc9ce8a0660f8e540b91')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=39880573612-3ca66df38a980eee4603b9dfa9af48f4e4b7f890')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -3206,11 +3278,11 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
 
   /* ------------------------------------------------ master bar */
-  var css = '#htla-bar{position:sticky;top:0;z-index:9999;display:flex;gap:10px;align-items:center;flex-wrap:wrap;'
-    + 'background:rgba(8,20,14,.96);border-bottom:2px solid #2E9B57;padding:8px 12px;font:600 13.5px system-ui;color:#DDE6EE}'
+  var css = '#htla-bar{position:fixed;left:50%;top:34%;transform:translate(-50%,-50%);z-index:9999;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;width:fit-content;max-width:min(600px,94vw);'
+    + 'background:rgba(8,20,14,.96);border:2px solid #2E9B57;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55);padding:8px 12px;font:600 13.5px system-ui;color:#DDE6EE}'
     + '#htla-go{background:#14532D;color:#B7F4CB;border:1px solid #2E9B57;border-radius:8px;padding:7px 14px;cursor:pointer;font:700 13.5px system-ui}'
     + '#htla-go:hover{background:#1B6B3C}#htla-badge{color:#7AE07A;font-weight:800;letter-spacing:.4px}'
-    + '#htla-note{color:#BFD0E0;font-weight:500}#htla-oldlab{cursor:pointer;color:#C9CED6;font-weight:600}'
+    + '#htla-note{color:#BFD0E0;font-weight:500}#htla-oldlab{cursor:pointer;color:#C9CED6;font-weight:600}/* ht-rmsefield v1 */#htla-rmse{color:#9FB3C8;font-weight:600;font-size:12px;white-space:nowrap}'
     + '#htla-back{background:#33404F;color:#DDE6EE;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:6px 10px;cursor:pointer;font:600 12.5px system-ui}'
     + '#htla-oldtable{flex-basis:100%;font:500 12px system-ui;color:#C9CED6}'
     + '#htla-oldtable table{border-collapse:collapse;margin-top:4px}#htla-oldtable td,#htla-oldtable th{padding:1px 8px 1px 0;text-align:right}'
@@ -3220,7 +3292,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     + '#htla-bar{touch-action:none}'
     + '#htla-grip{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;color:#7AE07A;font-size:17px;line-height:1;padding:2px 3px}'
     + '#htla-grip:active{cursor:grabbing}'
-    + '#htla-bar.htla-moved{position:fixed;margin:0;border:2px solid #2E9B57;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55)}';
+    + '#htla-bar.htla-moved{position:fixed;transform:none;margin:0;border:2px solid #2E9B57;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55)}';
   var style = document.createElement('style');
   style.textContent = css;
   document.head.appendChild(style);
@@ -3231,6 +3303,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     + '<span id="htla-badge" style="display:none">● LIVE</span>'
     + '<span id="htla-note">baked data through ' + BAKED_END + '</span>'
     + '<label id="htla-oldlab"><input type="checkbox" id="htla-old"> old weights (pre-drift-fix)</label>'
+    + '<span id="htla-rmse" title="WY2026 backtest - mean RMSE (log10 cfs) across the 10 served daily models: old = pre-drift-fix weights, new = retrained weights (drift fix, Oct 2026). Same A-vs-B figures as the Model drift panel.">RMSE old 0.2460 · new 0.2386 · Δ -0.0074</span>'
     + '<span id="htla-oldnote"></span>'
     + '<button type="button" id="htla-back" style="display:none">↩ baked</button>'
     + '<div id="htla-oldtable" style="display:none"></div>';
@@ -4366,18 +4439,28 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     moveEl('ht-datewrap', 'hts-date-slot');
   }
   function panelEl(cfg) {
+    if (cfg.daily) return document.querySelector('#dock canvas');
     return document.getElementById(CFG.mode === 'classic' ? cfg.sec : cfg.panel);
   }
-  function isOff(el) {
+  function isOff(el, cfg) {
     if (!el) return true;
+    if (cfg && cfg.daily)
+      return !document.documentElement.classList.contains('htlp-daily-on');
     if (CFG.mode === '3d' && el.id === 'ht-drift-panel')
       return !document.documentElement.classList.contains('htlp-drift-on');
     if (CFG.mode === 'classic') return el.classList.contains('htlp-off');
     return el.style.display === 'none';
   }
-  function setOff(el, off) {
+  function setOff(el, off, cfg) {
     if (!el) return;
-    if (CFG.mode === 'classic') el.classList.toggle('htlp-off', off);
+    if (cfg && cfg.daily) {
+      // the html class lifts the stub CSS gate; the inline display
+      // mirrors the module's own Geology/Watershed canvas toggles
+      // and makes the ht-uiux wrap follow via its style observer.
+      document.documentElement.classList.toggle('htlp-daily-on', !off);
+      el.style.display = off ? 'none' : 'block';
+    }
+    else if (CFG.mode === 'classic') el.classList.toggle('htlp-off', off);
     else if (el.id === 'ht-drift-panel')
       document.documentElement.classList.toggle('htlp-drift-on', !off);
     else el.style.display = off ? 'none' : '';
@@ -4387,17 +4470,17 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     if (!btn) return;
     btn.addEventListener('click', function () {
       var el = panelEl(cfg);
-      var opening = isOff(el);
+      var opening = isOff(el, cfg);
       if (opening) {
-        setOff(el, false);
+        setOff(el, false, cfg);
         runGroup(cfg.group);
         el = panelEl(cfg);
-        setOff(el, false);
+        setOff(el, false, cfg);
         btn.classList.add('htlp-on'); btn.setAttribute('aria-pressed', 'true');
         if (CFG.mode === 'classic' && el)
           el.scrollIntoView({ block: 'start' });
       } else {
-        setOff(el, true);
+        setOff(el, true, cfg);
         btn.classList.remove('htlp-on'); btn.setAttribute('aria-pressed', 'false');
       }
     });
@@ -4414,6 +4497,20 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   }
 })();
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -4440,8 +4537,10 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   <button id="htd-toggle" aria-label="collapse">–</button></div>
   <div class="htd-body" id="htd-body">
     <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
+    <div class="htd-line"><b>1 of 5</b> features above the 0.25 drift cutoff.</div>
     <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 1.37.</div>
-    <table><tr><th>Feature</th><th>PSI</th></tr><tr><td>Tmax</td><td>0.047</td></tr><tr><td>Tmin</td><td>0.027</td></tr><tr><td>Tmean</td><td>0.035</td></tr><tr><td>Precip</td><td>0.033</td></tr><tr><td>Flow (log)</td><td>1.372</td></tr></table>
+    <table><tr><th>Feature</th><th>PSI</th><th></th></tr><tr><td>Tmax</td><td>0.047</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Tmin</td><td>0.027</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Tmean</td><td>0.035</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Precip</td><td>0.033</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Flow (log)</td><td>1.372</td><td><span class="pill" style="background:#d64545">drifting</span></td></tr></table>
+    <div class="htd-line">Drift cutoff: PSI &gt; 0.25 = drifting · 0.10–0.25 = moderate shift · &lt; 0.10 = stable.</div>
     <div class="htd-sec">Concept drift</div>
     <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
     <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.184</td><td>0.167</td><td>-9.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.188</td><td>0.190</td><td>+1.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.186</td><td>0.188</td><td>+0.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.188</td><td>0.174</td><td>-7.8%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.180</td><td>0.178</td><td>-0.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.485</td><td>0.471</td><td>-2.8%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>0.489</td><td>0.471</td><td>-3.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.188</td><td>0.186</td><td>-1.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.188</td><td>0.177</td><td>-6.0%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.185</td><td>0.185</td><td>+0.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>

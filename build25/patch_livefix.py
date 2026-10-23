@@ -45,9 +45,94 @@ It also annotates the weekly/monthly live status line with elapsed
 seconds while a live run is in flight, so a slow-but-working run no
 longer looks frozen.
 
-It also annotates the weekly/monthly live status line with elapsed
-seconds while a live run is in flight, so a slow-but-working run no
-longer looks frozen.
+Part 3 (ht-loadmodel v1, appended 2026-10-22): a "Load new model"
+button next to the 3D pages' "retrain on GitHub" button. Retraining
+publishes fresh weights to the hydrotwin-models Pages source
+(onnx/<site>/<Model>.onnx, Cache-Control max-age=600), but an open page
+keeps the sessions it already created — the daily engine caches them
+in a private sessCache and the big-model engine in BIG.sess — so new
+weights normally need a redeploy or a lucky reload. Part 3:
+  * wraps ort.InferenceSession.create so sessions for THIS station's
+    daily/big-model artifacts are proxies whose inner real session
+    can be swapped atomically (engines keep their cached proxy);
+  * the button fetches every neural model's artifact from the models
+    source with cache:'no-store' + a cache-bust query, builds all new
+    sessions first, and only then swaps them in — any failure leaves
+    the previously running model untouched;
+  * unchecks the "old weights (pre-drift-fix)" checkbox (dispatching
+    its change event) so the UI never claims old weights while
+    running new ones;
+  * re-runs the forecast for the currently selected date in-browser
+    (same tensor build + normalisation as the htla daily engine,
+    stats extracted from the page's own HTLA_STATS at patch time) and
+    writes the fan into HT3D.pred, redrawing through the app's own
+    ArrowRight day-step routing like htla's panelLive3D;
+  * after a load, a fetch wrapper cache-busts models-source URLs so
+    the classical params JSONs (fetched per live run) are fresh too;
+  * if Live mode is on, it re-clicks the htla Live button so the live
+    fans recompute through the proxies with the new weights.
+Only pages carrying id="retrainTop" (the 14 3D pages) get Part 3;
+classic pages are untouched by it. Its block and button are refreshed
+in place on every run (own marker), independent of Parts 1-2.
+
+Part 4 (ht-notableview v1, appended 2026-10-22): remove the Data view /
+Table view feature from the 3D pages (Saurabh's order: "remove table
+view"). The 3D module's top bar carried two entry points into
+data-table presentations, and the scene's forecast panel carried the
+same two as in-scene buttons:
+  * a "Table view" button (#bView) toggling the scene ground<->table
+    mode, wired via act('view'), with a mode label rewrite inside
+    setMode() and a ?view=table URL-param initialiser;
+  * a "Data view >" link to the classic statistics page
+    (D.classicUrl), mirrored by an in-scene 'data >' panel button and
+    an act('data') navigation branch.
+Part 4 strips every one of those entry points with exact,
+count-checked anchors (see NT_STRIPS): both top-bar elements, the
+#bView click wiring and its setMode() label line (either would throw
+on the missing element if left behind), the ?view=table initialiser,
+both in-scene panel button entries (the panel's draw/hit code derives
+slot widths from the row length, so the rows simply reflow), and both
+act() branches. The table-mode scene machinery itself (setMode,
+tableRoot, the second water body) is deliberately NOT excised: with
+no button, panel entry, action branch or URL param able to select it,
+it is unreachable, and the ground-mode code path is byte-identical to
+before. D.classicUrl stays in HT_DATA as inert data (HT_DATA is
+asserted byte-identical by other patchers; nothing reads the field
+once the two consumers above are gone). Classic pages carry none of
+these anchors - the classic page IS the statistics view (ht-statsview)
+- and are returned unchanged. Idempotent: a page with no anchors left
+is a no-op; a page whose anchors are only partially present is still
+stripped, and any residual UI trace fails the page loudly (skip +
+warning) instead of shipping a half-removed feature.
+
+Part 5 (ht-tuneanim v1, appended 2026-10-22): an animated "Optuna +
+Ray Tune" tuning badge on the 3D pages (Saurabh's order: "show some
+animation on digital twin regarding this, ppl should notice it on
+front end both optuna and raytune — when it's running"). A pill is
+inserted immediately after the model-button row (#lardemo-topwrap,
+right after Part 3's Load-new-model block) — as a body-level sibling,
+NOT inside the topwrap: the topwrap is transformed, and a
+position:fixed descendant of a transformed element would be placed
+relative to it instead of the viewport. The badge's script polls
+https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json
+(the models Pages source — the gh-pages branch, same origin as the
+weights) cache-busted about every 60 s. That JSON is built from the
+models dev tuning registry by tuning/write_status.py: the tuning-dev
+workflow publishes it with running=true at the start of a run and
+with the fresh registry results at the end. States:
+  * RUNNING: amber glowing pill, spinning gear, blinking dots, text
+    naming both tools and what is being tuned (station + families);
+  * IDLE: quiet pill naming both tools and this station's latest
+    gate verdicts (e.g. "LSTM tuned · gate PASS +1.21% · Transformer
+    · gate FAIL — incumbent kept"), or a "no runs yet" note;
+  * status unreachable: neutral idle pill naming both tools (the
+    weekly retrain publish replaces the Pages tree and drops the
+    JSON until the next tuning run republishes it).
+The badge positions itself just below the button row (and below the
+#fcb forecast banner when that is visible), re-checking on resize
+and on a slow timer. Only pages carrying id="retrainTop" (the 14 3D
+pages) get Part 5; its block is refreshed in place on every run
+(own marker), independent of Parts 1-4.
 
 Idempotent: pages carrying the v2 MARKER with no old anchors left are
 skipped; pages carrying only the v1 append (first deploy) are upgraded
@@ -195,31 +280,596 @@ JS_BODY = r"""
 """
 
 
+# ---------------- part 3: ht-loadmodel v1 (Load new model button) --------
+import json as _json
+import re as _re
+
+LM_MARKER = "ht-loadmodel v1"
+LM_STATS_RE = _re.compile(
+    r"var HTLA_STATS = \{\s*mu: \[([0-9.,\-+eE ]+)\], sd: \[([0-9.,\-+eE ]+)\], "
+    r"tsd: \[([0-9.,\-+eE ]+)\], med_sms: ([0-9.]+), med_stmp: ([0-9.]+) \};")
+LM_BTN_RE = _re.compile(
+    r'<button id="loadModelTop"(?:(?!</button>).)*</button>'
+    r'(<span id="loadModelStatus"(?:(?!</span>).)*</span>)?', _re.S)
+LM_JS_RE = _re.compile(
+    r'<script>\n/\* ht-loadmodel v1(?:(?!</?script).)*</script>\n?', _re.S)
+RETRAIN_BTN_RE = _re.compile(r'<button id="retrainTop"[^>]*>[^<]*</button>')
+
+LM_BUTTON_HTML = (
+    '<button id="loadModelTop" title="Fetch the latest published model '
+    'weights from hydrotwin-models and re-run the forecast with them" '
+    'style="padding:6px 14px;border-radius:10px;border:1px solid #FFD24D;'
+    'background:rgba(12,18,28,.88);color:#FFD24D;font:600 14px Arial;'
+    'cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Load new model'
+    '</button><span id="loadModelStatus" style="align-self:center;'
+    'font:600 12.5px Arial;color:#BFD0E0;max-width:360px;"></span>')
+
+LM_JS_BODY = r"""
+<script>
+/* ht-loadmodel v1 - "Load new model": hot-load the latest published
+ * weights from the hydrotwin-models Pages source into the open page.
+ * The daily engine (ht-liveall) caches its ORT sessions privately and
+ * the big-model engine caches BIG.sess, so this block wraps
+ * ort.InferenceSession.create and hands those engines a proxy session
+ * for this station's artifacts; the proxy's inner real session is
+ * swapped atomically when the button loads fresh weights. A failed
+ * load changes nothing. See build25/patch_livefix.py (Part 3). */
+(function () {
+  'use strict';
+  if (window.__htlmOn) return;
+  window.__htlmOn = true;
+  var ONNX_BASE = 'https://saurabhkulkarni77.github.io/hydrotwin-models/onnx';
+  var MODELS_BASE = 'https://saurabhkulkarni77.github.io/hydrotwin-models/';
+  var NEURAL = ['LSTM', 'Transformer', 'TFT', 'PatchTST', 'PILSTMv1'];
+  var STATS = __HTLM_STATS_JSON__;
+  var D = window.HT_DATA || window.HT3D || {};
+  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
+  var epoch = 0;
+
+  /* After a successful load, models-source fetches (the classical
+   * params JSONs are fetched per live run) bypass the HTTP cache. */
+  if (window.fetch) {
+    var ofetch = window.fetch.bind(window);
+    window.fetch = function (input, init) {
+      try {
+        if (epoch) {
+          var u = (typeof input === 'string') ? input : (input && input.url) || '';
+          if (u.indexOf(MODELS_BASE) === 0 && u.indexOf('htlm=') < 0) {
+            var nu = u + (u.indexOf('?') >= 0 ? '&' : '?') + 'htlm=' + epoch;
+            input = (typeof input === 'string') ? nu : new Request(nu, input);
+          }
+        }
+      } catch (e) { /* passthrough */ }
+      return ofetch(input, init);
+    };
+  }
+
+  /* ---------------- session registry + proxy ---------------- */
+  var reg = {};
+  function modelOfUrl(u) {
+    if (typeof u !== 'string' || !SITE) return null;
+    var m = u.match(/\/onnx\/(\d{8})\/([A-Za-z0-9_]+)\.onnx(?:[?#].*)?$/);
+    if (!m || m[1] !== SITE) return null;
+    return m[2];
+  }
+  function curReal(model) {
+    var slot = reg[model];
+    if (!slot || !slot.real) throw new Error('ht-loadmodel: no live session for ' + model);
+    return slot.real;
+  }
+  function makeProxy(model) {
+    return {
+      get inputNames() { return curReal(model).inputNames; },
+      get outputNames() { return curReal(model).outputNames; },
+      run: function (feeds, opts) { return curReal(model).run(feeds, opts); },
+      release: function () { return Promise.resolve(); }
+    };
+  }
+  var rawCreate = null, wrapInstalled = false;
+  function tryInstall() {
+    if (wrapInstalled) return true;
+    if (typeof ort === 'undefined' || !ort.InferenceSession ||
+        typeof ort.InferenceSession.create !== 'function') return false;
+    if (ort.InferenceSession.create.__htlm) { wrapInstalled = true; return true; }
+    var orig = ort.InferenceSession.create.bind(ort.InferenceSession);
+    rawCreate = orig;
+    var wrapped = function (arg, opts) {
+      var model = modelOfUrl(arg);
+      if (!model) return orig(arg, opts);
+      var slot = reg[model];
+      if (!slot) {
+        slot = reg[model] = { real: null, proxy: makeProxy(model), pending: null };
+        slot.pending = orig(arg, opts).then(function (s) {
+          slot.real = s; slot.pending = null; return slot.proxy;
+        }, function (e) { delete reg[model]; throw e; });
+        return slot.pending;
+      }
+      if (slot.real) return Promise.resolve(slot.proxy);
+      if (!slot.pending) {
+        slot.pending = orig(arg, opts).then(function (s) {
+          slot.real = s; slot.pending = null; return slot.proxy;
+        }, function (e) { slot.pending = null; throw e; });
+      }
+      return slot.pending.then(function () { return slot.proxy; });
+    };
+    wrapped.__htlm = true;
+    ort.InferenceSession.create = wrapped;
+    wrapInstalled = true;
+    return true;
+  }
+  var pollTries = 0;
+  var poll = setInterval(function () {
+    if (tryInstall() || ++pollTries > 240) clearInterval(poll);
+  }, 500);
+  tryInstall();
+
+  function ensureOrt() {
+    return new Promise(function (res, rej) {
+      if (typeof ort !== 'undefined') return res();
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.min.js';
+      s.onload = function () { res(); };
+      s.onerror = function () { rej(new Error('onnxruntime failed to load (CDN blocked?)')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  /* ------------- selected-date recompute (mirrors htla dailyFc) ------------- */
+  function buildWindow(day) {
+    var flows = {}, wx = {}, win30 = [], i, dt;
+    var t0 = Date.parse((D.start || '2001-10-01') + 'T00:00:00Z');
+    for (i = day - 29; i <= day; i++) {
+      if (i < 0 || i >= D.n) return null;
+      dt = new Date(t0 + i * 864e5).toISOString().slice(0, 10);
+      var q = D.flow[i], tx = D.tmax[i], tn = D.tmin[i];
+      if (q == null || !(q > 0) || tx == null || tn == null) return null;
+      flows[dt] = q; wx[dt] = [tx, tn, D.precip[i] || 0]; win30.push(dt);
+    }
+    return { flows: flows, wx: wx, win30: win30 };
+  }
+  async function runFan(sess, A, ss) {
+    var mu = STATS.mu, sd = STATS.sd, tsd = STATS.tsd;
+    var flows = A.flows, wx = A.wx, win30 = A.win30, i, j;
+    var flat = new Float32Array(29 * 9);
+    var prev = flows[win30[0]];
+    for (i = 1; i < 30; i++) {
+      var dt = win30[i], t = wx[dt], q = flows[dt];
+      var row = [t[0], t[1], (t[0] + t[1]) / 2, t[2], q, q > prev ? 1 : 0, ss.sms, ss.stmpF, ss.swe];
+      prev = q;
+      for (j = 0; j < 9; j++) {
+        var x = j === 4 ? Math.log(row[j]) : row[j];
+        flat[(i - 1) * 9 + j] = (x - mu[j]) / sd[j];
+      }
+    }
+    var last = Math.log(flows[win30[29]]);
+    var feeds = {};
+    feeds[sess.inputNames[0]] = new ort.Tensor('float32', flat, [1, 29, 9]);
+    var out = await sess.run(feeds);
+    var diffs = Array.from(out[sess.outputNames[0]].data);
+    if (diffs.length !== 7 || diffs.some(function (v) { return !isFinite(v); })) {
+      throw new Error('bad model output');
+    }
+    return diffs.map(function (d, l) { return Math.exp(last + d * tsd[l]); });
+  }
+  function stepKey(k) {
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true }));
+  }
+  async function rerunSelectedDate(models) {
+    var S = window.__htS;
+    if (!S || !D.pred || !D.models || !D.flow) return '';
+    var day = S.day;
+    if (day == null || day < 29 || day >= D.n) {
+      return ' · this date has under 30 days of history - baked forecast kept';
+    }
+    var A = buildWindow(day);
+    if (!A) return ' · window has data gaps - baked forecast kept';
+    var ss = { sms: STATS.med_sms, stmpF: STATS.med_stmp, swe: 0 };
+    var done = 0;
+    for (var k = 0; k < models.length; k++) {
+      var m = models[k], mi = D.models.indexOf(m), slot = reg[m];
+      if (mi < 0 || !slot || !slot.real) continue;
+      try {
+        var fan = await runFan(slot.real, A, ss);
+        for (var l = 0; l < 7; l++) D.pred[mi][l][day] = fan[l];
+        done++;
+      } catch (e) { /* keep the baked fan for this model */ }
+    }
+    if (!done) return ' · recompute failed - baked forecast kept';
+    if (day > 0) { S.day = day - 1; stepKey('ArrowRight'); }
+    else { S.day = 0; stepKey('ArrowRight'); stepKey('ArrowLeft'); }
+    return ' · forecast for ' + A.win30[29] + ' recomputed (' + done + ' models)';
+  }
+
+  function exitOldWeights() {
+    var box = document.getElementById('htla-old');
+    if (box && box.checked) {
+      box.checked = false;
+      box.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  /* ---------------- the button ---------------- */
+  var btn = document.getElementById('loadModelTop');
+  var statusEl = document.getElementById('loadModelStatus');
+  function setStatus(t, ok) {
+    if (!statusEl) return;
+    statusEl.textContent = t;
+    statusEl.style.color = ok ? '#7AE07A' : '#FF8A7A';
+  }
+  var busy = false;
+  async function loadNewModel() {
+    if (busy) return;
+    busy = true;
+    var label = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Loading model...'; }
+    setStatus('', true);
+    try {
+      if (!SITE) throw new Error('station id unavailable on this page');
+      await ensureOrt();
+      if (!tryInstall() || !rawCreate) throw new Error('model runtime unavailable');
+      var models = NEURAL.filter(function (m) { return (D.models || []).indexOf(m) >= 0; });
+      if (!models.length) throw new Error('no neural models on this page');
+      var pend = models.map(function (m) { return reg[m] && reg[m].pending; })
+        .filter(function (p) { return !!p; });
+      if (pend.length) { try { await Promise.all(pend); } catch (e) { /* superseded below */ } }
+      var ts = Date.now(), built = {}, lastMod = null, k, m2;
+      for (k = 0; k < models.length; k++) {
+        m2 = models[k];
+        var url = ONNX_BASE + '/' + SITE + '/' + m2 + '.onnx?htlm=' + ts;
+        var r = await fetch(url, { cache: 'no-store' });
+        if (!r.ok) throw new Error(m2 + ': HTTP ' + r.status + ' from the models source');
+        var lm = r.headers.get('last-modified');
+        if (lm) lastMod = lm;
+        var buf = await r.arrayBuffer();
+        if (!buf.byteLength) throw new Error(m2 + ': empty model artifact');
+        built[m2] = await rawCreate(new Uint8Array(buf));
+      }
+      /* every new session built -> swap atomically */
+      for (k = 0; k < models.length; k++) {
+        m2 = models[k];
+        if (!reg[m2]) reg[m2] = { real: null, proxy: makeProxy(m2), pending: null };
+        var old = reg[m2].real;
+        reg[m2].real = built[m2];
+        reg[m2].pending = null;
+        if (old && old !== built[m2] && old.release) {
+          try { await old.release(); } catch (e) { /* best effort */ }
+        }
+      }
+      epoch = ts;
+      exitOldWeights();
+      var note = '';
+      try { note = await rerunSelectedDate(models); } catch (e) { note = ''; }
+      var stamp = '';
+      if (lastMod) {
+        var d = new Date(lastMod);
+        if (!isNaN(d)) stamp = ' · weights published ' + d.toUTCString().slice(0, 16);
+      }
+      setStatus('New model loaded ✓' + stamp + note, true);
+      if (window.__htla && window.__htla.on) {
+        var g = document.getElementById('htla-go');
+        if (g) { g.click(); setStatus('New model loaded ✓' + stamp + note + ' · live re-run started', true); }
+      }
+    } catch (e) {
+      setStatus('Load failed - previous model kept (' + ((e && e.message) || e) + ')', false);
+    }
+    if (btn) { btn.disabled = false; btn.textContent = label; }
+    busy = false;
+  }
+  if (btn) btn.addEventListener('click', loadNewModel);
+})();
+</script>
+"""
+
+
+def _lm_extract_stats(s):
+    m = LM_STATS_RE.search(s)
+    if not m:
+        return None
+    def arr(g):
+        return [float(x) for x in g.split(",")]
+    mu, sd, tsd = arr(m.group(1)), arr(m.group(2)), arr(m.group(3))
+    if len(mu) != 9 or len(sd) != 9 or len(tsd) != 7:
+        return None
+    return {"mu": mu, "sd": sd, "tsd": tsd,
+            "med_sms": float(m.group(4)), "med_stmp": float(m.group(5))}
+
+
+def apply_loadmodel(s):
+    """Part 3: insert/refresh the Load-new-model button + script.
+
+    Only pages carrying the retrain button (the 14 3D pages) are
+    touched; anything else is returned unchanged. Returns the new
+    text, or None on anchor trouble."""
+    if 'id="retrainTop"' not in s:
+        return s
+    stats = _lm_extract_stats(s)
+    if stats is None:
+        return None
+    out = LM_BTN_RE.sub("", s)
+    out = LM_JS_RE.sub("", out)
+    btns = RETRAIN_BTN_RE.findall(out)
+    if len(btns) != 1 or out.count('id="retrainTop"') != 1:
+        return None
+    m = RETRAIN_BTN_RE.search(out)
+    out = out[:m.end()] + LM_BUTTON_HTML + out[m.end():]
+    if out.count("</body>") != 1:
+        return None
+    js = LM_JS_BODY.replace("__HTLM_STATS_JSON__", _json.dumps(stats))
+    out = out.replace("</body>", js.strip() + "\n</body>", 1)
+    if out.count('id="loadModelTop"') != 1:
+        return None
+    if out.count(LM_MARKER) != 1:
+        return None
+    return out
+
+
+# ---------------- part 4: ht-notableview v1 (remove Data/Table view) --------
+# Exact anchors in the 3D module, each occurring exactly once per 3D
+# page (census-verified on all 14). Removal only - nothing is added to
+# the page, so no other patcher's marker census changes.
+NT_STRIPS = [
+    # "Data view >" top-bar link to the classic statistics page
+    ('<a href="${D.classicUrl}">Data view ▶</a>', ''),
+    # "Table view" top-bar button (scene ground<->table mode toggle)
+    ('<button id="bView">Table view</button>', ''),
+    # #bView click wiring (would throw on the removed element)
+    ("$('bView').onclick = () => act('view'); ", ''),
+    # setMode()'s #bView label rewrite (same throw risk on every mode set)
+    ("$('bView').textContent = g ? 'Table view' : 'Ground view'; ", ''),
+    # ?view=table URL-param initialiser for the table mode
+    ("if (qp.get('view') === 'table') S2.mode = 'table';\n", ''),
+    # in-scene forecast-panel buttons for the same two actions
+    ("['view', 'view'], ", ''),
+    (", ['data ▶', 'data']", ''),
+    # act() navigation branch for 'data'
+    (" else if (a === 'data') location.href = D.classicUrl;", ''),
+    # act() mode-toggle branch for 'view'
+    ("\n  else if (a === 'view') setMode(S2.mode === 'ground' ? 'table' : 'ground');", ''),
+]
+# UI traces that must not survive a strip; a hit fails the page loudly.
+NT_RESIDUAL = ('id="bView"', "$('bView')", 'Data view', 'Table view',
+               "['data ▶', 'data']", "a === 'data'")
+
+
+def apply_notableview(s):
+    """Part 4: strip the Data view / Table view entry points (3D only).
+
+    Pages with no anchors (classic pages; already-stripped 3D pages)
+    are returned unchanged. Returns None on anchor trouble: an anchor
+    occurring more than once, anchors on a page that is not a 3D page,
+    or any residual UI trace after stripping."""
+    if not any(old in s for old, _new in NT_STRIPS):
+        return s
+    if 'id="retrainTop"' not in s:
+        return None
+    out = s
+    for old, new in NT_STRIPS:
+        c = out.count(old)
+        if c > 1:
+            return None
+        if c == 1:
+            out = out.replace(old, new, 1)
+    if any(bad in out for bad in NT_RESIDUAL):
+        return None
+    return out
+
+
+# ---------------- part 5: ht-tuneanim v1 (Optuna + Ray Tune badge) ------
+TA_MARKER = "ht-tuneanim v1"
+TA_SPAN_RE = _re.compile(
+    r'<span id="loadModelStatus"(?:(?!</span>).)*</span>', _re.S)
+TA_BADGE_RE = _re.compile(
+    r'<!-- ht-tuneanim v1 --><div id="tuneAnimBadge"(?:(?!</div>).)*</div>'
+    r'<style>(?:(?!</style>).)*</style>', _re.S)
+TA_JS_RE = _re.compile(
+    r'<script>\n/\* ht-tuneanim v1(?:(?!</?script).)*</script>\n?', _re.S)
+
+TA_BADGE_HTML = (
+    '<!-- ht-tuneanim v1 -->'
+    '<div id="tuneAnimBadge" class="htune htune-idle" role="status" '
+    'title="Optuna + Ray Tune hyperparameter tuning (dev) — live status '
+    'from the hydrotwin-models tuning registry">'
+    '<span class="htune-gear" aria-hidden="true">⚙</span>'
+    '<span class="htune-txt" id="tuneAnimTxt">Optuna × Ray Tune · '
+    'tuning status…</span>'
+    '<span class="htune-dots" aria-hidden="true"><i></i><i></i><i></i></span>'
+    '</div>'
+    '<style>'
+    '.htune{position:fixed;left:50%;transform:translateX(-50%);top:146px;'
+    'z-index:31;display:flex;align-items:center;gap:8px;'
+    'max-width:min(700px,94vw);padding:7px 14px;border-radius:999px;'
+    'background:rgba(12,18,28,.88);border:1px solid #3A4A5E;'
+    'color:#BFD0E0;font:600 13px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4)}'
+    '.htune-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+    '.htune-gear{display:inline-block;font-size:15px;line-height:1;'
+    'color:#8FC1F2}'
+    '.htune-dots{display:none;gap:3px}'
+    '.htune-dots i{width:5px;height:5px;border-radius:50%;'
+    'background:#FFB84D;display:inline-block;animation:htuneBlink 1.2s infinite}'
+    '.htune-dots i:nth-child(2){animation-delay:.2s}'
+    '.htune-dots i:nth-child(3){animation-delay:.4s}'
+    '.htune-run{border-color:#FFB84D;color:#FFE1A8;'
+    'animation:htunePulse 1.6s ease-in-out infinite}'
+    '.htune-run .htune-gear{color:#FFB84D;'
+    'animation:htuneSpin 2.2s linear infinite}'
+    '.htune-run .htune-dots{display:inline-flex}'
+    '.htune-pass{color:#7AE07A}'
+    '.htune-fail{color:#FF9A8A}'
+    '@keyframes htuneSpin{to{transform:rotate(360deg)}}'
+    '@keyframes htunePulse{0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.4)}'
+    '50%{box-shadow:0 0 14px 2px rgba(255,184,77,.45),0 2px 10px rgba(0,0,0,.4)}}'
+    '@keyframes htuneBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}'
+    '</style>')
+
+TA_JS_BODY = r"""
+<script>
+/* ht-tuneanim v1 - "Optuna + Ray Tune" tuning badge: polls the tuning
+ * status JSON published from the hydrotwin-models tuning registry
+ * (dev) to the models Pages source and renders an animated RUNNING
+ * state while a tuning run is live, or this station's latest quality
+ * gate verdicts when idle. See build25/patch_livefix.py (Part 5). */
+(function () {
+  'use strict';
+  if (window.__httuneOn) return;
+  window.__httuneOn = true;
+  var STATUS_URL = 'https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json';
+  var D = window.HT_DATA || window.HT3D || {};
+  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
+  var badge = document.getElementById('tuneAnimBadge');
+  var txt = document.getElementById('tuneAnimTxt');
+  if (!badge || !txt) return;
+
+  function place() {
+    var y = 146;
+    var tw = document.getElementById('lardemo-topwrap');
+    if (tw) y = Math.max(y, Math.ceil(tw.getBoundingClientRect().bottom) + 8);
+    var fcb = document.getElementById('fcb');
+    if (fcb && fcb.getBoundingClientRect().height > 0 &&
+        window.getComputedStyle(fcb).display !== 'none') {
+      y = Math.max(y, Math.ceil(fcb.getBoundingClientRect().bottom) + 8);
+    }
+    badge.style.top = y + 'px';
+  }
+  function fmtPct(x) {
+    var n = Number(x);
+    if (!isFinite(n)) return '';
+    return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
+  }
+  function safeName(t) { return /^[A-Za-z0-9][A-Za-z0-9 _-]*$/.test(t) ? t : ''; }
+
+  function render(data) {
+    if (data && data.running && data.current) {
+      var c = data.current;
+      var fams = (c.families || []).map(safeName).filter(Boolean).join(' + ');
+      badge.classList.add('htune-run');
+      badge.classList.remove('htune-idle');
+      txt.textContent = 'Optuna × Ray Tune — TUNING ' + (c.station || '') +
+        (fams ? ' · ' + fams : '') + ' now';
+      badge.title = 'Hyperparameter tuning is RUNNING (dev): Optuna ' +
+        '(TPE search) driven by Ray Tune (parallel trials + ASHA) on ' +
+        'station ' + (c.station || '') + (fams ? ' — ' + fams : '') +
+        '. A candidate must pass the quality gate to replace dev weights.';
+      return;
+    }
+    badge.classList.remove('htune-run');
+    badge.classList.add('htune-idle');
+    var st = (data && data.stations && SITE) ? data.stations[SITE] : null;
+    var parts = [], tips = [];
+    if (st) {
+      Object.keys(st).forEach(function (fam) {
+        var name = safeName(fam);
+        var r = st[fam];
+        if (!name || !r || !r.verdict) return;
+        if (r.verdict === 'PASS') {
+          parts.push(name + ' tuned · <span class="htune-pass">gate PASS ' +
+            fmtPct(r.margin_pct) + '</span>');
+        } else {
+          parts.push(name + ' · <span class="htune-fail">gate FAIL — ' +
+            'incumbent kept</span>');
+        }
+        tips.push(name + ': candidate RMSE ' + r.candidate_rmse +
+          ' vs incumbent ' + r.incumbent_rmse + ' (WY2026 holdout), ' +
+          r.trials + ' trials, gate ' + r.verdict + ' ' + fmtPct(r.margin_pct));
+      });
+    }
+    if (parts.length) {
+      txt.innerHTML = 'Optuna × Ray Tune · ' + parts.join(' · ');
+      badge.title = 'Latest tuning for this station (dev, Optuna + ' +
+        'Ray Tune): ' + tips.join('; ') + '.';
+      return;
+    }
+    txt.textContent = 'Optuna × Ray Tune · hyperparameter tuning (dev)' +
+      (data ? ' — no runs yet for this station' : '');
+    badge.title = 'Optuna + Ray Tune hyperparameter tuning runs in the ' +
+      'hydrotwin-models dev environment; a candidate must beat the ' +
+      'incumbent on the WY2026 holdout (quality gate) before it can ' +
+      'replace dev weights.';
+  }
+
+  var got = false;
+  function poll() {
+    fetch(STATUS_URL + '?v=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+      })
+      .then(function (d) { got = true; render(d); },
+            function () { if (!got) render(null); });
+  }
+  place();
+  window.addEventListener('resize', place);
+  setInterval(place, 5000);
+  poll();
+  setInterval(poll, 60000);
+})();
+</script>
+"""
+
+
+def apply_tuneanim(s):
+    """Part 5: insert/refresh the Optuna + Ray Tune badge + script.
+
+    Only pages carrying the retrain button (the 14 3D pages, where
+    Part 3 already placed the Load-new-model block) are touched; the
+    badge goes immediately after the #lardemo-topwrap close, which
+    must directly follow the loadModelStatus span. Returns the new
+    text, or None on anchor trouble."""
+    if 'id="retrainTop"' not in s:
+        return s
+    out = TA_BADGE_RE.sub("", s)
+    out = TA_JS_RE.sub("", out)
+    m = TA_SPAN_RE.search(out)
+    if not m:
+        return None
+    if out[m.end():m.end() + 6] != "</div>":
+        return None
+    ins = m.end() + 6
+    out = out[:ins] + TA_BADGE_HTML + out[ins:]
+    if out.count("</body>") != 1:
+        return None
+    out = out.replace("</body>", TA_JS_BODY.strip() + "\n</body>", 1)
+    if out.count('id="tuneAnimBadge"') != 1:
+        return None
+    if out.count(TA_MARKER) != 2:
+        return None
+    return out
+
+
 def patch_page(s):
     """Returns (new_text, n_part1_applied) or None on anchor trouble."""
     has_v2 = MARKER in s
     has_v1 = OLD_MARKER in s
     olds_left = [old for old, _new in PART1 if old in s]
     if has_v2 and not olds_left:
-        return s, 0
-    out = s
-    n1 = 0
-    for old, new in PART1:
-        c = out.count(old)
-        if c == 1:
-            out = out.replace(old, new, 1)
-            n1 += 1
-        elif c > 1:
+        out, n1 = s, 0
+    else:
+        out = s
+        n1 = 0
+        for old, new in PART1:
+            c = out.count(old)
+            if c == 1:
+                out = out.replace(old, new, 1)
+                n1 += 1
+            elif c > 1:
+                return None
+        if not has_v1 and not has_v2:
+            if out.count("</body>") != 1:
+                return None
+            out = out.replace("</body>", JS_BODY.strip() + "\n</body>", 1)
+        if OLD_MARKER in out:
+            out = out.replace(OLD_MARKER, MARKER)
+        if MARKER not in out:
             return None
-    if not has_v1 and not has_v2:
-        if out.count("</body>") != 1:
+        if any(old in out for old, _new in PART1):
             return None
-        out = out.replace("</body>", JS_BODY.strip() + "\n</body>", 1)
-    if OLD_MARKER in out:
-        out = out.replace(OLD_MARKER, MARKER)
-    if MARKER not in out:
+    out = apply_loadmodel(out)
+    if out is None:
         return None
-    if any(old in out for old, _new in PART1):
+    out = apply_notableview(out)
+    if out is None:
+        return None
+    out = apply_tuneanim(out)
+    if out is None:
         return None
     return out, n1
 

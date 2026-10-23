@@ -1,0 +1,193 @@
+name: Setup DEV HTTPS (CloudFront) — one-off
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  AWS_PAGER: ""
+  PROD_DIST_ID: E29IVO4IMQNKO6
+  DEV_ORIGIN_DOMAIN: hydrotwin-site-dev-2026.s3-website-us-east-1.amazonaws.com
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out dev branch (for result commit-back)
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Inspect production distribution config
+        run: |
+          aws cloudfront get-distribution-config --id "$PROD_DIST_ID" > prod_full.json
+          python3 - <<'PYEOF'
+          import json
+          full = json.load(open('prod_full.json'))
+          cfg = full['DistributionConfig']
+          json.dump(cfg, open('prod_dc.json', 'w'), indent=1)
+          o = cfg['Origins']['Items'][0]
+          dcb = cfg['DefaultCacheBehavior']
+          lines = [
+              '## Production distribution config (source for the dev clone)',
+              f"- Origins quantity: {cfg['Origins']['Quantity']}",
+              f"- Origin Id: {o.get('Id')}",
+              f"- Origin DomainName: {o.get('DomainName')}",
+              f"- Origin type: {'CustomOriginConfig' if 'CustomOriginConfig' in o else 'S3OriginConfig'}",
+              f"- OriginProtocolPolicy: {o.get('CustomOriginConfig', {}).get('OriginProtocolPolicy')}",
+              f"- DefaultRootObject: {cfg.get('DefaultRootObject')}",
+              f"- ViewerProtocolPolicy: {dcb.get('ViewerProtocolPolicy')}",
+              f"- PriceClass: {cfg.get('PriceClass')}",
+              f"- Comment: {cfg.get('Comment')}",
+          ]
+          with open('summary.md', 'a') as f:
+              f.write('\n'.join(lines) + '\n')
+          print('\n'.join(lines))
+          PYEOF
+          cat summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check for an existing dev distribution
+        id: existing
+        run: |
+          aws cloudfront list-distributions > dists.json
+          python3 - <<'PYEOF'
+          import json, os
+          d = json.load(open('dists.json'))
+          items = d.get('DistributionList', {}).get('Items', []) or []
+          found = None
+          for it in items:
+              for o in it.get('Origins', {}).get('Items', []):
+                  if o.get('DomainName') == 'hydrotwin-site-dev-2026.s3-website-us-east-1.amazonaws.com':
+                      found = it
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+              if found:
+                  f.write(f"EXISTING_ID={found['Id']}\nEXISTING_DOMAIN={found['DomainName']}\n")
+                  print('Found existing dev distribution:', found['Id'], found['DomainName'], found['Status'])
+              else:
+                  print('No existing dev distribution found; will create one.')
+          PYEOF
+
+      - name: Build dev distribution config from prod config
+        if: env.EXISTING_ID == ''
+        run: |
+          python3 - <<'PYEOF'
+          import json, time
+          cfg = json.load(open('prod_dc.json'))
+          cfg['CallerReference'] = f'hydrotwin-dev-https-{int(time.time())}'
+          cfg['Comment'] = 'HydroTwin DEV site - HTTPS front for hydrotwin-site-dev-2026 website endpoint'
+          origins = cfg['Origins']
+          o = origins['Items'][0]
+          old_id = o.get('Id')
+          new_id = 'S3-Website-hydrotwin-site-dev-2026'
+          o['Id'] = new_id
+          o['DomainName'] = 'hydrotwin-site-dev-2026.s3-website-us-east-1.amazonaws.com'
+          o['OriginPath'] = ''
+          o.pop('S3OriginConfig', None)
+          coc = o.get('CustomOriginConfig', {})
+          coc['HTTPPort'] = 80
+          coc['HTTPSPort'] = 443
+          coc['OriginProtocolPolicy'] = 'http-only'
+          coc['OriginSslProtocols'] = {'Quantity': 1, 'Items': ['TLSv1.2']}
+          coc.setdefault('OriginReadTimeout', 30)
+          coc.setdefault('OriginKeepaliveTimeout', 5)
+          o['CustomOriginConfig'] = coc
+          o['ConnectionAttempts'] = o.get('ConnectionAttempts', 3)
+          o['ConnectionTimeout'] = o.get('ConnectionTimeout', 10)
+          o['OriginShield'] = {'Enabled': False}
+          origins['Quantity'] = 1
+          origins['Items'] = [o]
+          dcb = cfg['DefaultCacheBehavior']
+          dcb['TargetOriginId'] = new_id
+          cfg['DefaultCacheBehavior'] = dcb
+          cb = cfg.get('CacheBehaviors') or {'Quantity': 0, 'Items': []}
+          for item in cb.get('Items', []) or []:
+              if item.get('TargetOriginId') == old_id:
+                  item['TargetOriginId'] = new_id
+          cfg['CacheBehaviors'] = cb
+          cfg['Aliases'] = {'Quantity': 0, 'Items': []}
+          cfg['DefaultRootObject'] = 'index.html'
+          cfg['Enabled'] = True
+          cfg['ViewerCertificate'] = {'CloudFrontDefaultCertificate': True}
+          cfg['Logging'] = {'Enabled': False, 'IncludeCookies': False, 'Bucket': '', 'Prefix': ''}
+          cfg['WebACLId'] = ''
+          cfg['IsIPV6Enabled'] = cfg.get('IsIPV6Enabled', True)
+          json.dump(cfg, open('dev_dc.json', 'w'), indent=1)
+          print(json.dumps({'origin': o['DomainName'], 'protocol': coc['OriginProtocolPolicy'],
+                            'root': cfg['DefaultRootObject'],
+                            'viewer': dcb.get('ViewerProtocolPolicy')}, indent=1))
+          PYEOF
+
+      - name: Create dev distribution
+        if: env.EXISTING_ID == ''
+        run: |
+          aws cloudfront create-distribution --distribution-config file://dev_dc.json > created.json
+          python3 - <<'PYEOF'
+          import json, os
+          d = json.load(open('created.json'))['Distribution']
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+              f.write(f"DIST_ID={d['Id']}\nDIST_DOMAIN={d['DomainName']}\nDIST_ARN={d['ARN']}\n")
+          print('Created:', d['Id'], d['DomainName'], d['Status'])
+          PYEOF
+
+      - name: Resolve distribution id/domain (existing path)
+        if: env.EXISTING_ID != ''
+        run: |
+          echo "DIST_ID=$EXISTING_ID" >> "$GITHUB_ENV"
+          echo "DIST_DOMAIN=$EXISTING_DOMAIN" >> "$GITHUB_ENV"
+          echo "Reusing existing distribution $EXISTING_ID ($EXISTING_DOMAIN)"
+
+      - name: Wait for deployment
+        run: |
+          for i in $(seq 1 45); do
+            STATUS=$(aws cloudfront get-distribution --id "$DIST_ID" --query 'Distribution.Status' --output text)
+            echo "check $i: $STATUS"
+            if [ "$STATUS" = "Deployed" ]; then exit 0; fi
+            sleep 60
+          done
+          echo "Timed out waiting for deployment (last status above)"; exit 1
+
+      - name: Record result on dev branch
+        run: |
+          STATUS=$(aws cloudfront get-distribution --id "$DIST_ID" --query 'Distribution.Status' --output text)
+          mkdir -p .github/infra
+          python3 - <<PYEOF
+          import json, datetime
+          rec = {
+              'distribution_id': '$DIST_ID',
+              'domain_name': '$DIST_DOMAIN',
+              'https_base_url': 'https://$DIST_DOMAIN',
+              'status': '$STATUS',
+              'origin': 'hydrotwin-site-dev-2026.s3-website-us-east-1.amazonaws.com',
+              'recorded_utc': datetime.datetime.utcnow().isoformat() + 'Z',
+              'note': 'CloudFront front for the DEV bucket website endpoint; origin protocol http-only (mirrors prod E29IVO4IMQNKO6).'
+          }
+          json.dump(rec, open('.github/infra/dev-cloudfront.json', 'w'), indent=2)
+          print(json.dumps(rec, indent=2))
+          PYEOF
+          {
+            echo '## Dev CloudFront distribution'
+            echo "- ID: $DIST_ID"
+            echo "- Domain: $DIST_DOMAIN"
+            echo "- HTTPS base: https://$DIST_DOMAIN"
+            echo "- Status: $STATUS"
+          } >> "$GITHUB_STEP_SUMMARY"
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .github/infra/dev-cloudfront.json
+          git commit -m 'Record dev CloudFront distribution (setup-dev-https one-off)' || echo 'nothing to commit'
+          # dev may have moved since checkout (deploy-dev bake-backs) — rebase and retry
+          for attempt in 1 2 3; do
+            git pull --rebase origin dev && git push origin HEAD:dev && break
+            echo "push attempt $attempt failed; retrying"
+            sleep 10
+          done
+          git ls-remote origin dev | head -1

@@ -57,9 +57,16 @@ CLASSIC pages (stations/USGS-<id>.html, the statistics Data view):
   button only toggles it - no fetch exists for it. Inside the 3D
   scene module, the two eager panel-data loads are gated on the
   module's own buttons via a promise gate installed in <head>:
-    - the NLDI rivers/watershed IIFE waits for
+    - inside the NLDI rivers/watershed IIFE, only the basin fetch
+      (the one purely Watershed-panel datum in that IIFE) waits for
       window.__htlpGate('watershed'), released by the first click
-      on the module's Watershed button (#bShed);
+      on the module's Watershed button (#bShed). The flowline load
+      itself runs eagerly with the scene: it builds PATHM, without
+      which initTableFlood / initGroundFlood never run and the 3D
+      scene has NO water surface at all. (The whole-IIFE gate that
+      shipped 2026-10-21 was a regression — the river was missing on
+      every 3D page until the Watershed button was clicked; fixed
+      2026-10-22 by moving the gate down to the basin fetch.)
     - the Macrostrat geologyAt() call for the gauge point waits
       for window.__htlpGate('geo'), released by the first click on
       the Geology button (#bGeo - including the module's own
@@ -67,6 +74,32 @@ CLASSIC pages (stations/USGS-<id>.html, the statistics Data view):
   The scene itself, its terrain/imagery loads and the module's
   small live beacon (USGS IV + Open-Meteo) are the station view,
   not panels, and keep loading as today.
+  The Flow & forecast card (added 2026-10-22, Saurabh's order) is
+  the one panel that is NOT a satellite panel: it is the scene
+  module's own canvas in #dock, rendered by the module from the
+  same baked data object the scene itself consumes (the selected
+  date's waterline dots read the same forecast), so it has no boot
+  and no sidecar that could be deferred without breaking the
+  scene. It is therefore gated by visibility only, exactly like
+  the drift panel: a "Daily forecast" button (first in the bar)
+  toggles an html.htlp-daily-on class; the stub CSS hides the
+  #dock canvas and its ht-uiux wrap until then, and the loader
+  also mirrors the canvas's inline display ('block'/'none', the
+  same mechanism as the module's own Geology/Watershed toggles)
+  so the uiux wrap follows. The module keeps redrawing the canvas
+  on date/model changes whether it is visible or not, so opening
+  it always shows the current date's forecast.
+  The same patcher also moves the "Δ Compare models" button from
+  the top button row into that panel's canvas control row (BTN[0],
+  beside live / big model): the top-row #cmpTop element is removed
+  and an act() route for 'compare' is wired next to the line that
+  used to wire the top button, calling the identical cmpShowPanel
+  toggle. The canvas row paints fixed-width slots with terse
+  labels ('model', 'lead', '⟳ big model'), so the in-panel label
+  is 'Δ compare'; the panel it opens is still titled
+  "Compare models". Classic pages have no top-row compare button
+  (their compare toggles already live inside the weekly / monthly
+  / yearly panels), so nothing moves there.
 
 Infrastructure that stays live on both page types (no panel data):
 ht-cachebust (fetch wrapper), the baked data blocks, ht-uiux
@@ -169,12 +202,45 @@ CLASSIC_SECTIONS = [  # (section id, loader group) in page order
 GATE_RIVERS_OLD = "(async () => {\n  setLoad('rivers', 'loading');"
 GATE_RIVERS_NEW = ("(async () => {\n  await window.__htlpGate('watershed');"
                    "\n  setLoad('rivers', 'loading');")
+# 2026-10-22 river fix: the gate moves from the IIFE head (which
+# starved the scene of its water - see the docstring) to just before
+# the basin fetch, the only Watershed-panel-only step in the IIFE.
+GATE_BASIN_OLD = "  drawShed();\n  setLoad('watershed', 'loading');"
+GATE_BASIN_NEW = ("  drawShed();\n  await window.__htlpGate('watershed');"
+                  "\n  setLoad('watershed', 'loading');")
 GATE_GEO_OLD = ("geologyAt(D.lon, D.lat).then((u) => { geoUnits.gauge = u; "
                 "drawGeo(); }).catch(() => { geoUnits.gauge = 'none'; "
                 "drawGeo(); });")
 GATE_GEO_NEW = ("window.__htlpGate('geo').then(() => geologyAt(D.lon, "
                 "D.lat)).then((u) => { geoUnits.gauge = u; drawGeo(); })"
                 ".catch(() => { geoUnits.gauge = 'none'; drawGeo(); });")
+
+# Compare-models move anchors (3D pages, exact, count-checked): the
+# top-row button element, and the module line that wired it (the
+# wiring snippet is appended right after that line, inside the same
+# module scope as BTN / act / cmpShowPanel).
+CMP_TOP_BTN = ('<button id="cmpTop" title="Overlay 7-day forecasts of '
+               'multiple models" style="padding:6px 14px;'
+               'border-radius:10px;border:1px solid #8FC1F2;'
+               'background:rgba(12,18,28,.88);color:#8FC1F2;'
+               'font:600 14px Arial;cursor:pointer;'
+               'box-shadow:0 2px 10px rgba(0,0,0,.4);">'
+               'Δ Compare models</button>')
+CMP_IIFE = ("(function(){ var ctop = document.getElementById('cmpTop'); "
+            "if (ctop) ctop.onclick = function(){ const p = document."
+            "getElementById('cmppanel'); cmpShowPanel(!p); }; })();")
+CMP_SNIPPET = (
+    "\n// ht-lazypanels compare move: the Compare models toggle lives "
+    "in the Flow &\n// forecast panel's control row (the top-row "
+    "#cmpTop button is removed by\n// this patcher); the canvas "
+    "button calls the same cmpShowPanel toggle.\n"
+    "BTN[0].push(['Δ compare', 'compare']);\n"
+    "const actCmp0 = act;\n"
+    "act = function (a) {\n"
+    "  if (a === 'compare') { const p = document.getElementById("
+    "'cmppanel'); cmpShowPanel(!p); return; }\n"
+    "  return actCmp0(a);\n"
+    "};")
 
 SCRIPT_RE = re.compile(r"<script([^>]*)>((?:(?!</?script).)*)</script>",
                        re.S)
@@ -223,6 +289,12 @@ WAITCORE_CSS_CLASSIC = ("html.htlp-wait-core #featcpanel,"
 DRIFT_CSS_3D = ("#ht-drift-panel{display:none !important}\n"
                 "html.htlp-drift-on #ht-drift-panel"
                 "{display:block !important}")
+# Flow & forecast card: hidden until the loader turns htlp-daily-on
+# (the wrap rule covers the ht-uiux header bar; the canvas rule
+# covers the pre-wrap interval and any no-uiux fallback).
+DAILY_CSS_3D = ("html:not(.htlp-daily-on) #dock canvas,"
+                "html:not(.htlp-daily-on) #dock .htux-wrap"
+                "{display:none !important}")
 
 LOADER_TMPL = """<!-- ht-lazypanels v1 -->
 <div id="htlp-bar"__BARCLASS__ role="group" aria-label="Station panels"><span class="htlp-t">PANELS</span>__BUTTONS__</div>
@@ -264,18 +336,28 @@ LOADER_TMPL = """<!-- ht-lazypanels v1 -->
     moveEl('ht-datewrap', 'hts-date-slot');
   }
   function panelEl(cfg) {
+    if (cfg.daily) return document.querySelector('#dock canvas');
     return document.getElementById(CFG.mode === 'classic' ? cfg.sec : cfg.panel);
   }
-  function isOff(el) {
+  function isOff(el, cfg) {
     if (!el) return true;
+    if (cfg && cfg.daily)
+      return !document.documentElement.classList.contains('htlp-daily-on');
     if (CFG.mode === '3d' && el.id === 'ht-drift-panel')
       return !document.documentElement.classList.contains('htlp-drift-on');
     if (CFG.mode === 'classic') return el.classList.contains('htlp-off');
     return el.style.display === 'none';
   }
-  function setOff(el, off) {
+  function setOff(el, off, cfg) {
     if (!el) return;
-    if (CFG.mode === 'classic') el.classList.toggle('htlp-off', off);
+    if (cfg && cfg.daily) {
+      // the html class lifts the stub CSS gate; the inline display
+      // mirrors the module's own Geology/Watershed canvas toggles
+      // and makes the ht-uiux wrap follow via its style observer.
+      document.documentElement.classList.toggle('htlp-daily-on', !off);
+      el.style.display = off ? 'none' : 'block';
+    }
+    else if (CFG.mode === 'classic') el.classList.toggle('htlp-off', off);
     else if (el.id === 'ht-drift-panel')
       document.documentElement.classList.toggle('htlp-drift-on', !off);
     else el.style.display = off ? 'none' : '';
@@ -285,17 +367,17 @@ LOADER_TMPL = """<!-- ht-lazypanels v1 -->
     if (!btn) return;
     btn.addEventListener('click', function () {
       var el = panelEl(cfg);
-      var opening = isOff(el);
+      var opening = isOff(el, cfg);
       if (opening) {
-        setOff(el, false);
+        setOff(el, false, cfg);
         runGroup(cfg.group);
         el = panelEl(cfg);
-        setOff(el, false);
+        setOff(el, false, cfg);
         btn.classList.add('htlp-on'); btn.setAttribute('aria-pressed', 'true');
         if (CFG.mode === 'classic' && el)
           el.scrollIntoView({ block: 'start' });
       } else {
-        setOff(el, true);
+        setOff(el, true, cfg);
         btn.classList.remove('htlp-on'); btn.setAttribute('aria-pressed', 'false');
       }
     });
@@ -398,7 +480,8 @@ def upsert_stub(s: str, mode: str) -> tuple[str, str | None]:
         WAITCORE_JS_CLASSIC if mode == "classic" else "")
     stub = stub.replace(
         "__EXTRA_CSS__",
-        WAITCORE_CSS_CLASSIC if mode == "classic" else DRIFT_CSS_3D)
+        WAITCORE_CSS_CLASSIC if mode == "classic"
+        else DRIFT_CSS_3D + "\n" + DAILY_CSS_3D)
     stub = stub.lstrip("\n")
     if STUB_RE.search(s):
         return STUB_RE.sub(lambda _: "\n" + stub, s, count=1), None
@@ -456,11 +539,18 @@ def patch_3d(path: Path) -> str:
     s, err = gate_boots(s, BOOT_GATES_3D)
     if err:
         return err
-    # scene-module data gates
-    if GATE_RIVERS_NEW in s:
+    # scene-module data gates. The rivers IIFE must NOT be gated as
+    # a whole: it builds PATHM, without which initTableFlood /
+    # initGroundFlood never run and the scene has no water surface at
+    # all (the 2026-10-21 whole-IIFE gate was the river regression,
+    # found 2026-10-22). Only the basin fetch waits for the gate.
+    if GATE_BASIN_NEW in s and GATE_RIVERS_NEW not in s:
         pass
-    elif s.count(GATE_RIVERS_OLD) == 1:
-        s = s.replace(GATE_RIVERS_OLD, GATE_RIVERS_NEW, 1)
+    elif s.count(GATE_RIVERS_NEW) == 1 and s.count(GATE_BASIN_OLD) == 1:
+        s = s.replace(GATE_RIVERS_NEW, GATE_RIVERS_OLD, 1)
+        s = s.replace(GATE_BASIN_OLD, GATE_BASIN_NEW, 1)
+    elif s.count(GATE_RIVERS_OLD) == 1 and s.count(GATE_BASIN_OLD) == 1:
+        s = s.replace(GATE_BASIN_OLD, GATE_BASIN_NEW, 1)
     else:
         return "FAIL rivers gate anchor"
     if GATE_GEO_NEW in s:
@@ -469,11 +559,29 @@ def patch_3d(path: Path) -> str:
         s = s.replace(GATE_GEO_OLD, GATE_GEO_NEW, 1)
     else:
         return "FAIL geo gate anchor"
+    # Compare models belongs to the Flow & forecast panel (Saurabh,
+    # 2026-10-22): remove the top-row #cmpTop button and wire the
+    # same cmpShowPanel toggle into the panel's canvas control row.
+    if "const actCmp0 = act;" in s:
+        pass
+    elif s.count(CMP_IIFE) == 1:
+        s = s.replace(CMP_IIFE, CMP_IIFE + CMP_SNIPPET, 1)
+    else:
+        return "FAIL compare wiring anchor"
+    n_cmp = s.count(CMP_TOP_BTN)
+    if n_cmp == 1:
+        s = s.replace(CMP_TOP_BTN, "", 1)
+    elif n_cmp == 0 and 'id="cmpTop"' not in s:
+        pass  # already removed, and no refresh step restored it
+    else:
+        return "FAIL cmpTop button anchor"
     # the static drift panel starts hidden behind its button (by the
     # stub CSS rule; its tag is a census anchor and stays untouched)
     if s.count('<div id="ht-drift-panel">') != 1:
         return "FAIL drift panel tag"
     panels_cfg = [
+        {"panel": "dock", "label": "Daily forecast", "group": None,
+         "daily": True},
         {"panel": "htwk-panel", "label": "Weekly outlook",
          "group": "weekly"},
         {"panel": "htmo-panel", "label": "Monthly outlook",
