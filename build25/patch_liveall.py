@@ -1306,8 +1306,13 @@ PULLFWD_JS = r"""
   /* After a LIVE pull: land the calendar on the pull's issue date.
      On 3D the scene already sits at the issue (panelLive3D); if the
      manifest extension had already grown HT3D.n past the issue index
-     panelLive3D returned early by design, so write the pull's fans
-     (LA.fc, already computed) in and step to the issue here. On
+     panelLive3D returned early by design — and on that path it never
+     sets LA.on (verified live: LA.issue and LA.fc complete while
+     LA.on stays false) — so write the pull's fans (LA.fc, already
+     computed) in and step to the issue here. The watcher below
+     therefore fires on LA.on OR on LA.fc holding an entry for every
+     model (fc is filled per model, failures included as nulls, so
+     key completeness means the fan computation has finished). On
      classic the live board already renders the pull — only the
      calendar moves (a dispatched change would exit LIVE mode). */
   function onPulled(issue) {
@@ -1329,14 +1334,24 @@ PULLFWD_JS = r"""
         }
       }
     });
-    if (wrote && S.day !== li) {
+    if (wrote) {
+      /* step onto the issue even if the scene already sits there:
+         the step is what makes the panel redraw with the fans just
+         written into D3.pred */
       S.day = li - 1;
       window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }));
     }
   }
+  function fcComplete() {
+    var LA = window.__htla, D3 = window.HT3D;
+    if (!IS3D || !LA || !LA.fc || !D3 || !D3.models || !D3.models.length) return false;
+    return D3.models.every(function (m) {
+      return Object.prototype.hasOwnProperty.call(LA.fc, m);
+    });
+  }
   setInterval(function () {
     var LA = window.__htla;
-    if (LA && LA.on && LA.issue && LA.issue !== PF.pullHandled) {
+    if (LA && LA.issue && LA.issue !== PF.pullHandled && (LA.on || fcComplete())) {
       PF.pullHandled = LA.issue;
       try { onPulled(LA.issue); } catch (e) { /* calendar stays as-is */ }
     }
