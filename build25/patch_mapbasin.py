@@ -31,22 +31,15 @@ fail loudly) plus one marked style+script block before </body>
 that is refreshed on every run, so the patcher is idempotent.
 Only index.html is touched. Dev only, like every build25 patcher.
 
-Part 2 (ht-tuneanim-home v1, appended 2026-10-23): the homepage
-edition of the "Optuna + Ray Tune" tuning badge that ht-tuneanim v1
-(patch_livefix.py Part 5) put on the 14 3D station pages — Saurabh
-approved extending it to the homepage. The homepage has no
-model-button row, so the pill is parked directly under the #help
-header box (the map header / MLOps-link area), positioned by its
-script from the #help box's measured bottom edge. It polls the same
-status JSON (hydrotwin-models Pages: tuning_status.json) about every
-60 s and renders the same two states: RUNNING (amber glowing pill,
-spinning gear, blinking dots, station + families being tuned) and
-IDLE — on the homepage, the latest gated results across ALL stations
-(the station whose newest family entry has the max `updated`
-timestamp), naming both tools and each family's gate verdict.
-Status unreachable: neutral idle pill naming both tools. A second
-marked block before </body>, refreshed in place on every run
-(idempotent, census-checked: badge id x1, marker x3).
+Part 2 (ht-tuneanim-home v1) REMOVED 2026-10-23: the homepage
+edition of the "Optuna + Ray Tune" tuning badge lived here briefly
+(appended 2026-10-23); Saurabh's order of Oct 22, 11:44 PM takes it
+off the USA map page again ("remove tuning symbol animation from
+USA map page"). The patcher no longer inserts or refreshes it; a
+removal step in main() strips any baked ht-tuneanim-home block from
+index.html and fails loudly if any trace remains, so a rebuild can
+never re-add it. The badge itself continues on the station pages
+(patch_livefix.py Part 5, 3D + classic editions).
 """
 import re
 import sys
@@ -123,156 +116,15 @@ BLOCK = BLOCK_START + """
 </script>
 """ + BLOCK_END
 
-# ---------------- part 2: ht-tuneanim-home v1 (homepage badge) --------
-MARKER2 = "ht-tuneanim-home v1"
-BLOCK2_START = "<!-- ht-tuneanim-home v1 start -->"
-BLOCK2_END = "<!-- ht-tuneanim-home v1 end -->"
+# ---------------- ht-tuneanim-home v1: REMOVED ---------------------
+# The homepage tuning badge (added 2026-10-23 as Part 2) was removed
+# on Saurabh's order of Oct 22, 11:44 PM. Only the block anchors
+# remain, so main() can strip any baked copy out of index.html and
+# verify nothing of it is left; nothing here can re-add it.
+HOME_BADGE_MARKER = "ht-tuneanim-home v1"
+HOME_BADGE_START = "<!-- ht-tuneanim-home v1 start -->"
+HOME_BADGE_END = "<!-- ht-tuneanim-home v1 end -->"
 
-BLOCK2 = BLOCK2_START + r"""
-<div id="tuneAnimBadge" class="htune htune-idle" role="status" title="Optuna + Ray Tune hyperparameter tuning (dev) — live status from the hydrotwin-models tuning registry"><span class="htune-gear" aria-hidden="true">⚙</span><span class="htune-txt" id="tuneAnimTxt">Optuna × Ray Tune · tuning status…</span><span class="htune-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
-<style>
-.htune{position:fixed;left:16px;top:300px;z-index:31;display:flex;align-items:center;gap:8px;max-width:min(640px,calc(100vw - 32px));padding:7px 14px;border-radius:999px;background:rgba(12,18,28,.88);border:1px solid #3A4A5E;color:#BFD0E0;font:600 13px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4)}
-.htune-txt{white-space:normal;line-height:1.35}
-.htune-gear{display:inline-block;font-size:15px;line-height:1;color:#8FC1F2}
-.htune-dots{display:none;gap:3px}
-.htune-dots i{width:5px;height:5px;border-radius:50%;background:#FFB84D;display:inline-block;animation:htuneBlink 1.2s infinite}
-.htune-dots i:nth-child(2){animation-delay:.2s}
-.htune-dots i:nth-child(3){animation-delay:.4s}
-.htune-run{border-color:#FFB84D;color:#FFE1A8;animation:htunePulse 1.6s ease-in-out infinite}
-.htune-run .htune-gear{color:#FFB84D;animation:htuneSpin 2.2s linear infinite}
-.htune-run .htune-dots{display:inline-flex}
-.htune-pass{color:#7AE07A}
-.htune-fail{color:#FF9A8A}
-@keyframes htuneSpin{to{transform:rotate(360deg)}}
-@keyframes htunePulse{0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.4)}50%{box-shadow:0 0 14px 2px rgba(255,184,77,.45),0 2px 10px rgba(0,0,0,.4)}}
-@keyframes htuneBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}
-</style>
-<script>
-/* ht-tuneanim-home v1 - homepage "Optuna + Ray Tune" tuning badge:
- * polls the tuning status JSON published from the hydrotwin-models
- * tuning registry (dev) to the models Pages source and renders an
- * animated RUNNING state while a tuning run is live, or the latest
- * quality-gate verdicts across all stations when idle. Homepage
- * edition of ht-tuneanim v1 (patch_livefix.py Part 5); the pill is
- * parked under the #help header box. */
-(function () {
-  'use strict';
-  if (window.__httuneHomeOn) return;
-  window.__httuneHomeOn = true;
-  var STATUS_URL = 'https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json';
-  var badge = document.getElementById('tuneAnimBadge');
-  var txt = document.getElementById('tuneAnimTxt');
-  if (!badge || !txt) return;
-
-  function place() {
-    var y = 16;
-    var help = document.getElementById('help');
-    if (help) {
-      var r = help.getBoundingClientRect();
-      if (r.height > 0) y = Math.ceil(r.bottom) + 8;
-    }
-    badge.style.top = y + 'px';
-  }
-  function fmtPct(x) {
-    var n = Number(x);
-    if (!isFinite(n)) return '';
-    return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
-  }
-  function safeName(t) { return /^[A-Za-z0-9][A-Za-z0-9 _-]*$/.test(t) ? t : ''; }
-  function siteLabel(site) {
-    var sts = (window.MAP && window.MAP.stations) || [];
-    for (var i = 0; i < sts.length; i++) {
-      if (sts[i].site === site) {
-        var nm = sts[i].short || sts[i].name || '';
-        return 'USGS ' + site + (nm ? ' (' + nm + ')' : '');
-      }
-    }
-    return 'USGS ' + site;
-  }
-  function famParts(st, parts, tips) {
-    Object.keys(st).forEach(function (fam) {
-      var name = safeName(fam);
-      var r = st[fam];
-      if (!name || !r || !r.verdict) return;
-      if (r.verdict === 'PASS') {
-        parts.push(name + ' tuned · <span class="htune-pass">gate PASS ' +
-          fmtPct(r.margin_pct) + '</span>');
-      } else {
-        parts.push(name + ' · <span class="htune-fail">gate FAIL — ' +
-          'incumbent kept</span>');
-      }
-      tips.push(name + ': candidate RMSE ' + r.candidate_rmse +
-        ' vs incumbent ' + r.incumbent_rmse + ' (WY2026 holdout), ' +
-        r.trials + ' trials, gate ' + r.verdict + ' ' + fmtPct(r.margin_pct));
-    });
-  }
-
-  function render(data) {
-    if (data && data.running && data.current) {
-      var c = data.current;
-      var fams = (c.families || []).map(safeName).filter(Boolean).join(' + ');
-      badge.classList.add('htune-run');
-      badge.classList.remove('htune-idle');
-      txt.textContent = 'Optuna × Ray Tune — TUNING ' + (c.station || '') +
-        (fams ? ' · ' + fams : '') + ' now';
-      badge.title = 'Hyperparameter tuning is RUNNING (dev): Optuna ' +
-        '(TPE search) driven by Ray Tune (parallel trials + ASHA) on ' +
-        'station ' + (c.station || '') + (fams ? ' — ' + fams : '') +
-        '. A candidate must pass the quality gate to replace dev weights.';
-      return;
-    }
-    badge.classList.remove('htune-run');
-    badge.classList.add('htune-idle');
-    var stations = (data && data.stations) || {};
-    var bestSite = null, bestWhen = '';
-    Object.keys(stations).forEach(function (site) {
-      var st = stations[site] || {};
-      Object.keys(st).forEach(function (fam) {
-        var r = st[fam];
-        if (r && r.updated && r.updated > bestWhen) {
-          bestWhen = r.updated; bestSite = site;
-        }
-      });
-    });
-    if (bestSite) {
-      var parts = [], tips = [];
-      famParts(stations[bestSite], parts, tips);
-      if (parts.length) {
-        txt.innerHTML = 'Optuna × Ray Tune · latest — ' +
-          siteLabel(bestSite) + ': ' + parts.join(' · ');
-        badge.title = 'Latest tuning across HydroTwin stations (dev, ' +
-          'Optuna + Ray Tune) — most recent gated run at ' +
-          siteLabel(bestSite) + ': ' + tips.join('; ') +
-          '. Each station page shows its own tuning results.';
-        return;
-      }
-    }
-    txt.textContent = 'Optuna × Ray Tune · hyperparameter tuning (dev)' +
-      (data ? ' — no runs yet' : '');
-    badge.title = 'Optuna + Ray Tune hyperparameter tuning runs in the ' +
-      'hydrotwin-models dev environment; a candidate must beat the ' +
-      'incumbent on the WY2026 holdout (quality gate) before it can ' +
-      'replace dev weights.';
-  }
-
-  var got = false;
-  function poll() {
-    fetch(STATUS_URL + '?v=' + Date.now(), { cache: 'no-store' })
-      .then(function (r) {
-        if (!r.ok) throw new Error('http ' + r.status);
-        return r.json();
-      })
-      .then(function (d) { got = true; render(d); },
-            function () { if (!got) render(null); });
-  }
-  place();
-  window.addEventListener('resize', place);
-  setInterval(place, 5000);
-  poll();
-  setInterval(poll, 60000);
-})();
-</script>
-""" + BLOCK2_END
 
 # One-time edits inside show(); skipped when the show()-side
 # references are already present. (anchor, replacement, count)
@@ -342,28 +194,23 @@ def main():
         out = out[:i] + BLOCK + "\n" + out[i:]
         print("  loader block inserted")
 
-    # --- part 2: ht-tuneanim-home v1 homepage tuning badge ---
-    if BLOCK2_START in out:
-        out = re.sub(re.escape(BLOCK2_START) + r".*?" + re.escape(BLOCK2_END),
-                     lambda m: BLOCK2, out, flags=re.S)
-        print("  homepage tuning badge refreshed")
-    else:
-        i = out.rfind("</body>")
-        if i < 0:
-            print("  !! no </body> in index.html")
-            return 1
-        out = out[:i] + BLOCK2 + "\n" + out[i:]
-        print("  homepage tuning badge inserted")
-    n_badge = out.count('id="tuneAnimBadge"')
-    n_marker2 = out.count(MARKER2)
-    if n_badge != 1 or n_marker2 != 3:
-        print(f"  !! homepage badge census failed: badge={n_badge} "
-              f"(want 1), {MARKER2}={n_marker2} (want 3)")
+    # --- ht-tuneanim-home v1 REMOVAL (Saurabh, Oct 22 11:44 PM) ---
+    # The homepage tuning badge is gone for good: strip any baked
+    # block and verify no trace of it (or of the badge element, whose
+    # home on the station pages is patch_livefix.py Part 5) remains.
+    if HOME_BADGE_START in out:
+        out = re.sub(re.escape(HOME_BADGE_START) + r".*?" +
+                     re.escape(HOME_BADGE_END) + r"\n?", "", out,
+                     flags=re.S)
+        print("  homepage tuning badge block stripped")
+    if (HOME_BADGE_MARKER in out or 'id="tuneAnimBadge"' in out
+            or 'id="tuneAnimTxt"' in out):
+        print("  !! homepage tuning badge residue remains in index.html")
         return 1
 
     if out != html:
         PAGE.write_text(out, encoding="utf-8")
-        print(f"index.html patched ({MARKER} + {MARKER2})")
+        print(f"index.html patched ({MARKER})")
     else:
         print("index.html unchanged")
     return 0
