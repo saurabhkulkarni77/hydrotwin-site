@@ -134,6 +134,37 @@ and on a slow timer. Only pages carrying id="retrainTop" (the 14 3D
 pages) get Part 5; its block is refreshed in place on every run
 (own marker), independent of Parts 1-4.
 
+Part 5 classic extension (ht-tuneanim v1 classic, appended
+2026-10-23): Saurabh's order (Oct 22, 11:44 PM) — the same badge on
+ALL station pages. The 14 classic pages have no model-button row and
+no transformed fixed canvas; they are a normal scrolling document,
+so the classic edition is an in-flow pill (extra class htune-inflow:
+position:relative, no transform, margin auto) inserted directly
+after the station header (</header>, count-checked x1), i.e. at the
+top of the page above the record-statistics cards. Same markup,
+same states, same status JSON and ~60 s poll; the script differs
+only in its marker comment ("ht-tuneanim v1 classic") and a no-op
+place() (nothing to park in-flow). Pages are routed by the
+retrainTop test: 3D pages get apply_tuneanim, the rest get
+apply_tuneanim_classic; each edition refuses the other's fragments.
+
+Part 5 tune button (appended 2026-10-23): Saurabh's order — a manual
+"⚙ Tune this station" button in the digital twin, on all 28 station
+pages next to the badge. A static page cannot start a GitHub
+workflow (no credentials in the browser, by design), so the button
+is a deep link + helper into the hydrotwin-models tuning-dev
+workflow's Run-workflow form: on click it copies THIS page's station
+id (the same SITE the badge derives — never hardcoded per page) to
+the clipboard, opens the workflow page in a new tab, and toasts
+"Station <id> copied — paste it into the Run workflow form"
+(auto-dismiss ~4 s; if the clipboard write fails, the toast shows
+the id as text to type instead). 3D edition: a fixed pill parked by
+place() immediately right of the badge (below the badge, centered,
+on too-narrow viewports). Classic edition: in-flow, directly after
+the badge. The button lives inside the Part 5 fragment in both
+editions, so it refreshes with the badge and the strip regexes
+cover it.
+
 Idempotent: pages carrying the v2 MARKER with no old anchors left are
 skipped; pages carrying only the v1 append (first deploy) are upgraded
 in place (part 1 applied, marker bumped).
@@ -660,6 +691,7 @@ TA_SPAN_RE = _re.compile(
     r'<span id="loadModelStatus"(?:(?!</span>).)*</span>', _re.S)
 TA_BADGE_RE = _re.compile(
     r'<!-- ht-tuneanim v1 --><div id="tuneAnimBadge"(?:(?!</div>).)*</div>'
+    r'(?:<button id="tuneNowBtn"(?:(?!</button>).)*</button>)?'
     r'<style>(?:(?!</style>).)*</style>', _re.S)
 TA_JS_RE = _re.compile(
     r'<script>\n/\* ht-tuneanim v1(?:(?!</?script).)*</script>\n?', _re.S)
@@ -674,6 +706,10 @@ TA_BADGE_HTML = (
     'tuning status…</span>'
     '<span class="htune-dots" aria-hidden="true"><i></i><i></i><i></i></span>'
     '</div>'
+    '<button id="tuneNowBtn" class="htune-btn" type="button" '
+    'title="Tune this station: copies the station id and opens the '
+    'hydrotwin-models tuning workflow (Run workflow form)">'
+    '⚙ Tune this station</button>'
     '<style>'
     '.htune{position:fixed;left:50%;transform:translateX(-50%);top:146px;'
     'z-index:31;display:flex;align-items:center;gap:8px;'
@@ -695,6 +731,12 @@ TA_BADGE_HTML = (
     '.htune-run .htune-dots{display:inline-flex}'
     '.htune-pass{color:#7AE07A}'
     '.htune-fail{color:#FF9A8A}'
+    '.htune-btn{position:fixed;left:-500px;top:146px;z-index:31;'
+    'display:flex;align-items:center;gap:6px;padding:7px 13px;'
+    'border-radius:999px;background:rgba(12,18,28,.88);'
+    'border:1px solid #FFB84D;color:#FFE1A8;font:600 13px Arial;'
+    'cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4)}'
+    '.htune-btn:hover{background:rgba(56,40,10,.92)}'
     '@keyframes htuneSpin{to{transform:rotate(360deg)}}'
     '@keyframes htunePulse{0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.4)}'
     '50%{box-shadow:0 0 14px 2px rgba(255,184,77,.45),0 2px 10px rgba(0,0,0,.4)}}'
@@ -729,6 +771,19 @@ TA_JS_BODY = r"""
       y = Math.max(y, Math.ceil(fcb.getBoundingClientRect().bottom) + 8);
     }
     badge.style.top = y + 'px';
+    var tbtn = document.getElementById('tuneNowBtn');
+    if (tbtn) {
+      var br = badge.getBoundingClientRect();
+      if (br.right + 8 + 176 < window.innerWidth) {
+        tbtn.style.left = Math.round(br.right + 8) + 'px';
+        tbtn.style.top = Math.round(br.top) + 'px';
+        tbtn.style.transform = 'none';
+      } else {
+        tbtn.style.left = '50%';
+        tbtn.style.top = Math.round(br.bottom + 6) + 'px';
+        tbtn.style.transform = 'translateX(-50%)';
+      }
+    }
   }
   function fmtPct(x) {
     var n = Number(x);
@@ -784,6 +839,52 @@ TA_JS_BODY = r"""
       'hydrotwin-models dev environment; a candidate must beat the ' +
       'incumbent on the WY2026 holdout (quality gate) before it can ' +
       'replace dev weights.';
+    place();
+  }
+
+  function tuneToast(msg) {
+    var t = document.getElementById('tuneToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'tuneToast';
+      t.setAttribute('style', 'position:fixed;left:50%;bottom:26px;' +
+        'transform:translateX(-50%);z-index:99;max-width:92vw;' +
+        'text-align:center;background:rgba(12,18,28,.94);' +
+        'border:1px solid #FFB84D;color:#FFE1A8;font:600 13px Arial;' +
+        'padding:9px 16px;border-radius:999px;' +
+        'box-shadow:0 4px 16px rgba(0,0,0,.5);opacity:0;' +
+        'transition:opacity .25s;pointer-events:none');
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = '1';
+    if (t.__ht) clearTimeout(t.__ht);
+    t.__ht = setTimeout(function () { t.style.opacity = '0'; }, 4000);
+  }
+
+  var tuneBtn = document.getElementById('tuneNowBtn');
+  if (tuneBtn) {
+    tuneBtn.addEventListener('click', function () {
+      var WF_URL = 'https://github.com/saurabhkulkarni77/hydrotwin-models' +
+        '/actions/workflows/tuning-dev.yml';
+      var cp = null;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try { cp = navigator.clipboard.writeText(SITE); } catch (e) { cp = null; }
+      }
+      window.open(WF_URL, '_blank');
+      if (cp && cp.then) {
+        cp.then(function () {
+          tuneToast('Station ' + SITE + ' copied — paste it into the ' +
+            'Run workflow form');
+        }, function () {
+          tuneToast('Station ' + SITE + ' — type it into the Run ' +
+            'workflow form');
+        });
+      } else {
+        tuneToast('Station ' + SITE + ' — type it into the Run ' +
+          'workflow form');
+      }
+    });
   }
 
   var got = false;
@@ -830,7 +931,110 @@ def apply_tuneanim(s):
     out = out.replace("</body>", TA_JS_BODY.strip() + "\n</body>", 1)
     if out.count('id="tuneAnimBadge"') != 1:
         return None
+    if out.count('id="tuneNowBtn"') != 1:
+        return None
     if out.count(TA_MARKER) != 2:
+        return None
+    return out
+
+
+# ------------- part 5, classic edition: ht-tuneanim v1 classic ---------
+# Same badge on the 14 classic station pages (Saurabh, Oct 22 11:44 PM:
+# tuning animation on ALL station pages). The fragments are derived
+# from the 3D edition's by exact, count-asserted replacements so the
+# markup, states, poll and render logic can never drift apart; only
+# the marker comment, the in-flow placement class/CSS and place()
+# differ. The classic strip regexes require the "classic" marker, so
+# they can never match the 3D edition's fragments (or vice versa: the
+# 3D regexes anchor on the comment directly abutting the badge div and
+# on the un-suffixed script comment).
+TA_MARKER_C = "ht-tuneanim v1 classic"
+TA_BADGE_RE_C = _re.compile(
+    r'\n?<!-- ht-tuneanim v1 classic --><div id="tuneAnimBadge"'
+    r'(?:(?!</div>).)*</div>(?:<button id="tuneNowBtn"'
+    r'(?:(?!</button>).)*</button>)?<style>(?:(?!</style>).)*</style>',
+    _re.S)
+TA_JS_RE_C = _re.compile(
+    r'<script>\n/\* ht-tuneanim v1 classic(?:(?!</?script).)*</script>\n?',
+    _re.S)
+
+_TA_PLACE_3D = """  function place() {
+    var y = 146;
+    var tw = document.getElementById('lardemo-topwrap');
+    if (tw) y = Math.max(y, Math.ceil(tw.getBoundingClientRect().bottom) + 8);
+    var fcb = document.getElementById('fcb');
+    if (fcb && fcb.getBoundingClientRect().height > 0 &&
+        window.getComputedStyle(fcb).display !== 'none') {
+      y = Math.max(y, Math.ceil(fcb.getBoundingClientRect().bottom) + 8);
+    }
+    badge.style.top = y + 'px';
+    var tbtn = document.getElementById('tuneNowBtn');
+    if (tbtn) {
+      var br = badge.getBoundingClientRect();
+      if (br.right + 8 + 176 < window.innerWidth) {
+        tbtn.style.left = Math.round(br.right + 8) + 'px';
+        tbtn.style.top = Math.round(br.top) + 'px';
+        tbtn.style.transform = 'none';
+      } else {
+        tbtn.style.left = '50%';
+        tbtn.style.top = Math.round(br.bottom + 6) + 'px';
+        tbtn.style.transform = 'translateX(-50%)';
+      }
+    }
+  }"""
+_TA_PLACE_CLASSIC = """  function place() {
+    /* Classic pages: the badge sits in the normal page flow directly
+     * under the station header, so there is no fixed position to
+     * maintain (the 3D edition parks itself under the model-button
+     * row). No-op so the calls below stay identical to the 3D one. */
+  }"""
+
+
+def _ta_derive(src, old, new):
+    assert src.count(old) == 1, f"tuneanim derive anchor x{src.count(old)}"
+    return src.replace(old, new, 1)
+
+
+TA_BADGE_HTML_C = _ta_derive(TA_BADGE_HTML, "<!-- ht-tuneanim v1 -->",
+                             "<!-- ht-tuneanim v1 classic -->")
+TA_BADGE_HTML_C = _ta_derive(TA_BADGE_HTML_C, 'class="htune htune-idle"',
+                             'class="htune htune-idle htune-inflow"')
+TA_BADGE_HTML_C = _ta_derive(
+    TA_BADGE_HTML_C, "</style>",
+    ".htune-inflow{position:relative;left:auto;top:auto;transform:none;"
+    "margin:12px auto 2px;width:fit-content}"
+    ".htune-btn{position:relative;left:auto;top:auto;"
+    "margin:8px auto 2px;width:fit-content}</style>")
+TA_JS_BODY_C = _ta_derive(TA_JS_BODY, "/* ht-tuneanim v1 - ",
+                          "/* ht-tuneanim v1 classic - ")
+TA_JS_BODY_C = _ta_derive(TA_JS_BODY_C, _TA_PLACE_3D, _TA_PLACE_CLASSIC)
+
+
+def apply_tuneanim_classic(s):
+    """Part 5 classic edition: insert/refresh the badge on a classic
+    station page, in-flow directly after the station header
+    (</header> exactly once, count-checked). Only called for pages
+    without the retrain button (3D pages are apply_tuneanim's).
+    The classic CSS additionally parks the tune button in-flow
+    directly after the badge. Returns the new text, or None on
+    anchor trouble."""
+    if 'id="retrainTop"' in s:
+        return s
+    out = TA_BADGE_RE_C.sub("", s)
+    out = TA_JS_RE_C.sub("", out)
+    if 'id="tuneAnimBadge"' in out or TA_MARKER in out:
+        return None  # residue of either edition: fail loudly
+    if out.count("</header>") != 1:
+        return None
+    out = out.replace("</header>", "</header>\n" + TA_BADGE_HTML_C, 1)
+    if out.count("</body>") != 1:
+        return None
+    out = out.replace("</body>", TA_JS_BODY_C.strip() + "\n</body>", 1)
+    if out.count('id="tuneAnimBadge"') != 1:
+        return None
+    if out.count('id="tuneNowBtn"') != 1:
+        return None
+    if out.count(TA_MARKER_C) != 2:  # HTML comment + script comment
         return None
     return out
 
@@ -871,6 +1075,10 @@ def patch_page(s):
     out = apply_tuneanim(out)
     if out is None:
         return None
+    if 'id="retrainTop"' not in out:
+        out = apply_tuneanim_classic(out)
+        if out is None:
+            return None
     return out, n1
 
 

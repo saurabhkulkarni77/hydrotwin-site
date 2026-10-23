@@ -30,6 +30,16 @@ Implementation: exact-anchor edits inside show() (count-checked,
 fail loudly) plus one marked style+script block before </body>
 that is refreshed on every run, so the patcher is idempotent.
 Only index.html is touched. Dev only, like every build25 patcher.
+
+Part 2 (ht-tuneanim-home v1) REMOVED 2026-10-23: the homepage
+edition of the "Optuna + Ray Tune" tuning badge lived here briefly
+(appended 2026-10-23); Saurabh's order of Oct 22, 11:44 PM takes it
+off the USA map page again ("remove tuning symbol animation from
+USA map page"). The patcher no longer inserts or refreshes it; a
+removal step in main() strips any baked ht-tuneanim-home block from
+index.html and fails loudly if any trace remains, so a rebuild can
+never re-add it. The badge itself continues on the station pages
+(patch_livefix.py Part 5, 3D + classic editions).
 """
 import re
 import sys
@@ -106,6 +116,16 @@ BLOCK = BLOCK_START + """
 </script>
 """ + BLOCK_END
 
+# ---------------- ht-tuneanim-home v1: REMOVED ---------------------
+# The homepage tuning badge (added 2026-10-23 as Part 2) was removed
+# on Saurabh's order of Oct 22, 11:44 PM. Only the block anchors
+# remain, so main() can strip any baked copy out of index.html and
+# verify nothing of it is left; nothing here can re-add it.
+HOME_BADGE_MARKER = "ht-tuneanim-home v1"
+HOME_BADGE_START = "<!-- ht-tuneanim-home v1 start -->"
+HOME_BADGE_END = "<!-- ht-tuneanim-home v1 end -->"
+
+
 # One-time edits inside show(); skipped when the show()-side
 # references are already present. (anchor, replacement, count)
 RULES = [
@@ -173,6 +193,20 @@ def main():
             return 1
         out = out[:i] + BLOCK + "\n" + out[i:]
         print("  loader block inserted")
+
+    # --- ht-tuneanim-home v1 REMOVAL (Saurabh, Oct 22 11:44 PM) ---
+    # The homepage tuning badge is gone for good: strip any baked
+    # block and verify no trace of it (or of the badge element, whose
+    # home on the station pages is patch_livefix.py Part 5) remains.
+    if HOME_BADGE_START in out:
+        out = re.sub(re.escape(HOME_BADGE_START) + r".*?" +
+                     re.escape(HOME_BADGE_END) + r"\n?", "", out,
+                     flags=re.S)
+        print("  homepage tuning badge block stripped")
+    if (HOME_BADGE_MARKER in out or 'id="tuneAnimBadge"' in out
+            or 'id="tuneAnimTxt"' in out):
+        print("  !! homepage tuning badge residue remains in index.html")
+        return 1
 
     if out != html:
         PAGE.write_text(out, encoding="utf-8")

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-22T16:06:07Z",
+  "generated_at": "2026-10-23T04:57:27Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -350,29 +350,20 @@
       "file": ".github/workflows/ci.yml",
       "name": "CI \u2014 site, data & model tests",
       "latest": {
-        "run_id": 39810787155,
-        "title": "Bake lazy-panels pages into dev (ht-lazypanels v1)",
+        "run_id": 39902935629,
+        "title": "ht-tuneanim-home v1 REMOVED: no tuning badge on the USA map page",
         "event": "push",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-10-22T16:04:33Z",
-        "updated_at": "2026-10-22T16:05:31Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39810787155"
+        "created_at": "2026-10-23T04:55:39Z",
+        "updated_at": "2026-10-23T04:56:24Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39902935629"
       }
     },
     {
       "file": ".github/workflows/model-gate.yml",
       "name": "Model validation gate",
-      "latest": {
-        "run_id": 39329467524,
-        "title": "MLOps Level 2 on dev: port of the hydrotwin-lab overlay",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success",
-        "created_at": "2026-10-19T21:41:33Z",
-        "updated_at": "2026-10-19T21:42:15Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39329467524"
-      }
+      "latest": null
     },
     {
       "file": ".github/workflows/monitor.yml",
@@ -387,29 +378,20 @@
     {
       "file": ".github/workflows/release.yml",
       "name": "Release \u2014 site ZIP",
-      "latest": {
-        "run_id": 39330516971,
-        "title": "Fix release.yml YAML (env/run block indentation) so the release workf\u2026",
-        "event": "push",
-        "status": "completed",
-        "conclusion": "success",
-        "created_at": "2026-10-19T21:49:47Z",
-        "updated_at": "2026-10-19T21:50:55Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39330516971"
-      }
+      "latest": null
     },
     {
       "file": ".github/workflows/deploy-dev.yml",
       "name": "Deploy DEV to AWS S3",
       "latest": {
-        "run_id": 39810787594,
-        "title": "Bake lazy-panels pages into dev (ht-lazypanels v1)",
+        "run_id": 39902935733,
+        "title": "ht-tuneanim-home v1 REMOVED: no tuning badge on the USA map page",
         "event": "push",
         "status": "completed",
-        "conclusion": "failure",
-        "created_at": "2026-10-22T16:04:33Z",
-        "updated_at": "2026-10-22T16:05:28Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39810787594"
+        "conclusion": "success",
+        "created_at": "2026-10-23T04:55:39Z",
+        "updated_at": "2026-10-23T04:57:20Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39902935733"
       }
     }
   ]
