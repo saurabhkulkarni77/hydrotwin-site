@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-23T04:57:27Z",
+  "generated_at": "2026-10-23T15:23:31Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -350,14 +350,14 @@
       "file": ".github/workflows/ci.yml",
       "name": "CI \u2014 site, data & model tests",
       "latest": {
-        "run_id": 39902935629,
-        "title": "ht-tuneanim-home v1 REMOVED: no tuning badge on the USA map page",
+        "run_id": 39977716996,
+        "title": "ht-pullfwd v1: pulled data -> S3 snapshots + calendar forwards to the\u2026",
         "event": "push",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-10-23T04:55:39Z",
-        "updated_at": "2026-10-23T04:56:24Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39902935629"
+        "created_at": "2026-10-23T15:22:30Z",
+        "updated_at": "2026-10-23T15:23:14Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39977716996"
       }
     },
     {
@@ -384,14 +384,14 @@
       "file": ".github/workflows/deploy-dev.yml",
       "name": "Deploy DEV to AWS S3",
       "latest": {
-        "run_id": 39902935733,
-        "title": "ht-tuneanim-home v1 REMOVED: no tuning badge on the USA map page",
+        "run_id": 39977717068,
+        "title": "ht-pullfwd v1: pulled data -> S3 snapshots + calendar forwards to the\u2026",
         "event": "push",
-        "status": "completed",
-        "conclusion": "success",
-        "created_at": "2026-10-23T04:55:39Z",
-        "updated_at": "2026-10-23T04:57:20Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39902935733"
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-10-23T15:22:30Z",
+        "updated_at": "2026-10-23T15:22:34Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/39977717068"
       }
     }
   ]
