@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39984687362-24297b94448bf778e84f42ca17b6b0ff99aceff6";
+  var BID = "39992557416-38ab7fff3dc7d7c72d2d374a190da39c399aafa5";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -1453,7 +1454,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39984687362-24297b94448bf778e84f42ca17b6b0ff99aceff6" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39992557416-38ab7fff3dc7d7c72d2d374a190da39c399aafa5" } }
 </script>
 <script type="text/plain" data-htlp-boot="chart3d" data-htlp-module="1">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1462,7 +1463,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=39984687362-24297b94448bf778e84f42ca17b6b0ff99aceff6')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=39992557416-38ab7fff3dc7d7c72d2d374a190da39c399aafa5')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -4520,186 +4521,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
-<style>
-#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
- background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
- border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
- box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
-#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
- padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
-#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
- padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
-#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
- color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
-#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
-#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
-#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
-#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
-#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
-#ht-drift-panel .htd-line{opacity:.85}
-#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
-#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
- display:inline-block;min-width:52px;text-align:center}
-</style>
-<div id="ht-drift-panel">
-  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
-  <button id="htd-toggle" aria-label="collapse">–</button></div>
-  <div class="htd-body" id="htd-body">
-    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
-    <div class="htd-line"><b>1 of 5</b> features above the 0.25 drift cutoff.</div>
-    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 0.27.</div>
-    <table><tr><th>Feature</th><th>PSI</th><th></th></tr><tr><td>Tmax</td><td>0.086</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Tmin</td><td>0.032</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Tmean</td><td>0.064</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Precip</td><td>0.010</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Flow (log)</td><td>0.265</td><td><span class="pill" style="background:#d64545">drifting</span></td></tr></table>
-    <div class="htd-line">Drift cutoff: PSI &gt; 0.25 = drifting · 0.10–0.25 = moderate shift · &lt; 0.10 = stable.</div>
-    <div class="htd-sec">Concept drift</div>
-    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
-    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.239</td><td>0.230</td><td>-3.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.258</td><td>0.252</td><td>-2.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.257</td><td>0.250</td><td>-2.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.221</td><td>0.241</td><td>+9.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.235</td><td>0.228</td><td>-3.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.758</td><td>0.815</td><td>+7.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>0.754</td><td>0.816</td><td>+8.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.251</td><td>0.250</td><td>-0.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.236</td><td>0.231</td><td>-2.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.269</td><td>0.270</td><td>+0.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
-    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
-    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
-  </div>
-</div>
-<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
-<script>
-/* ht-tuneanim v1 classic - "Optuna + Ray Tune" tuning badge: polls the tuning
- * status JSON published from the hydrotwin-models tuning registry
- * (dev) to the models Pages source and renders an animated RUNNING
- * state while a tuning run is live, or this station's latest quality
- * gate verdicts when idle. See build25/patch_livefix.py (Part 5). */
-(function () {
-  'use strict';
-  if (window.__httuneOn) return;
-  window.__httuneOn = true;
-  var STATUS_URL = 'https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json';
-  var D = window.HT_DATA || window.HT3D || {};
-  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
-  var badge = document.getElementById('tuneAnimBadge');
-  var txt = document.getElementById('tuneAnimTxt');
-  if (!badge || !txt) return;
 
-  function place() {
-    /* Classic pages: the badge sits in the normal page flow directly
-     * under the station header, so there is no fixed position to
-     * maintain (the 3D edition parks itself under the model-button
-     * row). No-op so the calls below stay identical to the 3D one. */
-  }
-  function fmtPct(x) {
-    var n = Number(x);
-    if (!isFinite(n)) return '';
-    return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
-  }
-  function safeName(t) { return /^[A-Za-z0-9][A-Za-z0-9 _-]*$/.test(t) ? t : ''; }
-
-  function render(data) {
-    if (data && data.running && data.current) {
-      var c = data.current;
-      var fams = (c.families || []).map(safeName).filter(Boolean).join(' + ');
-      badge.classList.add('htune-run');
-      badge.classList.remove('htune-idle');
-      txt.textContent = 'Optuna × Ray Tune — TUNING ' + (c.station || '') +
-        (fams ? ' · ' + fams : '') + ' now';
-      badge.title = 'Hyperparameter tuning is RUNNING (dev): Optuna ' +
-        '(TPE search) driven by Ray Tune (parallel trials + ASHA) on ' +
-        'station ' + (c.station || '') + (fams ? ' — ' + fams : '') +
-        '. A candidate must pass the quality gate to replace dev weights.';
-      return;
-    }
-    badge.classList.remove('htune-run');
-    badge.classList.add('htune-idle');
-    var st = (data && data.stations && SITE) ? data.stations[SITE] : null;
-    var parts = [], tips = [];
-    if (st) {
-      Object.keys(st).forEach(function (fam) {
-        var name = safeName(fam);
-        var r = st[fam];
-        if (!name || !r || !r.verdict) return;
-        if (r.verdict === 'PASS') {
-          parts.push(name + ' tuned · <span class="htune-pass">gate PASS ' +
-            fmtPct(r.margin_pct) + '</span>');
-        } else {
-          parts.push(name + ' · <span class="htune-fail">gate FAIL — ' +
-            'incumbent kept</span>');
-        }
-        tips.push(name + ': candidate RMSE ' + r.candidate_rmse +
-          ' vs incumbent ' + r.incumbent_rmse + ' (WY2026 holdout), ' +
-          r.trials + ' trials, gate ' + r.verdict + ' ' + fmtPct(r.margin_pct));
-      });
-    }
-    if (parts.length) {
-      txt.innerHTML = 'Optuna × Ray Tune · ' + parts.join(' · ');
-      badge.title = 'Latest tuning for this station (dev, Optuna + ' +
-        'Ray Tune): ' + tips.join('; ') + '.';
-      return;
-    }
-    txt.textContent = 'Optuna × Ray Tune · hyperparameter tuning (dev)' +
-      (data ? ' — no runs yet for this station' : '');
-    badge.title = 'Optuna + Ray Tune hyperparameter tuning runs in the ' +
-      'hydrotwin-models dev environment; a candidate must beat the ' +
-      'incumbent on the WY2026 holdout (quality gate) before it can ' +
-      'replace dev weights.';
-    place();
-  }
-
-  function tuneToast(msg) {
-    var t = document.getElementById('tuneToast');
-    if (!t) {
-      t = document.createElement('div');
-      t.id = 'tuneToast';
-      t.setAttribute('style', 'position:fixed;left:50%;bottom:26px;' +
-        'transform:translateX(-50%);z-index:99;max-width:92vw;' +
-        'text-align:center;background:rgba(12,18,28,.94);' +
-        'border:1px solid #FFB84D;color:#FFE1A8;font:600 13px Arial;' +
-        'padding:9px 16px;border-radius:999px;' +
-        'box-shadow:0 4px 16px rgba(0,0,0,.5);opacity:0;' +
-        'transition:opacity .25s;pointer-events:none');
-      document.body.appendChild(t);
-    }
-    t.textContent = msg;
-    t.style.opacity = '1';
-    if (t.__ht) clearTimeout(t.__ht);
-    t.__ht = setTimeout(function () { t.style.opacity = '0'; }, 4000);
-  }
-
-  var tuneBtn = document.getElementById('tuneNowBtn');
-  if (tuneBtn) {
-    tuneBtn.addEventListener('click', function () {
-      var WF_URL = 'https://github.com/saurabhkulkarni77/hydrotwin-models' +
-        '/actions/workflows/tuning-dev.yml';
-      var cp = null;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        try { cp = navigator.clipboard.writeText(SITE); } catch (e) { cp = null; }
-      }
-      window.open(WF_URL, '_blank');
-      if (cp && cp.then) {
-        cp.then(function () {
-          tuneToast('Station ' + SITE + ' copied — paste it into the ' +
-            'Run workflow form');
-        }, function () {
-          tuneToast('Station ' + SITE + ' — type it into the Run ' +
-            'workflow form');
-        });
-      } else {
-        tuneToast('Station ' + SITE + ' — type it into the Run ' +
-          'workflow form');
-      }
-    });
-  }
-
-  var got = false;
-  function poll() {
-    fetch(STATUS_URL + '?v=' + Date.now(), { cache: 'no-store' })
-      .then(function (r) {
-        if (!r.ok) throw new Error('http ' + r.status);
-        return r.json();
-      })
-      .then(function (d) { got = true; render(d); },
-            function () { if (!got) render(null); });
-  }
-  place();
-  window.addEventListener('resize', place);
-  setInterval(place, 5000);
-  poll();
-  setInterval(poll, 60000);
-})();
-</script>
 
 <script>
 
@@ -4879,5 +4701,185 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   else loadManifest();
 })();
 
+</script>
+<style>
+#ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
+ background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
+ border-radius:12px;font:12px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+ box-shadow:0 8px 30px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+#ht-drift-panel .htd-head{display:flex;justify-content:space-between;align-items:center;
+ padding:8px 12px;font-weight:700;font-size:12.5px;letter-spacing:.02em}
+#ht-drift-panel .htd-dev{background:#d9930d;color:#111;border-radius:4px;
+ padding:0 5px;margin-left:6px;font-size:10px;vertical-align:1px}
+#ht-drift-panel button{background:none;border:1px solid rgba(255,255,255,.25);
+ color:#e8eef5;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:14px;line-height:1}
+#ht-drift-panel .htd-body{padding:0 12px 10px;max-height:46vh;overflow:auto}
+#ht-drift-panel table{width:100%;border-collapse:collapse;margin:4px 0 8px}
+#ht-drift-panel td,#ht-drift-panel th{padding:2px 4px;text-align:right;font-weight:400}
+#ht-drift-panel td:first-child,#ht-drift-panel th:first-child{text-align:left}
+#ht-drift-panel .htd-sec{font-weight:700;margin-top:6px}
+#ht-drift-panel .htd-line{opacity:.85}
+#ht-drift-panel .htd-foot{opacity:.6;font-size:10.5px;margin-top:2px}
+#ht-drift-panel .pill{color:#fff;border-radius:8px;padding:0 7px;font-size:10.5px;
+ display:inline-block;min-width:52px;text-align:center}
+</style>
+<div id="ht-drift-panel">
+  <div class="htd-head"><span>Model drift<span class="htd-dev">DEV</span></span>
+  <button id="htd-toggle" aria-label="collapse">–</button></div>
+  <div class="htd-body" id="htd-body">
+    <div class="htd-sec">Data drift <span class="pill" style="background:#d64545">drift</span></div>
+    <div class="htd-line"><b>1 of 5</b> features above the 0.25 drift cutoff.</div>
+    <div class="htd-line">Inputs, most recent 12 months (Oct 2025–Sep 2026) vs full training record (2001–26). Worst: Flow (log), PSI 0.27.</div>
+    <table><tr><th>Feature</th><th>PSI</th><th></th></tr><tr><td>Tmax</td><td>0.086</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Tmin</td><td>0.032</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Tmean</td><td>0.064</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Precip</td><td>0.010</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>Flow (log)</td><td>0.265</td><td><span class="pill" style="background:#d64545">drifting</span></td></tr></table>
+    <div class="htd-line">Drift cutoff: PSI &gt; 0.25 = drifting · 0.10–0.25 = moderate shift · &lt; 0.10 = stable.</div>
+    <div class="htd-sec">Concept drift</div>
+    <div class="htd-line">Forecast RMSE (log flow) on WY2026 — backtest A (trained through 2023) vs B (trained through 2024):</div>
+    <table><tr><th>Model</th><th>A</th><th>B</th><th>Δ</th><th></th></tr><tr><td>Transformer</td><td>0.239</td><td>0.230</td><td>-3.9%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP Matérn</td><td>0.258</td><td>0.252</td><td>-2.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GP RBF</td><td>0.257</td><td>0.250</td><td>-2.5%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>TFT</td><td>0.221</td><td>0.241</td><td>+9.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>LSTM</td><td>0.235</td><td>0.228</td><td>-3.1%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>ARIMA</td><td>0.758</td><td>0.815</td><td>+7.6%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>SARIMA</td><td>0.754</td><td>0.816</td><td>+8.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PatchTST</td><td>0.251</td><td>0.250</td><td>-0.3%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>PILSTMv1</td><td>0.236</td><td>0.231</td><td>-2.2%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr><tr><td>GCN</td><td>0.269</td><td>0.270</td><td>+0.4%</td><td><span class="pill" style="background:#2e9e5b">stable</span></td></tr></table>
+    <div class="htd-foot">PSI &gt; 0.25 = significant input shift · Δ &gt; +15% = model degrading.
+    Served models retrained on the full record through Sep 2026 (drift fix, Oct 2026); concept drift = untouched-WY2026 backtest.</div>
+  </div>
+</div>
+<script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+<script>
+/* ht-tuneanim v1 classic - "Optuna + Ray Tune" tuning badge: polls the tuning
+ * status JSON published from the hydrotwin-models tuning registry
+ * (dev) to the models Pages source and renders an animated RUNNING
+ * state while a tuning run is live, or this station's latest quality
+ * gate verdicts when idle. See build25/patch_livefix.py (Part 5). */
+(function () {
+  'use strict';
+  if (window.__httuneOn) return;
+  window.__httuneOn = true;
+  var STATUS_URL = 'https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json';
+  var D = window.HT_DATA || window.HT3D || {};
+  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
+  var badge = document.getElementById('tuneAnimBadge');
+  var txt = document.getElementById('tuneAnimTxt');
+  if (!badge || !txt) return;
+
+  function place() {
+    /* Classic pages: the badge sits in the normal page flow directly
+     * under the station header, so there is no fixed position to
+     * maintain (the 3D edition parks itself under the model-button
+     * row). No-op so the calls below stay identical to the 3D one. */
+  }
+  function fmtPct(x) {
+    var n = Number(x);
+    if (!isFinite(n)) return '';
+    return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
+  }
+  function safeName(t) { return /^[A-Za-z0-9][A-Za-z0-9 _-]*$/.test(t) ? t : ''; }
+
+  function render(data) {
+    if (data && data.running && data.current) {
+      var c = data.current;
+      var fams = (c.families || []).map(safeName).filter(Boolean).join(' + ');
+      badge.classList.add('htune-run');
+      badge.classList.remove('htune-idle');
+      txt.textContent = 'Optuna × Ray Tune — TUNING ' + (c.station || '') +
+        (fams ? ' · ' + fams : '') + ' now';
+      badge.title = 'Hyperparameter tuning is RUNNING (dev): Optuna ' +
+        '(TPE search) driven by Ray Tune (parallel trials + ASHA) on ' +
+        'station ' + (c.station || '') + (fams ? ' — ' + fams : '') +
+        '. A candidate must pass the quality gate to replace dev weights.';
+      return;
+    }
+    badge.classList.remove('htune-run');
+    badge.classList.add('htune-idle');
+    var st = (data && data.stations && SITE) ? data.stations[SITE] : null;
+    var parts = [], tips = [];
+    if (st) {
+      Object.keys(st).forEach(function (fam) {
+        var name = safeName(fam);
+        var r = st[fam];
+        if (!name || !r || !r.verdict) return;
+        if (r.verdict === 'PASS') {
+          parts.push(name + ' tuned · <span class="htune-pass">gate PASS ' +
+            fmtPct(r.margin_pct) + '</span>');
+        } else {
+          parts.push(name + ' · <span class="htune-fail">gate FAIL — ' +
+            'incumbent kept</span>');
+        }
+        tips.push(name + ': candidate RMSE ' + r.candidate_rmse +
+          ' vs incumbent ' + r.incumbent_rmse + ' (WY2026 holdout), ' +
+          r.trials + ' trials, gate ' + r.verdict + ' ' + fmtPct(r.margin_pct));
+      });
+    }
+    if (parts.length) {
+      txt.innerHTML = 'Optuna × Ray Tune · ' + parts.join(' · ');
+      badge.title = 'Latest tuning for this station (dev, Optuna + ' +
+        'Ray Tune): ' + tips.join('; ') + '.';
+      return;
+    }
+    txt.textContent = 'Optuna × Ray Tune · hyperparameter tuning (dev)' +
+      (data ? ' — no runs yet for this station' : '');
+    badge.title = 'Optuna + Ray Tune hyperparameter tuning runs in the ' +
+      'hydrotwin-models dev environment; a candidate must beat the ' +
+      'incumbent on the WY2026 holdout (quality gate) before it can ' +
+      'replace dev weights.';
+    place();
+  }
+
+  function tuneToast(msg) {
+    var t = document.getElementById('tuneToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'tuneToast';
+      t.setAttribute('style', 'position:fixed;left:50%;bottom:26px;' +
+        'transform:translateX(-50%);z-index:99;max-width:92vw;' +
+        'text-align:center;background:rgba(12,18,28,.94);' +
+        'border:1px solid #FFB84D;color:#FFE1A8;font:600 13px Arial;' +
+        'padding:9px 16px;border-radius:999px;' +
+        'box-shadow:0 4px 16px rgba(0,0,0,.5);opacity:0;' +
+        'transition:opacity .25s;pointer-events:none');
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = '1';
+    if (t.__ht) clearTimeout(t.__ht);
+    t.__ht = setTimeout(function () { t.style.opacity = '0'; }, 4000);
+  }
+
+  var tuneBtn = document.getElementById('tuneNowBtn');
+  if (tuneBtn) {
+    tuneBtn.addEventListener('click', function () {
+      var WF_URL = 'https://github.com/saurabhkulkarni77/hydrotwin-models' +
+        '/actions/workflows/tuning-dev.yml';
+      var cp = null;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try { cp = navigator.clipboard.writeText(SITE); } catch (e) { cp = null; }
+      }
+      window.open(WF_URL, '_blank');
+      if (cp && cp.then) {
+        cp.then(function () {
+          tuneToast('Station ' + SITE + ' copied — paste it into the ' +
+            'Run workflow form');
+        }, function () {
+          tuneToast('Station ' + SITE + ' — type it into the Run ' +
+            'workflow form');
+        });
+      } else {
+        tuneToast('Station ' + SITE + ' — type it into the Run ' +
+          'workflow form');
+      }
+    });
+  }
+
+  var got = false;
+  function poll() {
+    fetch(STATUS_URL + '?v=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+      })
+      .then(function (d) { got = true; render(d); },
+            function () { if (!got) render(null); });
+  }
+  place();
+  window.addEventListener('resize', place);
+  setInterval(place, 5000);
+  poll();
+  setInterval(poll, 60000);
+})();
 </script>
 </body></html>
