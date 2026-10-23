@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39992557416-38ab7fff3dc7d7c72d2d374a190da39c399aafa5";
+  var BID = "40020991319-8fc49f32fd300de4bab354ddf7d3641012bc893d";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -185,7 +186,7 @@ USGS stage–discharge rating (${RT ? RT.n + ' field measurements since ' + RT.f
 $('hudtg').onclick = () => { $('hud').classList.toggle('min'); $('hudtg').textContent = $('hud').classList.contains('min') ? 'help' : 'hide help'; };
 setTimeout(() => { if (!$('hud').classList.contains('min')) $('hudtg').click(); }, 9000);
 $('links').innerHTML = `<button id="bDrone">Drone</button><button id="bBank">Riverbank</button><button id="bFc">▶ Forecast</button>
-<button id="bPanel" class="on">Panel</button><button id="bGeo">Geology</button><button id="bShed">Watershed</button><a href="${D.mapUrl}">◀ USA map</a>`;
+<button id="bPanel" class="on">Panel</button><button id="bGeo">Geology</button><button id="bShed">Watershed</button><a href="${D.mapUrl}">◀ USA map</a><a href="${D.classicUrl}">Data view ▶</a>`;
 
 // ------------------------------------------------------------------ geography helpers (Web Mercator)
 const TS = 256;
@@ -634,7 +635,7 @@ const S2 = { day: Math.max(0, Math.min(D.n - 1, D.openDay ? dayIndex(D.openDay) 
 window.__htS = S2;
 const qp = new URLSearchParams(location.search); if (qp.has('day')) S2.day = Math.max(0, Math.min(D.n - 1, dayIndex(qp.get('day'))));
 const BTN = [[['◀ day', 'prev'], ['day ▶', 'next'], ['▶ play', 'play'], ['▶ forecast', 'fc'], ['model', 'model'], ['lead', 'lead']],
-             [['layer', 'layer'], ['drone', 'drone'], ['riverbank', 'bank'], ['◀ map', 'map']]];
+             [['layer', 'layer'], ['drone', 'drone'], ['riverbank', 'bank'], ['◀ map', 'map'], ['data ▶', 'data']]];
 const BTNY = [0.77, 0.885], BTNH = 0.095;
 let qmin = Infinity, qmax = -Infinity; for (const v of D.flow) if (v != null && v > 0) { qmin = Math.min(qmin, v); qmax = Math.max(qmax, v); }
 const lq = (v) => (Math.log(v) - Math.log(qmin)) / (Math.log(qmax) - Math.log(qmin) || 1);
@@ -874,7 +875,7 @@ function act(a) {
   else if (a === 'lead') { S2.lead = S2.lead % 7 + 1; ghostKey = ''; levelDirty = true; drawFlow(); }
   else if (a === 'layer') setLayer((layer + 1) % LAYERS.length);
   else if (a === 'drone' || a === 'bank') { if (S2.mode !== 'ground') setMode('ground'); goView(a); }
-  else if (a === 'map') location.href = D.mapUrl;
+  else if (a === 'map') location.href = D.mapUrl; else if (a === 'data') location.href = D.classicUrl;
   else if (a === 'relief') { EXAG = EXAGS[(EXAGS.indexOf(EXAG) + 1) % EXAGS.length]; buildHeights(); buildOverlays(); levelDirty = true; ghostKey = ''; drawFlow(); }
 }
 addEventListener('keydown', (e) => { const k = e.key.toLowerCase();
@@ -5792,6 +5793,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 })();
 
 </script>
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
