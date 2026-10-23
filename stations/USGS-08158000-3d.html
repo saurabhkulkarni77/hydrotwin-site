@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39906150672-56e1ff4fd0a7a85ac4334b06ade38906424b17ec";
+  var BID = "39984687362-24297b94448bf778e84f42ca17b6b0ff99aceff6";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -5605,6 +5606,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -6055,5 +6057,185 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   poll();
   setInterval(poll, 60000);
 })();
+</script>
+
+<script>
+
+/* ht-pullfwd v1 */
+(function () {
+  'use strict';
+  if (window.__htPullFwdOn) return;
+  window.__htPullFwdOn = true;
+  var D = window.HT_DATA || window.HT3D || {};
+  var IS3D = !!window.HT3D;
+  var SITE = ((D.station || {}).stationId || '').replace('USGS-', '') || D.site || '';
+  var DAY = 864e5;
+  function iso(t) { return new Date(t).toISOString().slice(0, 10); }
+  function addDays(dstr, k) { return iso(Date.parse(dstr + 'T00:00:00Z') + k * DAY); }
+  function dayIdx(dstr) { return Math.round((Date.parse(dstr + 'T00:00:00Z') - Date.parse((D.start || '2001-10-01') + 'T00:00:00Z')) / DAY); }
+  var BAKED_N = D.n || 0;
+  var PF = window.__htPullFwd = {
+    site: SITE, bakedEnd: BAKED_N ? addDays(D.start, BAKED_N - 1) : '',
+    latest: null, source: null, extN: 0, pullHandled: ''
+  };
+  if (typeof window.__htPullN !== 'number') window.__htPullN = 0;
+
+  function fetchJ(url, ms) {
+    return new Promise(function (res, rej) {
+      var c = new AbortController();
+      var t = setTimeout(function () { c.abort(); }, ms || 15000);
+      fetch(url, { signal: c.signal, cache: 'no-store' }).then(function (r) {
+        clearTimeout(t);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(res, rej);
+    });
+  }
+  function setMax(dstr) {
+    var el = document.getElementById('ht-date');
+    if (el && dstr && (!el.max || dstr > el.max)) el.max = dstr;
+  }
+  /* Extend the page's own data arrays with a pulled series
+     ({date: {q, tx, tn, pr}}). Fresh values overwrite the overlap
+     window (the LIVE assembly's fresh-wins rule); past the baked end
+     the arrays grow to the newest pulled date and forecast slots are
+     null-filled (observed data only, until a LIVE pull computes fans
+     for its issue date). Sets window.__htPullN, the classic stats
+     script's dynamic day bound. */
+  function extend(days, latest) {
+    var start = D.start || '2001-10-01';
+    var L = dayIdx(latest);
+    if (L < 0 || !days) return false;
+    function rec(k) { return days[addDays(start, k)] || null; }
+    function qOf(r) { return (r && r.q != null && r.q > 0) ? r.q : null; }
+    var k, r;
+    if (IS3D) {
+      var nf = (D.flow || []).slice();
+      for (k = 0; k < BAKED_N; k++) { var q0 = qOf(rec(k)); if (q0 != null) nf[k] = q0; }
+      if (L >= BAKED_N) {
+        nf.length = L + 1;
+        for (k = BAKED_N; k <= L; k++) { var q1 = qOf(rec(k)); nf[k] = (q1 != null) ? q1 : null; }
+        D.pred = (D.pred || []).map(function (mdl) {
+          return mdl.map(function (ld) {
+            var c = ld.slice(); c.length = L + 1;
+            for (var j = BAKED_N; j <= L; j++) if (c[j] === undefined) c[j] = null;
+            return c;
+          });
+        });
+        D.n = L + 1;
+      }
+      D.flow = nf;
+    } else {
+      var cols = [['flow', 'q'], ['tmax', 'tx'], ['tmin', 'tn'], ['precip', 'pr']];
+      var ext = {};
+      cols.forEach(function (pair) {
+        var a = (D[pair[0]] || []).slice();
+        for (k = 0; k < BAKED_N; k++) { r = rec(k); if (r && r[pair[1]] != null) a[k] = r[pair[1]]; }
+        if (L >= BAKED_N) {
+          a.length = L + 1;
+          for (k = BAKED_N; k <= L; k++) { r = rec(k); a[k] = (r && r[pair[1]] != null) ? r[pair[1]] : null; }
+        }
+        ext[pair[0]] = a;
+      });
+      var tm = (D.tmean || []).slice();
+      var rg = (D.rising || []).slice();
+      var top = (L >= BAKED_N) ? L : BAKED_N - 1;
+      if (L >= BAKED_N) { tm.length = L + 1; rg.length = L + 1; }
+      for (k = 0; k <= top; k++) {
+        r = rec(k);
+        if (r && r.tx != null && r.tn != null) tm[k] = (r.tx + r.tn) / 2;
+        else if (k >= BAKED_N && tm[k] === undefined) tm[k] = null;
+        if (k > 0 && (k >= BAKED_N || (r && r.q != null))) {
+          var qa = ext.flow[k], qb = ext.flow[k - 1];
+          rg[k] = (qa != null && qb != null) ? (qa > qb ? 1 : 0) : (k >= BAKED_N ? 0 : rg[k]);
+        } else if (k >= BAKED_N && rg[k] === undefined) rg[k] = 0;
+      }
+      cols.forEach(function (pair) { D[pair[0]] = ext[pair[0]]; });
+      D.tmean = tm; D.rising = rg;
+      if (L >= BAKED_N) {
+        D.pred = (D.pred || []).map(function (mdl) {
+          return mdl.map(function (ld) {
+            var c = ld.slice(); c.length = L + 1;
+            for (var j = BAKED_N; j <= L; j++) if (c[j] === undefined) c[j] = null;
+            return c;
+          });
+        });
+        D.n = L + 1;
+      }
+    }
+    if (L >= BAKED_N) { PF.extN = L + 1; window.__htPullN = L + 1; }
+    if (!PF.latest || latest > PF.latest) PF.latest = latest;
+    return true;
+  }
+  /* After a LIVE pull: land the calendar on the pull's issue date.
+     On 3D the scene already sits at the issue (panelLive3D); if the
+     manifest extension had already grown HT3D.n past the issue index
+     panelLive3D returned early by design — and on that path it never
+     sets LA.on (verified live: LA.issue and LA.fc complete while
+     LA.on stays false) — so write the pull's fans (LA.fc, already
+     computed) in and step to the issue here. The watcher below
+     therefore fires on LA.on OR on LA.fc holding an entry for every
+     model (fc is filled per model, failures included as nulls, so
+     key completeness means the fan computation has finished). On
+     classic the live board already renders the pull — only the
+     calendar moves (a dispatched change would exit LIVE mode). */
+  function onPulled(issue) {
+    setMax(issue);
+    var el = document.getElementById('ht-date');
+    if (el) el.value = issue;
+    if (!PF.latest || issue > PF.latest) PF.latest = issue;
+    PF.source = 'pull';
+    if (!IS3D) return;
+    var D3 = window.HT3D, S = window.__htS, LA = window.__htla;
+    var li = dayIdx(issue);
+    if (!D3 || !S || !LA || !LA.fc || li < BAKED_N || li >= D3.n) return;
+    var wrote = false;
+    (D3.models || []).forEach(function (mn, mi) {
+      var fc = LA.fc[mn]; if (!fc || !D3.pred[mi]) return;
+      for (var l = 0; l < 7; l++) {
+        if (fc[l] != null && D3.pred[mi][l] && D3.pred[mi][l][li] == null) {
+          D3.pred[mi][l][li] = fc[l]; wrote = true;
+        }
+      }
+    });
+    if (wrote) {
+      /* step onto the issue even if the scene already sits there:
+         the step is what makes the panel redraw with the fans just
+         written into D3.pred */
+      S.day = li - 1;
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }));
+    }
+  }
+  function fcComplete() {
+    var LA = window.__htla, D3 = window.HT3D;
+    if (!IS3D || !LA || !LA.fc || !D3 || !D3.models || !D3.models.length) return false;
+    return D3.models.every(function (m) {
+      return Object.prototype.hasOwnProperty.call(LA.fc, m);
+    });
+  }
+  setInterval(function () {
+    var LA = window.__htla;
+    if (LA && LA.issue && LA.issue !== PF.pullHandled && (LA.on || fcComplete())) {
+      PF.pullHandled = LA.issue;
+      try { onPulled(LA.issue); } catch (e) { /* calendar stays as-is */ }
+    }
+  }, 1500);
+  /* On load: the pull-snapshots manifest forwards the calendar to
+     wherever the newest saved data is, for every visitor. */
+  function loadManifest() {
+    fetchJ('../data/pulls/manifest.json?htpf=' + Date.now(), 12000).then(function (man) {
+      var ent = man && man.stations && man.stations[SITE];
+      if (!ent || !ent.latest_date) return;
+      setMax(ent.latest_date);
+      if (!ent.snapshot_key) return;
+      return fetchJ('../' + ent.snapshot_key + '?htpf=' + Date.now(), 20000).then(function (snap) {
+        if (snap && snap.days && extend(snap.days, ent.latest_date)) PF.source = 'manifest';
+      });
+    }).catch(function () { /* no snapshots published yet — page stays baked */ });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadManifest);
+  else loadManifest();
+})();
+
 </script>
 </body></html>
