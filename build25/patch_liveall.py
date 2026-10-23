@@ -102,6 +102,31 @@ the centered default are skipped; v2 pages with the old sticky CSS
 get the in-place position refresh; pages carrying only a v1 block
 are upgraded in place (the v1 <script> block is removed and the v2
 block appended, exactly one block either way).
+
+Pull-forward (ht-pullfwd v1, 2026-10-23, user request: "when we pull
+new data can we save it in s3 and make calendar forward to wherever
+new data is"): a companion script block (PULLFWD_JS below, its own
+<script> appended before </body>, signature ht-pullfwd v1) plus, on
+classic pages only, two count-checked clamp swaps in the stats
+script. The pull-snapshots workflow (scripts/pull_snapshots.py)
+publishes the same fresh series the LIVE pull fetches to the DEV
+bucket at data/pulls/<station>/<date>.json with a manifest.json;
+on load the block reads the manifest, sets the date input's max to
+the station's latest pulled date and extends the page's own data
+arrays with the snapshot series (fresh values also overwrite the
+overlap window — the pull's fresh-wins rule), so the calendar, the
+arrow keys and play reach the new data for every visitor. After a
+LIVE pull it watches __htla.issue and lands the calendar on the
+pull's issue date (on 3D it also writes the pull's fans into
+HT3D.pred when the manifest extension made panelLive3D return
+early). On classic pages the stats script captured its day bound
+in a const (N = D.n), so setDay's clamp and the play loop's wrap
+are re-pointed at Math.max(N, window.__htPullN || 0) — with no
+extension the expressions reduce to the baked behavior exactly.
+Like the position/RMSE refreshes this is applied to v2 pages on the
+refresh path and to fresh installs alike; the block marker stays
+"ht-liveall v2" (the CI census pins it at exactly 1 per page).
+
 Run from the repo root: python3 build25/patch_liveall.py
 """
 import re
@@ -162,6 +187,24 @@ RMSE_AB = {
     "08313000": (0.3647, 0.3478), "09380000": (0.0846, 0.0786),
     "11447650": (0.2495, 0.2731), "14105700": (0.1449, 0.1517),
 }
+# Pull-forward (ht-pullfwd v1, 2026-10-23): signature + classic clamp
+# anchors. The stats script on classic pages captured its day bound in
+# a const (N = D.n) before any patcher block runs, so the only way to
+# let its calendar pass the baked end is to re-point the two places
+# that bound the *current day*: setDay's clamp and the play loop's
+# wrap. Both OLD fragments must occur exactly once per classic page
+# (asserted in _apply_pullfwd); the replacements consult
+# window.__htPullN, which the pullfwd block sets when it extends the
+# page's data arrays (0 / undefined = baked behavior, exactly).
+PULLFWD_SIG = "ht-pullfwd v1"
+PULLFWD_CLAMP_OLD = ("function setDay(i) { S.day = Math.max(0, "
+                     "Math.min(N - 1, i)); applyDay(); htSyncDate(); }")
+PULLFWD_CLAMP_NEW = ("function setDay(i) { S.day = Math.max(0, "
+                     "Math.min(Math.max(N, window.__htPullN || 0) - 1, i)); "
+                     "applyDay(); htSyncDate(); }")
+PULLFWD_WRAP_OLD = "setDay(S.day + 1 >= N ? 0 : S.day + 1)"
+PULLFWD_WRAP_NEW = ("setDay(S.day + 1 >= Math.max(N, window.__htPullN || 0) "
+                    "? 0 : S.day + 1)")
 ROOT = Path(__file__).resolve().parent.parent
 STATIONS = ROOT / "stations"
 
@@ -1153,6 +1196,198 @@ def _apply_rmse(html, page_name):
                 .replace(RMSE_OLD_HTML, new_anchor))
 
 
+PULLFWD_JS = r"""
+/* ht-pullfwd v1 */
+(function () {
+  'use strict';
+  if (window.__htPullFwdOn) return;
+  window.__htPullFwdOn = true;
+  var D = window.HT_DATA || window.HT3D || {};
+  var IS3D = !!window.HT3D;
+  var SITE = ((D.station || {}).stationId || '').replace('USGS-', '') || D.site || '';
+  var DAY = 864e5;
+  function iso(t) { return new Date(t).toISOString().slice(0, 10); }
+  function addDays(dstr, k) { return iso(Date.parse(dstr + 'T00:00:00Z') + k * DAY); }
+  function dayIdx(dstr) { return Math.round((Date.parse(dstr + 'T00:00:00Z') - Date.parse((D.start || '2001-10-01') + 'T00:00:00Z')) / DAY); }
+  var BAKED_N = D.n || 0;
+  var PF = window.__htPullFwd = {
+    site: SITE, bakedEnd: BAKED_N ? addDays(D.start, BAKED_N - 1) : '',
+    latest: null, source: null, extN: 0, pullHandled: ''
+  };
+  if (typeof window.__htPullN !== 'number') window.__htPullN = 0;
+
+  function fetchJ(url, ms) {
+    return new Promise(function (res, rej) {
+      var c = new AbortController();
+      var t = setTimeout(function () { c.abort(); }, ms || 15000);
+      fetch(url, { signal: c.signal, cache: 'no-store' }).then(function (r) {
+        clearTimeout(t);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(res, rej);
+    });
+  }
+  function setMax(dstr) {
+    var el = document.getElementById('ht-date');
+    if (el && dstr && (!el.max || dstr > el.max)) el.max = dstr;
+  }
+  /* Extend the page's own data arrays with a pulled series
+     ({date: {q, tx, tn, pr}}). Fresh values overwrite the overlap
+     window (the LIVE assembly's fresh-wins rule); past the baked end
+     the arrays grow to the newest pulled date and forecast slots are
+     null-filled (observed data only, until a LIVE pull computes fans
+     for its issue date). Sets window.__htPullN, the classic stats
+     script's dynamic day bound. */
+  function extend(days, latest) {
+    var start = D.start || '2001-10-01';
+    var L = dayIdx(latest);
+    if (L < 0 || !days) return false;
+    function rec(k) { return days[addDays(start, k)] || null; }
+    function qOf(r) { return (r && r.q != null && r.q > 0) ? r.q : null; }
+    var k, r;
+    if (IS3D) {
+      var nf = (D.flow || []).slice();
+      for (k = 0; k < BAKED_N; k++) { var q0 = qOf(rec(k)); if (q0 != null) nf[k] = q0; }
+      if (L >= BAKED_N) {
+        nf.length = L + 1;
+        for (k = BAKED_N; k <= L; k++) { var q1 = qOf(rec(k)); nf[k] = (q1 != null) ? q1 : null; }
+        D.pred = (D.pred || []).map(function (mdl) {
+          return mdl.map(function (ld) {
+            var c = ld.slice(); c.length = L + 1;
+            for (var j = BAKED_N; j <= L; j++) if (c[j] === undefined) c[j] = null;
+            return c;
+          });
+        });
+        D.n = L + 1;
+      }
+      D.flow = nf;
+    } else {
+      var cols = [['flow', 'q'], ['tmax', 'tx'], ['tmin', 'tn'], ['precip', 'pr']];
+      var ext = {};
+      cols.forEach(function (pair) {
+        var a = (D[pair[0]] || []).slice();
+        for (k = 0; k < BAKED_N; k++) { r = rec(k); if (r && r[pair[1]] != null) a[k] = r[pair[1]]; }
+        if (L >= BAKED_N) {
+          a.length = L + 1;
+          for (k = BAKED_N; k <= L; k++) { r = rec(k); a[k] = (r && r[pair[1]] != null) ? r[pair[1]] : null; }
+        }
+        ext[pair[0]] = a;
+      });
+      var tm = (D.tmean || []).slice();
+      var rg = (D.rising || []).slice();
+      var top = (L >= BAKED_N) ? L : BAKED_N - 1;
+      if (L >= BAKED_N) { tm.length = L + 1; rg.length = L + 1; }
+      for (k = 0; k <= top; k++) {
+        r = rec(k);
+        if (r && r.tx != null && r.tn != null) tm[k] = (r.tx + r.tn) / 2;
+        else if (k >= BAKED_N && tm[k] === undefined) tm[k] = null;
+        if (k > 0 && (k >= BAKED_N || (r && r.q != null))) {
+          var qa = ext.flow[k], qb = ext.flow[k - 1];
+          rg[k] = (qa != null && qb != null) ? (qa > qb ? 1 : 0) : (k >= BAKED_N ? 0 : rg[k]);
+        } else if (k >= BAKED_N && rg[k] === undefined) rg[k] = 0;
+      }
+      cols.forEach(function (pair) { D[pair[0]] = ext[pair[0]]; });
+      D.tmean = tm; D.rising = rg;
+      if (L >= BAKED_N) {
+        D.pred = (D.pred || []).map(function (mdl) {
+          return mdl.map(function (ld) {
+            var c = ld.slice(); c.length = L + 1;
+            for (var j = BAKED_N; j <= L; j++) if (c[j] === undefined) c[j] = null;
+            return c;
+          });
+        });
+        D.n = L + 1;
+      }
+    }
+    if (L >= BAKED_N) { PF.extN = L + 1; window.__htPullN = L + 1; }
+    if (!PF.latest || latest > PF.latest) PF.latest = latest;
+    return true;
+  }
+  /* After a LIVE pull: land the calendar on the pull's issue date.
+     On 3D the scene already sits at the issue (panelLive3D); if the
+     manifest extension had already grown HT3D.n past the issue index
+     panelLive3D returned early by design, so write the pull's fans
+     (LA.fc, already computed) in and step to the issue here. On
+     classic the live board already renders the pull — only the
+     calendar moves (a dispatched change would exit LIVE mode). */
+  function onPulled(issue) {
+    setMax(issue);
+    var el = document.getElementById('ht-date');
+    if (el) el.value = issue;
+    if (!PF.latest || issue > PF.latest) PF.latest = issue;
+    PF.source = 'pull';
+    if (!IS3D) return;
+    var D3 = window.HT3D, S = window.__htS, LA = window.__htla;
+    var li = dayIdx(issue);
+    if (!D3 || !S || !LA || !LA.fc || li < BAKED_N || li >= D3.n) return;
+    var wrote = false;
+    (D3.models || []).forEach(function (mn, mi) {
+      var fc = LA.fc[mn]; if (!fc || !D3.pred[mi]) return;
+      for (var l = 0; l < 7; l++) {
+        if (fc[l] != null && D3.pred[mi][l] && D3.pred[mi][l][li] == null) {
+          D3.pred[mi][l][li] = fc[l]; wrote = true;
+        }
+      }
+    });
+    if (wrote && S.day !== li) {
+      S.day = li - 1;
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }));
+    }
+  }
+  setInterval(function () {
+    var LA = window.__htla;
+    if (LA && LA.on && LA.issue && LA.issue !== PF.pullHandled) {
+      PF.pullHandled = LA.issue;
+      try { onPulled(LA.issue); } catch (e) { /* calendar stays as-is */ }
+    }
+  }, 1500);
+  /* On load: the pull-snapshots manifest forwards the calendar to
+     wherever the newest saved data is, for every visitor. */
+  function loadManifest() {
+    fetchJ('../data/pulls/manifest.json?htpf=' + Date.now(), 12000).then(function (man) {
+      var ent = man && man.stations && man.stations[SITE];
+      if (!ent || !ent.latest_date) return;
+      setMax(ent.latest_date);
+      if (!ent.snapshot_key) return;
+      return fetchJ('../' + ent.snapshot_key + '?htpf=' + Date.now(), 20000).then(function (snap) {
+        if (snap && snap.days && extend(snap.days, ent.latest_date)) PF.source = 'manifest';
+      });
+    }).catch(function () { /* no snapshots published yet — page stays baked */ });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadManifest);
+  else loadManifest();
+})();
+"""
+
+
+def _apply_pullfwd(html, page_name):
+    """Append the ht-pullfwd v1 block to a page (plus, on classic
+    pages, the two clamp swaps that let the stats script's calendar
+    pass the baked end). Returns the new html, or None when a classic
+    page's clamp anchors do not match exactly once each — in their
+    old or their already-swapped form (the caller then leaves the
+    page untouched and warns). Idempotent: pages already carrying
+    PULLFWD_SIG are returned unchanged."""
+    if PULLFWD_SIG in html:
+        return html
+    if not page_name.endswith("-3d.html"):
+        counts = (html.count(PULLFWD_CLAMP_OLD), html.count(PULLFWD_WRAP_OLD),
+                  html.count(PULLFWD_CLAMP_NEW), html.count(PULLFWD_WRAP_NEW))
+        if counts == (1, 1, 0, 0):
+            html = (html.replace(PULLFWD_CLAMP_OLD, PULLFWD_CLAMP_NEW)
+                        .replace(PULLFWD_WRAP_OLD, PULLFWD_WRAP_NEW))
+        elif counts != (0, 0, 1, 1):
+            print(f"  !! {page_name}: pullfwd classic clamp anchors matched "
+                  f"{counts} (want (1, 1, 0, 0) or (0, 0, 1, 1)); left untouched")
+            return None
+    block = "\n<script>\n" + PULLFWD_JS + "\n</script>\n"
+    i = html.rfind("</body>")
+    if i < 0:
+        print(f"  !! {page_name}: no </body> for pullfwd block")
+        return None
+    return html[:i] + block + html[i:]
+
+
 def main():
     donor_path = STATIONS / "USGS-08057000-3d.html"
     donor = donor_path.read_text(encoding="utf-8")
@@ -1163,7 +1398,7 @@ def main():
     arma_fn = _extract_fn(donor, "function armaMean")
 
     pages = sorted(STATIONS.glob("*.html"))
-    done = skipped = upgraded = refreshed = rmse = 0
+    done = skipped = upgraded = refreshed = rmse = pullfwd = 0
     for page in pages:
         html = page.read_text(encoding="utf-8")
         if MARKER in html:
@@ -1191,6 +1426,16 @@ def main():
                     continue
                 html = new_html
                 rmse += 1
+                dirty = True
+            if PULLFWD_SIG not in html:
+                new_html = _apply_pullfwd(html, page.name)
+                if new_html is None:
+                    print(f"  !! {page.name}: v2 block present but pullfwd "
+                          f"anchors did not match; left untouched")
+                    skipped += 1
+                    continue
+                html = new_html
+                pullfwd += 1
                 dirty = True
             if dirty:
                 page.write_text(html, encoding="utf-8")
@@ -1229,10 +1474,16 @@ def main():
             print(f"  !! {page.name}: fresh v2 block built but RMSE "
                   f"anchors did not match exactly once; left unpatched")
             continue
+        new_html = _apply_pullfwd(new_html, page.name)
+        if new_html is None:
+            print(f"  !! {page.name}: fresh v2 block built but pullfwd "
+                  f"anchors did not match; left unpatched")
+            continue
         page.write_text(new_html, encoding="utf-8")
         done += 1
         rmse += 1
-    print(f"patch_liveall: patched {done} (upgraded {upgraded}), refreshed {refreshed}, rmse {rmse}, skipped {skipped} (already marked)")
+        pullfwd += 1
+    print(f"patch_liveall: patched {done} (upgraded {upgraded}), refreshed {refreshed}, rmse {rmse}, pullfwd {pullfwd}, skipped {skipped} (already marked)")
 
 
 if __name__ == "__main__":
