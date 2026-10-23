@@ -134,6 +134,20 @@ and on a slow timer. Only pages carrying id="retrainTop" (the 14 3D
 pages) get Part 5; its block is refreshed in place on every run
 (own marker), independent of Parts 1-4.
 
+Part 5 classic extension (ht-tuneanim v1 classic, appended
+2026-10-23): Saurabh's order (Oct 22, 11:44 PM) — the same badge on
+ALL station pages. The 14 classic pages have no model-button row and
+no transformed fixed canvas; they are a normal scrolling document,
+so the classic edition is an in-flow pill (extra class htune-inflow:
+position:relative, no transform, margin auto) inserted directly
+after the station header (</header>, count-checked x1), i.e. at the
+top of the page above the record-statistics cards. Same markup,
+same states, same status JSON and ~60 s poll; the script differs
+only in its marker comment ("ht-tuneanim v1 classic") and a no-op
+place() (nothing to park in-flow). Pages are routed by the
+retrainTop test: 3D pages get apply_tuneanim, the rest get
+apply_tuneanim_classic; each edition refuses the other's fragments.
+
 Idempotent: pages carrying the v2 MARKER with no old anchors left are
 skipped; pages carrying only the v1 append (first deploy) are upgraded
 in place (part 1 applied, marker bumped).
@@ -835,6 +849,86 @@ def apply_tuneanim(s):
     return out
 
 
+# ------------- part 5, classic edition: ht-tuneanim v1 classic ---------
+# Same badge on the 14 classic station pages (Saurabh, Oct 22 11:44 PM:
+# tuning animation on ALL station pages). The fragments are derived
+# from the 3D edition's by exact, count-asserted replacements so the
+# markup, states, poll and render logic can never drift apart; only
+# the marker comment, the in-flow placement class/CSS and place()
+# differ. The classic strip regexes require the "classic" marker, so
+# they can never match the 3D edition's fragments (or vice versa: the
+# 3D regexes anchor on the comment directly abutting the badge div and
+# on the un-suffixed script comment).
+TA_MARKER_C = "ht-tuneanim v1 classic"
+TA_BADGE_RE_C = _re.compile(
+    r'\n?<!-- ht-tuneanim v1 classic --><div id="tuneAnimBadge"'
+    r'(?:(?!</div>).)*</div><style>(?:(?!</style>).)*</style>', _re.S)
+TA_JS_RE_C = _re.compile(
+    r'<script>\n/\* ht-tuneanim v1 classic(?:(?!</?script).)*</script>\n?',
+    _re.S)
+
+_TA_PLACE_3D = """  function place() {
+    var y = 146;
+    var tw = document.getElementById('lardemo-topwrap');
+    if (tw) y = Math.max(y, Math.ceil(tw.getBoundingClientRect().bottom) + 8);
+    var fcb = document.getElementById('fcb');
+    if (fcb && fcb.getBoundingClientRect().height > 0 &&
+        window.getComputedStyle(fcb).display !== 'none') {
+      y = Math.max(y, Math.ceil(fcb.getBoundingClientRect().bottom) + 8);
+    }
+    badge.style.top = y + 'px';
+  }"""
+_TA_PLACE_CLASSIC = """  function place() {
+    /* Classic pages: the badge sits in the normal page flow directly
+     * under the station header, so there is no fixed position to
+     * maintain (the 3D edition parks itself under the model-button
+     * row). No-op so the calls below stay identical to the 3D one. */
+  }"""
+
+
+def _ta_derive(src, old, new):
+    assert src.count(old) == 1, f"tuneanim derive anchor x{src.count(old)}"
+    return src.replace(old, new, 1)
+
+
+TA_BADGE_HTML_C = _ta_derive(TA_BADGE_HTML, "<!-- ht-tuneanim v1 -->",
+                             "<!-- ht-tuneanim v1 classic -->")
+TA_BADGE_HTML_C = _ta_derive(TA_BADGE_HTML_C, 'class="htune htune-idle"',
+                             'class="htune htune-idle htune-inflow"')
+TA_BADGE_HTML_C = _ta_derive(
+    TA_BADGE_HTML_C, "</style>",
+    ".htune-inflow{position:relative;left:auto;top:auto;transform:none;"
+    "margin:12px auto 2px;width:fit-content}</style>")
+TA_JS_BODY_C = _ta_derive(TA_JS_BODY, "/* ht-tuneanim v1 - ",
+                          "/* ht-tuneanim v1 classic - ")
+TA_JS_BODY_C = _ta_derive(TA_JS_BODY_C, _TA_PLACE_3D, _TA_PLACE_CLASSIC)
+
+
+def apply_tuneanim_classic(s):
+    """Part 5 classic edition: insert/refresh the badge on a classic
+    station page, in-flow directly after the station header
+    (</header> exactly once, count-checked). Only called for pages
+    without the retrain button (3D pages are apply_tuneanim's).
+    Returns the new text, or None on anchor trouble."""
+    if 'id="retrainTop"' in s:
+        return s
+    out = TA_BADGE_RE_C.sub("", s)
+    out = TA_JS_RE_C.sub("", out)
+    if 'id="tuneAnimBadge"' in out or TA_MARKER in out:
+        return None  # residue of either edition: fail loudly
+    if out.count("</header>") != 1:
+        return None
+    out = out.replace("</header>", "</header>\n" + TA_BADGE_HTML_C, 1)
+    if out.count("</body>") != 1:
+        return None
+    out = out.replace("</body>", TA_JS_BODY_C.strip() + "\n</body>", 1)
+    if out.count('id="tuneAnimBadge"') != 1:
+        return None
+    if out.count(TA_MARKER_C) != 2:  # HTML comment + script comment
+        return None
+    return out
+
+
 def patch_page(s):
     """Returns (new_text, n_part1_applied) or None on anchor trouble."""
     has_v2 = MARKER in s
@@ -871,6 +965,10 @@ def patch_page(s):
     out = apply_tuneanim(out)
     if out is None:
         return None
+    if 'id="retrainTop"' not in out:
+        out = apply_tuneanim_classic(out)
+        if out is None:
+            return None
     return out, n1
 
 
