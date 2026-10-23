@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39863961448-cda6d23333fc4fc0b4722f745650fde38be9881e";
+  var BID = "39880573612-3ca66df38a980eee4603b9dfa9af48f4e4b7f890";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -2201,7 +2202,7 @@ window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater,
 window.HT3_READY = true;
 </script>
 <div id="ht-datewrap" style="position:fixed;left:14px;top:88px;z-index:30;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(12,18,28,.88);color:#E6EDF5;font:600 14px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4);"><label for="ht-date" style="cursor:pointer;">Date</label><input id="ht-date" type="date" min="2001-10-01" max="2026-09-30" style="font:600 14px Arial;padding:5px 8px;border-radius:6px;border:1px solid #3A4A5E;background:#0E1A24;color:#E6EDF5;color-scheme:dark;"></div>
-<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button><button id="loadModelTop" title="Fetch the latest published model weights from hydrotwin-models and re-run the forecast with them" style="padding:6px 14px;border-radius:10px;border:1px solid #FFD24D;background:rgba(12,18,28,.88);color:#FFD24D;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Load new model</button><span id="loadModelStatus" style="align-self:center;font:600 12.5px Arial;color:#BFD0E0;max-width:360px;"></span></div>
+<div id="lardemo-topwrap" style="position:fixed;left:50%;top:62px;transform:translateX(-50%);z-index:30;display:flex;gap:8px;"><button id="lardemoTop" title="Replay 150 days at speed, then learn live from 15-min readings" style="padding:6px 14px;border-radius:10px;border:1px solid #7AE07A;background:rgba(12,18,28,.88);color:#7AE07A;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">▶ LiveAR demo</button><button id="retrainTop" title="Open GitHub Actions to manually trigger model retraining" style="padding:6px 14px;border-radius:10px;border:1px solid #6AA8FF;background:rgba(12,18,28,.88);color:#6AA8FF;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">⟳ retrain on GitHub</button><button id="loadModelTop" title="Fetch the latest published model weights from hydrotwin-models and re-run the forecast with them" style="padding:6px 14px;border-radius:10px;border:1px solid #FFD24D;background:rgba(12,18,28,.88);color:#FFD24D;font:600 14px Arial;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.4);">Load new model</button><span id="loadModelStatus" style="align-self:center;font:600 12.5px Arial;color:#BFD0E0;max-width:360px;"></span></div><!-- ht-tuneanim v1 --><div id="tuneAnimBadge" class="htune htune-idle" role="status" title="Optuna + Ray Tune hyperparameter tuning (dev) — live status from the hydrotwin-models tuning registry"><span class="htune-gear" aria-hidden="true">⚙</span><span class="htune-txt" id="tuneAnimTxt">Optuna × Ray Tune · tuning status…</span><span class="htune-dots" aria-hidden="true"><i></i><i></i><i></i></span></div><style>.htune{position:fixed;left:50%;transform:translateX(-50%);top:146px;z-index:31;display:flex;align-items:center;gap:8px;max-width:min(700px,94vw);padding:7px 14px;border-radius:999px;background:rgba(12,18,28,.88);border:1px solid #3A4A5E;color:#BFD0E0;font:600 13px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4)}.htune-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.htune-gear{display:inline-block;font-size:15px;line-height:1;color:#8FC1F2}.htune-dots{display:none;gap:3px}.htune-dots i{width:5px;height:5px;border-radius:50%;background:#FFB84D;display:inline-block;animation:htuneBlink 1.2s infinite}.htune-dots i:nth-child(2){animation-delay:.2s}.htune-dots i:nth-child(3){animation-delay:.4s}.htune-run{border-color:#FFB84D;color:#FFE1A8;animation:htunePulse 1.6s ease-in-out infinite}.htune-run .htune-gear{color:#FFB84D;animation:htuneSpin 2.2s linear infinite}.htune-run .htune-dots{display:inline-flex}.htune-pass{color:#7AE07A}.htune-fail{color:#FF9A8A}@keyframes htuneSpin{to{transform:rotate(360deg)}}@keyframes htunePulse{0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.4)}50%{box-shadow:0 0 14px 2px rgba(255,184,77,.45),0 2px 10px rgba(0,0,0,.4)}}@keyframes htuneBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}</style>
 
 
 
@@ -5614,6 +5615,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -5903,6 +5905,107 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
     busy = false;
   }
   if (btn) btn.addEventListener('click', loadNewModel);
+})();
+</script>
+<script>
+/* ht-tuneanim v1 - "Optuna + Ray Tune" tuning badge: polls the tuning
+ * status JSON published from the hydrotwin-models tuning registry
+ * (dev) to the models Pages source and renders an animated RUNNING
+ * state while a tuning run is live, or this station's latest quality
+ * gate verdicts when idle. See build25/patch_livefix.py (Part 5). */
+(function () {
+  'use strict';
+  if (window.__httuneOn) return;
+  window.__httuneOn = true;
+  var STATUS_URL = 'https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json';
+  var D = window.HT_DATA || window.HT3D || {};
+  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
+  var badge = document.getElementById('tuneAnimBadge');
+  var txt = document.getElementById('tuneAnimTxt');
+  if (!badge || !txt) return;
+
+  function place() {
+    var y = 146;
+    var tw = document.getElementById('lardemo-topwrap');
+    if (tw) y = Math.max(y, Math.ceil(tw.getBoundingClientRect().bottom) + 8);
+    var fcb = document.getElementById('fcb');
+    if (fcb && fcb.getBoundingClientRect().height > 0 &&
+        window.getComputedStyle(fcb).display !== 'none') {
+      y = Math.max(y, Math.ceil(fcb.getBoundingClientRect().bottom) + 8);
+    }
+    badge.style.top = y + 'px';
+  }
+  function fmtPct(x) {
+    var n = Number(x);
+    if (!isFinite(n)) return '';
+    return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
+  }
+  function safeName(t) { return /^[A-Za-z0-9][A-Za-z0-9 _-]*$/.test(t) ? t : ''; }
+
+  function render(data) {
+    if (data && data.running && data.current) {
+      var c = data.current;
+      var fams = (c.families || []).map(safeName).filter(Boolean).join(' + ');
+      badge.classList.add('htune-run');
+      badge.classList.remove('htune-idle');
+      txt.textContent = 'Optuna × Ray Tune — TUNING ' + (c.station || '') +
+        (fams ? ' · ' + fams : '') + ' now';
+      badge.title = 'Hyperparameter tuning is RUNNING (dev): Optuna ' +
+        '(TPE search) driven by Ray Tune (parallel trials + ASHA) on ' +
+        'station ' + (c.station || '') + (fams ? ' — ' + fams : '') +
+        '. A candidate must pass the quality gate to replace dev weights.';
+      return;
+    }
+    badge.classList.remove('htune-run');
+    badge.classList.add('htune-idle');
+    var st = (data && data.stations && SITE) ? data.stations[SITE] : null;
+    var parts = [], tips = [];
+    if (st) {
+      Object.keys(st).forEach(function (fam) {
+        var name = safeName(fam);
+        var r = st[fam];
+        if (!name || !r || !r.verdict) return;
+        if (r.verdict === 'PASS') {
+          parts.push(name + ' tuned · <span class="htune-pass">gate PASS ' +
+            fmtPct(r.margin_pct) + '</span>');
+        } else {
+          parts.push(name + ' · <span class="htune-fail">gate FAIL — ' +
+            'incumbent kept</span>');
+        }
+        tips.push(name + ': candidate RMSE ' + r.candidate_rmse +
+          ' vs incumbent ' + r.incumbent_rmse + ' (WY2026 holdout), ' +
+          r.trials + ' trials, gate ' + r.verdict + ' ' + fmtPct(r.margin_pct));
+      });
+    }
+    if (parts.length) {
+      txt.innerHTML = 'Optuna × Ray Tune · ' + parts.join(' · ');
+      badge.title = 'Latest tuning for this station (dev, Optuna + ' +
+        'Ray Tune): ' + tips.join('; ') + '.';
+      return;
+    }
+    txt.textContent = 'Optuna × Ray Tune · hyperparameter tuning (dev)' +
+      (data ? ' — no runs yet for this station' : '');
+    badge.title = 'Optuna + Ray Tune hyperparameter tuning runs in the ' +
+      'hydrotwin-models dev environment; a candidate must beat the ' +
+      'incumbent on the WY2026 holdout (quality gate) before it can ' +
+      'replace dev weights.';
+  }
+
+  var got = false;
+  function poll() {
+    fetch(STATUS_URL + '?v=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+      })
+      .then(function (d) { got = true; render(d); },
+            function () { if (!got) render(null); });
+  }
+  place();
+  window.addEventListener('resize', place);
+  setInterval(place, 5000);
+  poll();
+  setInterval(poll, 60000);
 })();
 </script>
 </body></html>
