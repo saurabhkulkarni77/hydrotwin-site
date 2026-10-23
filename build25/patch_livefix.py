@@ -105,6 +105,35 @@ is a no-op; a page whose anchors are only partially present is still
 stripped, and any residual UI trace fails the page loudly (skip +
 warning) instead of shipping a half-removed feature.
 
+Part 5 (ht-tuneanim v1, appended 2026-10-22): an animated "Optuna +
+Ray Tune" tuning badge on the 3D pages (Saurabh's order: "show some
+animation on digital twin regarding this, ppl should notice it on
+front end both optuna and raytune — when it's running"). A pill is
+inserted immediately after the model-button row (#lardemo-topwrap,
+right after Part 3's Load-new-model block) — as a body-level sibling,
+NOT inside the topwrap: the topwrap is transformed, and a
+position:fixed descendant of a transformed element would be placed
+relative to it instead of the viewport. The badge's script polls
+https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json
+(the models Pages source — the gh-pages branch, same origin as the
+weights) cache-busted about every 60 s. That JSON is built from the
+models dev tuning registry by tuning/write_status.py: the tuning-dev
+workflow publishes it with running=true at the start of a run and
+with the fresh registry results at the end. States:
+  * RUNNING: amber glowing pill, spinning gear, blinking dots, text
+    naming both tools and what is being tuned (station + families);
+  * IDLE: quiet pill naming both tools and this station's latest
+    gate verdicts (e.g. "LSTM tuned · gate PASS +1.21% · Transformer
+    · gate FAIL — incumbent kept"), or a "no runs yet" note;
+  * status unreachable: neutral idle pill naming both tools (the
+    weekly retrain publish replaces the Pages tree and drops the
+    JSON until the next tuning run republishes it).
+The badge positions itself just below the button row (and below the
+#fcb forecast banner when that is visible), re-checking on resize
+and on a slow timer. Only pages carrying id="retrainTop" (the 14 3D
+pages) get Part 5; its block is refreshed in place on every run
+(own marker), independent of Parts 1-4.
+
 Idempotent: pages carrying the v2 MARKER with no old anchors left are
 skipped; pages carrying only the v1 append (first deploy) are upgraded
 in place (part 1 applied, marker bumped).
@@ -625,6 +654,187 @@ def apply_notableview(s):
     return out
 
 
+# ---------------- part 5: ht-tuneanim v1 (Optuna + Ray Tune badge) ------
+TA_MARKER = "ht-tuneanim v1"
+TA_SPAN_RE = _re.compile(
+    r'<span id="loadModelStatus"(?:(?!</span>).)*</span>', _re.S)
+TA_BADGE_RE = _re.compile(
+    r'<!-- ht-tuneanim v1 --><div id="tuneAnimBadge"(?:(?!</div>).)*</div>'
+    r'<style>(?:(?!</style>).)*</style>', _re.S)
+TA_JS_RE = _re.compile(
+    r'<script>\n/\* ht-tuneanim v1(?:(?!</?script).)*</script>\n?', _re.S)
+
+TA_BADGE_HTML = (
+    '<!-- ht-tuneanim v1 -->'
+    '<div id="tuneAnimBadge" class="htune htune-idle" role="status" '
+    'title="Optuna + Ray Tune hyperparameter tuning (dev) — live status '
+    'from the hydrotwin-models tuning registry">'
+    '<span class="htune-gear" aria-hidden="true">⚙</span>'
+    '<span class="htune-txt" id="tuneAnimTxt">Optuna × Ray Tune · '
+    'tuning status…</span>'
+    '<span class="htune-dots" aria-hidden="true"><i></i><i></i><i></i></span>'
+    '</div>'
+    '<style>'
+    '.htune{position:fixed;left:50%;transform:translateX(-50%);top:146px;'
+    'z-index:31;display:flex;align-items:center;gap:8px;'
+    'max-width:min(700px,94vw);padding:7px 14px;border-radius:999px;'
+    'background:rgba(12,18,28,.88);border:1px solid #3A4A5E;'
+    'color:#BFD0E0;font:600 13px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4)}'
+    '.htune-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+    '.htune-gear{display:inline-block;font-size:15px;line-height:1;'
+    'color:#8FC1F2}'
+    '.htune-dots{display:none;gap:3px}'
+    '.htune-dots i{width:5px;height:5px;border-radius:50%;'
+    'background:#FFB84D;display:inline-block;animation:htuneBlink 1.2s infinite}'
+    '.htune-dots i:nth-child(2){animation-delay:.2s}'
+    '.htune-dots i:nth-child(3){animation-delay:.4s}'
+    '.htune-run{border-color:#FFB84D;color:#FFE1A8;'
+    'animation:htunePulse 1.6s ease-in-out infinite}'
+    '.htune-run .htune-gear{color:#FFB84D;'
+    'animation:htuneSpin 2.2s linear infinite}'
+    '.htune-run .htune-dots{display:inline-flex}'
+    '.htune-pass{color:#7AE07A}'
+    '.htune-fail{color:#FF9A8A}'
+    '@keyframes htuneSpin{to{transform:rotate(360deg)}}'
+    '@keyframes htunePulse{0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.4)}'
+    '50%{box-shadow:0 0 14px 2px rgba(255,184,77,.45),0 2px 10px rgba(0,0,0,.4)}}'
+    '@keyframes htuneBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}'
+    '</style>')
+
+TA_JS_BODY = r"""
+<script>
+/* ht-tuneanim v1 - "Optuna + Ray Tune" tuning badge: polls the tuning
+ * status JSON published from the hydrotwin-models tuning registry
+ * (dev) to the models Pages source and renders an animated RUNNING
+ * state while a tuning run is live, or this station's latest quality
+ * gate verdicts when idle. See build25/patch_livefix.py (Part 5). */
+(function () {
+  'use strict';
+  if (window.__httuneOn) return;
+  window.__httuneOn = true;
+  var STATUS_URL = 'https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json';
+  var D = window.HT_DATA || window.HT3D || {};
+  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
+  var badge = document.getElementById('tuneAnimBadge');
+  var txt = document.getElementById('tuneAnimTxt');
+  if (!badge || !txt) return;
+
+  function place() {
+    var y = 146;
+    var tw = document.getElementById('lardemo-topwrap');
+    if (tw) y = Math.max(y, Math.ceil(tw.getBoundingClientRect().bottom) + 8);
+    var fcb = document.getElementById('fcb');
+    if (fcb && fcb.getBoundingClientRect().height > 0 &&
+        window.getComputedStyle(fcb).display !== 'none') {
+      y = Math.max(y, Math.ceil(fcb.getBoundingClientRect().bottom) + 8);
+    }
+    badge.style.top = y + 'px';
+  }
+  function fmtPct(x) {
+    var n = Number(x);
+    if (!isFinite(n)) return '';
+    return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
+  }
+  function safeName(t) { return /^[A-Za-z0-9][A-Za-z0-9 _-]*$/.test(t) ? t : ''; }
+
+  function render(data) {
+    if (data && data.running && data.current) {
+      var c = data.current;
+      var fams = (c.families || []).map(safeName).filter(Boolean).join(' + ');
+      badge.classList.add('htune-run');
+      badge.classList.remove('htune-idle');
+      txt.textContent = 'Optuna × Ray Tune — TUNING ' + (c.station || '') +
+        (fams ? ' · ' + fams : '') + ' now';
+      badge.title = 'Hyperparameter tuning is RUNNING (dev): Optuna ' +
+        '(TPE search) driven by Ray Tune (parallel trials + ASHA) on ' +
+        'station ' + (c.station || '') + (fams ? ' — ' + fams : '') +
+        '. A candidate must pass the quality gate to replace dev weights.';
+      return;
+    }
+    badge.classList.remove('htune-run');
+    badge.classList.add('htune-idle');
+    var st = (data && data.stations && SITE) ? data.stations[SITE] : null;
+    var parts = [], tips = [];
+    if (st) {
+      Object.keys(st).forEach(function (fam) {
+        var name = safeName(fam);
+        var r = st[fam];
+        if (!name || !r || !r.verdict) return;
+        if (r.verdict === 'PASS') {
+          parts.push(name + ' tuned · <span class="htune-pass">gate PASS ' +
+            fmtPct(r.margin_pct) + '</span>');
+        } else {
+          parts.push(name + ' · <span class="htune-fail">gate FAIL — ' +
+            'incumbent kept</span>');
+        }
+        tips.push(name + ': candidate RMSE ' + r.candidate_rmse +
+          ' vs incumbent ' + r.incumbent_rmse + ' (WY2026 holdout), ' +
+          r.trials + ' trials, gate ' + r.verdict + ' ' + fmtPct(r.margin_pct));
+      });
+    }
+    if (parts.length) {
+      txt.innerHTML = 'Optuna × Ray Tune · ' + parts.join(' · ');
+      badge.title = 'Latest tuning for this station (dev, Optuna + ' +
+        'Ray Tune): ' + tips.join('; ') + '.';
+      return;
+    }
+    txt.textContent = 'Optuna × Ray Tune · hyperparameter tuning (dev)' +
+      (data ? ' — no runs yet for this station' : '');
+    badge.title = 'Optuna + Ray Tune hyperparameter tuning runs in the ' +
+      'hydrotwin-models dev environment; a candidate must beat the ' +
+      'incumbent on the WY2026 holdout (quality gate) before it can ' +
+      'replace dev weights.';
+  }
+
+  var got = false;
+  function poll() {
+    fetch(STATUS_URL + '?v=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+      })
+      .then(function (d) { got = true; render(d); },
+            function () { if (!got) render(null); });
+  }
+  place();
+  window.addEventListener('resize', place);
+  setInterval(place, 5000);
+  poll();
+  setInterval(poll, 60000);
+})();
+</script>
+"""
+
+
+def apply_tuneanim(s):
+    """Part 5: insert/refresh the Optuna + Ray Tune badge + script.
+
+    Only pages carrying the retrain button (the 14 3D pages, where
+    Part 3 already placed the Load-new-model block) are touched; the
+    badge goes immediately after the #lardemo-topwrap close, which
+    must directly follow the loadModelStatus span. Returns the new
+    text, or None on anchor trouble."""
+    if 'id="retrainTop"' not in s:
+        return s
+    out = TA_BADGE_RE.sub("", s)
+    out = TA_JS_RE.sub("", out)
+    m = TA_SPAN_RE.search(out)
+    if not m:
+        return None
+    if out[m.end():m.end() + 6] != "</div>":
+        return None
+    ins = m.end() + 6
+    out = out[:ins] + TA_BADGE_HTML + out[ins:]
+    if out.count("</body>") != 1:
+        return None
+    out = out.replace("</body>", TA_JS_BODY.strip() + "\n</body>", 1)
+    if out.count('id="tuneAnimBadge"') != 1:
+        return None
+    if out.count(TA_MARKER) != 2:
+        return None
+    return out
+
+
 def patch_page(s):
     """Returns (new_text, n_part1_applied) or None on anchor trouble."""
     has_v2 = MARKER in s
@@ -656,6 +866,9 @@ def patch_page(s):
     if out is None:
         return None
     out = apply_notableview(out)
+    if out is None:
+        return None
+    out = apply_tuneanim(out)
     if out is None:
         return None
     return out, n1
