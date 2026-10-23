@@ -23,6 +23,7 @@ jobs:
           aws s3 sync . s3://hydrotwin-site-2026/ \
             --exclude ".git/*" \
             --exclude ".github/*" \
+            --exclude "data/pulls/*" \
             --delete
 
       - name: Invalidate CloudFront cache

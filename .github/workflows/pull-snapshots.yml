@@ -1,20 +1,26 @@
-name: Pull fresh data snapshots to DEV S3
+name: Pull fresh data snapshots to S3 (dev + prod)
 
 # ht-pullfwd v1 companion: pull the same fresh series the station
 # pages' LIVE pull fetches (USGS daily values + Open-Meteo weather,
-# scripts/pull_snapshots.py) for all 14 stations and publish them to
-# the DEV bucket as data/pulls/<station>/<pull-date>.json plus
-# data/pulls/manifest.json. The station pages read the manifest on
-# load and forward their calendar to the newest pulled date
-# (build25/patch_liveall.py, ht-pullfwd v1). DEV ONLY — this workflow
-# never touches the production bucket or the main branch.
+# scripts/pull_snapshots.py) for all 14 stations and publish them as
+# data/pulls/<station>/<pull-date>.json plus data/pulls/manifest.json.
+# The station pages read the manifest on load and forward their
+# calendar to the newest pulled date (build25/patch_liveall.py,
+# ht-pullfwd v1).
+#
+# Promotion #3 (Oct 23, 2026, Saurabh's order): ht-pullfwd promoted to
+# production, so this workflow now publishes to BOTH buckets — the
+# DEV bucket (hydrotwin-site-dev-2026) and the PROD bucket
+# (hydrotwin-site-2026). The prod pages read data/pulls/ from the
+# prod origin; uploading only to dev would leave the feature a
+# silent no-op on prod. Same AWS secrets as the deploy workflows.
 #
 # Trigger note (GitHub rule): schedule and workflow_dispatch only
 # activate when the workflow file exists on the repo's DEFAULT branch.
-# This file lives on dev (dev-only scope), so until it is also copied
-# to main the daily cron below and the Run-workflow button are inert;
-# the push trigger on dev is what runs it today (any dev push touching
-# the workflow, the script, or data/pulls/.trigger).
+# With this file on main (promotion #3), the daily cron below and the
+# Run-workflow button are live; the push trigger on dev also runs it
+# (any dev push touching the workflow, the script, or
+# data/pulls/.trigger).
 
 on:
   workflow_dispatch:
@@ -56,18 +62,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Upload snapshots + manifest to the DEV bucket
+      - name: Upload snapshots + manifest to the DEV and PROD buckets
         run: |
           DATE=$(date -u +%F)
-          for f in pull_out/stations/*.json; do
-            sid=$(basename "$f" .json)
-            aws s3 cp "$f" "s3://hydrotwin-site-dev-2026/data/pulls/$sid/$DATE.json" \
+          for BUCKET in hydrotwin-site-dev-2026 hydrotwin-site-2026; do
+            for f in pull_out/stations/*.json; do
+              sid=$(basename "$f" .json)
+              aws s3 cp "$f" "s3://$BUCKET/data/pulls/$sid/$DATE.json" \
+                --content-type "application/json" --cache-control "no-cache"
+            done
+            aws s3 cp pull_out/manifest.json \
+              "s3://$BUCKET/data/pulls/manifest.json" \
               --content-type "application/json" --cache-control "no-cache"
+            echo "Uploaded snapshots for $DATE and data/pulls/manifest.json to $BUCKET"
           done
-          aws s3 cp pull_out/manifest.json \
-            "s3://hydrotwin-site-dev-2026/data/pulls/manifest.json" \
-            --content-type "application/json" --cache-control "no-cache"
-          echo "Uploaded snapshots for $DATE and data/pulls/manifest.json"
 
       - name: Show manifest + one snapshot (run evidence)
         run: |
@@ -77,3 +85,5 @@ jobs:
           head -c 1200 pull_out/stations/08057000.json; echo
           echo "----- DEV bucket data/pulls/ listing -----"
           aws s3 ls s3://hydrotwin-site-dev-2026/data/pulls/ --recursive | head -40
+          echo "----- PROD bucket data/pulls/ listing -----"
+          aws s3 ls s3://hydrotwin-site-2026/data/pulls/ --recursive | head -40
