@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "39883508621-d4c0a6bdbc318fb53a6f4b3e9520f96bf0362d88";
+  var BID = "39902935733-0219b726eb657cb2a825d5997f3c0fad7b2600d2";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -173,6 +174,7 @@ html.htlp-wait-core #featcpanel,html.htlp-wait-core #ht-drift-panel{display:none
   </div>
   <nav class="hts-nav"><a class="hts-navbtn" href="../index.html">◀ USA map</a><span id="hts-nav3d"></span></nav>
  </header>
+<!-- ht-tuneanim v1 classic --><div id="tuneAnimBadge" class="htune htune-idle htune-inflow" role="status" title="Optuna + Ray Tune hyperparameter tuning (dev) — live status from the hydrotwin-models tuning registry"><span class="htune-gear" aria-hidden="true">⚙</span><span class="htune-txt" id="tuneAnimTxt">Optuna × Ray Tune · tuning status…</span><span class="htune-dots" aria-hidden="true"><i></i><i></i><i></i></span></div><style>.htune{position:fixed;left:50%;transform:translateX(-50%);top:146px;z-index:31;display:flex;align-items:center;gap:8px;max-width:min(700px,94vw);padding:7px 14px;border-radius:999px;background:rgba(12,18,28,.88);border:1px solid #3A4A5E;color:#BFD0E0;font:600 13px Arial;box-shadow:0 2px 10px rgba(0,0,0,.4)}.htune-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.htune-gear{display:inline-block;font-size:15px;line-height:1;color:#8FC1F2}.htune-dots{display:none;gap:3px}.htune-dots i{width:5px;height:5px;border-radius:50%;background:#FFB84D;display:inline-block;animation:htuneBlink 1.2s infinite}.htune-dots i:nth-child(2){animation-delay:.2s}.htune-dots i:nth-child(3){animation-delay:.4s}.htune-run{border-color:#FFB84D;color:#FFE1A8;animation:htunePulse 1.6s ease-in-out infinite}.htune-run .htune-gear{color:#FFB84D;animation:htuneSpin 2.2s linear infinite}.htune-run .htune-dots{display:inline-flex}.htune-pass{color:#7AE07A}.htune-fail{color:#FF9A8A}@keyframes htuneSpin{to{transform:rotate(360deg)}}@keyframes htunePulse{0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.4)}50%{box-shadow:0 0 14px 2px rgba(255,184,77,.45),0 2px 10px rgba(0,0,0,.4)}}@keyframes htuneBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}.htune-inflow{position:relative;left:auto;top:auto;transform:none;margin:12px auto 2px;width:fit-content}</style>
  <section class="hts-cards" aria-label="Record statistics"><div class="hts-card"><div class="hts-cl">Mean flow</div><div class="hts-cv">13,384 cfs</div></div><div class="hts-card"><div class="hts-cl">Median flow</div><div class="hts-cv">9,890 cfs</div></div><div class="hts-card"><div class="hts-cl">10th percentile</div><div class="hts-cv">3,680 cfs</div></div><div class="hts-card"><div class="hts-cl">90th percentile</div><div class="hts-cv">26,700 cfs</div></div><div class="hts-card"><div class="hts-cl">Maximum flow</div><div class="hts-cv">230,000 cfs</div><div class="hts-cd">04 Apr 2005</div></div><div class="hts-card"><div class="hts-cl">Minimum flow</div><div class="hts-cv">2,370 cfs</div><div class="hts-cd">18 Oct 2016</div></div><div class="hts-card"><div class="hts-cl">Latest observed</div><div class="hts-cv">6,060 cfs</div><div class="hts-cd">30 Sep 2026</div></div></section>
  <section class="hts-sec htlp-off" id="hts-sec-hydro">
   <h2>Hydrograph</h2>
@@ -1449,7 +1451,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39883508621-d4c0a6bdbc318fb53a6f4b3e9520f96bf0362d88" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=39902935733-0219b726eb657cb2a825d5997f3c0fad7b2600d2" } }
 </script>
 <script type="text/plain" data-htlp-boot="chart3d" data-htlp-module="1">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1458,7 +1460,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=39883508621-d4c0a6bdbc318fb53a6f4b3e9520f96bf0362d88')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=39902935733-0219b726eb657cb2a825d5997f3c0fad7b2600d2')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -4513,6 +4515,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -4551,4 +4554,100 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   </div>
 </div>
 <script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+<script>
+/* ht-tuneanim v1 classic - "Optuna + Ray Tune" tuning badge: polls the tuning
+ * status JSON published from the hydrotwin-models tuning registry
+ * (dev) to the models Pages source and renders an animated RUNNING
+ * state while a tuning run is live, or this station's latest quality
+ * gate verdicts when idle. See build25/patch_livefix.py (Part 5). */
+(function () {
+  'use strict';
+  if (window.__httuneOn) return;
+  window.__httuneOn = true;
+  var STATUS_URL = 'https://saurabhkulkarni77.github.io/hydrotwin-models/tuning_status.json';
+  var D = window.HT_DATA || window.HT3D || {};
+  var SITE = ((D.station && D.station.stationId) || '').replace('USGS-', '') || D.site || '';
+  var badge = document.getElementById('tuneAnimBadge');
+  var txt = document.getElementById('tuneAnimTxt');
+  if (!badge || !txt) return;
+
+  function place() {
+    /* Classic pages: the badge sits in the normal page flow directly
+     * under the station header, so there is no fixed position to
+     * maintain (the 3D edition parks itself under the model-button
+     * row). No-op so the calls below stay identical to the 3D one. */
+  }
+  function fmtPct(x) {
+    var n = Number(x);
+    if (!isFinite(n)) return '';
+    return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
+  }
+  function safeName(t) { return /^[A-Za-z0-9][A-Za-z0-9 _-]*$/.test(t) ? t : ''; }
+
+  function render(data) {
+    if (data && data.running && data.current) {
+      var c = data.current;
+      var fams = (c.families || []).map(safeName).filter(Boolean).join(' + ');
+      badge.classList.add('htune-run');
+      badge.classList.remove('htune-idle');
+      txt.textContent = 'Optuna × Ray Tune — TUNING ' + (c.station || '') +
+        (fams ? ' · ' + fams : '') + ' now';
+      badge.title = 'Hyperparameter tuning is RUNNING (dev): Optuna ' +
+        '(TPE search) driven by Ray Tune (parallel trials + ASHA) on ' +
+        'station ' + (c.station || '') + (fams ? ' — ' + fams : '') +
+        '. A candidate must pass the quality gate to replace dev weights.';
+      return;
+    }
+    badge.classList.remove('htune-run');
+    badge.classList.add('htune-idle');
+    var st = (data && data.stations && SITE) ? data.stations[SITE] : null;
+    var parts = [], tips = [];
+    if (st) {
+      Object.keys(st).forEach(function (fam) {
+        var name = safeName(fam);
+        var r = st[fam];
+        if (!name || !r || !r.verdict) return;
+        if (r.verdict === 'PASS') {
+          parts.push(name + ' tuned · <span class="htune-pass">gate PASS ' +
+            fmtPct(r.margin_pct) + '</span>');
+        } else {
+          parts.push(name + ' · <span class="htune-fail">gate FAIL — ' +
+            'incumbent kept</span>');
+        }
+        tips.push(name + ': candidate RMSE ' + r.candidate_rmse +
+          ' vs incumbent ' + r.incumbent_rmse + ' (WY2026 holdout), ' +
+          r.trials + ' trials, gate ' + r.verdict + ' ' + fmtPct(r.margin_pct));
+      });
+    }
+    if (parts.length) {
+      txt.innerHTML = 'Optuna × Ray Tune · ' + parts.join(' · ');
+      badge.title = 'Latest tuning for this station (dev, Optuna + ' +
+        'Ray Tune): ' + tips.join('; ') + '.';
+      return;
+    }
+    txt.textContent = 'Optuna × Ray Tune · hyperparameter tuning (dev)' +
+      (data ? ' — no runs yet for this station' : '');
+    badge.title = 'Optuna + Ray Tune hyperparameter tuning runs in the ' +
+      'hydrotwin-models dev environment; a candidate must beat the ' +
+      'incumbent on the WY2026 holdout (quality gate) before it can ' +
+      'replace dev weights.';
+  }
+
+  var got = false;
+  function poll() {
+    fetch(STATUS_URL + '?v=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+      })
+      .then(function (d) { got = true; render(d); },
+            function () { if (!got) render(null); });
+  }
+  place();
+  window.addEventListener('resize', place);
+  setInterval(place, 5000);
+  poll();
+  setInterval(poll, 60000);
+})();
+</script>
 </body></html>
