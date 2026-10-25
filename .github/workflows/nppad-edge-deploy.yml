@@ -1,0 +1,124 @@
+name: nppad-edge-deploy
+
+# Deploys the NPPAD-Edge Lambda demo (nppad-edge/lambda/) to AWS
+# free tier. Lives on the nppad-edge-deploy branch only; the push
+# trigger below is scoped to this branch + these paths, so it never
+# fires for the site's normal dev/main work.
+on:
+  push:
+    branches: [nppad-edge-deploy]
+    paths:
+      - 'nppad-edge/**'
+      - '.github/workflows/nppad-edge-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_REGION: us-east-1
+      FN_NAME: nppad-edge
+      ROLE_NAME: nppad-edge-lambda-role
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Who am I (STS)
+        run: aws sts get-caller-identity
+
+      - name: Build deployment package
+        run: |
+          set -euo pipefail
+          mkdir -p pkg
+          cp -r nppad-edge/lambda/. pkg/
+          find pkg -name '__pycache__' -type d -prune -exec rm -rf {} +
+          pip install --target pkg \
+            --platform manylinux2014_x86_64 \
+            --python-version 312 --implementation cp \
+            --only-binary=:all: \
+            numpy==1.26.4 pandas==2.1.4
+          cd pkg && zip -qr ../function.zip . && cd ..
+          ls -la function.zip
+          python3 - <<'EOF'
+          import zipfile
+          z = zipfile.ZipFile('function.zip')
+          total = sum(i.file_size for i in z.infolist())
+          print(f'entries: {len(z.infolist())}, unzipped: {total} B ({total/1048576:.0f} MiB), Lambda limit 250 MiB')
+          assert total < 250 * 1048576, 'unzipped size over Lambda limit'
+          EOF
+
+      - name: Ensure Lambda execution role
+        run: |
+          set -euo pipefail
+          if aws iam get-role --role-name "$ROLE_NAME" >/dev/null 2>&1; then
+            echo "execution role already exists"
+          else
+            aws iam create-role --role-name "$ROLE_NAME" \
+              --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"lambda.amazonaws.com"},"Action":"sts:AssumeRole"}]}'
+            aws iam attach-role-policy --role-name "$ROLE_NAME" \
+              --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+            echo "role created; waiting 15s for propagation"
+            sleep 15
+          fi
+          aws iam get-role --role-name "$ROLE_NAME" --query 'Role.Arn' --output text | tee role_arn.txt
+
+      - name: Create or update Lambda function
+        run: |
+          set -euo pipefail
+          ROLE_ARN=$(cat role_arn.txt)
+          if aws lambda get-function --function-name "$FN_NAME" >/dev/null 2>&1; then
+            echo "function exists -> update code + configuration"
+            aws lambda update-function-code --function-name "$FN_NAME" \
+              --zip-file fileb://function.zip >/dev/null
+            aws lambda wait function-updated --function-name "$FN_NAME"
+            aws lambda update-function-configuration --function-name "$FN_NAME" \
+              --runtime python3.12 --handler lambda_function.handler \
+              --role "$ROLE_ARN" --memory-size 512 --timeout 60 >/dev/null
+            aws lambda wait function-updated --function-name "$FN_NAME"
+          else
+            echo "function does not exist -> create (retrying for role propagation)"
+            ok=""
+            for i in 1 2 3 4 5 6; do
+              if aws lambda create-function --function-name "$FN_NAME" \
+                  --runtime python3.12 --handler lambda_function.handler \
+                  --role "$ROLE_ARN" --memory-size 512 --timeout 60 \
+                  --zip-file fileb://function.zip; then ok=1; break; fi
+              echo "create attempt $i failed; retrying in 15s"; sleep 15
+            done
+            [ -n "$ok" ] || { echo "create-function failed after retries"; exit 1; }
+            aws lambda wait function-active --function-name "$FN_NAME"
+          fi
+          aws lambda get-function --function-name "$FN_NAME" \
+            --query 'Configuration.[FunctionName,Runtime,MemorySize,Timeout,State]' --output table
+
+      - name: Public Function URL (auth type NONE)
+        run: |
+          set -euo pipefail
+          if aws lambda get-function-url-config --function-name "$FN_NAME" >/dev/null 2>&1; then
+            aws lambda update-function-url-config --function-name "$FN_NAME" --auth-type NONE >/dev/null
+          else
+            aws lambda create-function-url-config --function-name "$FN_NAME" --auth-type NONE >/dev/null
+          fi
+          aws lambda add-permission --function-name "$FN_NAME" \
+            --statement-id FunctionURLPublicAccess \
+            --action lambda:InvokeFunctionUrl --principal '*' \
+            --function-url-auth-type NONE 2>/dev/null \
+            || echo "public-invoke permission statement already present"
+          URL=$(aws lambda get-function-url-config --function-name "$FN_NAME" --query 'FunctionUrl' --output text)
+          echo "FUNCTION_URL=$URL"
+          { echo '## NPPAD-Edge Lambda Function URL'; echo "$URL"; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Smoke test the live URL
+        run: |
+          set -euo pipefail
+          URL=$(aws lambda get-function-url-config --function-name "$FN_NAME" --query 'FunctionUrl' --output text)
+          echo "GET $URL (demo / self-test)"
+          curl -sS --max-time 58 "$URL" | tee demo_response.json | head -c 2500; echo
+          echo 'POST {"sample_index": 0}'
+          curl -sS --max-time 30 -X POST -H 'Content-Type: application/json' \
+            -d '{"sample_index": 0}' "$URL" | tee sample_response.json | head -c 1200; echo
