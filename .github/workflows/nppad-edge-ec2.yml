@@ -1,0 +1,141 @@
+name: nppad-edge-ec2-deploy
+
+# FALLBACK deploy for NPPAD-Edge: the Lambda route is blocked because
+# the hydrotwin-github IAM user cannot create/pass an execution role
+# (iam:CreateRole denied, account has no usable Lambda role). This
+# workflow serves the identical handler code on a free-tier t3.micro
+# EC2 instance behind a tiny stdlib HTTP server.
+on:
+  push:
+    branches: [nppad-edge-deploy]
+    paths:
+      - 'nppad-edge/ec2/**'
+      - '.github/workflows/nppad-edge-ec2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-ec2:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_REGION: us-east-1
+      BUCKET: hydrotwin-site-2026
+      SG_NAME: nppad-edge-sg
+      PORT: "8080"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Who am I (STS)
+        run: aws sts get-caller-identity
+
+      - name: Build cp311 package and stage it on S3
+        run: |
+          set -euo pipefail
+          mkdir -p pkg
+          cp -r nppad-edge/lambda/. pkg/
+          cp nppad-edge/ec2/server.py pkg/
+          find pkg -name '__pycache__' -type d -prune -exec rm -rf {} +
+          pip install --target pkg \
+            --platform manylinux2014_x86_64 \
+            --python-version 311 --implementation cp \
+            --only-binary=:all: \
+            numpy==1.26.4 pandas==2.1.4
+          cd pkg && zip -qr ../function311.zip . && cd ..
+          ls -la function311.zip
+          aws s3 cp function311.zip "s3://$BUCKET/nppad-edge/function311.zip"
+          aws s3 presign "s3://$BUCKET/nppad-edge/function311.zip" \
+            --expires-in 3600 > presigned.txt
+          echo "staged: s3://$BUCKET/nppad-edge/function311.zip"
+
+      - name: Security group (public demo port)
+        run: |
+          set -euo pipefail
+          SG_ID=$(aws ec2 describe-security-groups \
+            --filters Name=group-name,Values="$SG_NAME" \
+            --query 'SecurityGroups[0].GroupId' --output text 2>/dev/null || echo None)
+          if [ "$SG_ID" = "None" ] || [ -z "$SG_ID" ]; then
+            SG_ID=$(aws ec2 create-security-group \
+              --group-name "$SG_NAME" \
+              --description "NPPAD-Edge public demo" \
+              --query 'GroupId' --output text)
+            echo "created security group $SG_ID"
+          else
+            echo "security group exists: $SG_ID"
+          fi
+          aws ec2 authorize-security-group-ingress \
+            --group-id "$SG_ID" --protocol tcp --port "$PORT" \
+            --cidr 0.0.0.0/0 2>/dev/null \
+            || echo "ingress rule already present"
+          echo "$SG_ID" > sg_id.txt
+
+      - name: Launch t3.micro (free tier) with user-data bootstrap
+        run: |
+          set -euo pipefail
+          SG_ID=$(cat sg_id.txt)
+          URL=$(cat presigned.txt)
+          AMI=$(aws ec2 describe-images --owners amazon \
+            --filters 'Name=name,Values=al2023-ami-2023.*-x86_64' \
+                      'Name=state,Values=available' \
+            --query 'sort_by(Images, &CreationDate)[-1].ImageId' --output text)
+          echo "AMI: $AMI"
+          cat > user-data.sh <<EOS
+          #!/bin/bash
+          set -x
+          exec > /var/log/nppad-edge-bootstrap.log 2>&1
+          dnf install -y python3.11 unzip curl
+          mkdir -p /opt/nppad-edge
+          curl -sSL '${URL}' -o /tmp/function311.zip
+          cd /opt/nppad-edge && unzip -qo /tmp/function311.zip
+          cat > /etc/systemd/system/nppad-edge.service <<'EOF'
+          [Unit]
+          Description=NPPAD-Edge demo service
+          After=network-online.target
+          [Service]
+          WorkingDirectory=/opt/nppad-edge
+          ExecStart=/usr/bin/python3.11 /opt/nppad-edge/server.py ${PORT}
+          Restart=always
+          RestartSec=3
+          [Install]
+          WantedBy=multi-user.target
+          EOF
+          systemctl daemon-reload
+          systemctl enable --now nppad-edge
+          EOS
+          IID=$(aws ec2 run-instances \
+            --image-id "$AMI" --instance-type t3.micro \
+            --security-group-ids "$SG_ID" \
+            --user-data file://user-data.sh \
+            --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=nppad-edge-demo},{Key=Project,Value=nppad-edge}]' \
+            --query 'Instances[0].InstanceId' --output text)
+          echo "instance: $IID"
+          echo "$IID" > instance_id.txt
+          aws ec2 wait instance-running --instance-ids "$IID"
+          aws ec2 describe-instances --instance-ids "$IID" \
+            --query 'Reservations[0].Instances[0].[PublicDnsName,PublicIpAddress,State.Name]' \
+            --output text | tee instance_addr.txt
+
+      - name: Wait for the service and smoke test it
+        run: |
+          set -euo pipefail
+          read -r DNS IP STATE < instance_addr.txt
+          BASE="http://$IP:${PORT}"
+          echo "endpoint: $BASE"
+          ok=""
+          for i in $(seq 1 24); do
+            if curl -sS --max-time 50 "$BASE/" -o demo_response.json 2>/dev/null; then
+              ok=1; break
+            fi
+            echo "attempt $i: service not up yet; waiting 15s"; sleep 15
+          done
+          [ -n "$ok" ] || { echo "service did not come up"; exit 1; }
+          echo "== GET / (demo) =="
+          head -c 2500 demo_response.json; echo
+          echo '== POST {"sample_index": 0} =='
+          curl -sS --max-time 30 -X POST -H 'Content-Type: application/json' \
+            -d '{"sample_index": 0}' "$BASE/" | head -c 1200; echo
+          { echo '## NPPAD-Edge EC2 demo endpoint'; echo "$BASE"; } >> "$GITHUB_STEP_SUMMARY"
