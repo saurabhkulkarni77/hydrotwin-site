@@ -31,6 +31,19 @@ jobs:
       - name: Who am I (STS)
         run: aws sts get-caller-identity
 
+
+      - name: Probe IAM surface (read-only, diagnostic)
+        continue-on-error: true
+        run: |
+          echo "== roles visible to this user (first 25) =="
+          aws iam list-roles --max-items 25 --query 'Roles[].RoleName' --output text || echo "list-roles DENIED"
+          echo "== policies attached to hydrotwin-github =="
+          aws iam list-attached-user-policies --user-name hydrotwin-github --query 'AttachedPolicies[].PolicyName' --output text || echo "list-attached-user-policies DENIED"
+          echo "== inline policies on hydrotwin-github =="
+          aws iam list-user-policies --user-name hydrotwin-github --query 'PolicyNames' --output text || echo "list-user-policies DENIED"
+          echo "== groups for hydrotwin-github =="
+          aws iam list-groups-for-user --user-name hydrotwin-github --query 'Groups[].GroupName' --output text || echo "list-groups-for-user DENIED"
+
       - name: Build deployment package
         run: |
           set -euo pipefail
