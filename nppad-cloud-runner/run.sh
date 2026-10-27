@@ -50,6 +50,14 @@ write_status running downloading-data
 upload || true
 
 PY="$(command -v python3 || command -v python)"
+# Live status: train_all.py rewrites outputs/status.json at every stage;
+# mirror it to S3 every 60 s while training so pollers see real progress.
+STATUS_LOOP=""
+if aws sts get-caller-identity >/dev/null 2>&1; then
+  ( while true; do sleep 60; aws s3 cp outputs/status.json \
+      "s3://$OUT_BUCKET/$OUT_PREFIX/status.json" >/dev/null 2>&1 || true; done ) &
+  STATUS_LOOP=$!
+fi
 set +e
 if [ -n "${NPPAD_MODELS:-}" ]; then
   "$PY" train_all.py --out outputs --models "$NPPAD_MODELS"
@@ -58,5 +66,6 @@ else
 fi
 rc=$?
 set -e
+[ -n "$STATUS_LOOP" ] && kill "$STATUS_LOOP" 2>/dev/null || true
 upload || true
 exit $rc
