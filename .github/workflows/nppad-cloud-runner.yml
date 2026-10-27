@@ -80,6 +80,16 @@ jobs:
           print("bucket policy now:", json.dumps(policy))
           PY
 
+      - name: Ensure bucket CORS for browser polling (idempotent)
+        run: |
+          cat > /tmp/cors.json <<'JSON'
+          {"CORSRules": [{"AllowedOrigins": ["*"], "AllowedMethods": ["GET", "HEAD"],
+                          "AllowedHeaders": ["*"], "MaxAgeSeconds": 3600}]}
+          JSON
+          aws s3api put-bucket-cors --bucket nppad-hw2-data-2026 \
+            --cors-configuration file:///tmp/cors.json
+          echo "CORS set for browser polling of outputs/*"
+
       - name: Publish initial running status
         run: |
           mkdir -p nppad-cloud-runner/outputs
