@@ -2,7 +2,7 @@
 """NPPAD cloud runner — train all 8 models at the official Task E protocol
 and write the cloud outputs.
 
-Protocol (identical to the shipped official file pred_E_S1test.csv):
+Protocol (identical to the shipped official file pred_E_W60_test.csv):
 t0 = 20 s, W = 60 s, realistic 88 channels (8 oracle removed), package split
 rule (seed 2026; 725 train / 242 val / 244 test).
 
@@ -29,7 +29,7 @@ REAL training for every model — no saved probabilities are read:
                     failed in results.json/status.json, never faked.
 
 Outputs (in --out, default ./outputs):
-  pred_E_S1test.csv   the new official file: 8 blocks x 244 rows in canonical
+  pred_E_W60_test.csv   the new official file: 8 blocks x 244 rows in canonical
                       order, columns model,label,severity,file,y_pred,p_<12>
   pred_<Model>_W60_test.csv   one sheet per model (same format)
   results.json        per-model macro-F1 / accuracy / val macro-F1 / seconds /
@@ -256,7 +256,7 @@ def main():
     combined_path = None
     if frames:
         combined = pd.concat(frames, ignore_index=True)
-        combined_path = out_dir / "pred_E_S1test.csv"
+        combined_path = out_dir / "pred_E_W60_test.csv"
         combined.to_csv(combined_path, index=False)
         print(f"combined: {len(combined)} rows from {len(frames)} models -> {combined_path}", flush=True)
 
@@ -270,7 +270,7 @@ def main():
     failed = [m for m in results["models"] if "error" in results["models"][m]]
     state = "done" if not failed and not missing else "failed"
     status.write(state=state, stage="done" if state == "done" else "finished with failures",
-                 results=results["models"], official_file="pred_E_S1test.csv",
+                 results=results["models"], official_file="pred_E_W60_test.csv",
                  official_rows=results["official_rows"])
     print(json.dumps({"state": state, "failed": failed, "missing": missing,
                       "official_rows": results["official_rows"]}, indent=1))

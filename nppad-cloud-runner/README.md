@@ -4,7 +4,7 @@ Trains **all 8 models for real** at the official Task E protocol
 (t0 = 20 s, W = 60 s, realistic 88 channels, package split rule, seed 2026)
 from the public dataset and writes the cloud outputs:
 
-- `pred_E_S1test.csv` — the new official file (8 blocks × 244 rows, `model` column)
+- `pred_E_W60_test.csv` — the new official file (8 blocks × 244 rows, `model` column)
 - `pred_<Model>_W60_test.csv` — one sheet per model
 - `results.json` — per-model macro-F1 / accuracy / validation macro-F1 / timings
 - `status.json` — live run state for the Results Explorer's polling UI

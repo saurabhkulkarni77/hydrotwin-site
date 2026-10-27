@@ -6,7 +6,7 @@
 #    the read) and extracts it.
 # 2. Trains all 8 models at the official protocol (train_all.py).
 # 3. If AWS credentials are available (the workflow provides them from the
-#    repo secrets), uploads results.json + status.json + pred_E_S1test.csv
+#    repo secrets), uploads results.json + status.json + pred_E_W60_test.csv
 #    (+ per-model sheets) to s3://nppad-hw2-data-2026/outputs/ and refreshes
 #    status.json LAST so pollers only see "done" once everything is up.
 #    Without credentials the outputs stay in ./outputs locally.
@@ -27,7 +27,7 @@ write_status() {  # $1 = state, $2 = stage — minimal early status before pytho
 upload() {  # best-effort; only when credentials exist
   if aws sts get-caller-identity >/dev/null 2>&1; then
     aws s3 cp outputs/results.json      "s3://$OUT_BUCKET/$OUT_PREFIX/results.json"      || true
-    aws s3 cp outputs/pred_E_S1test.csv "s3://$OUT_BUCKET/$OUT_PREFIX/pred_E_S1test.csv" || true
+    aws s3 cp outputs/pred_E_W60_test.csv "s3://$OUT_BUCKET/$OUT_PREFIX/pred_E_W60_test.csv" || true
     for f in outputs/pred_*_W60_test.csv; do
       [ -f "$f" ] && aws s3 cp "$f" "s3://$OUT_BUCKET/$OUT_PREFIX/$(basename "$f")" || true
     done
