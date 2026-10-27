@@ -1,0 +1,123 @@
+name: NPPAD Cloud Runner
+
+# Dispatch-only. This workflow lives in hydrotwin-site ONLY because that repo
+# holds the AWS Actions secrets (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY);
+# it reads and writes nothing in the HydroTwin site content, buckets or
+# distributions. It trains the NPPAD Homework 2 models in the cloud and
+# publishes the outputs to the study bucket nppad-hw2-data-2026/outputs/.
+#
+# Trigger paths:
+#  - From this repo's Actions tab (signed in), or via the GitHub API.
+#  - From the NPPAD Results Explorer web page: the page's dispatch call needs
+#    a fine-grained PAT scoped to this repo (Actions: read/write) which the
+#    site owner supplies separately; without it the page button stays inert
+#    and the polling UI simply shows the last completed run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      models:
+        description: "Comma list of models (blank = all 8)"
+        required: false
+        default: ""
+
+concurrency:
+  group: nppad-cloud-runner
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Extend data-bucket policy for outputs/* (idempotent)
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+
+          BUCKET = "nppad-hw2-data-2026"
+          NEW = {
+              "Sid": "PublicReadCloudRunnerOutputs",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": "s3:GetObject",
+              "Resource": f"arn:aws:s3:::{BUCKET}/outputs/*",
+          }
+          try:
+              cur = subprocess.run(["aws", "s3api", "get-bucket-policy", "--bucket", BUCKET,
+                                    "--query", "Policy", "--output", "text"],
+                                   capture_output=True, text=True, check=True).stdout
+              policy = json.loads(cur)
+          except Exception as e:
+              print("no existing policy readable, starting fresh:", e)
+              policy = {"Version": "2012-10-17", "Statement": [{
+                  "Sid": "PublicReadDatasetZip", "Effect": "Allow", "Principal": "*",
+                  "Action": "s3:GetObject",
+                  "Resource": f"arn:aws:s3:::{BUCKET}/NPPAD_Data_for_HW2.zip"}]}
+          stmts = [s for s in policy.get("Statement", []) if s.get("Sid") != NEW["Sid"]]
+          stmts.append(NEW)
+          policy["Statement"] = stmts
+          with open("/tmp/bucket-policy.json", "w") as f:
+              json.dump(policy, f)
+          subprocess.run(["aws", "s3api", "put-bucket-policy", "--bucket", BUCKET,
+                          "--policy", "file:///tmp/bucket-policy.json"], check=True)
+          print("bucket policy now:", json.dumps(policy))
+          PY
+
+      - name: Publish initial running status
+        run: |
+          mkdir -p nppad-cloud-runner/outputs
+          printf '{"state": "running", "stage": "installing dependencies", "updated_utc": "%s", "run_url": "%s/%s/actions/runs/%s"}\n' \
+            "$(date -u +%FT%TZ)" "${{ github.server_url }}" "${{ github.repository }}" "${{ github.run_id }}" \
+            > nppad-cloud-runner/outputs/status.json
+          aws s3 cp nppad-cloud-runner/outputs/status.json \
+            s3://nppad-hw2-data-2026/outputs/status.json
+
+      - name: Install dependencies
+        working-directory: nppad-cloud-runner
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+
+      - name: Train all models and upload outputs
+        working-directory: nppad-cloud-runner
+        env:
+          NPPAD_MODELS: ${{ inputs.models }}
+        run: ./run.sh
+
+      - name: Publish final status (always)
+        if: always()
+        run: |
+          if [ -f nppad-cloud-runner/outputs/status.json ]; then
+            aws s3 cp nppad-cloud-runner/outputs/status.json \
+              s3://nppad-hw2-data-2026/outputs/status.json || true
+          fi
+          if [ -f nppad-cloud-runner/outputs/results.json ]; then
+            aws s3 cp nppad-cloud-runner/outputs/results.json \
+              s3://nppad-hw2-data-2026/outputs/results.json || true
+          fi
+
+      - name: Upload outputs as workflow artifact (backup copy)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nppad-cloud-runner-outputs
+          path: nppad-cloud-runner/outputs/
+          if-no-files-found: ignore
