@@ -24,6 +24,7 @@ CLASSIC_MARKERS = {
     "ht-3dchart v1": 2,              # 3D forecast chart in Data view (classic only)
     "ht-corr v1": 2,                 # multi-factor correlation section + boot
     "ht-clusters v1": 2,             # station regime clusters section + boot
+    "ht-featimp v1": 2,              # XGBoost feature importance section + boot
     "ht-dacp v1": 1,                 # DACP daily intervals
     "ht-weekly v1": 1,               # weekly outlook section (classic form)
     "ht-monthly v1": 1,              # monthly outlook section
@@ -43,6 +44,7 @@ CLASSIC_MARKERS = {
     'id="hts-sec-monthly"': 1,       # monthly section in the stats layout
     'id="hts-sec-yearly"': 1,        # yearly section in the stats layout
     'id="hts-sec-clusters"': 1,      # station clusters section in the stats layout
+    'id="hts-sec-featimp"': 1,       # feature importance section in the stats layout
     'id="htdc-on"': 1,               # DACP band toggle control
     'id="htwk-live"': 1,             # weekly outlook Live button
     'id="htmo-live"': 1,             # monthly outlook Live button
@@ -51,6 +53,7 @@ CLASSIC_MARKERS = {
 }
 
 THREED_MARKERS = {
+    "ht-featimp v1": 1,              # XGBoost feature importance panel boot
     "ht-dacp v1": 1,                 # DACP daily intervals
     "ht-weekly v1": 2,               # weekly outlook panel (3D form)
     "ht-monthly v1": 1,              # monthly outlook panel

@@ -49,6 +49,9 @@ jobs:
       - name: Multi-factor correlation matrix in the Data view (dev only)
         run: python3 build25/patch_corr.py
 
+      - name: Features affecting discharge flow - XGBoost importance (dev only)
+        run: python3 build25/patch_featimp.py
+
       - name: Model full forms in the Data view (dev only)
         run: python3 build25/patch_fullforms.py
 
