@@ -99,6 +99,9 @@ jobs:
       - name: River continuity + no buildings in water (dev only)
         run: python3 build25/patch_riverwater.py
 
+      - name: Smoother rendering + realistic water (dev only)
+        run: python3 build25/patch_smooth.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
