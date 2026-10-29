@@ -40,9 +40,10 @@ REALISM (v2)
      melts into the banks instead of ending in a hard strip edge.
      The out-of-block ribbon (no aEdge attribute) opts out via
      waterMaterial(rep, false) and gets the same colour/roughness.
-  7. mosaic() fetches tiles with capped concurrency (64) and one
-     retry per tile - imagery and DEM batches now arrive reliably
-     instead of intermittently leaving gray/black terrain.
+  7. mosaic() fetches tiles with capped concurrency (64), retries,
+     and a second sweep over any failed tiles - imagery and DEM
+     batches now arrive reliably instead of intermittently leaving
+     gray/black terrain wedges.
   8. Fog pushed back (9000/75000 -> 13000/85000) and hemisphere light
      0.9 -> 0.8 so mid-ground satellite detail is not washed out.
 
@@ -104,16 +105,18 @@ MOSAIC_OLD = """async function mosaic(urlOf, z, n, x0, y0, size, onTile) {
   for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) jobs.push(img(urlOf(z, x0 + i, y0 + j)).then((b) => { g.drawImage(b, i * t, j * t, t, t); }).catch(() => { fail++; }).finally(() => { done++; onTile && onTile(done, n * n, fail); }));
   await Promise.all(jobs); return c;
 }"""
-MOSAIC_NEW = """async function mosaic(urlOf, z, n, x0, y0, size, onTile) {   // ht-smooth v2: capped concurrency (64) + one retry per tile - firing all n*n requests at once intermittently failed whole batches and left gray/black terrain
+MOSAIC_NEW = """async function mosaic(urlOf, z, n, x0, y0, size, onTile) {   // ht-smooth v2: capped concurrency (64) + retries + a second sweep over failed tiles - firing all n*n requests at once intermittently failed whole batches and left gray/black terrain wedges
   const c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d'); const t = size / n; let done = 0, fail = 0;
   const jobs = [];
   for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) jobs.push([urlOf(z, x0 + i, y0 + j), i * t, j * t]);
-  let at = 0;
-  const worker = async () => { while (at < jobs.length) { const [u, dx, dy] = jobs[at++];
-      let b = null; for (let tryN = 0; tryN < 2 && !b; tryN++) { try { b = await img(u); } catch (e) { /* one retry */ } }
-      if (b) g.drawImage(b, dx, dy, t, t); else fail++;
-      done++; onTile && onTile(done, n * n, fail); } };
-  await Promise.all(Array.from({ length: Math.min(64, jobs.length) }, worker));
+  const draw = async (job) => { let b = null; for (let a = 0; a < 2 && !b; a++) { try { b = await img(job[0]); } catch (e) { /* retry */ } }
+    if (b) { g.drawImage(b, job[1], job[2], t, t); return true; } return false; };
+  const run = async (list, conc, count) => { const bad = []; let at = 0;
+    const worker = async () => { while (at < list.length) { const job = list[at++]; if (!(await draw(job))) bad.push(job);
+        if (count) { done++; fail = bad.length; onTile && onTile(done, n * n, fail); } } };
+    await Promise.all(Array.from({ length: Math.min(conc, list.length) }, worker)); return bad; };
+  const bad = await run(jobs, 64, true);
+  if (bad.length) { const bad2 = await run(bad, 32, false); fail = bad2.length; onTile && onTile(done, n * n, fail); }
   return c;
 }"""
 
