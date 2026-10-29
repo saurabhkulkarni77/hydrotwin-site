@@ -1,0 +1,52 @@
+name: nppad-explorer-lineup-refresh-deploy
+
+# One-off redeploy for the NPPAD Results Explorer: Oct 29, 2026 lineup
+# refresh (Rocket and MiniRocket in; ConvTran and InceptionTime out).
+# Uploads index.html + data.json and syncs preds/ (with --delete, so the
+# removed models' sheets disappear) to the EXISTING bucket
+# nppad-grader-app-2026 and invalidates the EXISTING CloudFront
+# distribution (looked up by domain name). Touches nothing else.
+on:
+  push:
+    branches: [nppad-lineup-refresh]
+    paths:
+      - 'app-refresh/**'
+      - '.github/workflows/nppad-explorer-lineup-refresh.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nppad-lineup-refresh
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Upload refreshed files, sync preds, invalidate CloudFront
+        run: |
+          set -euo pipefail
+          BUCKET=nppad-grader-app-2026
+          aws s3 cp app-refresh/index.html "s3://$BUCKET/index.html" --content-type "text/html; charset=utf-8"
+          aws s3 cp app-refresh/data.json "s3://$BUCKET/data.json" --content-type "application/json"
+          aws s3 sync app-refresh/preds/ "s3://$BUCKET/preds/" --delete --content-type "text/csv"
+          DOMAIN=d1lyn88jzn0wh2.cloudfront.net
+          DIST_ID=$(aws cloudfront list-distributions \
+            --query "DistributionList.Items[?DomainName=='d1lyn88jzn0wh2.cloudfront.net'].Id | [0]" \
+            --output text)
+          echo "distribution: $DIST_ID ($DOMAIN)"
+          INV_ID=$(aws cloudfront create-invalidation \
+            --distribution-id "$DIST_ID" --paths "/*" \
+            --query "Invalidation.Id" --output text)
+          echo "invalidation: $INV_ID"
+          echo "APP_URL: https://$DOMAIN" >> "$GITHUB_STEP_SUMMARY"
+          echo "INVALIDATION: $INV_ID" >> "$GITHUB_STEP_SUMMARY"
