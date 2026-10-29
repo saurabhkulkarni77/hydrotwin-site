@@ -1,0 +1,48 @@
+name: nppad-bucket-refresh-sync
+
+# One-off sync for the NPPAD HW2 grader bucket nppad-hw2-data-2026:
+# Oct 29, 2026 lineup refresh (Rocket and MiniRocket in; ConvTran and
+# InceptionTime out). Uploads the new outputs/ set staged under
+# bucket-refresh/outputs/ and deletes the two removed models' sheets.
+# The dataset ZIP and index.html are NOT touched.
+on:
+  push:
+    branches: [nppad-bucket-refresh]
+    paths:
+      - 'bucket-refresh/**'
+      - '.github/workflows/nppad-bucket-refresh.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nppad-bucket-refresh
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Upload new outputs, delete removed models sheets, list bucket
+        run: |
+          set -euo pipefail
+          BUCKET=nppad-hw2-data-2026
+          for f in bucket-refresh/outputs/*.csv; do
+            aws s3 cp "$f" "s3://$BUCKET/outputs/$(basename "$f")" --content-type "text/csv"
+          done
+          aws s3 cp bucket-refresh/outputs/results.json "s3://$BUCKET/outputs/results.json" --content-type "application/json"
+          aws s3 cp bucket-refresh/outputs/status.json "s3://$BUCKET/outputs/status.json" --content-type "application/json"
+          aws s3 rm "s3://$BUCKET/outputs/pred_ConvTran_W60_test.csv"
+          aws s3 rm "s3://$BUCKET/outputs/pred_InceptionTime_W60_test.csv"
+          echo "## Bucket after sync" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          aws s3 ls "s3://$BUCKET/" --recursive | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
