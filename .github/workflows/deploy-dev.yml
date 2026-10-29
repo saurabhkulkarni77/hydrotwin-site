@@ -96,6 +96,9 @@ jobs:
       - name: Panels load on click only (dev only)
         run: python3 build25/patch_lazy_panels.py
 
+      - name: River continuity + no buildings in water (dev only)
+        run: python3 build25/patch_riverwater.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
