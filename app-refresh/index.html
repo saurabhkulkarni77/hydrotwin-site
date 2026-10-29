@@ -192,15 +192,14 @@
 
 <!-- NPPAD cloud runner section — inserted into NPPAD_Results_Explorer/index.html.
      The dispatch button is INERT until the site owner supplies a fine-grained
-     GitHub PAT (see CLOUD_DISPATCH_TOKEN in the script snippet). Polling of the
-     public S3 outputs is live: it reads outputs/status.json + results.json from
-     s3://nppad-hw2-data-2026/outputs/ and displays the last cloud run. -->
+     GitHub PAT (see CLOUD_DISPATCH_TOKEN in the script snippet). The panel
+     displays the status and results of the last cloud run. -->
 <section id="cloud">
   <h2>Cloud training — retrain all models in the cloud</h2>
   <p>One click dispatches a GitHub Actions workflow that trains <b>all 8 models for real</b>
   at the official Task E protocol (t0 = 20 s, W = 60 s, realistic 88 channels) from the public
-  S3 dataset, then publishes a fresh <b>pred_E_W60_test.csv</b>, <b>results.json</b> and
-  <b>status.json</b> to the study bucket. This panel polls that status while a run is live and
+  S3 dataset, then produces a fresh <b>pred_E_W60_test.csv</b>, <b>results.json</b> and
+  <b>status.json</b>. This panel shows the run status while a run is live and
   shows the cloud results when it finishes.</p>
   <p><button id="cloud-btn" disabled>Run full training in cloud (activation pending)</button>
      <span class="stamp" id="cloud-stamp"></span></p>
@@ -759,7 +758,7 @@ async function runAll(){
 }
 
 /* ---------------- cloud training (NPPAD cloud runner) ----------------
-   Polling is live against the public S3 outputs. The DISPATCH call is wired
+   The panel polls the cloud run status while a run is live. The DISPATCH call is wired
    but inert: CLOUD_DISPATCH_TOKEN is empty until the site owner supplies a
    fine-grained PAT scoped to saurabhkulkarni77/hydrotwin-site (Actions:
    read/write) via the secure capture page. Do NOT paste any other credential
