@@ -1,0 +1,70 @@
+{
+ "protocol": {
+  "t0": 20.0,
+  "W": 60,
+  "vars": "realistic",
+  "n_channels": 88,
+  "seed": 2026
+ },
+ "splits": {
+  "train": 725,
+  "val": 242,
+  "test": 244
+ },
+ "source": "run7 local execution of NPPAD_Homework2_SelfContained_Colab_Minimal_2026-10-29_0826CT.ipynb (76/76 code cells, 0 error outputs, 3292 s); per-model metrics recomputed directly from outputs/pred_E_W60_test.csv",
+ "run_finished_utc": "2026-10-29T14:22:57+00:00",
+ "models": {
+  "LogReg": {
+   "model": "LogReg",
+   "macro_F1": 0.18918229365990558,
+   "accuracy": 0.27459016393442626,
+   "n_test": 244
+  },
+  "LogRegPlus": {
+   "model": "LogReg+",
+   "macro_F1": 0.18918229365990558,
+   "accuracy": 0.27459016393442626,
+   "n_test": 244
+  },
+  "RandomForest": {
+   "model": "Random Forest",
+   "macro_F1": 0.18769058970063993,
+   "accuracy": 0.26639344262295084,
+   "n_test": 244
+  },
+  "CNN": {
+   "model": "CNN",
+   "macro_F1": 0.18918229365990558,
+   "accuracy": 0.27459016393442626,
+   "n_test": 244
+  },
+  "GRU": {
+   "model": "GRU",
+   "macro_F1": 0.18918229365990558,
+   "accuracy": 0.27459016393442626,
+   "n_test": 244
+  },
+  "MultiRocketHydra": {
+   "model": "MultiRocket+HYDRA",
+   "macro_F1": 0.18918229365990558,
+   "accuracy": 0.27459016393442626,
+   "n_test": 244
+  },
+  "Rocket": {
+   "model": "Rocket",
+   "macro_F1": 0.18918229365990558,
+   "accuracy": 0.27459016393442626,
+   "n_test": 244
+  },
+  "MiniRocket": {
+   "model": "MiniRocket",
+   "macro_F1": 0.18918229365990558,
+   "accuracy": 0.27459016393442626,
+   "n_test": 244
+  }
+ },
+ "official_file": "outputs/pred_E_W60_test.csv",
+ "official_rows": 1952,
+ "official_md5": "db7c0172345673f61470a9664aa9a1cc",
+ "missing_models": []
+}
