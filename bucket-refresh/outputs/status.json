@@ -1,0 +1,27 @@
+{
+ "state": "done",
+ "stage": "done",
+ "updated_utc": "2026-10-29T14:22:57+00:00",
+ "protocol": {
+  "t0": 20.0,
+  "W": 60,
+  "vars": "realistic",
+  "n_channels": 88,
+  "seed": 2026
+ },
+ "models_done": [
+  "LogReg",
+  "LogRegPlus",
+  "RandomForest",
+  "CNN",
+  "GRU",
+  "MultiRocketHydra",
+  "Rocket",
+  "MiniRocket"
+ ],
+ "models_failed": [],
+ "official_file": "outputs/pred_E_W60_test.csv",
+ "official_rows": 1952,
+ "official_md5": "db7c0172345673f61470a9664aa9a1cc",
+ "note": "Bucket outputs refreshed 2026-10-29 to the run7 lineup: Rocket and MiniRocket in, ConvTran and InceptionTime out."
+}
