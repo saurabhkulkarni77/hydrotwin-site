@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "40020991319-8fc49f32fd300de4bab354ddf7d3641012bc893d";
+  var BID = "40967306013-a5cf32b043479ff4b6569d6be3593f55d801dcde";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -226,11 +227,17 @@ const URL_TOPO = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/servi
 const URL_GEO = (z, x, y) => `https://tiles.macrostrat.org/carto/${z}/${x}/${y}.png`;
 const NLDI = `https://api.water.usgs.gov/nldi/linked-data/nwissite/USGS-${D.site}/`;
 async function img(url, ms = 30000) { const ac = new AbortController(); const t = setTimeout(() => ac.abort(), ms); try { const r = await fetch(url, { signal: ac.signal }); if (!r.ok) throw new Error(r.status); return createImageBitmap(await r.blob()); } finally { clearTimeout(t); } }
-async function mosaic(urlOf, z, n, x0, y0, size, onTile) {
+async function mosaic(urlOf, z, n, x0, y0, size, onTile) {   // ht-smooth v2: capped concurrency (64) + one retry per tile - firing all n*n requests at once intermittently failed whole batches and left gray/black terrain
   const c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d'); const t = size / n; let done = 0, fail = 0;
   const jobs = [];
-  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) jobs.push(img(urlOf(z, x0 + i, y0 + j)).then((b) => { g.drawImage(b, i * t, j * t, t, t); }).catch(() => { fail++; }).finally(() => { done++; onTile && onTile(done, n * n, fail); }));
-  await Promise.all(jobs); return c;
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) jobs.push([urlOf(z, x0 + i, y0 + j), i * t, j * t]);
+  let at = 0;
+  const worker = async () => { while (at < jobs.length) { const [u, dx, dy] = jobs[at++];
+      let b = null; for (let tryN = 0; tryN < 2 && !b; tryN++) { try { b = await img(u); } catch (e) { /* one retry */ } }
+      if (b) g.drawImage(b, dx, dy, t, t); else fail++;
+      done++; onTile && onTile(done, n * n, fail); } };
+  await Promise.all(Array.from({ length: Math.min(64, jobs.length) }, worker));
+  return c;
 }
 function decodeDEM(c, n) {
   const px = c.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, n, n).data, e = new Float32Array(n * n);
@@ -243,8 +250,17 @@ async function getJSON(url, ms = 45000) {
 }
 
 // ------------------------------------------------------------------ renderer, sky, lights
-const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: !QUEST });
+const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: !QUEST, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(innerWidth, innerHeight); renderer.xr.enabled = true;
+// ht-smooth v2: adaptive pixel ratio - while frame times stay high, step the
+// render resolution down toward 1x so orbiting stays fluid; step back up when
+// there is headroom. Bounds [1, min(dpr, 2)], 0.25 steps every 45 frames,
+// disabled while an XR session is presenting.
+let htPR = Math.min(devicePixelRatio || 1, 2), htEma = 16, htTick = 0;
+function htAdapt(dt) { if (renderer.xr.isPresenting) return; htEma += (Math.min(dt, 0.1) * 1000 - htEma) * 0.05; if (++htTick < 45) return; htTick = 0;
+  const cap = Math.min(devicePixelRatio || 1, 2);
+  if (htEma > 27 && htPR > 1) { htPR = Math.max(1, htPR - 0.25); renderer.setPixelRatio(htPR); }
+  else if (htEma < 12.5 && htPR < cap) { htPR = Math.min(cap, htPR + 0.25); renderer.setPixelRatio(htPR); } }
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.75;
 document.body.appendChild(renderer.domElement);
 if (VRButton.registerSessionGrantedListener) VRButton.registerSessionGrantedListener();
@@ -257,11 +273,11 @@ let userMoved = false; orbit.addEventListener('start', () => { userMoved = true;
 const sky = new Sky(); sky.scale.setScalar(140000); scene.add(sky);
 const sunDir = new THREE.Vector3().setFromSphericalCoords(1, THREE.MathUtils.degToRad(90 - 40), THREE.MathUtils.degToRad(215));
 { const u = sky.material.uniforms; u.turbidity.value = 4; u.rayleigh.value = 1.1; u.mieCoefficient.value = 0.004; u.mieDirectionalG.value = 0.8; u.sunPosition.value.copy(sunDir); }
-const hemi = new THREE.HemisphereLight('#DCE8F5', '#5A5040', 0.9); scene.add(hemi);
+const hemi = new THREE.HemisphereLight('#DCE8F5', '#5A5040', 0.8);   // ht-smooth v2: slightly less pale sky fill washing the imagery scene.add(hemi);
 const sun = new THREE.DirectionalLight('#FFF4E0', 2.2); sun.position.copy(sunDir).multiplyScalar(1000); scene.add(sun);
 let envTex = null;
 try { const pm = new THREE.PMREMGenerator(renderer); const es = new THREE.Scene(); const s2 = new Sky(); s2.scale.setScalar(1000); s2.material.uniforms.sunPosition.value.copy(sunDir); es.add(s2); envTex = pm.fromScene(es).texture; } catch (e) { envTex = null; }
-const FOG = new THREE.Fog('#C4D3E2', 9000, 75000);
+const FOG = new THREE.Fog('#C4D3E2', 13000, 85000);   // ht-smooth v2: fog pushed back so mid-ground satellite detail is not washed out
 
 function label(text, h = 0.035, fg = '#FFFFFF', bg = 'rgba(12,18,28,0.82)', fixed = false) {
   const lines = String(text).split('\n'); const c = document.createElement('canvas'); const g = c.getContext('2d'); const fs = 44;
@@ -278,23 +294,35 @@ function canvasPanel(w, h, px = 512) {
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false, fog: false }));
   return { c, g: c.getContext('2d'), tex, mesh, w, h };
 }
-function canvasTex(c) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; }
+function canvasTex(c) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = Math.min(16, renderer.capabilities.getMaxAnisotropy()); return t; }   // ht-smooth v2: max anisotropic filtering - satellite detail stays sharp at grazing (riverbank) angles
 
 // ------------------------------------------------------------------ water look (shared)
-function rippleCanvas() {   // procedural ripple normal map (no download)
-  const n = 256, c = document.createElement('canvas'); c.width = c.height = n; const g = c.getContext('2d'); const im = g.createImageData(n, n);
-  const hgt = new Float32Array(n * n); const waves = Array.from({ length: 14 }, (_, k) => [Math.round(Math.cos(k * 2.4) * (2 + (k % 5))), Math.round(Math.sin(k * 2.4) * (2 + (k % 4))), (k * 1.7) % 6.28, 1 / (1 + k * 0.35)]);
-  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) { let s = 0; for (const [a, b, p, w] of waves) s += w * Math.sin((a * i + b * j) * 2 * Math.PI / n + p); hgt[j * n + i] = s; }
-  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) { const dx = hgt[j * n + (i + 1) % n] - hgt[j * n + (i + n - 1) % n], dy = hgt[((j + 1) % n) * n + i] - hgt[((j + n - 1) % n) * n + i];
-    const v = new THREE.Vector3(-dx, -dy, 2.2).normalize(); const k = 4 * (j * n + i); im.data[k] = (v.x * 0.5 + 0.5) * 255; im.data[k + 1] = (v.y * 0.5 + 0.5) * 255; im.data[k + 2] = (v.z * 0.5 + 0.5) * 255; im.data[k + 3] = 255; }
+function rippleCanvas() {   // ht-smooth v2: tileable value-noise normal map (512px, 4 fBm octaves, fixed seed) - natural, non-repeating water ripple in place of the regular sine waves
+  const n = 512, c = document.createElement('canvas'); c.width = c.height = n; const g = c.getContext('2d'); const im = g.createImageData(n, n);
+  const hgt = new Float32Array(n * n); let seed = 1234567;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF) / 0x7FFFFFFF;
+  const oct = [];
+  for (const [p, a] of [[6, 0.5], [12, 0.28], [24, 0.16], [48, 0.09]]) { const L = new Float32Array(p * p); for (let i = 0; i < L.length; i++) L[i] = rnd() * 2 - 1; oct.push([L, p, a]); }
+  const smp = (L, p, x, y) => { const fx = x / n * p, fy = y / n * p; const x0 = Math.floor(fx) % p, y0 = Math.floor(fy) % p, x1 = (x0 + 1) % p, y1 = (y0 + 1) % p;
+    const tx = fx - Math.floor(fx), ty = fy - Math.floor(fy), sx = tx * tx * (3 - 2 * tx), sy = ty * ty * (3 - 2 * ty);
+    const v00 = L[y0 * p + x0], v10 = L[y0 * p + x1], v01 = L[y1 * p + x0], v11 = L[y1 * p + x1];
+    return (v00 + (v10 - v00) * sx) * (1 - sy) + (v01 + (v11 - v01) * sx) * sy; };
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) { let s = 0; for (const [L, p, a] of oct) s += a * smp(L, p, i, j); hgt[j * n + i] = s; }
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) { const dx = (hgt[j * n + (i + 1) % n] - hgt[j * n + (i + n - 1) % n]) * 2.2, dy = (hgt[((j + 1) % n) * n + i] - hgt[((j + n - 1) % n) * n + i]) * 2.2;
+    const v = new THREE.Vector3(-dx, dy, 1).normalize(); const k = 4 * (j * n + i); im.data[k] = (v.x * 0.5 + 0.5) * 255; im.data[k + 1] = (v.y * 0.5 + 0.5) * 255; im.data[k + 2] = (v.z * 0.5 + 0.5) * 255; im.data[k + 3] = 255; }
   g.putImageData(im, 0, 0); return c;
 }
 const RIPPLE = rippleCanvas();
 function rippleTex(rep) { const t = new THREE.CanvasTexture(RIPPLE); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep, rep); return t; }
-const W_CLEAR = new THREE.Color('#3F6F80'), W_MUD = new THREE.Color('#7A6443');
-function waterMaterial(rep) {
-  return new THREE.MeshStandardMaterial({ color: W_CLEAR.clone(), roughness: 0.12, metalness: 0.05, transparent: true, opacity: 0.88, depthWrite: false,
-    normalMap: rippleTex(rep), normalScale: new THREE.Vector2(0.35, 0.35), polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4 });
+const W_CLEAR = new THREE.Color('#175D6E'), W_MUD = new THREE.Color('#7A6443');   // ht-smooth v2: deep blue-green water (was pale slate #3F6F80, which mirrored the sky into a flat cyan strip)
+function waterMaterial(rep, edge = true) {   // ht-smooth v2: believable water - broken sky reflection (roughness up, env down), stronger noise normals, near-opaque body, plus a shoreline alpha fade so the surface melts into the banks
+  const m = new THREE.MeshStandardMaterial({ color: W_CLEAR.clone(), roughness: 0.22, metalness: 0.05, transparent: true, opacity: 0.95, depthWrite: false, envMapIntensity: 0.75,
+    normalMap: rippleTex(rep), normalScale: new THREE.Vector2(0.7, 0.7), polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4 });
+  if (edge) m.onBeforeCompile = (sh) => {
+    sh.vertexShader = 'attribute float aEdge; varying float vEdge;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n vEdge = aEdge;');
+    sh.fragmentShader = 'varying float vEdge;\n' + sh.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n diffuseColor.a *= mix(0.08, 1.0, smoothstep(0.05, 0.95, vEdge));');
+  };
+  return m;
 }
 
 // ------------------------------------------------------------------ flood model on a grid: nearest-river bed + connected fill
@@ -327,7 +355,7 @@ class WaterGrid {
     this.N = N; this.yOfElev = yOfElev; this.lift = lift; const n = N * N;
     const pos = new Float32Array(n * 3), uv = new Float32Array(n * 2), nor = new Float32Array(n * 3);
     for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) { const k = j * N + i; pos[3 * k] = xOf(i); pos[3 * k + 2] = zOf(j); uv[2 * k] = xOf(i); uv[2 * k + 1] = zOf(j); nor[3 * k + 1] = 1; }
-    this.geo = new THREE.BufferGeometry(); this.geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); this.geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); this.geo.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
+    this.geo = new THREE.BufferGeometry(); this.geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); this.geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); this.geo.setAttribute('normal', new THREE.BufferAttribute(nor, 3)); this.edge = new THREE.BufferAttribute(new Float32Array(n), 1); this.geo.setAttribute('aEdge', this.edge);   // ht-smooth v2: per-vertex shoreline factor feeding the water edge fade
     this.idx = new THREE.BufferAttribute(new Uint32Array((N - 1) * (N - 1) * 6), 1); this.geo.setIndex(this.idx); this.geo.setDrawRange(0, 0);
     this.mesh = new THREE.Mesh(this.geo, mat); this.mesh.frustumCulled = false; this.mesh.renderOrder = 2; parent.add(this.mesh);
     this.wet = new Uint8Array(n); this.wet2 = new Uint8Array(n); this.wetCount = 0;
@@ -344,6 +372,10 @@ class WaterGrid {
     for (let k = 0; k < N * N; k++) { pos.array[3 * k + 1] = this.yOfElev(isNaN(F.wse[k]) ? F.elev[k] - 5 : F.wse[k]); w += wet[k]; }
     for (let j = 0; j < N - 1; j++) for (let i = 0; i < N - 1; i++) { const p = j * N + i, q = p + 1, r = p + N, s = r + 1;
       if (wet[p] | wet[q] | wet[r] | wet[s]) { a[c++] = p; a[c++] = r; a[c++] = q; a[c++] = q; a[c++] = r; a[c++] = s; } }
+    const ea = this.edge.array;   // ht-smooth v2: shoreline factor per vertex = share of wet neighbours (1 = open water, 0 = waterline)
+    for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) { const k = j * N + i; if (!wet[k]) { ea[k] = 0; continue; } let s2 = 0, m2 = 0;
+      if (i > 0) { s2 += wet[k - 1]; m2++; } if (i < N - 1) { s2 += wet[k + 1]; m2++; } if (j > 0) { s2 += wet[k - N]; m2++; } if (j < N - 1) { s2 += wet[k + N]; m2++; } ea[k] = s2 / m2; }
+    this.edge.needsUpdate = true;
     pos.needsUpdate = true; idx.needsUpdate = true; this.geo.setDrawRange(0, c); this.wetCount = w;
   }
   setLine(key, dH, color) {
@@ -516,11 +548,11 @@ function buildInner() {
   const edge = R.map((i) => i).concat(R.map((j) => j * NI + NI - 1)).concat(R.map((i) => (NI - 1) * NI + NI - 1 - i)).concat(R.map((j) => (NI - 1 - j) * NI));
   edge.forEach((k, n) => { p.push(pos.getX(k), pos.getY(k), pos.getZ(k), pos.getX(k), pos.getY(k) - 60, pos.getZ(k)); if (n) { const a = 2 * (n - 1); ix.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } });
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(p, 3)); sg.setIndex(ix); sg.computeVertexNormals();
-  groundRoot.add(new THREE.Mesh(sg, new THREE.MeshStandardMaterial({ color: '#6B5E4C', roughness: 1, side: THREE.DoubleSide })));
+  const skm = new THREE.Mesh(sg, new THREE.MeshStandardMaterial({ color: '#6B5E4C', roughness: 1, side: THREE.DoubleSide })); skm.name = 'htSkirt'; groundRoot.add(skm);
 }
 const gWaterMat = waterMaterial(1 / 60);
 const gWater = new WaterGrid(NI, (i) => IX0 + i / (NI - 1) * IWM, (j) => IZ0 + j / (NI - 1) * IWM, (e) => e - REFE + 0.05, groundRoot, gWaterMat, 3.5, 0.6);
-const ribbonMat = waterMaterial(1 / 60);
+const ribbonMat = waterMaterial(1 / 60, false);   // ht-smooth v2: ribbon geometry carries no aEdge attribute
 const ribbon = new THREE.Mesh(new THREE.BufferGeometry(), ribbonMat); ribbon.frustumCulled = false; ribbon.renderOrder = 2; groundRoot.add(ribbon);
 let PATHM = null;      // river path, metres [[x, z], ...] upstream → gauge → downstream
 let ribbonPts = null;  // river outside the detailed block: [{x, z, bed, top}] or {brk}
@@ -530,7 +562,8 @@ function buildRibbon(dH, width) {
     const c = ribbonPts[k]; if (c.brk) { prev = null; continue; }
     const a = ribbonPts[k - 1] && !ribbonPts[k - 1].brk ? ribbonPts[k - 1] : c, b = ribbonPts[k + 1] && !ribbonPts[k + 1].brk ? ribbonPts[k + 1] : c;
     let dx = b.x - a.x, dz = b.z - a.z; const L = Math.hypot(dx, dz) || 1; dx /= L; dz /= L;
-    const y = Math.max(c.bed + add, c.top + 0.8) - REFE - OUT_DROP;
+    const dOut = Math.max(IX0 - c.x, c.x - (IX0 + IWM), IZ0 - c.z, c.z - (IZ0 + IWM), 0);   // ht-riverwater v1: lift the ribbon by up to OUT_DROP near the block (tapering over 200 m) so it meets the in-block water at the seam
+    const y = Math.max(c.bed + add, c.top + 0.8) - REFE - OUT_DROP + OUT_DROP * Math.max(0, 1 - dOut / 200);
     p.push(c.x - dz * w, y, c.z + dx * w, c.x + dz * w, y, c.z - dx * w); uv.push(c.x - dz * w, c.z + dx * w, c.x + dz * w, c.z - dx * w);
     if (prev !== null) { const q = 2 * prev; ix.push(q, q + 1, 2 * n, q + 1, 2 * n + 1, 2 * n); } prev = n; n++;
   }
@@ -568,12 +601,31 @@ const BAKED_BUILDINGS = {"elements":[{"id":1,"geometry":[{"lon":-85.80901,"lat":
 async function loadBuildings() {
   const w = lonOfX(IX0), e = lonOfX(IX0 + IWM), n = latOfZ(IZ0), s = latOfZ(IZ0 + IWM);
   setLoad('buildings', 'loading');   let j = (typeof BAKED_BUILDINGS !== 'undefined' && BAKED_BUILDINGS && BAKED_BUILDINGS.elements && BAKED_BUILDINGS.elements.length) ? BAKED_BUILDINGS : null;   if (!j) { setLoad('buildings', 'not available'); return; }
+  // ht-riverwater v1: never render a building in the river. Wait (bounded)
+  // for the ground flood, then test footprints against its wet cells at the
+  // median-flow level - the same water the scene itself renders. If the
+  // rivers failed to load, wetRef stays null and nothing is filtered.
+  for (let w8 = 0; w8 < 60 && !floodsReady.ground; w8++) await new Promise((r) => setTimeout(r, 500));
+  let wetRef = null; const cellM = IWM / (NI - 1);
+  if (floodsReady.ground && gWater.flood) { wetRef = new Uint8Array(NI * NI); const med = flowsSorted[flowsSorted.length >> 1]; gWater.flood.fill(dHof(med) || 0, wetRef); if (curDH != null) gWater.setLevel(curDH); }
+  const inWater = (pts) => { if (!wetRef) return false;
+    const smp = []; let cx = 0, cz = 0;
+    for (let k = 0; k < pts.length; k++) { const [x1, z1] = pts[k], [x2, z2] = pts[(k + 1) % pts.length]; cx += x1; cz += z1; smp.push([x1, z1]);
+      const L = Math.hypot(x2 - x1, z2 - z1), n = Math.floor(L / 10); for (let s2 = 1; s2 < n; s2++) smp.push([x1 + (x2 - x1) * s2 / n, z1 + (z2 - z1) * s2 / n]); }
+    smp.push([cx / pts.length, cz / pts.length]);
+    let wet = 0;
+    for (const [x, z] of smp) { const i = Math.round((x - IX0) / cellM), jj = Math.round((z - IZ0) / cellM); if (i < 0 || jj < 0 || i >= NI || jj >= NI) continue;
+      if (wetRef[jj * NI + i]) wet++; }
+    const cc = smp[smp.length - 1], ci = Math.round((cc[0] - IX0) / cellM), cj = Math.round((cc[1] - IZ0) / cellM);
+    const centroidWet = ci >= 0 && cj >= 0 && ci < NI && cj < NI && !!wetRef[cj * NI + ci];
+    return centroidWet || wet >= 4 || wet >= Math.ceil(smp.length * 0.3); };
   const geos = []; const tmp = new THREE.Color(); let count = 0;
   for (const el of j.elements || []) {
     if (!el.geometry || el.geometry.length < 4 || count > 30000) continue;
     const t = el.tags || {}; let h = parseFloat(t.height); if (!(h > 0)) { const lv = parseFloat(t['building:levels']); h = lv > 0 ? lv * 3.3 : ({ house: 6, residential: 7, detached: 6, garage: 3, shed: 3, apartments: 14, commercial: 9, retail: 7, industrial: 10, warehouse: 9, office: 16, church: 12, school: 9 })[t.building] || 7; }
     const pts = el.geometry.map((g) => [mx(g.lon), mz(g.lat)]); if (pts.length > 2 && pts[0][0] === pts[pts.length - 1][0] && pts[0][1] === pts[pts.length - 1][1]) pts.pop();
     if (pts.length < 3 || !pts.every(([x, z]) => inInner(x, z, 2))) continue;
+    if (inWater(pts)) continue;   // ht-riverwater v1
     const base = Math.min(...pts.map(([x, z]) => elevGround(x, z))) - REFE - 0.5, top = base + 0.5 + h;
     const p = [], ix = []; const m = pts.length;
     for (let k = 0; k < m; k++) { const [x1, z1] = pts[k], [x2, z2] = pts[(k + 1) % m]; const b0 = p.length / 3; p.push(x1, base, z1, x2, base, z2, x2, top, z2, x1, top, z1); ix.push(b0, b0 + 2, b0 + 1, b0, b0 + 3, b0 + 2); }
@@ -611,9 +663,24 @@ function initTableFlood() {
   const bed = bedSeq(raw), seeds = []; ks.forEach((k, n) => { if (k >= 0 && bed[n] != null) seeds.push({ k, bed: bed[n] }); });
   tWater.flood = new Flood(NV, tElev, WM / (NV - 1), seeds, 8000); floodsReady.table = true;
   ribbonPts = []; let last = null;
-  smp.forEach(([x, z], n) => { if (n % 2) return; const ok = !inInner(x, z, -20) && Math.abs(x) < WM / 2 && Math.abs(z) < WM / 2 && bed[n] != null;
+  smp.forEach(([x, z], n) => { const ok = !inInner(x, z, -20) && Math.abs(x) < WM / 2 && Math.abs(z) < WM / 2 && bed[n] != null;   /* ht-riverwater v1: ribbon point every 60 m (was every 120 m) so the strip starts closer to the block edge */
     if (!ok) { if (last !== 'brk') ribbonPts.push({ brk: true }); last = 'brk'; return; } ribbonPts.push({ x, z, bed: bed[n], top: elevGround(x, z) }); last = 'pt'; });
   levelDirty = true;
+}
+function htCutSkirt() {   // ht-riverwater v1: open the block skirt where the river crosses it, so the water flows through instead of running into the curtain
+  const sk = groundRoot.children.find((m) => m.name === 'htSkirt'); if (!sk || !PATHM || !gWater.flood) return;
+  const F = gWater.flood, med = flowsSorted[flowsSorted.length >> 1], wet = new Uint8Array(NI * NI); F.fill(dHof(med) || 0, wet);
+  const pos = sk.geometry.attributes.position, nv = pos.count / 2, ix = [];
+  const dPath = (x, z) => { let bd = Infinity; for (let k = 1; k < PATHM.length; k++) { const [ax, az] = PATHM[k - 1], [bx, bz] = PATHM[k];
+    const dx = bx - ax, dz = bz - az, L2 = dx * dx + dz * dz || 1; let t = ((x - ax) * dx + (z - az) * dz) / L2; t = Math.max(0, Math.min(1, t));
+    const d = Math.hypot(x - (ax + dx * t), z - (az + dz * t)); if (d < bd) bd = d; } return bd; };
+  for (let n = 1; n < nv; n++) { const a = 2 * (n - 1);
+    const mxp = (pos.getX(a) + pos.getX(a + 2)) / 2, mzp = (pos.getZ(a) + pos.getZ(a + 2)) / 2, topY = Math.min(pos.getY(a), pos.getY(a + 2));
+    const ci = Math.max(0, Math.min(NI - 1, Math.round((mxp - IX0) / (IWM / (NI - 1))))), cj = Math.max(0, Math.min(NI - 1, Math.round((mzp - IZ0) / (IWM / (NI - 1)))));
+    const wse = F.wse[cj * NI + ci];
+    if (!(dPath(mxp, mzp) < 55 && !isNaN(wse) && topY < wse - REFE + 9)) ix.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+  sk.geometry.setIndex(ix);
+  if (curDH != null) gWater.setLevel(curDH);
 }
 function initGroundFlood() {
   if (floodsReady.ground || !PATHM || !iDEM) return;
@@ -623,7 +690,7 @@ function initGroundFlood() {
     let m = Infinity; for (let b = -2; b <= 2; b++) for (let a = -2; a <= 2; a++) { const ii = i + a, jj = j + b; if (ii >= 0 && jj >= 0 && ii < NI && jj < NI) m = Math.min(m, iElev[jj * NI + ii]); }
     raw.push(m); ks.push(j * NI + i); }
   const bed = bedSeq(raw), seeds = []; ks.forEach((k, n) => { if (k >= 0 && bed[n] != null) seeds.push({ k, bed: bed[n] }); });
-  gWater.flood = new Flood(NI, iElev, IWM / (NI - 1), seeds, 2500); gWater.pathLen = inside * 4; floodsReady.ground = true;
+  gWater.flood = new Flood(NI, iElev, IWM / (NI - 1), seeds, 2500); gWater.pathLen = inside * 4; floodsReady.ground = true; htCutSkirt();
   levelDirty = true; placeViews();
 }
 
@@ -903,16 +970,18 @@ async function loadInnerLayer(name) {
 }
 
 // ------------------------------------------------------------------ water level (render loop)
+const HT_COL = W_CLEAR.clone(), HT_FCC = new THREE.Color(); let htLastSet = null, htSince = 0;   // ht-smooth v2: hoisted per-frame temps + water-rebuild throttle state
 function updateLevel(dt) {
   const q = shownQ(), tgt = q == null ? null : dHof(q);
   const t = Math.max(0, Math.min(1, (lq(q || qmin) - 0.55) / 0.45));
-  const col = W_CLEAR.clone().lerp(W_MUD, t); if (FC.on) col.lerp(new THREE.Color(COL[S2.model % COL.length]), 0.35);
+  const col = HT_COL.copy(W_CLEAR).lerp(W_MUD, t); if (FC.on) col.lerp(HT_FCC.set(COL[S2.model % COL.length]), 0.35);
   for (const m of [tWaterMat, gWaterMat, ribbonMat]) m.color.copy(col);
   if (tgt == null) return;
   if (curDH == null) curDH = tgt;
   const prev = curDH; curDH += (tgt - curDH) * Math.min(1, dt * 4); if (Math.abs(curDH - tgt) < 0.01) curDH = tgt;
   const W = S2.mode === 'ground' ? gWater : tWater;
-  if (Math.abs(curDH - prev) > 0.004 || levelDirty) {
+  htSince += dt;   // ht-smooth v2: rebuild the water surface at most every 50 ms while the level moves (was: every frame - each rebuild is a 148k-cell flood fill + full geometry rewrite + ribbon rebuild); always rebuild when dirty and once on the settled value
+  if (levelDirty || htLastSet === null || (htSince >= 0.05 && htLastSet !== curDH) || (curDH === tgt && htLastSet !== curDH)) { htSince = 0; htLastSet = curDH;
     W.setLevel(curDH);
     if (S2.mode === 'ground') { const wid = gWater.flood && gWater.pathLen ? Math.max(15, Math.min(4000, gWater.wetCount * (IWM / (NI - 1)) ** 2 / gWater.pathLen * 0.85)) : 60; buildRibbon(curDH, wid); }
     if (gGaugeLabel) gGaugeLabel.position.y = 30 + Math.max(0, curDH);
@@ -2105,6 +2174,7 @@ let acc = 0, stickT = 0, turnT = 0, flowT = 0; const clock = new THREE.Clock();
 const fwd = new THREE.Vector3();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(0.1, clock.getDelta());
+  htAdapt(dt);
   if (S2.playing) { acc += dt * 6; while (acc >= 1) { acc -= 1; setDay(S2.day + 1 >= D.n ? 0 : S2.day + 1); } }
   if (FC.on) { const prevL = Math.round(FC.t);
     if (FC.t < 7 && fcQ(Math.min(7, Math.floor(FC.t) + 1)) != null) FC.t = Math.min(7, FC.t + dt / 1.1); else FC.hold += dt;
@@ -5494,12 +5564,12 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 <!-- ht-lazypanels v1 -->
-<div id="htlp-bar" class="htlp-bar3d" role="group" aria-label="Station panels"><span class="htlp-t">PANELS</span><button type="button" class="htlp-btn" aria-pressed="false">Daily forecast</button><button type="button" class="htlp-btn" aria-pressed="false">Weekly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Monthly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Yearly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Confidence interval</button><button type="button" class="htlp-btn" aria-pressed="false">Model drift</button></div>
+<div id="htlp-bar" class="htlp-bar3d" role="group" aria-label="Station panels"><span class="htlp-t">PANELS</span><button type="button" class="htlp-btn" aria-pressed="false">Daily forecast</button><button type="button" class="htlp-btn" aria-pressed="false">Weekly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Monthly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Yearly outlook</button><button type="button" class="htlp-btn" aria-pressed="false">Confidence interval</button><button type="button" class="htlp-btn" aria-pressed="false">Model drift</button><button type="button" class="htlp-btn" aria-pressed="false">Features affecting flow</button></div>
 <script>
 // ht-lazypanels v1 loader: run each panel's gated boot scripts on its
 // first button click only; later clicks just toggle visibility.
 (function () {
-  var CFG = {"mode": "3d", "panels": [{"panel": "dock", "label": "Daily forecast", "group": null, "daily": true}, {"panel": "htwk-panel", "label": "Weekly outlook", "group": "weekly"}, {"panel": "htmo-panel", "label": "Monthly outlook", "group": "monthly"}, {"panel": "htyr-panel", "label": "Yearly outlook", "group": "yearly"}, {"panel": "ht-dacp-panel", "label": "Confidence interval", "group": "dacp"}, {"panel": "ht-drift-panel", "label": "Model drift", "group": null}]};
+  var CFG = {"mode": "3d", "panels": [{"panel": "dock", "label": "Daily forecast", "group": null, "daily": true}, {"panel": "htwk-panel", "label": "Weekly outlook", "group": "weekly"}, {"panel": "htmo-panel", "label": "Monthly outlook", "group": "monthly"}, {"panel": "htyr-panel", "label": "Yearly outlook", "group": "yearly"}, {"panel": "ht-dacp-panel", "label": "Confidence interval", "group": "dacp"}, {"panel": "ht-drift-panel", "label": "Model drift", "group": null}, {"panel": "htfi-panel", "label": "Features affecting flow", "group": "featimp"}]};
   var ran = {};
   function runGroup(group) {
     if (!group || ran[group]) return; ran[group] = true;
@@ -5791,6 +5861,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 </script>
 
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -5829,6 +5900,64 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   </div>
 </div>
 <script>document.getElementById('htd-toggle').addEventListener('click',function(){var b=document.getElementById('htd-body');var h=b.style.display==='none';b.style.display=h?'':'none';this.textContent=h?'–':'+';});</script>
+
+<script type="text/plain" data-htlp-boot="featimp">
+// ht-featimp v1 boot: build the floating feature-importance panel and
+// fill it from the station's XGBoost sidecar (gated behind the panel
+// button bar by ht-lazypanels, like the other satellite panels).
+{
+  const m = location.pathname.match(/USGS-(\d+)-3d\.html/);
+  if (m && !document.getElementById('htfi-panel')) {
+    const css = '#htfi-panel{position:fixed;right:12px;top:118px;z-index:9997;width:min(430px,94vw);max-height:76vh;overflow:auto;background:rgba(12,18,28,.94);color:#e8eef5;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px 16px;font:12.5px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.45)}'
+      + '#htfi-panel .htfi-t{font-weight:700;color:#8FC1F2;font-size:13.5px;margin-bottom:2px}'
+      + '#htfi-panel .htfi-note{font-size:11.5px;color:#9FB3C8;margin:0 0 8px}'
+      + '.htfi-row{display:flex;align-items:center;gap:8px;margin:5px 0}    .htfi-lab{flex:0 0 248px;font-size:12px;color:#E6EDF5}    .htfi-src{display:inline-block;font-size:9.5px;font-weight:700;color:#0B1520;border-radius:4px;padding:0 5px;margin-left:4px;vertical-align:1px}    .htfi-track{flex:1;height:13px;background:#16222F;border-radius:4px;overflow:hidden}    .htfi-fill{height:100%;border-radius:4px}    .htfi-pct{flex:0 0 46px;font-size:12px;color:#9FB3C8;text-align:right;font-family:Arial}    .htfi-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:11px;color:#9FB3C8}    .htfi-dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}    .htfi-meta{font-size:11.5px;color:#9FB3C8;margin:8px 0 0}    .htfi-loading{color:#9FB3C8;font-size:13px;padding:10px 0}    @media (max-width:700px){.htfi-lab{flex-basis:150px}}';
+    const st = document.createElement('style'); st.textContent = css;
+    document.head.appendChild(st);
+    const panel = document.createElement('div'); panel.id = 'htfi-panel';
+    panel.innerHTML = '<div class="htfi-t">Features affecting discharge flow</div>'
+      + '<p class="htfi-note">XGBoost model trained per station on the combined daily record (USGS flow, Open-Meteo weather, NRCS soil, SNOTEL snow, 2016\u20132026); bars are gain-importance shares.</p>'
+      + '<div class="htfi-loading" role="status">Loading feature importances\u2026</div><div class="htfi-chart"></div>';
+    document.body.appendChild(panel);
+    (async () => {
+      const loading = panel.querySelector('.htfi-loading');
+      try {
+        const resp = await fetch('../featimp/' + m[1] + '.json');
+        if (!resp.ok) throw new Error('sidecar ' + resp.status);
+        const d = await resp.json();
+        const SRC_COLORS = { 'USGS': '#4EA8E0', 'Open-Meteo': '#E8A33D', 'Soil': '#7FB069', 'Snow': '#A8D8EA' };
+    const render = (root, d) => {
+      const feats = (d.features || []).slice(0, 15);
+      const max = Math.max.apply(null, feats.map((f) => f.share).concat([0.0001]));
+      let html = '';
+      for (const f of feats) {
+        const c = SRC_COLORS[f.source] || '#9FB3C8';
+        const pct = (f.share * 100).toFixed(1);
+        const w = Math.max(1.5, f.share / max * 100);
+        html += '<div class="htfi-row">'
+          + '<div class="htfi-lab">' + f.name + (f.unit ? ' (' + f.unit + ')' : '')
+          + ' <span class="htfi-src" style="background:' + c + '">' + f.source + '</span></div>'
+          + '<div class="htfi-track"><div class="htfi-fill" style="width:' + w.toFixed(1) + '%;background:' + c + '"></div></div>'
+          + '<div class="htfi-pct">' + pct + '%</div></div>';
+      }
+      const legend = Object.keys(SRC_COLORS).map((k) =>
+        '<span class="htfi-leg"><span class="htfi-dot" style="background:' + SRC_COLORS[k] + '"></span>' + k + '</span>').join('');
+      html += '<div class="htfi-legend">' + legend + '</div>'
+        + '<p class="htfi-meta">' + d.model + ' &middot; test R&sup2; ' + d.test_r2_log.toFixed(2)
+        + ' (log flow) &middot; trained on ' + d.n_train.toLocaleString('en-US') + ' days, '
+        + d.data + '.</p>';
+      return html;
+    };
+        panel.querySelector('.htfi-chart').innerHTML = render(panel, d);
+        loading.hidden = true;
+      } catch (e) {
+        loading.textContent = 'Feature importances unavailable: ' + e.message;
+        console.error(e);
+      }
+    })();
+  }
+}
+</script>
 <script>
 /* ht-loadmodel v1 - "Load new model": hot-load the latest published
  * weights from the hydrotwin-models Pages source into the open page.
