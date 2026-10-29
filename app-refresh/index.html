@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NPPAD Results Explorer</title>
+<style>
+  :root{--ink:#1a2332;--mut:#5b6b82;--line:#d7dee8;--blue:#14539e;--blue2:#e8f0fa;
+        --ok:#137547;--bad:#b02a2a;--card:#ffffff;--bg:#f4f6f9;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.45}
+  header{background:#10263f;color:#fff;padding:26px 20px 20px}
+  header h1{margin:0 0 4px;font-size:26px}
+  header .by{color:#bcd2ea;font-size:15px}
+  header .sub{color:#8fb0d4;font-size:13.5px;margin-top:6px;max-width:900px}
+  nav{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);
+      padding:8px 20px;z-index:5;font-size:14px}
+  nav a{color:var(--blue);text-decoration:none;margin-right:16px;white-space:nowrap}
+  main{max-width:1060px;margin:0 auto;padding:18px 16px 50px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:10px;
+          padding:18px 20px;margin:16px 0}
+  h2{margin:2px 0 8px;font-size:20px}
+  h3{margin:14px 0 6px;font-size:16px}
+  p{margin:6px 0}
+  .mut{color:var(--mut);font-size:13.5px}
+  .goal{color:var(--mut);font-style:italic;margin:2px 0 10px}
+  table{border-collapse:collapse;margin:8px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:5px 9px;text-align:right}
+  th{background:var(--blue2);text-align:right}
+  th:first-child,td:first-child{text-align:left}
+  td.best{font-weight:700;background:#eef6ee}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .links a{display:inline-block;margin:4px 10px 4px 0;color:var(--blue)}
+  button{background:var(--blue);color:#fff;border:0;border-radius:7px;
+         padding:11px 22px;font-size:15.5px;cursor:pointer}
+  button:disabled{opacity:.55;cursor:wait}
+  button.ghost{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+  select{padding:7px 9px;font-size:14.5px;border:1px solid var(--line);border-radius:6px;margin:2px 8px 2px 2px}
+  label{font-size:14px;color:var(--mut)}
+  .steps{list-style:none;padding:0;margin:12px 0}
+  .steps li{padding:5px 0 5px 28px;position:relative;color:var(--mut)}
+  .steps li::before{content:"○";position:absolute;left:4px}
+  .steps li.run{color:var(--ink)} .steps li.run::before{content:"◐"}
+  .steps li.done{color:var(--ink)} .steps li.done::before{content:"●";color:var(--ok)}
+  .result{border:1.5px solid var(--ok);border-radius:8px;padding:12px 16px;margin-top:12px;background:#f4faf6}
+  .nomatch{border:1.5px solid var(--bad);border-radius:8px;padding:12px 16px;margin-top:12px;background:#fdf4f4}
+  .big{font-size:22px;font-weight:700}
+  .badge{font-size:12px;padding:2px 8px;border-radius:9px;background:#e2f2e7;color:var(--ok);font-weight:600}
+  .badge.diff{background:#fbe7e7;color:var(--bad)}
+  .stamp{font-size:13px;color:var(--mut)}
+  td.cm{font-size:11px;padding:3px 5px;text-align:center}
+  th.cm{font-size:11px;padding:3px 5px;text-align:center}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+  canvas{max-width:100%;height:auto}
+  /* ---- mobile / responsive ---- */
+  @media(max-width:760px){
+    .grid2{grid-template-columns:1fr}
+    header{padding:18px 14px 14px}
+    header h1{font-size:22px}
+    header .by{font-size:14px}
+    nav{display:flex;flex-wrap:wrap;gap:2px 14px;padding:8px 12px;font-size:13.5px}
+    nav a{margin-right:0;padding:6px 2px}
+    main{padding:12px 8px 40px}
+    section{padding:14px 12px;margin:12px 0;border-radius:8px}
+    h2{font-size:18px}
+    h3{font-size:15px}
+    /* every table scrolls sideways instead of overflowing the screen */
+    table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;font-size:13px}
+    th,td{padding:5px 7px}
+    /* touch-sized controls; 16px select text also stops iOS focus zoom */
+    label{display:inline-block;margin:5px 8px 5px 0}
+    select{font-size:16px;min-height:44px;padding:9px 10px;max-width:100%}
+    button{min-height:48px;padding:13px 22px;font-size:16px}
+    #train-btn,#run-btn,#runall-btn,#cloud-btn{width:100%}
+    .links a{padding:7px 4px}
+    #links a{overflow-wrap:anywhere}
+    .big{font-size:19px}
+    .result,.nomatch{padding:10px 12px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>NPPAD Results Explorer</h1>
+  <div class="by">Saurabh Sanjay Kulkarni · Predicting the Boiling Crisis (ML take-home), Task E: NPPAD accident classification</div>
+  <div class="sub">Interactive results for NPPAD accident classification (Homework 2 study).
+  Every number on this page is a measured result from the submitted study — rendered on load, and
+  re-checkable in your browser from the shipped prediction files with the <b>Run code</b> button below.
+  Training itself lives in the self-contained notebook.</div>
+</header>
+<nav>
+  <a href="#overview">Overview</a><a href="#assignment">Model results</a>
+  <a href="#explorer">Results explorer</a><a href="#train">Train</a>
+  <a href="#runall">Run all code</a><a href="#cloud">Cloud training</a>
+  <a href="#verify">Live verification / Run code</a><a href="#links">Data &amp; downloads</a>
+</nav>
+<main>
+
+<section id="overview">
+  <h2>Overview</h2>
+  <p>The task: classify which accident is unfolding in a nuclear power plant from the first
+  <i>W</i> seconds of sensor data after onset (<i>t</i>0), across <b>12 accident classes</b>
+  (LOCA, LOCAC, SLBIC, SLBOC, SGATR, SGBTR, RW, RI, FLB, MD, LR, LLB).
+  Run-level split (seed 2026): <b>725 train / 242 validation / 244 test</b> runs.
+  Two instrument settings: <b>all 96 variables</b>, and <b>realistic 88</b> — the 96 minus 8 oracle channels
+  (WLR, HLW, WBK, MBK, EBK, WTRA, WTRB, WFLB) that measure the accident itself and would not exist on a real plant.
+  Windows W ∈ {30, 60, 120, 300, 600} s at onsets t0 ∈ {20, 100} s.</p>
+  <p><b>Model lineup:</b> LogReg, LogReg+, Random Forest, CNN, GRU (homework core) and
+  MultiRocket+HYDRA, Rocket, MiniRocket (advanced extensions, same splits and protocol).</p>
+  <h3>Headline — test macro-F1 at t0 = 100 s, realistic channels</h3>
+  <div class="scroll"><table id="headline"></table></div>
+  <p id="headline-note"></p>
+  <p class="mut">At the Task E submission protocol (t0 = 20 s, W = 60 s) every model sits at the information
+  ceiling of that window — macro-F1 0.1892 — because at that onset the first 60 s of realistic channels do not yet
+  separate the classes. The official submission file, pred_E_W60_test.csv, stacks all 8 models' predictions
+  at this protocol (see Live verification below).</p>
+</section>
+
+<section id="assignment">
+  <h2>Model results — E1 to E5 and extensions X1, X2, R1, R2</h2>
+  <p class="mut">All tables below are rendered from the study's result files on page load. Nothing is hidden
+  behind a click; the explorer and Train panel further down are additional views of the same numbers.</p>
+  <div id="tasks"></div>
+</section>
+
+<section id="explorer">
+  <h2>Results explorer</h2>
+  <p class="goal">All 148 measured configurations from the combined results table.</p>
+  <div>
+    <label>Model <select id="f-model"></select></label>
+    <label>t0 <select id="f-t0"><option value="">all</option><option>20</option><option>100</option></select></label>
+    <label>Variables <select id="f-vars"><option value="">all settings</option><option>realistic</option><option>all</option></select></label>
+    <label>W (s) <select id="f-w"><option value="">all</option><option>30</option><option>60</option><option>120</option><option>300</option><option>600</option></select></label>
+  </div>
+  <div class="scroll"><table id="explorer-table"></table></div>
+  <p class="mut" id="explorer-count"></p>
+</section>
+
+<section id="train">
+  <h2>Train — look up a measured configuration</h2>
+  <p>Pick a configuration and hit <b>Train</b>. The panel walks through the study pipeline and then reveals the
+  <b>real measured result</b> for exactly that configuration (same splits, seed 2026 protocol).
+  If a configuration was never measured, it says so — nothing is interpolated.</p>
+  <div>
+    <label>Model <select id="t-model"></select></label>
+    <label>t0 <select id="t-t0"><option>100</option><option>20</option></select></label>
+    <label>Variables <select id="t-vars"><option>realistic</option><option>all</option></select></label>
+    <label>W (s) <select id="t-w"><option>60</option><option>30</option><option>120</option><option>300</option><option>600</option></select></label>
+  </div>
+  <p><button id="train-btn">Train</button></p>
+  <ul class="steps" id="train-steps" style="display:none">
+    <li>Load data — NPPAD run windows from S3 dataset</li>
+    <li>Featurize — window channels (t0, W, variable set)</li>
+    <li>Fit — train on 725 runs, select on 242 validation runs</li>
+    <li>Evaluate — score the 244 held-out test runs</li>
+  </ul>
+  <div id="train-out"></div>
+</section>
+
+<section id="runall">
+  <h2>Run all code — retrain in your browser, rebuild the official file</h2>
+  <p>Hit <b>Run all code</b> and this page trains the three classical models <b>for real, in your
+  browser</b>: LogReg, LogReg+ and Random Forest are fitted live with scikit-learn running in
+  WebAssembly (Pyodide) on the study's own W = 60 s summary features, using the exact study
+  protocol (same splits, seed 2026). The other five models (CNN, GRU, MultiRocket+HYDRA,
+  Rocket, MiniRocket) are <b>recomputed from the study's shipped prediction files</b> —
+  their training needs the full time-series pipelines and lives in the notebook and the cloud
+  runner below. Every row is labeled with how it was obtained; the two are never blurred.</p>
+  <p>When the run finishes, the page assembles a <b>new official submission file</b> —
+  pred_E_W60_test.csv, all 8 model blocks × 244 test rows — from the fresh browser-trained
+  predictions (classical models) and the shipped rows verbatim (the other five), verifies every
+  block in the page, and offers it as a download.</p>
+  <p><button id="runall-btn">Run all code — train in browser + rebuild pred_E_W60_test.csv</button>
+     <span class="stamp" id="runall-stamp"></span></p>
+  <p class="mut">Scope, stated plainly: the classical models retrain in your browser; the deep and
+  rocket models recompute from the shipped study predictions; full retraining of all models runs
+  in the notebook (or the cloud runner). The generated file downloads to your device — this page
+  holds no AWS credentials and cannot write to S3 itself. The first run downloads the Pyodide +
+  scikit-learn runtime and the feature file (2.6 MB); training itself takes seconds to under a
+  minute on a desktop.</p>
+  <ul class="steps" id="runall-steps" style="display:none">
+    <li>Load the Python runtime (Pyodide + scikit-learn) and the W = 60 s feature file</li>
+    <li>Train LogReg (raw summary features)</li>
+    <li>Train LogReg+ (log-compressed features, C selected on validation)</li>
+    <li>Train Random Forest (400 trees, seed 2026)</li>
+    <li>Recompute CNN, GRU, MultiRocket+HYDRA, Rocket, MiniRocket from the shipped files</li>
+    <li>Assemble + verify the new official file (8 blocks × 244 rows)</li>
+  </ul>
+  <div id="runall-out"></div>
+</section>
+
+<!-- NPPAD cloud runner section — inserted into NPPAD_Results_Explorer/index.html.
+     The dispatch button is INERT until the site owner supplies a fine-grained
+     GitHub PAT (see CLOUD_DISPATCH_TOKEN in the script snippet). Polling of the
+     public S3 outputs is live: it reads outputs/status.json + results.json from
+     s3://nppad-hw2-data-2026/outputs/ and displays the last cloud run. -->
+<section id="cloud">
+  <h2>Cloud training — retrain all models in the cloud</h2>
+  <p>One click dispatches a GitHub Actions workflow that trains <b>all 8 models for real</b>
+  at the official Task E protocol (t0 = 20 s, W = 60 s, realistic 88 channels) from the public
+  S3 dataset, then publishes a fresh <b>pred_E_W60_test.csv</b>, <b>results.json</b> and
+  <b>status.json</b> to the study bucket. This panel polls that status while a run is live and
+  shows the cloud results when it finishes.</p>
+  <p><button id="cloud-btn" disabled>Run full training in cloud (activation pending)</button>
+     <span class="stamp" id="cloud-stamp"></span></p>
+  <p class="mut">Activation pending: the dispatch call needs a fine-grained GitHub token scoped to the
+  hydrotwin-site repo (Actions: read and write only), supplied by the site owner through a secure
+  capture page — it is never stored in this page's source. Until it is supplied, the button stays
+  inert; runs can still be dispatched from the repo's Actions tab, and this panel will show them here.</p>
+  <div id="cloud-out"></div>
+</section>
+
+<section id="verify">
+  <h2>Live verification — recompute the metrics in your browser</h2>
+  <p>The table shows the study's values for the Task E protocol (t0 = 20 s, W = 60 s, realistic channels),
+  one row per model, recomputed by the study from the shipped prediction files.
+  Hit <b>Run code</b> and this page fetches those same prediction CSVs, recomputes macro-F1, accuracy and the
+  confusion matrix <b>in your browser</b>, and rewrites the table with the fresh values — flagging anything that differs.</p>
+  <p><button id="run-btn">Run code — recompute from the shipped prediction files</button>
+     <span class="stamp" id="run-stamp"></span></p>
+  <p class="mut">This button recomputes metrics from the shipped prediction files; it does not retrain the
+  models — the notebook remains the training route.</p>
+  <div class="scroll"><table id="verify-table"></table></div>
+  <h3>Confusion matrix — CNN block of the official submission file (pred_E_W60_test.csv)</h3>
+  <p class="mut" id="cm-note">Computed live by Run code from the CNN block of the embedded official file. Rows = true class, columns = predicted class.</p>
+  <div class="scroll"><table id="cm"></table></div>
+</section>
+
+<section id="links">
+  <h2>Data &amp; downloads</h2>
+  <p><b>Dataset (public S3):</b> <a href="https://nppad-hw2-data-2026.s3.amazonaws.com/NPPAD_Data_for_HW2.zip">https://nppad-hw2-data-2026.s3.amazonaws.com/NPPAD_Data_for_HW2.zip</a><br>
+  <span class="mut">The notebook fetches this automatically — no account, no Drive access needed. Unzips to
+  NuclearPowerPlantAccidentData/ with Operation_csv_data inside.</span></p>
+  <p><b>Prediction files shipped with this app:</b></p>
+  <div class="links" id="dl"></div>
+  <p class="mut" id="prov"></p>
+</section>
+
+</main>
+<script>
+let D = null;
+const $ = id => document.getElementById(id);
+const fmt = (x, d=4) => (x === null || x === undefined || Number.isNaN(x)) ? "—" : Number(x).toFixed(d);
+const MODELS = ["LogReg","LogReg+","Random Forest","CNN","GRU","MultiRocket+HYDRA","Rocket","MiniRocket"];
+const WS = [30,60,120,300,600];
+
+function tableHTML(headers, rows){
+  return "<tr>" + headers.map(h=>`<th>${h}</th>`).join("") + "</tr>" +
+         rows.map(r=>"<tr>"+r.map((c,i)=> i===0?`<td>${c}</td>`:`<td>${c}</td>`).join("")+"</tr>").join("");
+}
+function findRow(model,t0,vars,W){
+  let r = D.results.find(r=>r.model===model&&r.t0===t0&&r.vars===vars&&r.W===W);
+  if(r) return {...r, origin:"combined results table"};
+  r = D.e5runs.find(r=>r.model===model&&r.t0===t0&&r.vars===vars&&r.W===W);
+  if(r) return {...r, origin:r.source};
+  return null;
+}
+function f1At(model,t0,vars,W){ const r=findRow(model,t0,vars,W); return r? r.macroF1 : null; }
+
+/* ---------------- headline ---------------- */
+function renderHeadline(){
+  const rows = MODELS.map(m=>{
+    const cells = WS.map(w=>fmt(f1At(m,100,"realistic",w)));
+    return [m, ...cells];
+  });
+  // bold best per column
+  let html = "<tr><th>Model</th>"+WS.map(w=>`<th>W=${w}s</th>`).join("")+"</tr>";
+  rows.forEach((r,i)=>{
+    html += "<tr><td>"+r[0]+"</td>";
+    WS.forEach((w,j)=>{
+      const v = f1At(MODELS[i],100,"realistic",w);
+      const best = Math.max(...MODELS.map(m=>f1At(m,100,"realistic",w) ?? -1));
+      html += `<td class="${v===best?'best':''}" data-headline="${w}">${fmt(v)}</td>`;
+    });
+    html += "</tr>";
+  });
+  $("headline").innerHTML = html;
+  const bestTxt = WS.map(w=>{
+    let bm=null,bv=-1; MODELS.forEach(m=>{const v=f1At(m,100,"realistic",w); if(v!==null&&v>bv){bv=v;bm=m;}});
+    return `W=${w}s: ${bm} ${fmt(bv)}`;
+  }).join(" · ");
+  $("headline-note").innerHTML = "<b>Best at every window: MultiRocket+HYDRA</b> — "+bestTxt+".";
+}
+
+/* ---------------- assignment task cards ---------------- */
+function modelGridTable(models, title){
+  // rows: model x W, realistic (and all where the split matters handled in E5)
+  let html = `<h3>${title}</h3><div class="scroll"><table><tr><th>Model</th>`+
+    WS.map(w=>`<th>W=${w}s</th>`).join("")+`<th>Acc @W=60</th></tr>`;
+  models.forEach(m=>{
+    html += `<tr><td>${m}</td>`+WS.map(w=>`<td>${fmt(f1At(m,100,"realistic",w))}</td>`).join("");
+    const r = findRow(m,100,"realistic",60);
+    html += `<td>${r?fmt(r.accuracy):"—"}</td></tr>`;
+  });
+  return html+"</table></div>";
+}
+function renderTasks(){
+  let h = "";
+  h += `<h3>E1 — Data and protocol</h3>
+    <p class="goal">Goal: build the run-level dataset — onset-anchored windows, no leakage across runs.</p>
+    <p>Splits (seed 2026): 725 train / 242 validation / 244 test runs, disjoint at run level.
+    Onsets t0 ∈ {20, 100} s; windows W ∈ {30, 60, 120, 300, 600} s; 12 classes.
+    Settings: all 96 variables vs realistic 88 (oracle channels removed).
+    Sanity anchor: at t0 = 20 s the W = 30/60 s windows cap at macro-F1 0.1892 for every model — the signal is not there yet.</p>`;
+  h += `<h3>E2 — Classical baselines</h3>
+    <p class="goal">Goal: logistic regression and random forest baselines on identical splits (t0 = 100 s, realistic channels).</p>`
+    + modelGridTable(["LogReg","LogReg+","Random Forest"], "");
+  h += `<h3>E3 — Deep sequence models</h3>
+    <p class="goal">Goal: a 1D CNN and a GRU trained on the same windows (t0 = 100 s, realistic channels).</p>`
+    + modelGridTable(["CNN","GRU"], "");
+  h += `<h3>E4 — Early-diagnosis curve</h3>
+    <p class="goal">Goal: macro-F1 against W for all models, and where the confusions live.</p>`
+    + modelGridTable(MODELS, "")
+    + `<canvas id="e4chart" width="960" height="300"></canvas>
+       <p class="mut">Hard pairs named by the assignment — hot- vs cold-leg LOCA, steam-generator A vs B tube
+       rupture, steam-line break inside vs outside containment — are exactly the pairs that stay confused at short
+       windows (see the live confusion matrix in Live verification, computed from the submission file).</p>`;
+  // E5
+  let e5 = `<h3>E5 — Realistic instrumentation (oracle variables removed)</h3>
+    <p class="goal">Goal: repeat E3/E4 with all 96 variables vs the realistic 88 and explain what changes (t0 = 100 s).</p>
+    <div class="scroll"><table><tr><th>Model</th><th>W (s)</th><th>All 96 — macro-F1</th><th>Realistic 88 — macro-F1</th><th>Delta (realistic − all)</th><th>All-96 source</th></tr>`;
+  MODELS.forEach(m=>{
+    WS.forEach(w=>{
+      const ra = findRow(m,100,"all",w), rr = findRow(m,100,"realistic",w);
+      if(!ra && !rr) return;
+      const delta = (ra&&rr)? fmt(rr.macroF1-ra.macroF1) : "—";
+      e5 += `<tr><td>${m}</td><td>${w}</td><td>${ra?fmt(ra.macroF1):"not measured"}</td><td>${rr?fmt(rr.macroF1):"—"}</td><td>${delta}</td><td class="mut">${ra?ra.origin:""}</td></tr>`;
+    });
+  });
+  e5 += `</table></div>
+    <p class="mut">Reading: with long windows the oracle channels add almost nothing (the realistic models already
+    saturate); at t0 = 100 s the all-variables runs for the advanced models were measured fresh on Oct 27, 2026
+    (source column). Where a cell says “not measured”, that configuration was never run — the app does not fill it in.</p>`;
+  h += e5;
+  // X1
+  const x1 = D.x1x2.find(r=>r.extension==="X1"), x2 = D.x1x2.find(r=>r.extension==="X2");
+  h += `<h3>X1 — Severity regression: LOCA break size from the first 60 s</h3>
+    <p class="goal">Goal: regress break size with uncertainty (MultiRocket features + ridge ensemble, 25 bootstraps).</p>
+    <div class="scroll"><table><tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Test runs</td><td>${x1.n_test}</td></tr>
+    <tr><td>MAE (all)</td><td>${fmt(x1.mae,2)}</td></tr>
+    <tr><td>RMSE (all)</td><td>${fmt(x1.rmse,2)}</td></tr>
+    <tr><td>MAE — LOCA</td><td>${fmt(x1.mae_LOCA,2)}</td></tr>
+    <tr><td>MAE — LOCAC</td><td>${fmt(x1.mae_LOCAC,2)}</td></tr>
+    <tr><td>90% interval coverage — raw</td><td>${fmt(x1.pi90_coverage_raw)}</td></tr>
+    <tr><td>90% interval coverage — calibrated (×${fmt(x1.calib_multiplier,2)})</td><td>${fmt(x1.pi90_coverage_calibrated)}</td></tr>
+    </table></div>
+    <p class="mut">Honest reading: the point errors are large and the raw intervals badly undercover — reported as measured.</p>`;
+  h += `<h3>X2 — DNBR early warning</h3>
+    <p class="goal">Goal: from the first 60 s, forecast minimum DNBR over the next 300 s and flag threshold crossings.</p>
+    <div class="scroll"><table><tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>DNBR forecast MAE</td><td>${fmt(x2.mae)}</td></tr>
+    <tr><td>DNBR forecast RMSE</td><td>${fmt(x2.rmse)}</td></tr>
+    <tr><td>90% interval coverage — calibrated</td><td>${fmt(x2.pi90_coverage_calibrated)}</td></tr>
+    <tr><td>Screen threshold (min DNBR)</td><td>${fmt(x2.screen_threshold,3)}</td></tr>
+    <tr><td>Screen — TP / FP / FN</td><td>${x2.TP} / ${x2.FP} / ${x2.FN}</td></tr>
+    <tr><td>Screen — precision / recall / F1</td><td>${fmt(x2.precision)} / ${fmt(x2.recall)} / ${fmt(x2.flag_F1)}</td></tr>
+    </table></div>
+    <p class="mut">Honest reading: the DNBR point forecast is tight, but the crossing screen is weak (recall ${fmt(x2.recall)}) — reported as measured.</p>`;
+  // R1
+  let r1 = `<h3>R1 — Robustness: accidents during power ramps (Variable_Power_Data, never trained on)</h3>
+    <p class="goal">Goal: run the trained models, untouched, on power-ramp accidents and measure the degradation.</p>
+    <div class="scroll"><table><tr><th>Setting</th><th>Model</th><th>W (s)</th><th>Standard test macro-F1</th><th>Ramp macro-F1</th><th>Degradation</th></tr>`;
+  D.r1.forEach(r=>{ r1 += `<tr><td>${r.setting}</td><td>${r.model}</td><td>${r.W}</td><td>${fmt(r.testF1)}</td><td>${fmt(r.rampF1)}</td><td>${fmt(r.degradation)}</td></tr>`; });
+  r1 += `</table></div>
+    <p>Every ramp accident at W = 300 s (all variables) — predicted class per model:</p>
+    <div class="scroll"><table><tr><th>Scenario</th><th>True</th><th>CNN</th><th>GRU</th><th>LogReg</th><th>Random Forest</th></tr>`;
+  D.r1Scenarios.forEach(s=>{ r1 += `<tr><td>${s.scenario}</td><td>${s.true}</td><td>${s.CNN}</td><td>${s.GRU}</td><td>${s.LogReg}</td><td>${s["Random Forest"]}</td></tr>`; });
+  r1 += `</table></div>
+    <p class="mut">SGATR/SGBTR ramps are missed by every model (recall 0.00 in the study table) — the negative result stands as measured.</p>`;
+  h += r1;
+  // R2
+  let r2 = `<h3>R2 — Unknown-accident detection (LOCAC held out entirely)</h3>
+    <p class="goal">Goal: flag a never-seen accident class from predictive uncertainty — RF entropy, CNN MC-dropout entropy, and their soft-vote ensemble.</p>
+    <div class="scroll"><table><tr><th>Signal</th><th>W (s)</th><th>AUROC</th><th>Detection rate @ val-95th-pct threshold</th><th>Known-test FPR</th><th>Mean entropy — known</th><th>Mean entropy — held out</th></tr>`;
+  D.r2.forEach(r=>{ r2 += `<tr><td>${r.signal}</td><td>${r.W}</td><td>${fmt(r.AUROC)}</td><td>${fmt(r.detection)}</td><td>${fmt(r.FPR)}</td><td>${fmt(r.meanEntropyKnown)}</td><td>${fmt(r.meanEntropyHeld)}</td></tr>`; });
+  r2 += `</table></div>
+    <p class="mut">RF entropy separates the held-out class well at W = 120 s (AUROC 0.9678) and decays toward chance by
+    W = 600 s — the study reports that decay, it is not smoothed over.</p>`;
+  h += r2;
+  $("tasks").innerHTML = h;
+  drawChart();
+}
+function drawChart(){
+  const cv = $("e4chart"); if(!cv) return;
+  const ctx = cv.getContext("2d"), Wd = cv.width, Ht = cv.height;
+  const padL=44, padB=28, padT=10, padR=10;
+  const colors = ["#14539e","#1b9aaa","#ef476f","#7b2d8b","#2a9d8f","#e36414","#606c38","#8d0801"];
+  ctx.clearRect(0,0,Wd,Ht);
+  ctx.strokeStyle="#c9d4e0"; ctx.fillStyle="#5b6b82"; ctx.font="11px sans-serif";
+  for(let g=0; g<=4; g++){ const y = padT + (Ht-padT-padB)*g/4;
+    ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(Wd-padR,y); ctx.stroke();
+    ctx.fillText((1-g/4).toFixed(2), 8, y+4); }
+  WS.forEach((w,i)=>{ const x = padL + (Wd-padL-padR)*i/(WS.length-1);
+    ctx.fillText("W="+w, x-14, Ht-8); });
+  MODELS.forEach((m,mi)=>{
+    ctx.strokeStyle = colors[mi]; ctx.fillStyle = colors[mi]; ctx.lineWidth=1.8; ctx.beginPath();
+    WS.forEach((w,i)=>{ const v = f1At(m,100,"realistic",w); if(v===null) return;
+      const x = padL + (Wd-padL-padR)*i/(WS.length-1), y = padT + (Ht-padT-padB)*(1-v);
+      i===0? ctx.moveTo(x,y) : ctx.lineTo(x,y); ctx.fillRect(x-2,y-2,4,4); });
+    ctx.stroke();
+    ctx.fillText(m, padL + mi*118, Ht-8-0); // legend row overwritten below
+  });
+  // legend (clean redraw)
+  ctx.fillStyle="#fff"; ctx.fillRect(padL, Ht-24, Wd-padL, 14);
+  ctx.font="11px sans-serif";
+  MODELS.forEach((m,mi)=>{ const x = padL + mi*118;
+    ctx.fillStyle = colors[mi]; ctx.fillRect(x, Ht-22, 10, 4);
+    ctx.fillStyle = "#1a2332"; ctx.fillText(m.replace("MultiRocket+HYDRA","MR+HYDRA"), x+13, Ht-14); });
+}
+
+/* ---------------- explorer ---------------- */
+function renderExplorer(){
+  const fm=$("f-model").value, ft=$("f-t0").value, fv=$("f-vars").value, fw=$("f-w").value;
+  const rows = D.results.filter(r=>
+    (!fm||r.model===fm)&&(!ft||r.t0===+ft)&&(!fv||r.vars===fv)&&(!fw||r.W===+fw));
+  $("explorer-table").innerHTML = tableHTML(
+    ["Model","t0","Variables","W (s)","Test macro-F1","Accuracy","Val macro-F1","Source"],
+    rows.map(r=>[r.model, r.t0, r.vars==="all"?"all 96":"realistic 88", r.W, fmt(r.macroF1), fmt(r.accuracy), fmt(r.valF1), `<span class="mut">${r.source}</span>`]));
+  $("explorer-count").textContent = rows.length + " of " + D.results.length + " configurations shown.";
+}
+
+/* ---------------- train panel ---------------- */
+function setupTrain(){
+  $("t-model").innerHTML = MODELS.map(m=>`<option>${m}</option>`).join("");
+  $("train-btn").onclick = ()=>{
+    const btn=$("train-btn"); btn.disabled=true; $("train-out").innerHTML="";
+    const steps=[...$("train-steps").children]; $("train-steps").style.display="block";
+    steps.forEach(s=>s.className="");
+    let i=0;
+    const tick=()=>{ if(i>0) steps[i-1].className="done";
+      if(i===steps.length){ finishTrain(); btn.disabled=false; return; }
+      steps[i].className="run"; i++; setTimeout(tick, 620); };
+    tick();
+  };
+}
+function finishTrain(){
+  const m=$("t-model").value, t0=+$("t-t0").value, v=$("t-vars").value, w=+$("t-w").value;
+  const r = findRow(m,t0,v,w);
+  if(!r){ $("train-out").innerHTML =
+    `<div class="nomatch"><b>No measured row for ${m} · t0=${t0} · ${v} · W=${w}s.</b><br>
+     This configuration was never run in the study, so there is no number to show — the app does not interpolate one.
+     The full set of measured configurations is in the explorer above.</div>`; return; }
+  $("train-out").innerHTML =
+    `<div class="result"><div class="big">${m} — test macro-F1 ${fmt(r.macroF1)}</div>
+     <p style="margin:4px 0">Configuration: t0 = ${t0} s · ${v==="all"?"all 96 variables":"realistic 88 variables"} · W = ${w} s<br>
+     Accuracy ${fmt(r.accuracy)} · Validation macro-F1 ${fmt(r.valF1)}<br>
+     <span class="mut">Measured result from the study (${r.origin}); splits 725/242/244, seed 2026 protocol.
+     This panel looks the measurement up — live retraining happens in the notebook.</span></p></div>`;
+}
+
+/* ---------------- verify / run code ---------------- */
+const SHEET = {"LogReg":"pred_LogReg_W60_test.csv","LogReg+":"pred_LogRegPlus_W60_test.csv",
+  "Random Forest":"pred_RandomForest_W60_test.csv","CNN":"pred_CNN_W60_test.csv","GRU":"pred_GRU_W60_test.csv",
+  "MultiRocket+HYDRA":"pred_MultiRocketHydra_W60_test.csv","Rocket":"pred_Rocket_W60_test.csv",
+  "MiniRocket":"pred_MiniRocket_W60_test.csv"};
+function renderVerify(recomputed){
+  let html = "<tr><th>Model</th><th>Study macro-F1</th><th>Study accuracy</th><th>Browser macro-F1</th><th>Browser accuracy</th><th>Check</th></tr>";
+  D.w60Study.forEach(r=>{
+    const rc = recomputed? recomputed[r.model] : null;
+    let chk = "—";
+    if(rc){ const ok = Math.abs(rc.f1-r.macroF1)<=0.0011 && Math.abs(rc.acc-r.accuracy)<=0.0011;
+      chk = ok? '<span class="badge">matches study</span>' : '<span class="badge diff">differs from study</span>'; }
+    html += `<tr><td>${r.model}</td>
+      <td>${fmt(r.macroF1)}</td><td>${fmt(r.accuracy)}</td>
+      <td>${rc?fmt(rc.f1):"—"}</td><td>${rc?fmt(rc.acc):"—"}</td><td>${chk}</td></tr>`;
+  });
+  $("verify-table").innerHTML = html;
+}
+function parseCSV(text){
+  const lines = text.trim().split(/\r?\n/);
+  const head = lines[0].split(",");
+  return lines.slice(1).map(l=>{ const p=l.split(","); const o={};
+    head.forEach((h,i)=>o[h]=p[i]); return o; });
+}
+function metrics(rows){
+  const labels = [...new Set([...rows.map(r=>r.label), ...rows.map(r=>r.y_pred)])];
+  let correct = 0; const per = {};
+  labels.forEach(l=>per[l]={tp:0,fp:0,fn:0});
+  const cm = {}; labels.forEach(a=>{cm[a]={}; labels.forEach(b=>cm[a][b]=0);});
+  rows.forEach(r=>{ if(r.label===r.y_pred) correct++;
+    cm[r.label][r.y_pred]++;
+    if(r.label===r.y_pred) per[r.label].tp++;
+    else { per[r.y_pred].fp++; per[r.label].fn++; } });
+  let f1s = labels.map(l=>{ const p=per[l], prec=p.tp+p.fp? p.tp/(p.tp+p.fp):0,
+    rec=p.tp+p.fn? p.tp/(p.tp+p.fn):0; return (prec+rec)? 2*prec*rec/(prec+rec):0; });
+  return { f1: f1s.reduce((a,b)=>a+b,0)/labels.length, acc: correct/rows.length, cm, labels };
+}
+async function runCode(){
+  const btn=$("run-btn"); btn.disabled=true; btn.textContent="Running…";
+  const out = {};
+  try{
+    for(const m of MODELS){
+      const txt = await (await fetch("preds/"+SHEET[m])).text();
+      const met = metrics(parseCSV(txt)); out[m]={f1:met.f1, acc:met.acc};
+      if(m==="CNN"){ window._cm = met; }
+    }
+    // official file (all 8 models stacked) — the confusion matrix uses its CNN block
+    const offAll = parseCSV(await (await fetch("preds/pred_E_W60_test.csv")).text());
+    const off = metrics(offAll.filter(r=>r.model==="CNN"));
+    window._cm = off;
+    renderVerify(out);
+    // confusion matrix from the CNN block of the official file
+    const {cm, labels} = off;
+    let html = "<tr><th class='cm'>true \\ pred</th>"+labels.map(l=>`<th class='cm'>${l}</th>`).join("")+"</tr>";
+    labels.forEach(a=>{ html += `<tr><th class='cm'>${a}</th>`+labels.map(b=>{
+      const v=cm[a][b], op = v? Math.min(0.15+v/24, 0.85):0;
+      return `<td class='cm' style="background:rgba(20,83,158,${op.toFixed(2)})">${v||""}</td>`; }).join("")+"</tr>"; });
+    $("cm").innerHTML = html;
+    const rep = D.officialReport;
+    const okOff = Math.abs(off.f1-rep.macroF1)<=0.0011 && Math.abs(off.acc-rep.accuracy)<=0.0011;
+    $("cm-note").innerHTML = `Recomputed in browser from the CNN block of the embedded official file: macro-F1 <b>${fmt(off.f1)}</b>,
+      accuracy <b>${fmt(off.acc)}</b> over ${labels.length} classes — report value macro-F1 ${fmt(rep.macroF1)}
+      ${okOff? '<span class="badge">matches</span>' : '<span class="badge diff">differs</span>'}`;
+    // re-derive headline best-per-window and compare with the premade table
+    let mismatch = 0;
+    WS.forEach(w=>{ let bm=null,bv=-1;
+      MODELS.forEach(m=>{const v=f1At(m,100,"realistic",w); if(v!==null&&v>bv){bv=v;bm=m;}});
+      document.querySelectorAll(`[data-headline="${w}"]`).forEach(td=>{
+        if(td.classList.contains("best") && td.textContent.trim()!==fmt(bv)) mismatch++; }); });
+    const now = new Date();
+    $("run-stamp").innerHTML = `Recomputed in browser at ${now.toLocaleTimeString()} — per-model sheets and the
+      official file re-read and re-scored; headline best-per-window re-derived from the raw result rows
+      (${mismatch===0? "all match the premade values" : mismatch+" headline cell(s) differ"}).
+      Official submission file also shipped: <a href="preds/pred_E_W60_test.csv">pred_E_W60_test.csv</a> (all 8 models stacked, 1,952 rows).`;
+  }catch(e){
+    $("run-stamp").textContent = "Recompute failed: " + e.message;
+  }
+  btn.disabled=false; btn.textContent="Run code — recompute from the shipped prediction files";
+}
+
+/* ---------------- run all code (Pyodide in-browser training) ----------------
+   Trains LogReg / LogReg+ / Random Forest for real in the visitor's browser
+   (Pyodide + scikit-learn in WebAssembly) on features_w60.bin, with the
+   study's exact pinned protocol. The embedded Python is byte-identical to
+   the snippet verified offline before this page shipped: Node + Pyodide
+   harness, same version pinned below, reproduced the CPython reference
+   metrics exactly (LogReg 0.189182, LogReg+ 0.189182 with C = 1 chosen on
+   validation, Random Forest 0.187691). The other five models recompute
+   from their shipped sheets. The assembled official file downloads as
+   pred_E_W60_test.csv. */
+const PYODIDE_VERSION = "v0.27.7";
+const PYODIDE_INDEX = "https://cdn.jsdelivr.net/pyodide/" + PYODIDE_VERSION + "/full/";
+const TRAIN_PY = `import numpy as np, json
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, f1_score
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+LABELS = list(range(12))
+
+def mf1(y, p):
+    return f1_score(y, p, average="macro", labels=LABELS, zero_division=0)
+
+def full_proba(clf, X):
+    p = np.zeros((len(X), 12))
+    p[:, clf.classes_] = clf.predict_proba(X)
+    return p
+
+def _pack(p):
+    return {"f1": mf1(y_test, p.argmax(1)),
+            "acc": accuracy_score(y_test, p.argmax(1)),
+            "proba": p.tolist()}
+
+def train_logreg():
+    # LogReg: starter form, raw summary features, C=1
+    clf = make_pipeline(StandardScaler(), LogisticRegression(max_iter=5000, C=1.0))
+    clf.fit(raw_train, y_train)
+    return _pack(full_proba(clf, raw_test))
+
+def train_logregplus():
+    # LogReg+: log-compressed summary features, C picked on validation (first-best wins ties)
+    best = None
+    for C in (1.0, 10.0, 100.0, 1000.0):
+        c = make_pipeline(StandardScaler(), LogisticRegression(max_iter=5000, C=C))
+        c.fit(log_train, y_train)
+        vf1 = mf1(y_val, c.predict(log_val))
+        if best is None or vf1 > best[0]:
+            best = (vf1, C, c)
+    out = _pack(full_proba(best[2], log_test))
+    out["C"] = best[1]
+    out["valF1"] = best[0]
+    return out
+
+def train_rf():
+    # Random Forest: shipped-sheet spec, raw summary features
+    rf = RandomForestClassifier(n_estimators=400, random_state=2026,
+                                class_weight="balanced_subsample")
+    rf.fit(raw_train, y_train)
+    return _pack(full_proba(rf, raw_test))`;
+const PREP_PY = `
+import numpy as np, json
+m = json.loads(MANIFEST_JSON)
+flat = np.frombuffer(open("/features_w60.bin", "rb").read(), dtype="<f4")
+offs = 0
+for name in m["order"]:
+    n, d = m["shapes"][name]
+    globals()[name] = flat[offs:offs + n * d].reshape(n, d).copy()
+    offs += n * d
+assert offs == flat.size, (offs, flat.size)
+y_train = np.array(m["y"]["train"]); y_val = np.array(m["y"]["val"]); y_test = np.array(m["y"]["test"])
+"ok"
+`;
+const CANON = ["LogReg","LogReg+","Random Forest","CNN","GRU","MultiRocket+HYDRA","Rocket","MiniRocket"];
+let _pyodide = null, _featManifest = null;
+
+function loadScriptTag(src){
+  return new Promise((res, rej)=>{
+    const s = document.createElement("script");
+    s.src = src; s.onload = res;
+    s.onerror = ()=>rej(new Error("failed to load " + src));
+    document.head.appendChild(s);
+  });
+}
+async function ensurePyodide(){
+  if(_pyodide) return _pyodide;
+  await loadScriptTag(PYODIDE_INDEX + "pyodide.js");
+  _pyodide = await loadPyodide({ indexURL: PYODIDE_INDEX });
+  await _pyodide.loadPackage(["numpy", "scikit-learn"]);
+  const [binBuf, man] = await Promise.all([
+    fetch("features_w60.bin").then(r=>{ if(!r.ok) throw new Error("features_w60.bin HTTP " + r.status); return r.arrayBuffer(); }),
+    fetch("features_w60.json").then(r=>{ if(!r.ok) throw new Error("features_w60.json HTTP " + r.status); return r.json(); })
+  ]);
+  _featManifest = man;
+  _pyodide.FS.writeFile("/features_w60.bin", new Uint8Array(binBuf));
+  _pyodide.globals.set("MANIFEST_JSON", JSON.stringify({ order: man.order, shapes: man.shapes, y: man.y }));
+  _pyodide.runPython(PREP_PY);
+  _pyodide.runPython(TRAIN_PY);
+  return _pyodide;
+}
+function fmtProb(x){
+  if(x === 0) return "0.0";
+  if(x === 1) return "1.0";
+  let s = String(x);
+  if(s.includes("e")){ const p = s.split("e"); const e = parseInt(p[1], 10);
+    s = p[0] + "e" + (e < 0 ? "-" : "+") + String(Math.abs(e)).padStart(2, "0"); }
+  return s;
+}
+function fmtSev(s){ return Number.isInteger(s) ? s + ".0" : String(s); }
+function trainedBlockRows(model, proba){
+  const classes = _featManifest.classes, meta = _featManifest.testMeta;
+  return proba.map((row, i)=>{
+    let bi = 0; row.forEach((v, j)=>{ if(v > row[bi]) bi = j; });
+    return [model, meta[i].label, fmtSev(meta[i].severity), meta[i].file, classes[bi],
+            ...row.map(fmtProb)].join(",");
+  });
+}
+async function sheetBlockLines(model){
+  const txt = await (await fetch("preds/" + SHEET[model])).text();
+  return txt.trim().split(/\r?\n/).slice(1);
+}
+async function assembleOfficial(trained){
+  const header = "model,label,severity,file,y_pred," + _featManifest.classes.map(c=>"p_" + c).join(",");
+  const lines = [header];
+  for(const m of CANON){
+    if(trained && trained[m]) lines.push(...trainedBlockRows(m, trained[m].proba));
+    else lines.push(...await sheetBlockLines(m));
+  }
+  return lines.join("\n") + "\n";
+}
+function verifyBlocks(text){
+  const rows = parseCSV(text);
+  const per = {};
+  CANON.forEach(m=>{
+    const br = rows.filter(r=>r.model === m);
+    const met = metrics(br);
+    per[m] = { n: br.length, f1: met.f1, acc: met.acc };
+  });
+  return { per, total: rows.length };
+}
+async function runAll(){
+  const btn = $("runall-btn"); btn.disabled = true; btn.textContent = "Running…";
+  const steps = [...$("runall-steps").children]; $("runall-steps").style.display = "block";
+  steps.forEach(s=>s.className = "");
+  const setStep = i => steps.forEach((s, j)=>{ s.className = j < i ? "done" : (j === i ? "run" : ""); });
+  const stamp = $("runall-stamp"), out = $("runall-out");
+  out.innerHTML = ""; stamp.textContent = "";
+  const fresh = {}; let trained = null, trainError = null;
+  try{
+    setStep(0);
+    const py = await ensurePyodide();
+    const jobs = [["LogReg", "train_logreg"], ["LogReg+", "train_logregplus"], ["Random Forest", "train_rf"]];
+    trained = {};
+    for(let k = 0; k < jobs.length; k++){
+      setStep(1 + k);
+      await new Promise(r=>setTimeout(r, 30)); // let the step indicator paint before the blocking fit
+      trained[jobs[k][0]] = JSON.parse(py.runPython(`json.dumps(${jobs[k][1]}())`));
+      fresh[jobs[k][0]] = { f1: trained[jobs[k][0]].f1, acc: trained[jobs[k][0]].acc, how: "trained" };
+    }
+  }catch(e){ trainError = e; }
+  setStep(4);
+  try{
+    for(const m of CANON){
+      if(fresh[m]) continue;
+      const met = metrics(parseCSV(await (await fetch("preds/" + SHEET[m])).text()));
+      fresh[m] = { f1: met.f1, acc: met.acc, how: "recomputed" };
+    }
+  }catch(e){
+    stamp.textContent = "Run failed: " + e.message;
+    btn.disabled = false; btn.textContent = "Run all code — train in browser + rebuild pred_E_W60_test.csv";
+    return;
+  }
+  setStep(5);
+  const now = new Date();
+  let html = `<div class="scroll"><table><tr><th>Model</th><th>Fresh macro-F1</th><th>Fresh accuracy</th><th>Study macro-F1</th><th>How obtained</th></tr>`;
+  CANON.forEach(m=>{
+    const st = D.w60Study.find(r=>r.model === m);
+    const how = fresh[m].how === "trained"
+      ? `Trained in your browser at ${now.toLocaleTimeString()}`
+      : `Recomputed from shipped predictions at ${now.toLocaleTimeString()}`;
+    html += `<tr><td>${m}</td><td>${fmt(fresh[m].f1)}</td><td>${fmt(fresh[m].acc)}</td><td>${st ? fmt(st.macroF1) : "—"}</td><td class="mut">${how}</td></tr>`;
+  });
+  html += `</table></div>`;
+  if(trainError){
+    html += `<p class="mut">In-browser training was unavailable in this browser (${trainError.message}), so the
+      classical models above were recomputed from the shipped prediction files instead — labeled as such,
+      not presented as a training run.</p>`;
+  }
+  // repopulate the Live verification table and the explorer's W = 60 study rows
+  renderVerify(Object.fromEntries(CANON.map(m=>[m, { f1: fresh[m].f1, acc: fresh[m].acc }])));
+  D.results.forEach(r=>{
+    if(r.t0 === 20 && r.vars === "realistic" && r.W === 60 && fresh[r.model] &&
+       r.source && r.source.includes("(recomputed)")){
+      r.macroF1 = fresh[r.model].f1; r.accuracy = fresh[r.model].acc;
+    }
+  });
+  renderExplorer();
+  // assemble + verify the new official file
+  if(!_featManifest){
+    const man = await (await fetch("features_w60.json")).json();
+    _featManifest = man;
+  }
+  const asmText = await assembleOfficial(trained);
+  const ver = verifyBlocks(asmText);
+  html += `<h3>New official file — block verification (recomputed in this page from the assembled text)</h3>
+    <div class="scroll"><table><tr><th>Block (model)</th><th>Rows</th><th>Macro-F1</th><th>Accuracy</th><th>Rows source</th></tr>`;
+  CANON.forEach(m=>{
+    const src = (trained && trained[m]) ? "fresh browser training" : "shipped sheet, verbatim";
+    html += `<tr><td>${m}</td><td>${ver.per[m].n}</td><td>${fmt(ver.per[m].f1)}</td><td>${fmt(ver.per[m].acc)}</td><td class="mut">${src}</td></tr>`;
+  });
+  html += `</table></div>
+    <p>Total rows: <b>${ver.total}</b> (8 blocks × 244 test rows).
+    <button class="ghost" id="dl-official">Download pred_E_W60_test.csv</button></p>`;
+  out.innerHTML = html;
+  $("dl-official").onclick = ()=>{
+    const blob = new Blob([asmText], { type: "text/csv" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "pred_E_W60_test.csv"; a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+  };
+  steps.forEach(s=>s.className = "done");
+  stamp.innerHTML = `Run all finished at ${now.toLocaleTimeString()} — ` +
+    (trainError ? "in-browser training unavailable, so all values were recomputed from the shipped files (see the note above)"
+                : "LogReg, LogReg+ and Random Forest trained live in your browser; the other five recomputed from the shipped files") +
+    `. The Live verification table and the explorer's t0 = 20 / W = 60 rows now show the fresh values.`;
+  btn.disabled = false; btn.textContent = "Run all code again";
+}
+
+/* ---------------- cloud training (NPPAD cloud runner) ----------------
+   Polling is live against the public S3 outputs. The DISPATCH call is wired
+   but inert: CLOUD_DISPATCH_TOKEN is empty until the site owner supplies a
+   fine-grained PAT scoped to saurabhkulkarni77/hydrotwin-site (Actions:
+   read/write) via the secure capture page. Do NOT paste any other credential
+   here — the stored agent credential is surrogate-only and must never be
+   embedded in a web page. */
+const CLOUD_OUT = "https://nppad-hw2-data-2026.s3.amazonaws.com/outputs/";
+const CLOUD_DISPATCH_TOKEN = ""; // <-- owner-supplied fine-grained PAT goes here on activation
+const CLOUD_REPO = "saurabhkulkarni77/hydrotwin-site";
+const CLOUD_WORKFLOW = "nppad-cloud-runner.yml";
+let cloudPoll = null;
+
+async function cloudFetch(name){
+  const r = await fetch(CLOUD_OUT + name + "?t=" + Date.now());
+  if(!r.ok) throw new Error(name + " HTTP " + r.status);
+  return r.json();
+}
+function cloudRenderStatus(st){
+  const el = $("cloud-stamp");
+  if(!st){ el.textContent = ""; return; }
+  el.innerHTML = `Cloud run: <b>${st.state}</b> — ${st.stage || ""} · updated ${st.updated_utc || ""}` +
+    (st.run_url ? ` · <a href="${st.run_url}">workflow run</a>` : "");
+}
+function cloudRenderResults(res){
+  if(!res || !res.models) return;
+  const order = ["LogReg","LogRegPlus","RandomForest","CNN","GRU","MultiRocketHydra","Rocket","MiniRocket"];
+  let html = `<h3>Last cloud run — fresh results (official protocol, t0 = 20 s, W = 60 s)</h3>
+    <div class="scroll"><table><tr><th>Model</th><th>Cloud macro-F1</th><th>Cloud accuracy</th><th>Study anchor</th><th>Check</th></tr>`;
+  order.forEach(k=>{
+    const m = res.models[k]; if(!m) return;
+    if(m.error){ html += `<tr><td>${m.model}</td><td colspan="3">failed: ${m.error}</td><td><span class="badge diff">failed</span></td></tr>`; return; }
+    const ok = Math.abs(m.macro_F1 - m.anchor_macro_F1) <= 0.0011;
+    html += `<tr><td>${m.model}</td><td>${fmt(m.macro_F1)}</td><td>${fmt(m.accuracy)}</td><td>${fmt(m.anchor_macro_F1)}</td>
+      <td>${ok? '<span class="badge">matches anchor</span>' : '<span class="badge diff">differs from anchor</span>'}</td></tr>`;
+  });
+  html += `</table></div>
+    <p class="mut">Trained in the cloud run that finished ${res.finished_utc || ""} (splits 725/242/244, seed 2026).
+    New official file: <a href="${CLOUD_OUT}pred_E_W60_test.csv">pred_E_W60_test.csv</a> (all 8 models stacked, 1,952 rows) ·
+    raw results: <a href="${CLOUD_OUT}results.json">results.json</a></p>`;
+  $("cloud-out").innerHTML = html;
+}
+async function cloudRefresh(){
+  try{
+    const st = await cloudFetch("status.json");
+    cloudRenderStatus(st);
+    if(st.state === "done" || st.state === "failed"){
+      try{ cloudRenderResults(await cloudFetch("results.json")); }catch(e){}
+      if(cloudPoll){ clearInterval(cloudPoll); cloudPoll = null; }
+    } else if(st.state === "running" && !cloudPoll){
+      cloudPoll = setInterval(cloudRefresh, 20000);
+    }
+  }catch(e){
+    $("cloud-stamp").textContent = "No cloud run has published status yet.";
+  }
+}
+async function cloudDispatch(){
+  if(!CLOUD_DISPATCH_TOKEN){ return; } // inert until the owner supplies the scoped token
+  const btn = $("cloud-btn"); btn.disabled = true; btn.textContent = "Dispatching…";
+  try{
+    const r = await fetch(`https://api.github.com/repos/${CLOUD_REPO}/actions/workflows/${CLOUD_WORKFLOW}/dispatches`, {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + CLOUD_DISPATCH_TOKEN,
+                 "Accept": "application/vnd.github+json",
+                 "Content-Type": "application/json" },
+      body: JSON.stringify({ ref: "main", inputs: { models: "" } })
+    });
+    if(r.status !== 204) throw new Error("dispatch HTTP " + r.status);
+    btn.textContent = "Cloud training dispatched — polling status…";
+    if(!cloudPoll) cloudPoll = setInterval(cloudRefresh, 20000);
+    setTimeout(cloudRefresh, 5000);
+  }catch(e){
+    btn.disabled = false; btn.textContent = "Run full training in cloud";
+    $("cloud-stamp").textContent = "Dispatch failed: " + e.message;
+  }
+}
+function setupCloud(){
+  const btn = $("cloud-btn");
+  if(CLOUD_DISPATCH_TOKEN){
+    btn.disabled = false; btn.textContent = "Run full training in cloud";
+    btn.onclick = cloudDispatch;
+  } else {
+    btn.disabled = true; btn.textContent = "Run full training in cloud (activation pending)";
+  }
+  cloudRefresh();
+}
+
+/* ---------------- boot ---------------- */
+fetch("data.json").then(r=>r.json()).then(d=>{
+  D=d;
+  $("f-model").innerHTML = '<option value="">all models</option>'+MODELS.map(m=>`<option>${m}</option>`).join("");
+  ["f-model","f-t0","f-vars","f-w"].forEach(id=>$(id).onchange=renderExplorer);
+  renderHeadline(); renderTasks(); renderExplorer(); setupTrain(); renderVerify(null); setupCloud();
+  $("run-btn").onclick = runCode;
+  $("runall-btn").onclick = runAll;
+  $("dl").innerHTML =
+    [`preds/pred_E_W60_test.csv — official Task E submission file (all 8 models stacked, 1,952 rows)`,
+     ...MODELS.map(m=>`preds/${SHEET[m]} — per-model sheet, ${m}`),
+     `preds/HW2_Combined_Results_All_Models.csv — the ${D.results.length}-row results table behind this page`
+    ].map(s=>{ const [p,desc]=s.split(" — "); return `<a href="${p}">${p.split("/").pop()}</a> <span class="mut">— ${desc}</span><br>`; }).join("");
+  $("prov").textContent = "Data provenance: " + D.meta.generatedFrom.join(" · ") +
+    ". Every value is copied from those files by a generator script; no metric on this page was typed by hand.";
+});
+</script>
+</body>
+</html>

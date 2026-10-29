@@ -1,0 +1,2347 @@
+{
+ "meta": {
+  "title": "NPPAD Results Explorer",
+  "author": "Saurabh Sanjay Kulkarni",
+  "classes": [
+   "LOCA",
+   "LOCAC",
+   "SLBIC",
+   "SLBOC",
+   "SGATR",
+   "SGBTR",
+   "RW",
+   "RI",
+   "FLB",
+   "MD",
+   "LR",
+   "LLB"
+  ],
+  "splits": {
+   "train": 725,
+   "validation": 242,
+   "test": 244
+  },
+  "splitSeed": 2026,
+  "dataUrl": "https://nppad-hw2-data-2026.s3.amazonaws.com/NPPAD_Data_for_HW2.zip",
+  "oracleVars": [
+   "WLR",
+   "HLW",
+   "WBK",
+   "MBK",
+   "EBK",
+   "WTRA",
+   "WTRB",
+   "WFLB"
+  ],
+  "models": [
+   "LogReg",
+   "LogReg+",
+   "Random Forest",
+   "CNN",
+   "GRU",
+   "MultiRocket+HYDRA",
+   "Rocket",
+   "MiniRocket"
+  ],
+  "generatedFrom": [
+   "HW2_Combined_Results_All_Models.csv (148 rows, regenerated from run7, the Oct 29, 2026 full re-run of the current lineup)",
+   "run7 executed notebook NPPAD_Homework2_SelfContained_Colab_Minimal_2026-10-29_0925CT_Executed.ipynb (E5, R1, R2 and X1/X2 outputs)",
+   "pred_E_W60_test.csv (official submission file: all 8 models stacked, 1,952 rows; MD5 db7c0172345673f61470a9664aa9a1cc)"
+  ]
+ },
+ "results": [
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.881957,
+   "accuracy": 0.891667,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.857232,
+   "accuracy": 0.879167,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.853221,
+   "accuracy": 0.875,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_LogReg_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.924717,
+   "accuracy": 0.920833,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.854849,
+   "accuracy": 0.875,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.85045,
+   "accuracy": 0.870833,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.869721,
+   "accuracy": 0.891667,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.864997,
+   "accuracy": 0.883333,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.86405,
+   "accuracy": 0.883333,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.853221,
+   "accuracy": 0.875,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.857494,
+   "accuracy": 0.879167,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.894789,
+   "accuracy": 0.895833,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.860611,
+   "accuracy": 0.875,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.857427,
+   "accuracy": 0.875,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.851065,
+   "accuracy": 0.870833,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.853633,
+   "accuracy": 0.875,
+   "valF1": null,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": 0.190648,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": 0.190648,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.979648,
+   "accuracy": 0.979167,
+   "valF1": 0.991664,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.963868,
+   "accuracy": 0.9625,
+   "valF1": 0.983695,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.970867,
+   "accuracy": 0.970833,
+   "valF1": 0.983292,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": 0.190648,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_LogRegPlus_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.967826,
+   "accuracy": 0.966667,
+   "valF1": 0.98342,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.963099,
+   "accuracy": 0.9625,
+   "valF1": 0.983292,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.958514,
+   "accuracy": 0.958333,
+   "valF1": 0.966766,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.974986,
+   "accuracy": 0.975,
+   "valF1": 0.995831,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.979449,
+   "accuracy": 0.979167,
+   "valF1": 0.991758,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.970749,
+   "accuracy": 0.970833,
+   "valF1": 0.995831,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.954492,
+   "accuracy": 0.954167,
+   "valF1": 0.983765,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.967486,
+   "accuracy": 0.966667,
+   "valF1": 0.97962,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.971539,
+   "accuracy": 0.970833,
+   "valF1": 0.979618,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.967512,
+   "accuracy": 0.966667,
+   "valF1": 0.9836,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.967741,
+   "accuracy": 0.966667,
+   "valF1": 0.983404,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.957686,
+   "accuracy": 0.958333,
+   "valF1": 0.983307,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.959282,
+   "accuracy": 0.958333,
+   "valF1": 0.967919,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.187691,
+   "accuracy": 0.266393,
+   "valF1": 0.189143,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.187691,
+   "accuracy": 0.266393,
+   "valF1": 0.189143,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.979907,
+   "accuracy": 0.979167,
+   "valF1": 0.995831,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.972026,
+   "accuracy": 0.970833,
+   "valF1": 0.995831,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.979146,
+   "accuracy": 0.979167,
+   "valF1": 0.995338,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.187691,
+   "accuracy": 0.266393,
+   "valF1": 0.189143,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.187691,
+   "accuracy": 0.266393,
+   "valF1": null,
+   "source": "pred_RandomForest_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.959932,
+   "accuracy": 0.958333,
+   "valF1": 0.995831,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.967478,
+   "accuracy": 0.966667,
+   "valF1": 0.983404,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.962529,
+   "accuracy": 0.9625,
+   "valF1": 0.982815,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.971553,
+   "accuracy": 0.970833,
+   "valF1": 0.995831,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.971553,
+   "accuracy": 0.970833,
+   "valF1": 0.995831,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.972026,
+   "accuracy": 0.970833,
+   "valF1": 0.987477,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.959313,
+   "accuracy": 0.958333,
+   "valF1": 0.991169,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.971152,
+   "accuracy": 0.970833,
+   "valF1": 0.995338,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.959704,
+   "accuracy": 0.958333,
+   "valF1": 0.995831,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.963573,
+   "accuracy": 0.9625,
+   "valF1": 0.991661,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.959691,
+   "accuracy": 0.958333,
+   "valF1": 0.979122,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.951157,
+   "accuracy": 0.95,
+   "valF1": 0.986999,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.966391,
+   "accuracy": 0.966667,
+   "valF1": 0.982815,
+   "source": "run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.188436,
+   "accuracy": null,
+   "valF1": 0.189895,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": null,
+   "valF1": 0.190648,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.869552,
+   "accuracy": null,
+   "valF1": 0.886752,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.867773,
+   "accuracy": null,
+   "valF1": 0.888889,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.871732,
+   "accuracy": null,
+   "valF1": 0.888889,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.188436,
+   "accuracy": null,
+   "valF1": 0.189895,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_CNN_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.865529,
+   "accuracy": null,
+   "valF1": 0.881211,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.86836,
+   "accuracy": null,
+   "valF1": 0.886895,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.837625,
+   "accuracy": null,
+   "valF1": 0.86356,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.9877,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.9837,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.9837,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.983,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.9959,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.9716,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.9677,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.9679,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.9666,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "CNN",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.93,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.188436,
+   "accuracy": null,
+   "valF1": 0.189895,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.188685,
+   "accuracy": null,
+   "valF1": 0.190146,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.864738,
+   "accuracy": null,
+   "valF1": 0.874153,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.85979,
+   "accuracy": null,
+   "valF1": 0.883233,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.825523,
+   "accuracy": null,
+   "valF1": 0.841381,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.189182,
+   "accuracy": null,
+   "valF1": 0.190648,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_GRU_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.910662,
+   "accuracy": null,
+   "valF1": 0.928768,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.856363,
+   "accuracy": null,
+   "valF1": 0.8756,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.730571,
+   "accuracy": null,
+   "valF1": 0.749663,
+   "source": "run7 task_e_results.json deep_val (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.9797,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.9797,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.9877,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.8037,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.7932,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.9634,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.9635,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.9707,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.8585,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "GRU",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.7584,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 20,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": 0.190648,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 20,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": 0.190648,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 20,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.98326,
+   "accuracy": 0.983333,
+   "valF1": 0.991758,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 20,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.995925,
+   "accuracy": 0.995833,
+   "valF1": 1.0,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 20,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.987097,
+   "accuracy": 0.9875,
+   "valF1": 1.0,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_MultiRocketHydra_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.9919,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.9918,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.9918,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.987,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.9871,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.987767,
+   "accuracy": 0.9875,
+   "valF1": 1.0,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.983799,
+   "accuracy": 0.983333,
+   "valF1": 0.996011,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.987587,
+   "accuracy": 0.9875,
+   "valF1": 0.995831,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.987097,
+   "accuracy": 0.9875,
+   "valF1": 0.991667,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.987094,
+   "accuracy": 0.9875,
+   "valF1": 0.995831,
+   "source": "run7 results_rocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": 0.190648,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": 0.190648,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.987788,
+   "accuracy": 0.9875,
+   "valF1": 0.995831,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.991644,
+   "accuracy": 0.991667,
+   "valF1": 0.991646,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.987592,
+   "accuracy": 0.9875,
+   "valF1": 0.995831,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_Rocket_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.9797,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.9877,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.9959,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.9827,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.9828,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.967592,
+   "accuracy": 0.966667,
+   "valF1": 1.0,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.971368,
+   "accuracy": 0.970833,
+   "valF1": 0.995831,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.991862,
+   "accuracy": 0.991667,
+   "valF1": 1.0,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.978531,
+   "accuracy": 0.979167,
+   "valF1": 0.987492,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.978656,
+   "accuracy": 0.979167,
+   "valF1": 0.98283,
+   "source": "run7 results_rocketclf.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": 0.190648,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": 0.190648,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.991263,
+   "accuracy": 0.991667,
+   "valF1": 1.0,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.991263,
+   "accuracy": 0.991667,
+   "valF1": 1.0,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 20,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.991263,
+   "accuracy": 0.991667,
+   "valF1": 1.0,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_MiniRocket_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.9877,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.9919,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.9871,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.9913,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.9913,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 30,
+   "macroF1": 0.991756,
+   "accuracy": 0.991667,
+   "valF1": 0.995831,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.975037,
+   "accuracy": 0.975,
+   "valF1": 0.995831,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 120,
+   "macroF1": 0.987589,
+   "accuracy": 0.9875,
+   "valF1": 0.991646,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 300,
+   "macroF1": 0.978707,
+   "accuracy": 0.979167,
+   "valF1": 0.987492,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "realistic",
+   "W": 600,
+   "macroF1": 0.978656,
+   "accuracy": 0.979167,
+   "valF1": 0.991169,
+   "source": "run7 results_minirocket.csv (2026-10-29 full run (run7))"
+  }
+ ],
+ "e5runs": [
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.9919,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.9918,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.9918,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.987,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.9871,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.9797,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.9877,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.9959,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.9827,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "Rocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.9828,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 30,
+   "macroF1": 0.9877,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 60,
+   "macroF1": 0.9919,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 120,
+   "macroF1": 0.9871,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 300,
+   "macroF1": 0.9913,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 100,
+   "vars": "all",
+   "W": 600,
+   "macroF1": 0.9913,
+   "accuracy": null,
+   "valF1": null,
+   "source": "run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+  }
+ ],
+ "x1x2": [
+  {
+   "extension": "X1",
+   "model": "MultiRocket+ridge ensemble (25 bootstrap)",
+   "n_train": 120.0,
+   "n_val": 40.0,
+   "n_test": 40.0,
+   "alpha": null,
+   "rmse": 29.04,
+   "mae": 25.1,
+   "rmse_LOCA": 29.08,
+   "mae_LOCA": 25.13,
+   "rmse_LOCAC": 29.0,
+   "mae_LOCAC": 25.06,
+   "pi90_coverage_raw": 0.1,
+   "calib_multiplier": 8.67,
+   "pi90_coverage_calibrated": 0.85,
+   "seconds": null,
+   "screen_threshold": null,
+   "TP": null,
+   "FP": null,
+   "FN": null,
+   "precision": null,
+   "recall": null,
+   "flag_F1": null
+  },
+  {
+   "extension": "X2",
+   "model": "MultiRocket+ridge ensemble (25 bootstrap)",
+   "n_train": 725.0,
+   "n_val": 242.0,
+   "n_test": 244.0,
+   "alpha": null,
+   "rmse": 0.02687,
+   "mae": 0.01187,
+   "rmse_LOCA": null,
+   "mae_LOCA": null,
+   "rmse_LOCAC": null,
+   "mae_LOCAC": null,
+   "pi90_coverage_raw": null,
+   "calib_multiplier": null,
+   "pi90_coverage_calibrated": null,
+   "seconds": null,
+   "screen_threshold": 2.250252485275269,
+   "TP": 1,
+   "FP": 39,
+   "FN": 15,
+   "precision": 0.025,
+   "recall": 0.0625,
+   "flag_F1": 0.03571428571428572
+  }
+ ],
+ "r1": [
+  {
+   "setting": "all variables",
+   "model": "CNN",
+   "W": 30,
+   "testF1": 0.189,
+   "rampF1": 0.1,
+   "degradation": -0.089
+  },
+  {
+   "setting": "all variables",
+   "model": "CNN",
+   "W": 60,
+   "testF1": 0.189,
+   "rampF1": 0.167,
+   "degradation": -0.022
+  },
+  {
+   "setting": "all variables",
+   "model": "CNN",
+   "W": 120,
+   "testF1": 0.868,
+   "rampF1": 0.417,
+   "degradation": -0.451
+  },
+  {
+   "setting": "all variables",
+   "model": "CNN",
+   "W": 300,
+   "testF1": 0.87,
+   "rampF1": 0.25,
+   "degradation": -0.62
+  },
+  {
+   "setting": "all variables",
+   "model": "CNN",
+   "W": 600,
+   "testF1": 0.866,
+   "rampF1": 0.25,
+   "degradation": -0.616
+  },
+  {
+   "setting": "all variables",
+   "model": "GRU",
+   "W": 30,
+   "testF1": 0.188,
+   "rampF1": 0.0,
+   "degradation": -0.188
+  },
+  {
+   "setting": "all variables",
+   "model": "GRU",
+   "W": 60,
+   "testF1": 0.189,
+   "rampF1": 0.0,
+   "degradation": -0.189
+  },
+  {
+   "setting": "all variables",
+   "model": "GRU",
+   "W": 120,
+   "testF1": 0.866,
+   "rampF1": 0.625,
+   "degradation": -0.241
+  },
+  {
+   "setting": "all variables",
+   "model": "GRU",
+   "W": 300,
+   "testF1": 0.86,
+   "rampF1": 0.167,
+   "degradation": -0.693
+  },
+  {
+   "setting": "all variables",
+   "model": "GRU",
+   "W": 600,
+   "testF1": 0.854,
+   "rampF1": 0.0,
+   "degradation": -0.854
+  },
+  {
+   "setting": "all variables",
+   "model": "LogReg",
+   "W": 30,
+   "testF1": 0.1892,
+   "rampF1": 0.1,
+   "degradation": -0.0892
+  },
+  {
+   "setting": "all variables",
+   "model": "LogReg",
+   "W": 60,
+   "testF1": 0.1892,
+   "rampF1": 0.0,
+   "degradation": -0.1892
+  },
+  {
+   "setting": "all variables",
+   "model": "LogReg",
+   "W": 120,
+   "testF1": 0.882,
+   "rampF1": 0.0,
+   "degradation": -0.882
+  },
+  {
+   "setting": "all variables",
+   "model": "LogReg",
+   "W": 300,
+   "testF1": 0.8572,
+   "rampF1": 0.375,
+   "degradation": -0.4822
+  },
+  {
+   "setting": "all variables",
+   "model": "LogReg",
+   "W": 600,
+   "testF1": 0.8532,
+   "rampF1": 0.4167,
+   "degradation": -0.4365
+  },
+  {
+   "setting": "all variables",
+   "model": "Random Forest",
+   "W": 30,
+   "testF1": 0.1877,
+   "rampF1": 0.0,
+   "degradation": -0.1877
+  },
+  {
+   "setting": "all variables",
+   "model": "Random Forest",
+   "W": 60,
+   "testF1": 0.1877,
+   "rampF1": 0.0,
+   "degradation": -0.1877
+  },
+  {
+   "setting": "all variables",
+   "model": "Random Forest",
+   "W": 120,
+   "testF1": 0.9599,
+   "rampF1": 0.25,
+   "degradation": -0.7099
+  },
+  {
+   "setting": "all variables",
+   "model": "Random Forest",
+   "W": 300,
+   "testF1": 0.9647,
+   "rampF1": 0.5,
+   "degradation": -0.4647
+  },
+  {
+   "setting": "all variables",
+   "model": "Random Forest",
+   "W": 600,
+   "testF1": 0.96,
+   "rampF1": 0.5,
+   "degradation": -0.46
+  },
+  {
+   "setting": "no oracle",
+   "model": "CNN",
+   "W": 30,
+   "testF1": 0.189,
+   "rampF1": 0.0,
+   "degradation": -0.189
+  },
+  {
+   "setting": "no oracle",
+   "model": "CNN",
+   "W": 60,
+   "testF1": 0.189,
+   "rampF1": 0.25,
+   "degradation": 0.061
+  },
+  {
+   "setting": "no oracle",
+   "model": "CNN",
+   "W": 120,
+   "testF1": 0.872,
+   "rampF1": 0.25,
+   "degradation": -0.622
+  },
+  {
+   "setting": "no oracle",
+   "model": "CNN",
+   "W": 300,
+   "testF1": 0.87,
+   "rampF1": 0.25,
+   "degradation": -0.62
+  },
+  {
+   "setting": "no oracle",
+   "model": "CNN",
+   "W": 600,
+   "testF1": 0.828,
+   "rampF1": 0.5,
+   "degradation": -0.328
+  },
+  {
+   "setting": "no oracle",
+   "model": "GRU",
+   "W": 30,
+   "testF1": 0.189,
+   "rampF1": 0.2,
+   "degradation": 0.011
+  },
+  {
+   "setting": "no oracle",
+   "model": "GRU",
+   "W": 60,
+   "testF1": 0.189,
+   "rampF1": 0.0,
+   "degradation": -0.189
+  },
+  {
+   "setting": "no oracle",
+   "model": "GRU",
+   "W": 120,
+   "testF1": 0.864,
+   "rampF1": 0.417,
+   "degradation": -0.447
+  },
+  {
+   "setting": "no oracle",
+   "model": "GRU",
+   "W": 300,
+   "testF1": 0.86,
+   "rampF1": 0.333,
+   "degradation": -0.527
+  },
+  {
+   "setting": "no oracle",
+   "model": "GRU",
+   "W": 600,
+   "testF1": 0.768,
+   "rampF1": 0.167,
+   "degradation": -0.601
+  },
+  {
+   "setting": "no oracle",
+   "model": "LogReg",
+   "W": 30,
+   "testF1": 0.1892,
+   "rampF1": 0.1,
+   "degradation": -0.0892
+  },
+  {
+   "setting": "no oracle",
+   "model": "LogReg",
+   "W": 60,
+   "testF1": 0.1892,
+   "rampF1": 0.0625,
+   "degradation": -0.1267
+  },
+  {
+   "setting": "no oracle",
+   "model": "LogReg",
+   "W": 120,
+   "testF1": 0.9247,
+   "rampF1": 0.0,
+   "degradation": -0.9247
+  },
+  {
+   "setting": "no oracle",
+   "model": "LogReg",
+   "W": 300,
+   "testF1": 0.8548,
+   "rampF1": 0.375,
+   "degradation": -0.4798
+  },
+  {
+   "setting": "no oracle",
+   "model": "LogReg",
+   "W": 600,
+   "testF1": 0.8505,
+   "rampF1": 0.4167,
+   "degradation": -0.4338
+  },
+  {
+   "setting": "no oracle",
+   "model": "Random Forest",
+   "W": 30,
+   "testF1": 0.1877,
+   "rampF1": 0.0,
+   "degradation": -0.1877
+  },
+  {
+   "setting": "no oracle",
+   "model": "Random Forest",
+   "W": 60,
+   "testF1": 0.1877,
+   "rampF1": 0.0,
+   "degradation": -0.1877
+  },
+  {
+   "setting": "no oracle",
+   "model": "Random Forest",
+   "W": 120,
+   "testF1": 0.9598,
+   "rampF1": 0.25,
+   "degradation": -0.7098
+  },
+  {
+   "setting": "no oracle",
+   "model": "Random Forest",
+   "W": 300,
+   "testF1": 0.9642,
+   "rampF1": 0.4167,
+   "degradation": -0.5475
+  },
+  {
+   "setting": "no oracle",
+   "model": "Random Forest",
+   "W": 600,
+   "testF1": 0.9554,
+   "rampF1": 0.5,
+   "degradation": -0.4554
+  }
+ ],
+ "r1Scenarios": [
+  {
+   "scenario": "LOCA_100_to_80",
+   "true": "LOCA",
+   "CNN": "LOCAC",
+   "GRU": "LOCA",
+   "LogReg": "LOCA",
+   "Random Forest": "LOCA"
+  },
+  {
+   "scenario": "LOCA_80_to_100",
+   "true": "LOCA",
+   "CNN": "LOCAC",
+   "GRU": "LOCAC",
+   "LogReg": "LOCA",
+   "Random Forest": "LOCA"
+  },
+  {
+   "scenario": "RW_100_to_80",
+   "true": "RW",
+   "CNN": "RW",
+   "GRU": "RI",
+   "LogReg": "RW",
+   "Random Forest": "RW"
+  },
+  {
+   "scenario": "RW_80_to_100",
+   "true": "RW",
+   "CNN": "RW",
+   "GRU": "LR",
+   "LogReg": "RW",
+   "Random Forest": "RW"
+  },
+  {
+   "scenario": "SGATR_100_to_80",
+   "true": "SGATR",
+   "CNN": "MD",
+   "GRU": "LR",
+   "LogReg": "RW",
+   "Random Forest": "LR"
+  },
+  {
+   "scenario": "SGATR_80_to_100",
+   "true": "SGATR",
+   "CNN": "MD",
+   "GRU": "RI",
+   "LogReg": "RW",
+   "Random Forest": "RI"
+  },
+  {
+   "scenario": "SGBTR_100_to_80",
+   "true": "SGBTR",
+   "CNN": "MD",
+   "GRU": "LR",
+   "LogReg": "RW",
+   "Random Forest": "LR"
+  },
+  {
+   "scenario": "SGBTR_80_to_100",
+   "true": "SGBTR",
+   "CNN": "MD",
+   "GRU": "RI",
+   "LogReg": "RW",
+   "Random Forest": "RI"
+  }
+ ],
+ "r2": [
+  {
+   "signal": "RF entropy (all variables)",
+   "W": 120,
+   "knownF1": 0.9652,
+   "threshold": 0.126,
+   "AUROC": 0.9678,
+   "detection": 1.0,
+   "FPR": 0.05909,
+   "meanEntropyKnown": 0.06019,
+   "meanEntropyHeld": 0.7991
+  },
+  {
+   "signal": "RF entropy (all variables)",
+   "W": 300,
+   "knownF1": 0.9746,
+   "threshold": 0.3054,
+   "AUROC": 0.6201,
+   "detection": 0.45,
+   "FPR": 0.05,
+   "meanEntropyKnown": 0.1108,
+   "meanEntropyHeld": 0.2656
+  },
+  {
+   "signal": "RF entropy (all variables)",
+   "W": 600,
+   "knownF1": 0.9695,
+   "threshold": 0.3125,
+   "AUROC": 0.5082,
+   "detection": 0.15,
+   "FPR": 0.05,
+   "meanEntropyKnown": 0.1205,
+   "meanEntropyHeld": 0.1657
+  },
+  {
+   "signal": "RF entropy (no oracle)",
+   "W": 120,
+   "knownF1": 0.9692,
+   "threshold": 0.1782,
+   "AUROC": 0.7194,
+   "detection": 0.5,
+   "FPR": 0.05,
+   "meanEntropyKnown": 0.061,
+   "meanEntropyHeld": 0.5618
+  },
+  {
+   "signal": "RF entropy (no oracle)",
+   "W": 300,
+   "knownF1": 0.9701,
+   "threshold": 0.394,
+   "AUROC": 0.4311,
+   "detection": 0.1,
+   "FPR": 0.05,
+   "meanEntropyKnown": 0.1184,
+   "meanEntropyHeld": 0.124
+  },
+  {
+   "signal": "RF entropy (no oracle)",
+   "W": 600,
+   "knownF1": 0.965,
+   "threshold": 0.4147,
+   "AUROC": 0.4522,
+   "detection": 0.1,
+   "FPR": 0.05455,
+   "meanEntropyKnown": 0.1225,
+   "meanEntropyHeld": 0.1185
+  },
+  {
+   "signal": "CNN MC-dropout entropy (all variables)",
+   "W": 120,
+   "knownF1": 0.8637,
+   "threshold": 0.7532,
+   "AUROC": 0.837,
+   "detection": 0.25,
+   "FPR": 0.05455,
+   "meanEntropyKnown": 0.1779,
+   "meanEntropyHeld": 0.5401
+  },
+  {
+   "signal": "CNN MC-dropout entropy (all variables)",
+   "W": 300,
+   "knownF1": 0.8577,
+   "threshold": 1.409,
+   "AUROC": 0.5384,
+   "detection": 0.05,
+   "FPR": 0.07727,
+   "meanEntropyKnown": 0.3591,
+   "meanEntropyHeld": 0.169
+  },
+  {
+   "signal": "CNN MC-dropout entropy (all variables)",
+   "W": 600,
+   "knownF1": 0.8826,
+   "threshold": 1.334,
+   "AUROC": 0.2098,
+   "detection": 0.05,
+   "FPR": 0.06818,
+   "meanEntropyKnown": 0.3005,
+   "meanEntropyHeld": 0.08392
+  },
+  {
+   "signal": "Ensemble entropy (RF + CNN soft vote)",
+   "W": 120,
+   "knownF1": null,
+   "threshold": 0.6249,
+   "AUROC": 0.8691,
+   "detection": 0.45,
+   "FPR": 0.04545,
+   "meanEntropyKnown": 0.1678,
+   "meanEntropyHeld": 0.7542
+  },
+  {
+   "signal": "Ensemble entropy (RF + CNN soft vote)",
+   "W": 300,
+   "knownF1": null,
+   "threshold": 1.15,
+   "AUROC": 0.5782,
+   "detection": 0.05,
+   "FPR": 0.05,
+   "meanEntropyKnown": 0.2861,
+   "meanEntropyHeld": 0.2435
+  },
+  {
+   "signal": "Ensemble entropy (RF + CNN soft vote)",
+   "W": 600,
+   "knownF1": null,
+   "threshold": 0.987,
+   "AUROC": 0.3361,
+   "detection": 0.05,
+   "FPR": 0.06818,
+   "meanEntropyKnown": 0.2503,
+   "meanEntropyHeld": 0.1371
+  }
+ ],
+ "w60Study": [
+  {
+   "model": "LogReg",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_LogReg_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "LogReg+",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_LogRegPlus_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "Random Forest",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.187691,
+   "accuracy": 0.266393,
+   "valF1": null,
+   "source": "pred_RandomForest_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "CNN",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_CNN_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "GRU",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_GRU_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "MultiRocket+HYDRA",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_MultiRocketHydra_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "Rocket",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_Rocket_W60_test.csv (recomputed)"
+  },
+  {
+   "model": "MiniRocket",
+   "t0": 20,
+   "vars": "realistic",
+   "W": 60,
+   "macroF1": 0.189182,
+   "accuracy": 0.27459,
+   "valF1": null,
+   "source": "pred_MiniRocket_W60_test.csv (recomputed)"
+  }
+ ],
+ "officialReport": {
+  "model": "CNN block of pred_E_W60_test.csv (official submission file)",
+  "macroF1": 0.189182,
+  "accuracy": 0.27459
+ }
+}

@@ -1,0 +1,149 @@
+model,t0,vars,W,macro_F1,accuracy,val_macro_F1,source
+LogReg,20,all,30,0.189182,0.27459,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,20,all,60,0.189182,0.27459,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,20,all,120,0.881957,0.891667,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,20,all,300,0.857232,0.879167,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,20,all,600,0.853221,0.875,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,20,realistic,30,0.189182,0.27459,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,20,realistic,60,0.189182,0.27459,,pred_LogReg_W60_test.csv (recomputed)
+LogReg,20,realistic,120,0.924717,0.920833,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,20,realistic,300,0.854849,0.875,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,20,realistic,600,0.85045,0.870833,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,all,30,0.869721,0.891667,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,all,60,0.864997,0.883333,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,all,120,0.86405,0.883333,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,all,300,0.853221,0.875,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,all,600,0.857494,0.879167,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,realistic,30,0.894789,0.895833,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,realistic,60,0.860611,0.875,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,realistic,120,0.857427,0.875,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,realistic,300,0.851065,0.870833,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg,100,realistic,600,0.853633,0.875,,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,20,all,30,0.189182,0.27459,0.190648,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,20,all,60,0.189182,0.27459,0.190648,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,20,all,120,0.979648,0.979167,0.991664,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,20,all,300,0.963868,0.9625,0.983695,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,20,all,600,0.970867,0.970833,0.983292,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,20,realistic,30,0.189182,0.27459,0.190648,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,20,realistic,60,0.189182,0.27459,,pred_LogRegPlus_W60_test.csv (recomputed)
+LogReg+,20,realistic,120,0.967826,0.966667,0.98342,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,20,realistic,300,0.963099,0.9625,0.983292,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,20,realistic,600,0.958514,0.958333,0.966766,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,all,30,0.974986,0.975,0.995831,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,all,60,0.979449,0.979167,0.991758,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,all,120,0.970749,0.970833,0.995831,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,all,300,0.954492,0.954167,0.983765,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,all,600,0.967486,0.966667,0.97962,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,realistic,30,0.971539,0.970833,0.979618,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,realistic,60,0.967512,0.966667,0.9836,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,realistic,120,0.967741,0.966667,0.983404,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,realistic,300,0.957686,0.958333,0.983307,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+LogReg+,100,realistic,600,0.959282,0.958333,0.967919,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,20,all,30,0.187691,0.266393,0.189143,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,20,all,60,0.187691,0.266393,0.189143,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,20,all,120,0.979907,0.979167,0.995831,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,20,all,300,0.972026,0.970833,0.995831,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,20,all,600,0.979146,0.979167,0.995338,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,20,realistic,30,0.187691,0.266393,0.189143,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,20,realistic,60,0.187691,0.266393,,pred_RandomForest_W60_test.csv (recomputed)
+Random Forest,20,realistic,120,0.959932,0.958333,0.995831,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,20,realistic,300,0.967478,0.966667,0.983404,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,20,realistic,600,0.962529,0.9625,0.982815,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,all,30,0.971553,0.970833,0.995831,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,all,60,0.971553,0.970833,0.995831,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,all,120,0.972026,0.970833,0.987477,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,all,300,0.959313,0.958333,0.991169,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,all,600,0.971152,0.970833,0.995338,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,realistic,30,0.959704,0.958333,0.995831,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,realistic,60,0.963573,0.9625,0.991661,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,realistic,120,0.959691,0.958333,0.979122,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,realistic,300,0.951157,0.95,0.986999,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+Random Forest,100,realistic,600,0.966391,0.966667,0.982815,run7 main_metrics_lr_rf.csv (2026-10-29 full run (run7))
+CNN,20,all,30,0.188436,,0.189895,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+CNN,20,all,60,0.189182,,0.190648,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+CNN,20,all,120,0.869552,,0.886752,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+CNN,20,all,300,0.867773,,0.888889,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+CNN,20,all,600,0.871732,,0.888889,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+CNN,20,realistic,30,0.188436,,0.189895,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+CNN,20,realistic,60,0.189182,0.27459,,pred_CNN_W60_test.csv (recomputed)
+CNN,20,realistic,120,0.865529,,0.881211,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+CNN,20,realistic,300,0.86836,,0.886895,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+CNN,20,realistic,600,0.837625,,0.86356,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+CNN,100,all,30,0.9877,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+CNN,100,all,60,0.9837,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+CNN,100,all,120,0.9837,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+CNN,100,all,300,0.983,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+CNN,100,all,600,0.9959,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+CNN,100,realistic,30,0.9716,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+CNN,100,realistic,60,0.9677,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+CNN,100,realistic,120,0.9679,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+CNN,100,realistic,300,0.9666,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+CNN,100,realistic,600,0.93,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,20,all,30,0.188436,,0.189895,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+GRU,20,all,60,0.188685,,0.190146,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+GRU,20,all,120,0.864738,,0.874153,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+GRU,20,all,300,0.85979,,0.883233,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+GRU,20,all,600,0.825523,,0.841381,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+GRU,20,realistic,30,0.189182,,0.190648,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+GRU,20,realistic,60,0.189182,0.27459,,pred_GRU_W60_test.csv (recomputed)
+GRU,20,realistic,120,0.910662,,0.928768,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+GRU,20,realistic,300,0.856363,,0.8756,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+GRU,20,realistic,600,0.730571,,0.749663,run7 task_e_results.json deep_val (2026-10-29 full run (run7))
+GRU,100,all,30,0.9797,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,100,all,60,0.9797,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,100,all,120,0.9877,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,100,all,300,0.8037,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,100,all,600,0.7932,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,100,realistic,30,0.9634,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,100,realistic,60,0.9635,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,100,realistic,120,0.9707,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,100,realistic,300,0.8585,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+GRU,100,realistic,600,0.7584,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MultiRocket+HYDRA,20,all,30,0.189182,0.27459,0.190648,run7 results_rocket.csv (2026-10-29 full run (run7))
+MultiRocket+HYDRA,20,all,60,0.189182,0.27459,0.190648,run7 results_rocket.csv (2026-10-29 full run (run7))
+MultiRocket+HYDRA,20,all,120,0.98326,0.983333,0.991758,run7 results_rocket.csv (2026-10-29 full run (run7))
+MultiRocket+HYDRA,20,all,300,0.995925,0.995833,1.0,run7 results_rocket.csv (2026-10-29 full run (run7))
+MultiRocket+HYDRA,20,all,600,0.987097,0.9875,1.0,run7 results_rocket.csv (2026-10-29 full run (run7))
+MultiRocket+HYDRA,20,realistic,60,0.189182,0.27459,,pred_MultiRocketHydra_W60_test.csv (recomputed)
+MultiRocket+HYDRA,100,all,30,0.9919,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MultiRocket+HYDRA,100,all,60,0.9918,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MultiRocket+HYDRA,100,all,120,0.9918,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MultiRocket+HYDRA,100,all,300,0.987,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MultiRocket+HYDRA,100,all,600,0.9871,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MultiRocket+HYDRA,100,realistic,30,0.987767,0.9875,1.0,run7 results_rocket.csv (2026-10-29 full run (run7))
+MultiRocket+HYDRA,100,realistic,60,0.983799,0.983333,0.996011,run7 results_rocket.csv (2026-10-29 full run (run7))
+MultiRocket+HYDRA,100,realistic,120,0.987587,0.9875,0.995831,run7 results_rocket.csv (2026-10-29 full run (run7))
+MultiRocket+HYDRA,100,realistic,300,0.987097,0.9875,0.991667,run7 results_rocket.csv (2026-10-29 full run (run7))
+MultiRocket+HYDRA,100,realistic,600,0.987094,0.9875,0.995831,run7 results_rocket.csv (2026-10-29 full run (run7))
+Rocket,20,all,30,0.189182,0.27459,0.190648,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+Rocket,20,all,60,0.189182,0.27459,0.190648,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+Rocket,20,all,120,0.987788,0.9875,0.995831,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+Rocket,20,all,300,0.991644,0.991667,0.991646,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+Rocket,20,all,600,0.987592,0.9875,0.995831,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+Rocket,20,realistic,60,0.189182,0.27459,,pred_Rocket_W60_test.csv (recomputed)
+Rocket,100,all,30,0.9797,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+Rocket,100,all,60,0.9877,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+Rocket,100,all,120,0.9959,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+Rocket,100,all,300,0.9827,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+Rocket,100,all,600,0.9828,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+Rocket,100,realistic,30,0.967592,0.966667,1.0,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+Rocket,100,realistic,60,0.971368,0.970833,0.995831,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+Rocket,100,realistic,120,0.991862,0.991667,1.0,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+Rocket,100,realistic,300,0.978531,0.979167,0.987492,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+Rocket,100,realistic,600,0.978656,0.979167,0.98283,run7 results_rocketclf.csv (2026-10-29 full run (run7))
+MiniRocket,20,all,30,0.189182,0.27459,0.190648,run7 results_minirocket.csv (2026-10-29 full run (run7))
+MiniRocket,20,all,60,0.189182,0.27459,0.190648,run7 results_minirocket.csv (2026-10-29 full run (run7))
+MiniRocket,20,all,120,0.991263,0.991667,1.0,run7 results_minirocket.csv (2026-10-29 full run (run7))
+MiniRocket,20,all,300,0.991263,0.991667,1.0,run7 results_minirocket.csv (2026-10-29 full run (run7))
+MiniRocket,20,all,600,0.991263,0.991667,1.0,run7 results_minirocket.csv (2026-10-29 full run (run7))
+MiniRocket,20,realistic,60,0.189182,0.27459,,pred_MiniRocket_W60_test.csv (recomputed)
+MiniRocket,100,all,30,0.9877,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MiniRocket,100,all,60,0.9919,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MiniRocket,100,all,120,0.9871,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MiniRocket,100,all,300,0.9913,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MiniRocket,100,all,600,0.9913,,,"run7 E5 live section, executed notebook printout (2026-10-29 full run (run7))"
+MiniRocket,100,realistic,30,0.991756,0.991667,0.995831,run7 results_minirocket.csv (2026-10-29 full run (run7))
+MiniRocket,100,realistic,60,0.975037,0.975,0.995831,run7 results_minirocket.csv (2026-10-29 full run (run7))
+MiniRocket,100,realistic,120,0.987589,0.9875,0.991646,run7 results_minirocket.csv (2026-10-29 full run (run7))
+MiniRocket,100,realistic,300,0.978707,0.979167,0.987492,run7 results_minirocket.csv (2026-10-29 full run (run7))
+MiniRocket,100,realistic,600,0.978656,0.979167,0.991169,run7 results_minirocket.csv (2026-10-29 full run (run7))
