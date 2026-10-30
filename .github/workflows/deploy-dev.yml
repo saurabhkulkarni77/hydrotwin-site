@@ -105,6 +105,9 @@ jobs:
       - name: No dotted river overlay + visible water surface (dev only)
         run: python3 build25/patch_flowline.py
 
+      - name: Baked water polygons for the out-of-block river (dev only)
+        run: python3 build25/patch_polywater.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
