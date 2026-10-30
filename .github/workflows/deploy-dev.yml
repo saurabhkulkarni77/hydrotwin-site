@@ -102,6 +102,9 @@ jobs:
       - name: Smoother rendering + realistic water (dev only)
         run: python3 build25/patch_smooth.py
 
+      - name: No dotted river overlay + visible water surface (dev only)
+        run: python3 build25/patch_flowline.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
