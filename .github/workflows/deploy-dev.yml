@@ -107,6 +107,10 @@ jobs:
 
       - name: Baked water polygons for the out-of-block river (dev only)
         run: python3 build25/patch_polywater.py
+      - name: Remove the 3D buildings layer (dev only)
+        run: python3 build25/patch_nobuild.py
+      - name: Real river from USGS 3DEP elevation (dev only)
+        run: python3 build25/patch_realriver.py
 
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
