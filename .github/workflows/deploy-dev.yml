@@ -49,6 +49,9 @@ jobs:
       - name: Multi-factor correlation matrix in the Data view (dev only)
         run: python3 build25/patch_corr.py
 
+      - name: Features affecting discharge flow - XGBoost importance (dev only)
+        run: python3 build25/patch_featimp.py
+
       - name: Model full forms in the Data view (dev only)
         run: python3 build25/patch_fullforms.py
 
@@ -92,6 +95,22 @@ jobs:
 
       - name: Panels load on click only (dev only)
         run: python3 build25/patch_lazy_panels.py
+
+      - name: River continuity + no buildings in water (dev only)
+        run: python3 build25/patch_riverwater.py
+
+      - name: Smoother rendering + realistic water (dev only)
+        run: python3 build25/patch_smooth.py
+
+      - name: No dotted river overlay + visible water surface (dev only)
+        run: python3 build25/patch_flowline.py
+
+      - name: Baked water polygons for the out-of-block river (dev only)
+        run: python3 build25/patch_polywater.py
+      - name: Real river from USGS 3DEP elevation (dev only)
+        run: python3 build25/patch_realriver.py
+      - name: Buildings present but never in water (dev only)
+        run: python3 build25/patch_buildingsback.py
 
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true

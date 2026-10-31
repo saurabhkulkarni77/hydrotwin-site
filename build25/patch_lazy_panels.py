@@ -131,7 +131,8 @@ MARKER = "ht-lazypanels v1"
 # must keep satisfiable): every count must be identical after patching.
 CLASSIC_MARKERS = {
     "ht-statsview v1": 2, "ht-soilsnow v1": 2, "ht-3dchart v1": 2,
-    "ht-corr v1": 2, "ht-clusters v1": 2, "ht-dacp v1": 1,
+    "ht-corr v1": 2, "ht-clusters v1": 2, "ht-featimp v1": 2,
+    "ht-dacp v1": 1,
     "ht-weekly v1": 1, "ht-monthly v1": 1, "ht-yearly v1": 1,
     "ht-ffmo v1": 1, "ht-cmpwm v1": 1, "ht-cmpy v1": 1,
     "ht-fullforms v1": 1, "ht-uiux v1": 1, "ht-livefix v2": 1,
@@ -139,10 +140,12 @@ CLASSIC_MARKERS = {
     '<div id="ht-drift-panel">': 1, 'id="hts-top"': 1,
     'id="hts-sec-weekly"': 1, 'id="hts-sec-monthly"': 1,
     'id="hts-sec-yearly"': 1, 'id="hts-sec-clusters"': 1,
+    'id="hts-sec-featimp"': 1,
     'id="htdc-on"': 1, 'id="htwk-live"': 1, 'id="htmo-live"': 1,
     'id="htyr-live"': 1, 'id="htffmo-live"': 1,
 }
 THREED_MARKERS = {
+    "ht-featimp v1": 1,
     "ht-dacp v1": 1, "ht-weekly v1": 2, "ht-monthly v1": 1,
     "ht-yearly v1": 1, "ht-ffmo v1": 1, "ht-cmpwm v1": 1,
     "ht-cmpy v1": 1, "ht-uiux v1": 2, "ht-live-gap v1": 2,
@@ -176,8 +179,10 @@ BOOT_GATES_CLASSIC = [
     ("// ht-3dchart v1 boot", "chart3d", None),
     ("// ht-corr v1 boot", "corr", None),
     ("// ht-clusters v1 boot", "clusters", None),
+    ("// ht-featimp v1 boot", "featimp", None),
 ]
 BOOT_GATES_3D = [
+    ("// ht-featimp v1 boot", "featimp", None),
     ("/* ht-dacp v1 - DACP", "dacp", None),
     ("/* ht-weekly v1 - Weekly outlook", "weekly", None),
     ("/* ht-monthly v1 - Monthly outlook", "monthly", None),
@@ -195,6 +200,7 @@ CLASSIC_SECTIONS = [  # (section id, loader group) in page order
     ("hts-sec-drift", "core"),
     ("hts-sec-3dchart", "chart3d"),
     ("hts-sec-corr", "corr"),
+    ("hts-sec-featimp", "featimp"),
     ("hts-sec-clusters", "clusters"),
 ]
 
@@ -591,6 +597,8 @@ def patch_3d(path: Path) -> str:
         {"panel": "ht-dacp-panel", "label": "Confidence interval",
          "group": "dacp"},
         {"panel": "ht-drift-panel", "label": "Model drift", "group": None},
+        {"panel": "htfi-panel", "label": "Features affecting flow",
+         "group": "featimp"},
     ]
     s, err = upsert_stub(s, "3d")
     if err:
