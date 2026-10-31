@@ -116,6 +116,7 @@
         if (title.indexOf(toks[t]) >= 0) s += 4;
         if (text.indexOf(toks[t]) >= 0) s += 1;
       }
+      if (e.kind === 'station' && (nq.indexOf(' page ') >= 0 || nq.indexOf(' open ') >= 0)) s += 7;
       if (s > 0) scored.push([s, e]);
     }
     scored.sort(function (a, b) { return b[0] - a[0]; });

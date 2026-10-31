@@ -43,6 +43,10 @@ export function mount(root) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0e1a24);
+  scene.add(new THREE.HemisphereLight(0xdce8f5, 0x33404f, 1.1));
+  const sun = new THREE.DirectionalLight(0xfff4e0, 2.2);
+  sun.position.set(4, 8, 5);
+  scene.add(sun);
   const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
 
   // simple orbit: drag to rotate, wheel to zoom

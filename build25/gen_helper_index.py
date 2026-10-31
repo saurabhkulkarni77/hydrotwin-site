@@ -53,15 +53,17 @@ def main():
         stations.append({
             "site": site, "name": name,
             "lat": st["latitude"], "lon": st["longitude"],
-            "drainage": st.get("drainage", ""),
+            "drainage": st.get("drainage") or "",
         })
         river = name.split(" at ")[0] if " at " in name else name
+        drainage = st.get("drainage") or ""
         entries.append({
             "id": f"station-{site}-data",
             "kind": "station",
             "title": f"{name} (USGS {site}) — Data view",
             "text": (f"Statistics and Data view for {name}, USGS station {site} on the {river}. "
-                     f"Drainage area {st.get('drainage', '')}. Panels: hydrograph, 7-day forecast, "
+                     + (f"Drainage area {drainage}. " if drainage else "")
+                     + "Panels: hydrograph, 7-day forecast, "
                      "model statistics, weekly, monthly and yearly outlooks, drift, correlations, "
                      "feature importance and 3D charts."),
             "keywords": [site, name.lower(), river.lower(), "data", "statistics", "hydrograph"],

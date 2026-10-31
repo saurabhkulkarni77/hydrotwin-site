@@ -90,7 +90,7 @@
    "name": "Sacramento River at Freeport, CA",
    "lat": 38.45566389,
    "lon": -121.5016167,
-   "drainage": null
+   "drainage": ""
   },
   {
    "site": "14105700",
@@ -3957,7 +3957,7 @@
    "id": "station-11447650-data",
    "kind": "station",
    "title": "Sacramento River at Freeport, CA (USGS 11447650) — Data view",
-   "text": "Statistics and Data view for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River. Drainage area None. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
