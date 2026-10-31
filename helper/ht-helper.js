@@ -1,73 +1,40 @@
-/* ht-helperbot v3 — HydroTwin helper bot.
+/* ht-helperbot v4 — HydroTwin helper bot.
  *
  * A chat widget (bottom right) that answers "where is X / how do I Y"
  * questions about the digital twin. Location answers come from the
  * generated site index (helper/ht-index.json): retrieval over that
- * index always runs first and its entries drive the answer text and
- * the "Show me" actions. An optional in-browser OPEN SOURCE LLM
- * (WebLLM) can rephrase the answer, grounded on the same retrieved
- * entries passed as context; it is strictly opt-in (a one-time model
- * download starts only when the visitor presses the enable button).
+ * index always runs first, its answer is shown instantly, and its
+ * entries drive the "Show me" actions. Index answers never wait on
+ * the network.
  *
- * Crash isolation (v2): the model never runs on the page thread.
- *  - A WebGPU preflight (navigator.gpu + requestAdapter) runs before
- *    anything is downloaded; browsers without WebGPU get a plain
- *    message in the panel and nothing is loaded at all.
- *  - The engine lives in a dedicated Web Worker
- *    (helper/ht-llm-worker.js, CreateWebWorkerMLCEngine), so a GPU,
- *    shader-compile or out-of-memory failure can only kill the
- *    worker, never the page.
- *  - Every load step is awaited inside try/catch with a progress
- *    watchdog and a Cancel button; ANY failure latches the bot back
- *    to direct index answers for the rest of the session, with the
- *    index answer (shown immediately regardless) left in place.
- *
- * Round 2 (v3): worker isolation was not enough on iPhone Safari —
- * the OS kills the whole web content process under memory pressure
- * during the 1B weight load, the tab reloads fresh, and v2 said
- * nothing. So now:
- *  - The SMALL model (Qwen2.5 0.5B Instruct q4f16, ~400 MB class) is
- *    the default everywhere. The 1B is attempted first only on a
- *    non-mobile browser reporting >= 8 GB device memory, and even
- *    there the 0.5B remains the fallback. Stability beats size: the
- *    bot only rephrases short index answers.
- *  - A load attempt writes a marker to sessionStorage before the
- *    download starts; it is cleared only when an engine reports
- *    fully ready (which also sets a ready flag). At boot, a marker
- *    with no ready flag means the previous attempt died with the
- *    page: the panel says so plainly, AI latches off for the rest
- *    of the tab session, and nothing retries on its own. One press
- *    of the button is exactly one attempt.
+ * Server-side AI (v4): the optional open source model no longer runs
+ * in the visitor's browser. v1-v3 loaded WebLLM on-device; the model
+ * load crashed mobile Safari tabs outright (memory pressure kills
+ * the web content process, worker isolation or not). Now a small
+ * open source model (Qwen2.5 0.5B Instruct, GGUF) is hosted on the
+ * project's own cloud (private S3 bucket + AWS Lambda llama.cpp) and
+ * the bot calls its HTTPS endpoint with the question plus the
+ * retrieved index entries; when the rephrased answer arrives it
+ * replaces the answer text (the Show me buttons stay). ANY endpoint
+ * failure (network, timeout, bad JSON, 5xx) silently keeps the index
+ * answer. If AI_ENDPOINT is empty the bot is exactly the pure index
+ * bot. There is no model download, no Enable button, and no worker.
  */
 (function () {
   'use strict';
   if (window.__htHelperBot) return;
   window.__htHelperBot = true;
 
+  // ------------------------------------------------------------- config
+  // Lambda Function URL for the helper-bot model endpoint.
+  // Empty string = endpoint off (pure index bot).
+  var AI_ENDPOINT = '';
+  var AI_TIMEOUT_MS = 45000;
+
   var scriptEl = document.currentScript || document.querySelector('script[src*="ht-helper.js"]');
   var base = scriptEl ? new URL('.', scriptEl.src).href : '../helper/';
   var rootUrl = new URL('..', base).href; // site root ('' from stations/, './' from home)
-  var WEBLLM_URL = 'https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm@0.2.79/+esm';
-  var WORKER_URL = base + 'ht-llm-worker.js';
-  var MODEL_BIG = { id: 'Llama-3.2-1B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 1B', size: 'about 800 MB' };
-  var MODEL_SMALL = { id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen2.5 0.5B (small)', size: 'about 400 MB' };
-  // The 0.5B build is the default everywhere: the 1B build (~880 MB
-  // with runtime) gets iPhone Safari tabs killed under memory pressure
-  // mid-load, and this bot only rephrases short index answers. The 1B
-  // is attempted first ONLY on a non-mobile browser that reports at
-  // least 8 GB of device memory, and even there the 0.5B stays as the
-  // automatic fallback.
-  function isMobileLike() {
-    var ua = navigator.userAgent || '';
-    if (/iPhone|iPad|iPod|Android|Mobile|Silk/i.test(ua)) return true;
-    // iPads on iOS 13+ present a desktop Mac user agent; touch points tell.
-    if (/Macintosh/.test(ua) && typeof navigator.maxTouchPoints === 'number' && navigator.maxTouchPoints > 1) return true;
-    return false;
-  }
-  var bigDesktop = !isMobileLike()
-    && typeof navigator.deviceMemory === 'number' && navigator.deviceMemory >= 8;
-  var MODELS = bigDesktop ? [MODEL_BIG, MODEL_SMALL] : [MODEL_SMALL];
-  window.__htHelperPlan = { models: MODELS.map(function (m) { return m.id; }), bigDesktop: bigDesktop };
+  window.__htHelperAI = { mode: AI_ENDPOINT ? 'server' : 'index', endpoint: AI_ENDPOINT || null };
 
   var css = ''
     + '#hthb-btn{position:fixed;right:16px;bottom:16px;z-index:99990;background:#23466E;color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:11px 16px;font:600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45)}'
@@ -85,10 +52,7 @@
     + '.hthb-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 8px}'
     + '.hthb-chip{background:#1B2C40;color:#BFD4EA;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:4px 10px;font:12px system-ui;cursor:pointer}'
     + '#hthb-ai{margin:0 14px 10px;padding:9px 11px;background:#101E30;border:1px solid rgba(255,255,255,.14);border-radius:10px;font-size:12px;color:#BFD4EA}'
-    + '#hthb-ai button{background:#23466E;color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:5px 10px;font:600 12px system-ui;cursor:pointer;margin-top:6px}'
-    + '#hthb-ai button:disabled{opacity:.55;cursor:default}'
-    + '#hthb-ai-cancel{margin-left:6px;background:#3A2A22 !important}'
-    + '#hthb-ai .hthb-prog{color:#8FC1F2;margin-top:5px;min-height:14px}'
+    + '.hthb-aitag{font-size:11px;color:#8FC1F2;margin-top:6px}'
     + '#hthb-form{display:flex;gap:8px;padding:10px 12px;border-top:1px solid rgba(255,255,255,.12)}'
     + '#hthb-in{flex:1;background:#0E1A24;color:#E8EEF5;border:1px solid #3A4A5E;border-radius:8px;padding:8px 10px;font:13.5px system-ui}'
     + '#hthb-send{background:#23466E;color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 13px;font:600 13px system-ui;cursor:pointer}'
@@ -114,21 +78,17 @@
     + '<button class="hthb-chip" type="button">How do I change the date?</button>'
     + '<button class="hthb-chip" type="button">Which features affect flow in Dallas?</button>'
     + '</div>'
-    + '<div id="hthb-ai"><b>Optional open source AI</b> (a small model, Qwen2.5 0.5B, that runs in your browser via WebLLM; '
-    + 'needs WebGPU, built into current desktop Chrome and Edge and the newest Safari). '
-    + 'One-time download of about 400 MB; nothing is sent to a server. The helper already works without it, straight from the site index.'
-    + '<br><button id="hthb-ai-btn" type="button">Enable open source AI</button>'
-    + '<button id="hthb-ai-cancel" type="button" style="display:none">Cancel</button>'
-    + '<div class="hthb-prog" id="hthb-ai-prog"></div></div>'
+    + '<div id="hthb-ai"><b>Site AI</b> <span id="hthb-ai-status"></span></div>'
     + '<form id="hthb-form"><input id="hthb-in" type="text" autocomplete="off" placeholder="Ask where something is…">'
     + '<button id="hthb-send" type="submit">Ask</button></form>';
   document.body.appendChild(panel);
 
   var msgs = panel.querySelector('#hthb-msgs');
   var input = panel.querySelector('#hthb-in');
-  var aiProg = panel.querySelector('#hthb-ai-prog');
-  var aiBtn = panel.querySelector('#hthb-ai-btn');
-  var aiCancel = panel.querySelector('#hthb-ai-cancel');
+  var aiStatus = panel.querySelector('#hthb-ai-status');
+  aiStatus.textContent = AI_ENDPOINT
+    ? 'is on: answers are located instantly from the built-in site index, then a small open source model (Qwen2.5 0.5B) hosted on this project’s own cloud rephrases them in friendlier words. Your question and the index entries it matched are sent to that endpoint; nothing else leaves your browser, and nothing is downloaded.'
+    : 'is off: answers come straight from the built-in site index.';
 
   function addMsg(text, who) {
     var d = document.createElement('div');
@@ -252,39 +212,54 @@
     return out;
   }
 
-  // ------------------------------------------------------------ WebLLM engine state
-  // `engine` is a WebWorkerMLCEngine proxy; the real engine lives in
-  // ht-llm-worker.js. Anything thrown or rejected on that side is
-  // contained here: the worst case is losing AI phrasing, never the page.
-  var engine = null, engineBusy = false, engineLabel = '';
-  function askLLM(q, hits, bubble) {
-    if (!engine || engineBusy) return;
-    engineBusy = true;
-    var settled = false;
-    var timer = setTimeout(function () { // a dead worker must not wedge later asks
-      if (!settled) { settled = true; engineBusy = false; }
-    }, 45000);
-    function finish() {
-      if (!settled) { settled = true; clearTimeout(timer); engineBusy = false; }
-    }
-    var ctx = hits.map(function (e) {
-      return { title: e.title, text: e.text, page: e.url || 'this page' };
-    });
-    var messages = [
-      { role: 'system', content: 'You are the HydroTwin helper bot. Answer ONLY from the site index entries given in the user message; never invent pages, panels or stations. Keep the answer to 2 or 3 short sentences, name the page and the panel or control, and be concrete. If the entries do not cover the question, say what you could not find and what you can locate instead.' },
-      { role: 'user', content: 'Question: ' + q + '\n\nSite index entries:\n' + JSON.stringify(ctx, null, 1) },
-    ];
+  // Server-side AI rephrase. The index answer is already on screen;
+  // this only swaps the answer text when a good reply arrives, and
+  // silently keeps the index answer on ANY failure. The Show me
+  // buttons live outside the text span and are never touched.
+  function askServer(q, hits, txtSpan, tag) {
+    if (!AI_ENDPOINT || !hits.length) { tag.remove(); return; }
+    tag.textContent = 'Asking the site AI…';
+    var done = false;
+    var ctrl = ('AbortController' in window) ? new AbortController() : null;
+    var timer = setTimeout(function () {
+      if (done) return;
+      done = true;
+      if (ctrl) { try { ctrl.abort(); } catch (e) { /* ignore */ } }
+      tag.remove();
+    }, AI_TIMEOUT_MS);
+    function settle() { if (!done) { done = true; clearTimeout(timer); } }
     try {
-      engine.chat.completions.create({ messages: messages, temperature: 0.2, max_tokens: 220 })
-        .then(function (res) {
-          if (settled) return;
-          var txt = res && res.choices && res.choices[0] && res.choices[0].message
-            ? String(res.choices[0].message.content || '').trim() : '';
-          if (txt) bubble.textContent = txt + '\n\n(from the site index, via the in-browser ' + engineLabel + ' model)';
-        })
-        .catch(function () { /* keep the index answer already shown */ })
-        .finally(finish);
-    } catch (e) { finish(); /* keep the index answer already shown */ }
+      fetch(AI_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: q,
+          context: hits.map(function (e) {
+            return { title: e.title, text: e.text, page: e.url || 'this page' };
+          }),
+        }),
+        signal: ctrl ? ctrl.signal : undefined,
+      }).then(function (r) {
+        if (!r.ok) throw new Error('endpoint ' + r.status);
+        return r.json();
+      }).then(function (d) {
+        settle();
+        var txt = d && typeof d.answer === 'string' ? d.answer.trim() : '';
+        if (txt) {
+          txtSpan.textContent = txt;
+          tag.textContent = 'Answer rephrased by the site AI (open source Qwen2.5 0.5B, hosted by this project). Locations come from the site index.';
+        } else {
+          tag.remove();
+        }
+        msgs.scrollTop = msgs.scrollHeight;
+      }).catch(function () {
+        settle();
+        tag.remove(); // silent: the index answer stays
+      });
+    } catch (e) {
+      settle();
+      tag.remove();
+    }
   }
 
   function ask(q) {
@@ -296,7 +271,10 @@
       return;
     }
     var hits = retrieve(q);
-    var bubble = addMsg(fallbackAnswer(q, hits), 'a');
+    var bubble = addMsg('', 'a');
+    var txtSpan = document.createElement('span');
+    txtSpan.textContent = fallbackAnswer(q, hits);
+    bubble.appendChild(txtSpan);
     hits.slice(0, 2).forEach(function (e) {
       var b = document.createElement('button');
       b.className = 'hthb-act'; b.type = 'button';
@@ -305,214 +283,12 @@
       bubble.appendChild(document.createElement('br'));
       bubble.appendChild(b);
     });
+    var tag = document.createElement('div');
+    tag.className = 'hthb-aitag';
+    bubble.appendChild(tag);
     msgs.scrollTop = msgs.scrollHeight;
-    if (engine && hits.length) askLLM(q, hits, bubble);
+    askServer(q, hits, txtSpan, tag);
   }
-
-  // ------------------------------------------------------------ WebLLM loading (opt-in, crash-isolated)
-  var llmLoading = false;   // a load attempt is in flight
-  var llmDead = false;      // latched off for this session (unsupported or failed)
-  var llmWorker = null;     // the worker hosting the engine
-  var llmWatchdog = null;   // progress watchdog interval id
-  var llmLastProgress = 0;  // last init-progress timestamp
-  var loadSeq = 0;          // attempt counter; stale attempts may not touch the UI
-
-  // ------------------------------------------------------------ reload detection
-  // sessionStorage survives the same-tab reload iOS Safari performs
-  // when it kills the web content process, so it can carry the one
-  // signal the killed page could not: "a model load was in flight".
-  // startLoad() sets the attempt marker (and clears any stale ready
-  // flag) just before the download begins; the marker is cleared only
-  // when an engine reports fully ready, which also sets the ready
-  // flag. Controlled endings (success, failure, unsupported, cancel)
-  // all clear it. At boot, a marker with no ready flag therefore
-  // means the previous attempt died with the page itself.
-  var SS_ATTEMPT = 'ht_llm_attempt', SS_READY = 'ht_llm_ready', SS_BLOCKED = 'ht_llm_blocked';
-  function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
-  function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* private mode */ } }
-  function ssDel(k) { try { sessionStorage.removeItem(k); } catch (e) { /* ignore */ } }
-  var INTERRUPTED_MSG = 'It looks like the open source AI load was interrupted because the page reloaded — '
-    + 'this device likely cannot hold the model in memory. AI phrasing is off for this visit and nothing '
-    + 'will be downloaded. The built in guide still answers everything from the site index.';
-  var llmInterruptedFresh = false;
-  if (ssGet(SS_ATTEMPT) && !ssGet(SS_READY)) {
-    llmInterruptedFresh = true;
-    ssSet(SS_BLOCKED, '1');   // keep AI latched off for the rest of this tab session
-    ssDel(SS_ATTEMPT);
-  }
-  if (llmInterruptedFresh || ssGet(SS_BLOCKED)) {
-    llmDead = true;
-    aiBtn.disabled = true; aiBtn.textContent = 'AI unavailable here';
-    aiProg.textContent = INTERRUPTED_MSG;
-    window.__htHelperLLM = { ready: false, interrupted: true };
-    if (llmInterruptedFresh) addMsg(INTERRUPTED_MSG, 'a'); // say it in the chat too, once
-  }
-
-  function shortErr(err) {
-    return String((err && err.message) || err || 'unknown error').replace(/\s+/g, ' ').slice(0, 140);
-  }
-  function killWorker() {
-    if (llmWatchdog) { clearInterval(llmWatchdog); llmWatchdog = null; }
-    if (llmWorker) { try { llmWorker.terminate(); } catch (e) { /* already gone */ } llmWorker = null; }
-  }
-  function dropEngine(note) { // engine died after a successful load
-    engine = null; engineBusy = false; engineLabel = '';
-    window.__htHelperLLM = { ready: false, error: 'engine stopped' };
-    killWorker();
-    aiProg.textContent = note;
-    aiBtn.disabled = false; aiBtn.textContent = 'Enable open source AI';
-  }
-
-  // Preflight: never even offer a download where WebGPU cannot run.
-  function webgpuSupport() {
-    return new Promise(function (resolve) {
-      var done = false;
-      function finish(ok, why) { if (!done) { done = true; resolve({ ok: ok, why: why }); } }
-      try {
-        if (!('gpu' in navigator) || !navigator.gpu || typeof navigator.gpu.requestAdapter !== 'function') {
-          finish(false, 'no WebGPU in this browser'); return;
-        }
-        var to = setTimeout(function () { finish(false, 'WebGPU check timed out'); }, 8000);
-        navigator.gpu.requestAdapter().then(function (adapter) {
-          clearTimeout(to);
-          finish(!!adapter, adapter ? '' : 'no WebGPU adapter available');
-        }).catch(function (e) { clearTimeout(to); finish(false, shortErr(e)); });
-      } catch (e) { finish(false, shortErr(e)); }
-    });
-  }
-
-  // One load attempt for one model, fully inside a fresh worker.
-  // Resolves with the engine proxy; rejects on ANY failure (download,
-  // compile, OOM, worker error, 90 s progress stall, cancel).
-  function loadModel(mlc, model, seq) {
-    return new Promise(function (resolve, reject) {
-      var settled = false;
-      function ok(v) { if (!settled) { settled = true; if (llmWatchdog) { clearInterval(llmWatchdog); llmWatchdog = null; } resolve(v); } }
-      function bad(e) { if (!settled) { settled = true; killWorker(); reject(e); } }
-      try {
-        llmWorker = new Worker(WORKER_URL, { type: 'module' });
-      } catch (e) { bad(e); return; }
-      llmWorker.onerror = function (ev) {
-        bad(new Error('AI worker error' + (ev && ev.message ? ': ' + ev.message : '')));
-      };
-      llmLastProgress = Date.now();
-      llmWatchdog = setInterval(function () {
-        if (seq !== loadSeq) { bad(new Error('cancelled')); return; }
-        if (Date.now() - llmLastProgress > 90000) bad(new Error('loading stalled (no progress for 90 seconds)'));
-      }, 1000);
-      var pending;
-      try {
-        pending = mlc.CreateWebWorkerMLCEngine(llmWorker, model.id, {
-          initProgressCallback: function (p) {
-            if (seq !== loadSeq) return;
-            llmLastProgress = Date.now();
-            var pct = (p && typeof p.progress === 'number') ? ' (' + Math.round(p.progress * 100) + '%)' : '';
-            aiProg.textContent = 'Loading ' + model.label + ': ' + (p && p.text ? p.text : 'working…') + pct;
-          },
-        }, { context_window_size: 1024 }); // short context: far less memory than the model default
-      } catch (e) { bad(e); return; }
-      Promise.resolve(pending).then(function (eng) {
-        if (seq !== loadSeq) { bad(new Error('cancelled')); return; }
-        // From here on, a worker death only costs AI phrasing.
-        if (llmWorker) llmWorker.onerror = function () {
-          dropEngine('The AI worker stopped, so AI phrasing is off. The guide keeps answering from the site index.');
-        };
-        ok(eng);
-      }, bad);
-    });
-  }
-
-  function aiUnsupported(why) {
-    ssDel(SS_ATTEMPT); // controlled ending: never report this as an interrupted load
-    llmDead = true; llmLoading = false;
-    aiCancel.style.display = 'none';
-    aiBtn.disabled = true; aiBtn.textContent = 'AI not available in this browser';
-    aiProg.textContent = 'This browser cannot run the on-device AI model (' + why + '). It needs WebGPU, '
-      + 'built into current desktop Chrome and Edge and the newest Safari. Nothing was downloaded, and the '
-      + 'helper keeps answering everything from the built-in site index.';
-    window.__htHelperLLM = { ready: false, unsupported: true, error: why };
-  }
-  function aiFailed(detail) {
-    ssDel(SS_ATTEMPT); // controlled ending: never report this as an interrupted load
-    llmDead = true; llmLoading = false;
-    killWorker();
-    aiCancel.style.display = 'none';
-    aiBtn.disabled = true; aiBtn.textContent = 'AI unavailable here';
-    aiProg.textContent = 'The on-device AI model could not run in this browser' + (detail ? ' (' + detail + ')' : '')
-      + ', so AI phrasing is off for this visit. The helper keeps answering everything from the built-in site index.';
-    window.__htHelperLLM = { ready: false, error: detail || 'load failed' };
-  }
-
-  function startLoad() {
-    var seq = ++loadSeq;
-    llmLoading = true;
-    aiBtn.disabled = true; aiBtn.textContent = 'Loading…';
-    aiCancel.style.display = '';
-    aiProg.textContent = 'Checking whether this browser can run the on-device model…';
-    webgpuSupport().then(function (sup) {
-      if (seq !== loadSeq) return; // cancelled meanwhile
-      if (!sup.ok) { aiUnsupported(sup.why); return null; }
-      // The load is now committed: mark the attempt so that if the OS
-      // kills this page mid-load, the reloaded page can say what
-      // happened instead of failing silently. A new attempt also
-      // supersedes any ready flag left by an earlier page view.
-      ssSet(SS_ATTEMPT, String(Date.now())); ssDel(SS_READY);
-      aiProg.textContent = 'Downloading the AI library…';
-      return import(WEBLLM_URL);
-    }).then(function (mlc) {
-      if (!mlc || seq !== loadSeq) return null;
-      var chain = Promise.resolve();
-      var lastErr = null;
-      MODELS.forEach(function (model, i) {
-        chain = chain.then(function () {
-          if (engine || seq !== loadSeq) return null;
-          if (i > 0) aiProg.textContent = 'The standard model could not start here (' + shortErr(lastErr) + '). Trying the smaller ' + model.label + ' model (' + model.size + ')…';
-          else aiProg.textContent = 'Downloading the open source model ' + model.label + ' (one time, ' + model.size + ')…';
-          return loadModel(mlc, model, seq).then(function (eng) {
-            if (seq !== loadSeq) return;
-            engine = eng; engineLabel = model.label;
-            ssDel(SS_ATTEMPT); ssSet(SS_READY, model.id); // fully ready: the only clean exit for the marker
-            window.__htHelperLLM = { ready: true, model: model.id };
-            llmLoading = false;
-            aiCancel.style.display = 'none';
-            aiBtn.disabled = true; aiBtn.textContent = 'AI on';
-            aiProg.textContent = 'Open source AI is on (' + model.label + ', in your browser; it runs in a background worker, separate from the page). Answers still come from the site index.';
-            try { localStorage.setItem('htHelperLLM', '1'); } catch (e) { /* private mode */ }
-          }).catch(function (err) { lastErr = err; });
-        });
-      });
-      return chain.then(function () {
-        if (seq !== loadSeq || engine) return;
-        aiFailed(shortErr(lastErr));
-      });
-    }).catch(function (err) {
-      if (seq !== loadSeq) return;
-      aiFailed(shortErr(err));
-    });
-  }
-
-  aiBtn.addEventListener('click', function () {
-    try {
-      if (engine) { aiProg.textContent = 'Open source AI is already on.'; return; }
-      if (llmLoading || llmDead) return;
-      startLoad();
-    } catch (e) { aiFailed(shortErr(e)); }
-  });
-  aiCancel.addEventListener('click', function () {
-    if (!llmLoading) return;
-    loadSeq++; // invalidate the in-flight attempt; its late callbacks become no-ops
-    ssDel(SS_ATTEMPT); // controlled ending: never report this as an interrupted load
-    llmLoading = false;
-    killWorker();
-    aiCancel.style.display = 'none';
-    aiBtn.disabled = false; aiBtn.textContent = 'Enable open source AI';
-    aiProg.textContent = 'Download cancelled. Nothing was installed; the helper keeps answering from the site index.';
-  });
-  try {
-    if (!llmDead && localStorage.getItem('htHelperLLM') === '1') {
-      aiProg.textContent = 'You enabled the open source AI before; its files are already downloaded, so enabling is quick.';
-    }
-  } catch (e) { /* ignore */ }
 
   // ------------------------------------------------------------ wiring
   var greeted = false;
