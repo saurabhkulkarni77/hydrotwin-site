@@ -5,10 +5,18 @@ name: Setup helper-bot Lambda (one-off)
 # (python3.12 zip deployment, bundled llama.cpp built for Amazon
 # Linux 2023) serves grounded answers through a Function URL whose
 # CORS is restricted to the DEV CloudFront origin only.
-# Manual dispatch only; never runs on push.
+# Manual dispatch, plus a push trigger on its own infra files (a
+# workflow_dispatch-only file cannot be dispatched while it exists
+# only on this branch; the push trigger is how it runs. All steps
+# are idempotent, so a re-run is safe.)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [dev]
+    paths:
+      - '.github/workflows/setup-helper-lambda.yml'
+      - 'build25/helper_lambda/**'
 
 permissions:
   contents: read
