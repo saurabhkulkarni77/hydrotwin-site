@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "41133831116-15385b09477ab97f06e88b04947f85f6ce6d2b91";
+  var BID = "41211660560-6de1e1032c7a2025a358da82e0169c8e59d20085";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -537,6 +538,7 @@ function buildInner() {
 const gWaterMat = waterMaterial(1 / 60);
 const gWater = new WaterGrid(NI, (i) => IX0 + i / (NI - 1) * IWM, (j) => IZ0 + j / (NI - 1) * IWM, (e) => e - REFE + 0.05, groundRoot, gWaterMat, 3.5, 0.6);
 const ribbonMat = waterMaterial(1 / 60, false);   // ht-smooth v2: ribbon geometry carries no aEdge attribute
+ribbonMat.side = THREE.DoubleSide;   // ht-ribbonshade v1: the ribbon winds through steep terrain; a single-sided material culls the segments whose winding faces away and they read as a black band (Lees Ferry). The polygon water layer is DoubleSide for the same reason.
 const ribbon = new THREE.Mesh(new THREE.BufferGeometry(), ribbonMat); ribbon.frustumCulled = false; ribbon.renderOrder = 2; groundRoot.add(ribbon);
 let PATHM = null;      // river path, metres [[x, z], ...] upstream → gauge → downstream
 let ribbonPts = null;  // river outside the detailed block: [{x, z, bed, top}] or {brk}
@@ -552,7 +554,8 @@ function buildRibbon(dH, width) {
     if (prev !== null) { const q = 2 * prev; ix.push(q, q + 1, 2 * n, q + 1, 2 * n + 1, 2 * n); } prev = n; n++;
   }
   const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(p, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
-  g.setIndex(ix); g.computeVertexNormals(); ribbon.geometry.dispose(); ribbon.geometry = g;
+  g.setIndex(ix); g.computeVertexNormals(); { const na = g.attributes.normal; for (let q = 0; q < na.count; q++) na.setXYZ(q, 0, 1, 0); na.needsUpdate = true; }   // ht-ribbonshade v1: force water-surface normals straight up (as ht-polywater does) - computed normals on a winding canyon ribbon tilt with the path and shade black
+  ribbon.geometry.dispose(); ribbon.geometry = g;
 }
 // gauge staff (white/red, 1 ft marks) and labels that keep a constant size on screen
 const gLabels = new THREE.Group(); groundRoot.add(gLabels);
@@ -6064,6 +6067,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -6515,4 +6519,10 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   setInterval(poll, 60000);
 })();
 </script>
+
+<!-- ht-helperbot v1 -->
+<script src="../helper/ht-helper.js" defer></script>
+
+<!-- ht-precip v1 -->
+<script type="module" src="../assets/precip/ht-precip.mjs"></script>
 </body></html>

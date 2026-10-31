@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "41133831116-15385b09477ab97f06e88b04947f85f6ce6d2b91";
+  var BID = "41211660560-6de1e1032c7a2025a358da82e0169c8e59d20085";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -354,6 +355,32 @@ html.htlp-wait-core #featcpanel,html.htlp-wait-core #ht-drift-panel{display:none
    .htfi-meta{font-size:11.5px;color:#9FB3C8;margin:8px 0 0}
    .htfi-loading{color:#9FB3C8;font-size:13px;padding:10px 0}
    @media (max-width:700px){.htfi-lab{flex-basis:150px}}
+  </style>
+ </section>
+ <section class="hts-sec" id="hts-sec-charts3d">
+  <!-- ht-charts3d v1 -->
+  <h2>Data charts in 3D</h2>
+  <p class="hts-note">The two charts above, rendered in 3D from exactly the same data: the hydrograph is the last 365 days of this station&rsquo;s flow record (log scale), and the bars are the XGBoost feature importances from the same sidecar as the 2D chart. Drag to orbit, scroll to zoom, hover a point or a bar to read its exact values.</p>
+  <div id="htc3-root" data-site="06934500">
+   <div class="htc3-ctl">
+    <button type="button" class="htc3-mode htc3-on" data-mode="hydro">Hydrograph 3D</button>
+    <button type="button" class="htc3-mode" data-mode="feat">Feature importance 3D</button>
+   </div>
+   <div class="htc3-view">
+    <canvas class="htc3-canvas" aria-label="Interactive 3D chart: drag to orbit, scroll to zoom, hover for exact values"></canvas>
+    <div class="htc3-loading" role="status">Loading the 3D charts&hellip;</div>
+    <div class="htc3-tip" role="status"></div>
+   </div>
+  </div>
+  <style>
+   #htc3-root .htc3-ctl{display:flex;gap:8px;margin:4px 0 10px}
+   #htc3-root .htc3-mode{background:#23466E;color:#F5F6F2;border:1px solid #2E5A8A;border-radius:8px;padding:7px 12px;font:600 13px Arial;cursor:pointer}
+   #htc3-root .htc3-mode.htc3-on{background:#2E9B57;border-color:#7AE07A}
+   #htc3-root .htc3-view{position:relative}
+   #htc3-root .htc3-canvas{display:block;width:100%;height:440px;border-radius:10px;background:#0E1A24;cursor:grab;touch-action:none}
+   #htc3-root .htc3-loading{position:absolute;left:14px;top:12px;color:#9FB3C8;font-size:13px}
+   #htc3-root .htc3-loading[hidden]{display:none}
+   #htc3-root .htc3-tip{position:absolute;display:none;background:rgba(11,19,29,.94);color:#E6EDF5;border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:5px 9px;font:12.5px Arial;pointer-events:none;max-width:300px}
   </style>
  </section>
  <section class="hts-sec htlp-off" id="hts-sec-clusters">
@@ -1482,7 +1509,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=41133831116-15385b09477ab97f06e88b04947f85f6ce6d2b91" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=41211660560-6de1e1032c7a2025a358da82e0169c8e59d20085" } }
 </script>
 <script type="text/plain" data-htlp-boot="chart3d" data-htlp-module="1">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1491,7 +1518,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=41133831116-15385b09477ab97f06e88b04947f85f6ce6d2b91')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=41211660560-6de1e1032c7a2025a358da82e0169c8e59d20085')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -4785,6 +4812,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -4964,5 +4992,31 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   poll();
   setInterval(poll, 60000);
 })();
+</script>
+
+<!-- ht-helperbot v1 -->
+<script src="../helper/ht-helper.js" defer></script>
+
+<script>
+// ht-charts3d v1 boot: import the 3D charts module only when the
+// section nears the viewport.
+{
+  const root = document.getElementById('htc3-root');
+  if (root) {
+    const start = () => import('../assets/htcharts3d/htcharts3d.mjs')
+      .then((m) => m.mount(root))
+      .catch((e) => {
+        const l = root.querySelector('.htc3-loading');
+        if (l) { l.hidden = false; l.textContent = '3D charts unavailable: ' + e.message; }
+        console.error(e);
+      });
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => {
+        if (es.some((x) => x.isIntersecting)) { io.disconnect(); start(); }
+      }, { rootMargin: '300px' });
+      io.observe(root);
+    } else start();
+  }
+}
 </script>
 </body></html>
