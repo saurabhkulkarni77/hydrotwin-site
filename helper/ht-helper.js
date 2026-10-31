@@ -1,4 +1,4 @@
-/* ht-helperbot v2 — HydroTwin helper bot.
+/* ht-helperbot v3 — HydroTwin helper bot.
  *
  * A chat widget (bottom right) that answers "where is X / how do I Y"
  * questions about the digital twin. Location answers come from the
@@ -17,13 +17,27 @@
  *    (helper/ht-llm-worker.js, CreateWebWorkerMLCEngine), so a GPU,
  *    shader-compile or out-of-memory failure can only kill the
  *    worker, never the page.
- *  - The model is the smallest build (Llama 3.2 1B Instruct q4f16,
- *    short 1024-token context); if it cannot start, the smaller
- *    Qwen2.5 0.5B Instruct q4f16 is tried once automatically.
  *  - Every load step is awaited inside try/catch with a progress
  *    watchdog and a Cancel button; ANY failure latches the bot back
  *    to direct index answers for the rest of the session, with the
  *    index answer (shown immediately regardless) left in place.
+ *
+ * Round 2 (v3): worker isolation was not enough on iPhone Safari —
+ * the OS kills the whole web content process under memory pressure
+ * during the 1B weight load, the tab reloads fresh, and v2 said
+ * nothing. So now:
+ *  - The SMALL model (Qwen2.5 0.5B Instruct q4f16, ~400 MB class) is
+ *    the default everywhere. The 1B is attempted first only on a
+ *    non-mobile browser reporting >= 8 GB device memory, and even
+ *    there the 0.5B remains the fallback. Stability beats size: the
+ *    bot only rephrases short index answers.
+ *  - A load attempt writes a marker to sessionStorage before the
+ *    download starts; it is cleared only when an engine reports
+ *    fully ready (which also sets a ready flag). At boot, a marker
+ *    with no ready flag means the previous attempt died with the
+ *    page: the panel says so plainly, AI latches off for the rest
+ *    of the tab session, and nothing retries on its own. One press
+ *    of the button is exactly one attempt.
  */
 (function () {
   'use strict';
@@ -35,10 +49,25 @@
   var rootUrl = new URL('..', base).href; // site root ('' from stations/, './' from home)
   var WEBLLM_URL = 'https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm@0.2.79/+esm';
   var WORKER_URL = base + 'ht-llm-worker.js';
-  var MODELS = [
-    { id: 'Llama-3.2-1B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 1B', size: 'about 800 MB' },
-    { id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen2.5 0.5B (small)', size: 'about 400 MB' },
-  ];
+  var MODEL_BIG = { id: 'Llama-3.2-1B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 1B', size: 'about 800 MB' };
+  var MODEL_SMALL = { id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen2.5 0.5B (small)', size: 'about 400 MB' };
+  // The 0.5B build is the default everywhere: the 1B build (~880 MB
+  // with runtime) gets iPhone Safari tabs killed under memory pressure
+  // mid-load, and this bot only rephrases short index answers. The 1B
+  // is attempted first ONLY on a non-mobile browser that reports at
+  // least 8 GB of device memory, and even there the 0.5B stays as the
+  // automatic fallback.
+  function isMobileLike() {
+    var ua = navigator.userAgent || '';
+    if (/iPhone|iPad|iPod|Android|Mobile|Silk/i.test(ua)) return true;
+    // iPads on iOS 13+ present a desktop Mac user agent; touch points tell.
+    if (/Macintosh/.test(ua) && typeof navigator.maxTouchPoints === 'number' && navigator.maxTouchPoints > 1) return true;
+    return false;
+  }
+  var bigDesktop = !isMobileLike()
+    && typeof navigator.deviceMemory === 'number' && navigator.deviceMemory >= 8;
+  var MODELS = bigDesktop ? [MODEL_BIG, MODEL_SMALL] : [MODEL_SMALL];
+  window.__htHelperPlan = { models: MODELS.map(function (m) { return m.id; }), bigDesktop: bigDesktop };
 
   var css = ''
     + '#hthb-btn{position:fixed;right:16px;bottom:16px;z-index:99990;background:#23466E;color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:11px 16px;font:600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45)}'
@@ -85,9 +114,9 @@
     + '<button class="hthb-chip" type="button">How do I change the date?</button>'
     + '<button class="hthb-chip" type="button">Which features affect flow in Dallas?</button>'
     + '</div>'
-    + '<div id="hthb-ai"><b>Optional open source AI</b> (Llama 3.2 1B, runs in your browser via WebLLM; '
+    + '<div id="hthb-ai"><b>Optional open source AI</b> (a small model, Qwen2.5 0.5B, that runs in your browser via WebLLM; '
     + 'needs WebGPU, built into current desktop Chrome and Edge and the newest Safari). '
-    + 'One-time download of about 800 MB; nothing is sent to a server. The helper already works without it, straight from the site index.'
+    + 'One-time download of about 400 MB; nothing is sent to a server. The helper already works without it, straight from the site index.'
     + '<br><button id="hthb-ai-btn" type="button">Enable open source AI</button>'
     + '<button id="hthb-ai-cancel" type="button" style="display:none">Cancel</button>'
     + '<div class="hthb-prog" id="hthb-ai-prog"></div></div>'
@@ -288,6 +317,37 @@
   var llmLastProgress = 0;  // last init-progress timestamp
   var loadSeq = 0;          // attempt counter; stale attempts may not touch the UI
 
+  // ------------------------------------------------------------ reload detection
+  // sessionStorage survives the same-tab reload iOS Safari performs
+  // when it kills the web content process, so it can carry the one
+  // signal the killed page could not: "a model load was in flight".
+  // startLoad() sets the attempt marker (and clears any stale ready
+  // flag) just before the download begins; the marker is cleared only
+  // when an engine reports fully ready, which also sets the ready
+  // flag. Controlled endings (success, failure, unsupported, cancel)
+  // all clear it. At boot, a marker with no ready flag therefore
+  // means the previous attempt died with the page itself.
+  var SS_ATTEMPT = 'ht_llm_attempt', SS_READY = 'ht_llm_ready', SS_BLOCKED = 'ht_llm_blocked';
+  function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+  function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* private mode */ } }
+  function ssDel(k) { try { sessionStorage.removeItem(k); } catch (e) { /* ignore */ } }
+  var INTERRUPTED_MSG = 'It looks like the open source AI load was interrupted because the page reloaded — '
+    + 'this device likely cannot hold the model in memory. AI phrasing is off for this visit and nothing '
+    + 'will be downloaded. The built in guide still answers everything from the site index.';
+  var llmInterruptedFresh = false;
+  if (ssGet(SS_ATTEMPT) && !ssGet(SS_READY)) {
+    llmInterruptedFresh = true;
+    ssSet(SS_BLOCKED, '1');   // keep AI latched off for the rest of this tab session
+    ssDel(SS_ATTEMPT);
+  }
+  if (llmInterruptedFresh || ssGet(SS_BLOCKED)) {
+    llmDead = true;
+    aiBtn.disabled = true; aiBtn.textContent = 'AI unavailable here';
+    aiProg.textContent = INTERRUPTED_MSG;
+    window.__htHelperLLM = { ready: false, interrupted: true };
+    if (llmInterruptedFresh) addMsg(INTERRUPTED_MSG, 'a'); // say it in the chat too, once
+  }
+
   function shortErr(err) {
     return String((err && err.message) || err || 'unknown error').replace(/\s+/g, ' ').slice(0, 140);
   }
@@ -363,6 +423,7 @@
   }
 
   function aiUnsupported(why) {
+    ssDel(SS_ATTEMPT); // controlled ending: never report this as an interrupted load
     llmDead = true; llmLoading = false;
     aiCancel.style.display = 'none';
     aiBtn.disabled = true; aiBtn.textContent = 'AI not available in this browser';
@@ -372,6 +433,7 @@
     window.__htHelperLLM = { ready: false, unsupported: true, error: why };
   }
   function aiFailed(detail) {
+    ssDel(SS_ATTEMPT); // controlled ending: never report this as an interrupted load
     llmDead = true; llmLoading = false;
     killWorker();
     aiCancel.style.display = 'none';
@@ -390,6 +452,11 @@
     webgpuSupport().then(function (sup) {
       if (seq !== loadSeq) return; // cancelled meanwhile
       if (!sup.ok) { aiUnsupported(sup.why); return null; }
+      // The load is now committed: mark the attempt so that if the OS
+      // kills this page mid-load, the reloaded page can say what
+      // happened instead of failing silently. A new attempt also
+      // supersedes any ready flag left by an earlier page view.
+      ssSet(SS_ATTEMPT, String(Date.now())); ssDel(SS_READY);
       aiProg.textContent = 'Downloading the AI library…';
       return import(WEBLLM_URL);
     }).then(function (mlc) {
@@ -404,6 +471,7 @@
           return loadModel(mlc, model, seq).then(function (eng) {
             if (seq !== loadSeq) return;
             engine = eng; engineLabel = model.label;
+            ssDel(SS_ATTEMPT); ssSet(SS_READY, model.id); // fully ready: the only clean exit for the marker
             window.__htHelperLLM = { ready: true, model: model.id };
             llmLoading = false;
             aiCancel.style.display = 'none';
@@ -433,6 +501,7 @@
   aiCancel.addEventListener('click', function () {
     if (!llmLoading) return;
     loadSeq++; // invalidate the in-flight attempt; its late callbacks become no-ops
+    ssDel(SS_ATTEMPT); // controlled ending: never report this as an interrupted load
     llmLoading = false;
     killWorker();
     aiCancel.style.display = 'none';
@@ -440,7 +509,7 @@
     aiProg.textContent = 'Download cancelled. Nothing was installed; the helper keeps answering from the site index.';
   });
   try {
-    if (localStorage.getItem('htHelperLLM') === '1') {
+    if (!llmDead && localStorage.getItem('htHelperLLM') === '1') {
       aiProg.textContent = 'You enabled the open source AI before; its files are already downloaded, so enabling is quick.';
     }
   } catch (e) { /* ignore */ }
