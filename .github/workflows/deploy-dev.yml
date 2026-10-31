@@ -112,13 +112,28 @@ jobs:
       - name: Buildings present but never in water (dev only)
         run: python3 build25/patch_buildingsback.py
 
+      - name: Ribbon shading fix - water normals up, double-sided (dev only)
+        run: python3 build25/patch_ribbonshade.py
+
+      - name: Generate helper-bot site index (dev only)
+        run: python3 build25/gen_helper_index.py
+
+      - name: Helper bot widget on all pages (dev only)
+        run: python3 build25/patch_helperbot.py
+
+      - name: Rain/snow animation by selected date (dev only)
+        run: python3 build25/patch_precip.py
+
+      - name: Data view charts in 3D (dev only)
+        run: python3 build25/patch_charts3d.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
-          if [ -n "$(git status --porcelain stations index.html mlops.html)" ]; then
+          if [ -n "$(git status --porcelain stations index.html mlops.html helper)" ]; then
             git config user.name "hydrotwin-dev"
             git config user.email "actions@github.com"
-            git add stations index.html mlops.html
+            git add stations index.html mlops.html helper
             git commit -m "Bake station pages (dev)"
             git push
           else

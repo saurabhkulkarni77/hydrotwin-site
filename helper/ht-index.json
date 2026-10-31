@@ -1,0 +1,4692 @@
+{
+ "v": "ht-helperbot v1",
+ "stations": [
+  {
+   "site": "01463500",
+   "name": "Delaware River at Trenton, NJ",
+   "lat": 40.22166667,
+   "lon": -74.77805556,
+   "drainage": "6,780 sq mi"
+  },
+  {
+   "site": "01646500",
+   "name": "Potomac River at Little Falls, MD (near Washington DC)",
+   "lat": 38.94977778,
+   "lon": -77.12763889,
+   "drainage": "11,560 sq mi"
+  },
+  {
+   "site": "02320500",
+   "name": "Suwannee River at Branford, FL",
+   "lat": 29.955785,
+   "lon": -82.9276278,
+   "drainage": "7,880 sq mi"
+  },
+  {
+   "site": "03294500",
+   "name": "Ohio River at Louisville, KY",
+   "lat": 38.28034736,
+   "lon": -85.7991305,
+   "drainage": "91,170 sq mi"
+  },
+  {
+   "site": "05331000",
+   "name": "Mississippi River at St. Paul, MN",
+   "lat": 44.9444444,
+   "lon": -93.0881111,
+   "drainage": "36,800 sq mi"
+  },
+  {
+   "site": "06214500",
+   "name": "Yellowstone River at Billings, MT",
+   "lat": 45.800119,
+   "lon": -108.468031,
+   "drainage": "11,807 sq mi"
+  },
+  {
+   "site": "06934500",
+   "name": "Missouri River at Hermann, MO",
+   "lat": 38.70980556,
+   "lon": -91.4385,
+   "drainage": "522,500 sq mi"
+  },
+  {
+   "site": "07374000",
+   "name": "Mississippi River at Baton Rouge, LA",
+   "lat": 30.44566667,
+   "lon": -91.1915556,
+   "drainage": "1,125,810 sq mi"
+  },
+  {
+   "site": "08057000",
+   "name": "Trinity River at Dallas, TX",
+   "lat": 32.7748517,
+   "lon": -96.8219464,
+   "drainage": "6,106 sq mi"
+  },
+  {
+   "site": "08158000",
+   "name": "Colorado River at Austin, TX",
+   "lat": 30.24613889,
+   "lon": -97.6800556,
+   "drainage": "39,009 sq mi"
+  },
+  {
+   "site": "08313000",
+   "name": "Rio Grande at Otowi Bridge, NM",
+   "lat": 35.8745,
+   "lon": -106.1424444,
+   "drainage": "14,300 sq mi"
+  },
+  {
+   "site": "09380000",
+   "name": "Colorado River at Lees Ferry, AZ",
+   "lat": 36.86433333,
+   "lon": -111.58787222,
+   "drainage": "111,800 sq mi"
+  },
+  {
+   "site": "11447650",
+   "name": "Sacramento River at Freeport, CA",
+   "lat": 38.45566389,
+   "lon": -121.5016167,
+   "drainage": null
+  },
+  {
+   "site": "14105700",
+   "name": "Columbia River at The Dalles, OR",
+   "lat": 45.60827778,
+   "lon": -121.1899167,
+   "drainage": "237,000 sq mi"
+  }
+ ],
+ "entries": [
+  {
+   "id": "station-01463500-data",
+   "kind": "station",
+   "title": "Delaware River at Trenton, NJ (USGS 01463500) — Data view",
+   "text": "Statistics and Data view for Delaware River at Trenton, NJ, USGS station 01463500 on the Delaware River. Drainage area 6,780 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "delaware river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-01463500-3d",
+   "kind": "station",
+   "title": "Delaware River at Trenton, NJ (USGS 01463500) — 3D view",
+   "text": "Interactive 3D digital twin for Delaware River at Trenton, NJ, USGS station 01463500 on the Delaware River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "delaware river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-01463500-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-01463500-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Delaware River at Trenton, NJ",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Hydrograph.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-01463500-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Delaware River at Trenton, NJ",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named 7-day forecast.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-01463500-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Delaware River at Trenton, NJ",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Model statistics.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "model statistics"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-01463500-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Delaware River at Trenton, NJ",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Feature ablation.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-01463500-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Delaware River at Trenton, NJ",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Weekly outlook.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-01463500-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Delaware River at Trenton, NJ",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Monthly outlook.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-01463500-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Delaware River at Trenton, NJ",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Yearly outlook.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-01463500-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Delaware River at Trenton, NJ",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Drift.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "drift"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-01463500-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Delaware River at Trenton, NJ",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named 3D forecast chart.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-01463500-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Delaware River at Trenton, NJ",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-01463500-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Delaware River at Trenton, NJ",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-01463500-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Delaware River at Trenton, NJ",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Station clusters.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "station clusters"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-01463500-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Delaware River at Trenton, NJ",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Delaware River at Trenton, NJ (USGS 01463500), in the panel named Data charts in 3D.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-01463500.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-01463500-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Delaware River at Trenton, NJ (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Delaware River at Trenton, NJ (USGS 01463500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-01463500-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-01463500-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Delaware River at Trenton, NJ (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Delaware River at Trenton, NJ (USGS 01463500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-01463500-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-01463500-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Delaware River at Trenton, NJ (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Delaware River at Trenton, NJ (USGS 01463500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-01463500-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-01463500-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Delaware River at Trenton, NJ (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Delaware River at Trenton, NJ (USGS 01463500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-01463500-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-01463500-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Delaware River at Trenton, NJ (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Delaware River at Trenton, NJ (USGS 01463500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-01463500-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-01463500-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Delaware River at Trenton, NJ (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Delaware River at Trenton, NJ (USGS 01463500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-01463500-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-01463500-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Delaware River at Trenton, NJ (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Delaware River at Trenton, NJ (USGS 01463500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-01463500-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-01646500-data",
+   "kind": "station",
+   "title": "Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500) — Data view",
+   "text": "Statistics and Data view for Potomac River at Little Falls, MD (near Washington DC), USGS station 01646500 on the Potomac River. Drainage area 11,560 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "potomac river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-01646500-3d",
+   "kind": "station",
+   "title": "Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500) — 3D view",
+   "text": "Interactive 3D digital twin for Potomac River at Little Falls, MD (near Washington DC), USGS station 01646500 on the Potomac River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "potomac river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-01646500-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-01646500-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Hydrograph.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-01646500-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named 7-day forecast.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-01646500-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Model statistics.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "model statistics"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-01646500-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Feature ablation.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-01646500-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Weekly outlook.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-01646500-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Monthly outlook.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-01646500-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Yearly outlook.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-01646500-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Drift.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "drift"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-01646500-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named 3D forecast chart.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-01646500-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-01646500-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-01646500-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Station clusters.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "station clusters"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-01646500-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Potomac River at Little Falls, MD (near Washington DC)",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500), in the panel named Data charts in 3D.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-01646500.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-01646500-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Potomac River at Little Falls, MD (near Washington DC) (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-01646500-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-01646500-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Potomac River at Little Falls, MD (near Washington DC) (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-01646500-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-01646500-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Potomac River at Little Falls, MD (near Washington DC) (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-01646500-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-01646500-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Potomac River at Little Falls, MD (near Washington DC) (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-01646500-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-01646500-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Potomac River at Little Falls, MD (near Washington DC) (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-01646500-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-01646500-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Potomac River at Little Falls, MD (near Washington DC) (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-01646500-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-01646500-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Potomac River at Little Falls, MD (near Washington DC) (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-01646500-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-02320500-data",
+   "kind": "station",
+   "title": "Suwannee River at Branford, FL (USGS 02320500) — Data view",
+   "text": "Statistics and Data view for Suwannee River at Branford, FL, USGS station 02320500 on the Suwannee River. Drainage area 7,880 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "suwannee river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-02320500-3d",
+   "kind": "station",
+   "title": "Suwannee River at Branford, FL (USGS 02320500) — 3D view",
+   "text": "Interactive 3D digital twin for Suwannee River at Branford, FL, USGS station 02320500 on the Suwannee River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "suwannee river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-02320500-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-02320500-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Suwannee River at Branford, FL",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Hydrograph.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-02320500-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Suwannee River at Branford, FL",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named 7-day forecast.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-02320500-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Suwannee River at Branford, FL",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Model statistics.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "model statistics"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-02320500-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Suwannee River at Branford, FL",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Feature ablation.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-02320500-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Suwannee River at Branford, FL",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Weekly outlook.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-02320500-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Suwannee River at Branford, FL",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Monthly outlook.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-02320500-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Suwannee River at Branford, FL",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Yearly outlook.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-02320500-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Suwannee River at Branford, FL",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Drift.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "drift"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-02320500-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Suwannee River at Branford, FL",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named 3D forecast chart.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-02320500-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Suwannee River at Branford, FL",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-02320500-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Suwannee River at Branford, FL",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-02320500-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Suwannee River at Branford, FL",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Station clusters.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "station clusters"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-02320500-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Suwannee River at Branford, FL",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Suwannee River at Branford, FL (USGS 02320500), in the panel named Data charts in 3D.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-02320500.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-02320500-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Suwannee River at Branford, FL (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Suwannee River at Branford, FL (USGS 02320500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-02320500-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-02320500-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Suwannee River at Branford, FL (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Suwannee River at Branford, FL (USGS 02320500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-02320500-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-02320500-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Suwannee River at Branford, FL (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Suwannee River at Branford, FL (USGS 02320500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-02320500-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-02320500-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Suwannee River at Branford, FL (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Suwannee River at Branford, FL (USGS 02320500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-02320500-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-02320500-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Suwannee River at Branford, FL (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Suwannee River at Branford, FL (USGS 02320500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-02320500-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-02320500-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Suwannee River at Branford, FL (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Suwannee River at Branford, FL (USGS 02320500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-02320500-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-02320500-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Suwannee River at Branford, FL (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Suwannee River at Branford, FL (USGS 02320500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-02320500-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-03294500-data",
+   "kind": "station",
+   "title": "Ohio River at Louisville, KY (USGS 03294500) — Data view",
+   "text": "Statistics and Data view for Ohio River at Louisville, KY, USGS station 03294500 on the Ohio River. Drainage area 91,170 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "ohio river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-03294500-3d",
+   "kind": "station",
+   "title": "Ohio River at Louisville, KY (USGS 03294500) — 3D view",
+   "text": "Interactive 3D digital twin for Ohio River at Louisville, KY, USGS station 03294500 on the Ohio River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "ohio river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-03294500-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-03294500-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Ohio River at Louisville, KY",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Hydrograph.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-03294500-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Ohio River at Louisville, KY",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named 7-day forecast.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-03294500-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Ohio River at Louisville, KY",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Model statistics.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "model statistics"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-03294500-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Ohio River at Louisville, KY",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Feature ablation.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-03294500-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Ohio River at Louisville, KY",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Weekly outlook.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-03294500-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Ohio River at Louisville, KY",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Monthly outlook.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-03294500-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Ohio River at Louisville, KY",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Yearly outlook.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-03294500-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Ohio River at Louisville, KY",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Drift.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "drift"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-03294500-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Ohio River at Louisville, KY",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named 3D forecast chart.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-03294500-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Ohio River at Louisville, KY",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-03294500-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Ohio River at Louisville, KY",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-03294500-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Ohio River at Louisville, KY",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Station clusters.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "station clusters"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-03294500-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Ohio River at Louisville, KY",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Ohio River at Louisville, KY (USGS 03294500), in the panel named Data charts in 3D.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-03294500.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-03294500-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Ohio River at Louisville, KY (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Ohio River at Louisville, KY (USGS 03294500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-03294500-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-03294500-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Ohio River at Louisville, KY (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Ohio River at Louisville, KY (USGS 03294500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-03294500-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-03294500-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Ohio River at Louisville, KY (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Ohio River at Louisville, KY (USGS 03294500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-03294500-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-03294500-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Ohio River at Louisville, KY (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Ohio River at Louisville, KY (USGS 03294500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-03294500-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-03294500-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Ohio River at Louisville, KY (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Ohio River at Louisville, KY (USGS 03294500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-03294500-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-03294500-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Ohio River at Louisville, KY (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Ohio River at Louisville, KY (USGS 03294500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-03294500-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-03294500-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Ohio River at Louisville, KY (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Ohio River at Louisville, KY (USGS 03294500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "03294500",
+    "ohio river at louisville, ky",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-03294500-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-05331000-data",
+   "kind": "station",
+   "title": "Mississippi River at St. Paul, MN (USGS 05331000) — Data view",
+   "text": "Statistics and Data view for Mississippi River at St. Paul, MN, USGS station 05331000 on the Mississippi River. Drainage area 36,800 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "mississippi river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-05331000-3d",
+   "kind": "station",
+   "title": "Mississippi River at St. Paul, MN (USGS 05331000) — 3D view",
+   "text": "Interactive 3D digital twin for Mississippi River at St. Paul, MN, USGS station 05331000 on the Mississippi River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "mississippi river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-05331000-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-05331000-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Mississippi River at St. Paul, MN",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Hydrograph.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-05331000-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Mississippi River at St. Paul, MN",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named 7-day forecast.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-05331000-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Mississippi River at St. Paul, MN",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Model statistics.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "model statistics"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-05331000-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Mississippi River at St. Paul, MN",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Feature ablation.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-05331000-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Mississippi River at St. Paul, MN",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Weekly outlook.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-05331000-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Mississippi River at St. Paul, MN",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Monthly outlook.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-05331000-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Mississippi River at St. Paul, MN",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Yearly outlook.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-05331000-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Mississippi River at St. Paul, MN",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Drift.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "drift"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-05331000-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Mississippi River at St. Paul, MN",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named 3D forecast chart.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-05331000-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Mississippi River at St. Paul, MN",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-05331000-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Mississippi River at St. Paul, MN",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-05331000-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Mississippi River at St. Paul, MN",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Station clusters.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "station clusters"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-05331000-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Mississippi River at St. Paul, MN",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Mississippi River at St. Paul, MN (USGS 05331000), in the panel named Data charts in 3D.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-05331000.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-05331000-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Mississippi River at St. Paul, MN (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Mississippi River at St. Paul, MN (USGS 05331000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-05331000-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-05331000-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Mississippi River at St. Paul, MN (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Mississippi River at St. Paul, MN (USGS 05331000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-05331000-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-05331000-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Mississippi River at St. Paul, MN (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Mississippi River at St. Paul, MN (USGS 05331000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-05331000-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-05331000-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Mississippi River at St. Paul, MN (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Mississippi River at St. Paul, MN (USGS 05331000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-05331000-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-05331000-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Mississippi River at St. Paul, MN (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Mississippi River at St. Paul, MN (USGS 05331000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-05331000-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-05331000-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Mississippi River at St. Paul, MN (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Mississippi River at St. Paul, MN (USGS 05331000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-05331000-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-05331000-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Mississippi River at St. Paul, MN (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Mississippi River at St. Paul, MN (USGS 05331000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-05331000-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-06214500-data",
+   "kind": "station",
+   "title": "Yellowstone River at Billings, MT (USGS 06214500) — Data view",
+   "text": "Statistics and Data view for Yellowstone River at Billings, MT, USGS station 06214500 on the Yellowstone River. Drainage area 11,807 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "yellowstone river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-06214500-3d",
+   "kind": "station",
+   "title": "Yellowstone River at Billings, MT (USGS 06214500) — 3D view",
+   "text": "Interactive 3D digital twin for Yellowstone River at Billings, MT, USGS station 06214500 on the Yellowstone River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "yellowstone river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-06214500-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-06214500-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Yellowstone River at Billings, MT",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Hydrograph.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-06214500-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Yellowstone River at Billings, MT",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named 7-day forecast.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-06214500-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Yellowstone River at Billings, MT",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Model statistics.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "model statistics"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-06214500-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Yellowstone River at Billings, MT",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Feature ablation.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-06214500-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Yellowstone River at Billings, MT",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Weekly outlook.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-06214500-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Yellowstone River at Billings, MT",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Monthly outlook.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-06214500-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Yellowstone River at Billings, MT",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Yearly outlook.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-06214500-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Yellowstone River at Billings, MT",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Drift.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "drift"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-06214500-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Yellowstone River at Billings, MT",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named 3D forecast chart.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-06214500-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Yellowstone River at Billings, MT",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-06214500-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Yellowstone River at Billings, MT",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-06214500-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Yellowstone River at Billings, MT",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Station clusters.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "station clusters"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-06214500-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Yellowstone River at Billings, MT",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Data charts in 3D.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-06214500.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-06214500-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Yellowstone River at Billings, MT (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Yellowstone River at Billings, MT (USGS 06214500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-06214500-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-06214500-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Yellowstone River at Billings, MT (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Yellowstone River at Billings, MT (USGS 06214500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-06214500-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-06214500-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Yellowstone River at Billings, MT (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Yellowstone River at Billings, MT (USGS 06214500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-06214500-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-06214500-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Yellowstone River at Billings, MT (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Yellowstone River at Billings, MT (USGS 06214500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-06214500-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-06214500-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Yellowstone River at Billings, MT (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Yellowstone River at Billings, MT (USGS 06214500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-06214500-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-06214500-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Yellowstone River at Billings, MT (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Yellowstone River at Billings, MT (USGS 06214500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-06214500-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-06214500-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Yellowstone River at Billings, MT (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Yellowstone River at Billings, MT (USGS 06214500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-06214500-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-06934500-data",
+   "kind": "station",
+   "title": "Missouri River at Hermann, MO (USGS 06934500) — Data view",
+   "text": "Statistics and Data view for Missouri River at Hermann, MO, USGS station 06934500 on the Missouri River. Drainage area 522,500 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "missouri river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-06934500-3d",
+   "kind": "station",
+   "title": "Missouri River at Hermann, MO (USGS 06934500) — 3D view",
+   "text": "Interactive 3D digital twin for Missouri River at Hermann, MO, USGS station 06934500 on the Missouri River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "missouri river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-06934500-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-06934500-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Missouri River at Hermann, MO",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Hydrograph.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-06934500-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Missouri River at Hermann, MO",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named 7-day forecast.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-06934500-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Missouri River at Hermann, MO",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Model statistics.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "model statistics"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-06934500-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Missouri River at Hermann, MO",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Feature ablation.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-06934500-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Missouri River at Hermann, MO",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Weekly outlook.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-06934500-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Missouri River at Hermann, MO",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Monthly outlook.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-06934500-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Missouri River at Hermann, MO",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Yearly outlook.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-06934500-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Missouri River at Hermann, MO",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Drift.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "drift"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-06934500-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Missouri River at Hermann, MO",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named 3D forecast chart.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-06934500-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Missouri River at Hermann, MO",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-06934500-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Missouri River at Hermann, MO",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-06934500-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Missouri River at Hermann, MO",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Station clusters.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "station clusters"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-06934500-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Missouri River at Hermann, MO",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Missouri River at Hermann, MO (USGS 06934500), in the panel named Data charts in 3D.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-06934500.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-06934500-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Missouri River at Hermann, MO (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Missouri River at Hermann, MO (USGS 06934500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-06934500-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-06934500-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Missouri River at Hermann, MO (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Missouri River at Hermann, MO (USGS 06934500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-06934500-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-06934500-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Missouri River at Hermann, MO (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Missouri River at Hermann, MO (USGS 06934500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-06934500-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-06934500-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Missouri River at Hermann, MO (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Missouri River at Hermann, MO (USGS 06934500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-06934500-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-06934500-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Missouri River at Hermann, MO (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Missouri River at Hermann, MO (USGS 06934500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-06934500-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-06934500-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Missouri River at Hermann, MO (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Missouri River at Hermann, MO (USGS 06934500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-06934500-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-06934500-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Missouri River at Hermann, MO (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Missouri River at Hermann, MO (USGS 06934500); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-06934500-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-07374000-data",
+   "kind": "station",
+   "title": "Mississippi River at Baton Rouge, LA (USGS 07374000) — Data view",
+   "text": "Statistics and Data view for Mississippi River at Baton Rouge, LA, USGS station 07374000 on the Mississippi River. Drainage area 1,125,810 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "mississippi river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-07374000-3d",
+   "kind": "station",
+   "title": "Mississippi River at Baton Rouge, LA (USGS 07374000) — 3D view",
+   "text": "Interactive 3D digital twin for Mississippi River at Baton Rouge, LA, USGS station 07374000 on the Mississippi River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "mississippi river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-07374000-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-07374000-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Mississippi River at Baton Rouge, LA",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Hydrograph.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-07374000-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Mississippi River at Baton Rouge, LA",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named 7-day forecast.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-07374000-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Mississippi River at Baton Rouge, LA",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Model statistics.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "model statistics"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-07374000-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Mississippi River at Baton Rouge, LA",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Feature ablation.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-07374000-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Mississippi River at Baton Rouge, LA",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Weekly outlook.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-07374000-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Mississippi River at Baton Rouge, LA",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Monthly outlook.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-07374000-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Mississippi River at Baton Rouge, LA",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Yearly outlook.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-07374000-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Mississippi River at Baton Rouge, LA",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Drift.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "drift"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-07374000-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Mississippi River at Baton Rouge, LA",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named 3D forecast chart.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-07374000-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Mississippi River at Baton Rouge, LA",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-07374000-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Mississippi River at Baton Rouge, LA",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-07374000-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Mississippi River at Baton Rouge, LA",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Station clusters.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "station clusters"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-07374000-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Mississippi River at Baton Rouge, LA",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Mississippi River at Baton Rouge, LA (USGS 07374000), in the panel named Data charts in 3D.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-07374000.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-07374000-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Mississippi River at Baton Rouge, LA (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Mississippi River at Baton Rouge, LA (USGS 07374000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-07374000-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-07374000-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Mississippi River at Baton Rouge, LA (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Mississippi River at Baton Rouge, LA (USGS 07374000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-07374000-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-07374000-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Mississippi River at Baton Rouge, LA (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Mississippi River at Baton Rouge, LA (USGS 07374000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-07374000-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-07374000-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Mississippi River at Baton Rouge, LA (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Mississippi River at Baton Rouge, LA (USGS 07374000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-07374000-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-07374000-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Mississippi River at Baton Rouge, LA (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Mississippi River at Baton Rouge, LA (USGS 07374000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-07374000-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-07374000-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Mississippi River at Baton Rouge, LA (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Mississippi River at Baton Rouge, LA (USGS 07374000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-07374000-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-07374000-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Mississippi River at Baton Rouge, LA (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Mississippi River at Baton Rouge, LA (USGS 07374000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-07374000-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-08057000-data",
+   "kind": "station",
+   "title": "Trinity River at Dallas, TX (USGS 08057000) — Data view",
+   "text": "Statistics and Data view for Trinity River at Dallas, TX, USGS station 08057000 on the Trinity River. Drainage area 6,106 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "trinity river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-08057000-3d",
+   "kind": "station",
+   "title": "Trinity River at Dallas, TX (USGS 08057000) — 3D view",
+   "text": "Interactive 3D digital twin for Trinity River at Dallas, TX, USGS station 08057000 on the Trinity River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "trinity river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-08057000-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-08057000-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Trinity River at Dallas, TX",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Hydrograph.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-08057000-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Trinity River at Dallas, TX",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named 7-day forecast.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-08057000-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Trinity River at Dallas, TX",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Model statistics.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "model statistics"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-08057000-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Trinity River at Dallas, TX",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Feature ablation.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-08057000-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Trinity River at Dallas, TX",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Weekly outlook.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-08057000-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Trinity River at Dallas, TX",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Monthly outlook.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-08057000-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Trinity River at Dallas, TX",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Yearly outlook.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-08057000-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Trinity River at Dallas, TX",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Drift.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "drift"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-08057000-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Trinity River at Dallas, TX",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named 3D forecast chart.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-08057000-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Trinity River at Dallas, TX",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-08057000-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Trinity River at Dallas, TX",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-08057000-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Trinity River at Dallas, TX",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Station clusters.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "station clusters"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-08057000-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Trinity River at Dallas, TX",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Data charts in 3D.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-08057000.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-08057000-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Trinity River at Dallas, TX (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Trinity River at Dallas, TX (USGS 08057000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-08057000-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-08057000-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Trinity River at Dallas, TX (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Trinity River at Dallas, TX (USGS 08057000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-08057000-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-08057000-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Trinity River at Dallas, TX (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Trinity River at Dallas, TX (USGS 08057000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-08057000-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-08057000-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Trinity River at Dallas, TX (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Trinity River at Dallas, TX (USGS 08057000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-08057000-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-08057000-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Trinity River at Dallas, TX (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Trinity River at Dallas, TX (USGS 08057000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-08057000-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-08057000-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Trinity River at Dallas, TX (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Trinity River at Dallas, TX (USGS 08057000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-08057000-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-08057000-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Trinity River at Dallas, TX (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Trinity River at Dallas, TX (USGS 08057000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-08057000-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-08158000-data",
+   "kind": "station",
+   "title": "Colorado River at Austin, TX (USGS 08158000) — Data view",
+   "text": "Statistics and Data view for Colorado River at Austin, TX, USGS station 08158000 on the Colorado River. Drainage area 39,009 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "colorado river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-08158000-3d",
+   "kind": "station",
+   "title": "Colorado River at Austin, TX (USGS 08158000) — 3D view",
+   "text": "Interactive 3D digital twin for Colorado River at Austin, TX, USGS station 08158000 on the Colorado River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "colorado river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-08158000-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-08158000-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Colorado River at Austin, TX",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Hydrograph.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-08158000-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Colorado River at Austin, TX",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named 7-day forecast.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-08158000-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Colorado River at Austin, TX",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Model statistics.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "model statistics"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-08158000-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Colorado River at Austin, TX",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Feature ablation.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-08158000-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Colorado River at Austin, TX",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Weekly outlook.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-08158000-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Colorado River at Austin, TX",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Monthly outlook.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-08158000-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Colorado River at Austin, TX",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Yearly outlook.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-08158000-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Colorado River at Austin, TX",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Drift.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "drift"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-08158000-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Colorado River at Austin, TX",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named 3D forecast chart.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-08158000-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Colorado River at Austin, TX",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-08158000-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Colorado River at Austin, TX",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-08158000-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Colorado River at Austin, TX",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Station clusters.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "station clusters"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-08158000-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Colorado River at Austin, TX",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Data charts in 3D.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-08158000.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-08158000-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Colorado River at Austin, TX (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Colorado River at Austin, TX (USGS 08158000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-08158000-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-08158000-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Colorado River at Austin, TX (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Colorado River at Austin, TX (USGS 08158000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-08158000-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-08158000-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Colorado River at Austin, TX (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Colorado River at Austin, TX (USGS 08158000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-08158000-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-08158000-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Colorado River at Austin, TX (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Colorado River at Austin, TX (USGS 08158000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-08158000-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-08158000-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Colorado River at Austin, TX (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Colorado River at Austin, TX (USGS 08158000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-08158000-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-08158000-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Colorado River at Austin, TX (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Colorado River at Austin, TX (USGS 08158000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-08158000-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-08158000-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Colorado River at Austin, TX (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Colorado River at Austin, TX (USGS 08158000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-08158000-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-08313000-data",
+   "kind": "station",
+   "title": "Rio Grande at Otowi Bridge, NM (USGS 08313000) — Data view",
+   "text": "Statistics and Data view for Rio Grande at Otowi Bridge, NM, USGS station 08313000 on the Rio Grande. Drainage area 14,300 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "rio grande",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-08313000-3d",
+   "kind": "station",
+   "title": "Rio Grande at Otowi Bridge, NM (USGS 08313000) — 3D view",
+   "text": "Interactive 3D digital twin for Rio Grande at Otowi Bridge, NM, USGS station 08313000 on the Rio Grande: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "rio grande",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-08313000-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-08313000-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Rio Grande at Otowi Bridge, NM",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Hydrograph.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-08313000-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Rio Grande at Otowi Bridge, NM",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named 7-day forecast.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-08313000-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Rio Grande at Otowi Bridge, NM",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Model statistics.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "model statistics"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-08313000-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Rio Grande at Otowi Bridge, NM",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Feature ablation.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-08313000-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Rio Grande at Otowi Bridge, NM",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Weekly outlook.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-08313000-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Rio Grande at Otowi Bridge, NM",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Monthly outlook.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-08313000-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Rio Grande at Otowi Bridge, NM",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Yearly outlook.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-08313000-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Rio Grande at Otowi Bridge, NM",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Drift.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "drift"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-08313000-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Rio Grande at Otowi Bridge, NM",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named 3D forecast chart.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-08313000-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Rio Grande at Otowi Bridge, NM",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-08313000-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Rio Grande at Otowi Bridge, NM",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-08313000-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Rio Grande at Otowi Bridge, NM",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Station clusters.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "station clusters"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-08313000-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Rio Grande at Otowi Bridge, NM",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Rio Grande at Otowi Bridge, NM (USGS 08313000), in the panel named Data charts in 3D.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-08313000.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-08313000-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Rio Grande at Otowi Bridge, NM (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Rio Grande at Otowi Bridge, NM (USGS 08313000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-08313000-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-08313000-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Rio Grande at Otowi Bridge, NM (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Rio Grande at Otowi Bridge, NM (USGS 08313000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-08313000-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-08313000-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Rio Grande at Otowi Bridge, NM (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Rio Grande at Otowi Bridge, NM (USGS 08313000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-08313000-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-08313000-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Rio Grande at Otowi Bridge, NM (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Rio Grande at Otowi Bridge, NM (USGS 08313000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-08313000-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-08313000-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Rio Grande at Otowi Bridge, NM (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Rio Grande at Otowi Bridge, NM (USGS 08313000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-08313000-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-08313000-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Rio Grande at Otowi Bridge, NM (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Rio Grande at Otowi Bridge, NM (USGS 08313000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-08313000-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-08313000-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Rio Grande at Otowi Bridge, NM (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Rio Grande at Otowi Bridge, NM (USGS 08313000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-08313000-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-09380000-data",
+   "kind": "station",
+   "title": "Colorado River at Lees Ferry, AZ (USGS 09380000) — Data view",
+   "text": "Statistics and Data view for Colorado River at Lees Ferry, AZ, USGS station 09380000 on the Colorado River. Drainage area 111,800 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "colorado river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-09380000-3d",
+   "kind": "station",
+   "title": "Colorado River at Lees Ferry, AZ (USGS 09380000) — 3D view",
+   "text": "Interactive 3D digital twin for Colorado River at Lees Ferry, AZ, USGS station 09380000 on the Colorado River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "colorado river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-09380000-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-09380000-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Colorado River at Lees Ferry, AZ",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Hydrograph.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-09380000-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Colorado River at Lees Ferry, AZ",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named 7-day forecast.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-09380000-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Colorado River at Lees Ferry, AZ",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Model statistics.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "model statistics"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-09380000-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Colorado River at Lees Ferry, AZ",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Feature ablation.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-09380000-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Colorado River at Lees Ferry, AZ",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Weekly outlook.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-09380000-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Colorado River at Lees Ferry, AZ",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Monthly outlook.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-09380000-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Colorado River at Lees Ferry, AZ",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Yearly outlook.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-09380000-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Colorado River at Lees Ferry, AZ",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Drift.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "drift"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-09380000-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Colorado River at Lees Ferry, AZ",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named 3D forecast chart.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-09380000-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Colorado River at Lees Ferry, AZ",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-09380000-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Colorado River at Lees Ferry, AZ",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-09380000-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Colorado River at Lees Ferry, AZ",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Station clusters.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "station clusters"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-09380000-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Colorado River at Lees Ferry, AZ",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Data charts in 3D.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-09380000.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-09380000-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Colorado River at Lees Ferry, AZ (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Colorado River at Lees Ferry, AZ (USGS 09380000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-09380000-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-09380000-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Colorado River at Lees Ferry, AZ (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Colorado River at Lees Ferry, AZ (USGS 09380000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-09380000-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-09380000-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Colorado River at Lees Ferry, AZ (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Colorado River at Lees Ferry, AZ (USGS 09380000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-09380000-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-09380000-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Colorado River at Lees Ferry, AZ (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Colorado River at Lees Ferry, AZ (USGS 09380000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-09380000-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-09380000-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Colorado River at Lees Ferry, AZ (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Colorado River at Lees Ferry, AZ (USGS 09380000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-09380000-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-09380000-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Colorado River at Lees Ferry, AZ (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Colorado River at Lees Ferry, AZ (USGS 09380000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-09380000-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-09380000-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Colorado River at Lees Ferry, AZ (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Colorado River at Lees Ferry, AZ (USGS 09380000); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-09380000-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-11447650-data",
+   "kind": "station",
+   "title": "Sacramento River at Freeport, CA (USGS 11447650) — Data view",
+   "text": "Statistics and Data view for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River. Drainage area None. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "sacramento river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-11447650-3d",
+   "kind": "station",
+   "title": "Sacramento River at Freeport, CA (USGS 11447650) — 3D view",
+   "text": "Interactive 3D digital twin for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "sacramento river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-11447650-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-11447650-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Sacramento River at Freeport, CA",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Hydrograph.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-11447650-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Sacramento River at Freeport, CA",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named 7-day forecast.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-11447650-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Sacramento River at Freeport, CA",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Model statistics.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "model statistics"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-11447650-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Sacramento River at Freeport, CA",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Feature ablation.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-11447650-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Sacramento River at Freeport, CA",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Weekly outlook.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-11447650-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Sacramento River at Freeport, CA",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Monthly outlook.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-11447650-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Sacramento River at Freeport, CA",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Yearly outlook.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-11447650-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Sacramento River at Freeport, CA",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Drift.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "drift"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-11447650-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Sacramento River at Freeport, CA",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named 3D forecast chart.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-11447650-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Sacramento River at Freeport, CA",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-11447650-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Sacramento River at Freeport, CA",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-11447650-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Sacramento River at Freeport, CA",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Station clusters.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "station clusters"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-11447650-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Sacramento River at Freeport, CA",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Data charts in 3D.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-11447650.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-11447650-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Sacramento River at Freeport, CA (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Sacramento River at Freeport, CA (USGS 11447650); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-11447650-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-11447650-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Sacramento River at Freeport, CA (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Sacramento River at Freeport, CA (USGS 11447650); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-11447650-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-11447650-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Sacramento River at Freeport, CA (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Sacramento River at Freeport, CA (USGS 11447650); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-11447650-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-11447650-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Sacramento River at Freeport, CA (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Sacramento River at Freeport, CA (USGS 11447650); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-11447650-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-11447650-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Sacramento River at Freeport, CA (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Sacramento River at Freeport, CA (USGS 11447650); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-11447650-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-11447650-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Sacramento River at Freeport, CA (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Sacramento River at Freeport, CA (USGS 11447650); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-11447650-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-11447650-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Sacramento River at Freeport, CA (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Sacramento River at Freeport, CA (USGS 11447650); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-11447650-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "station-14105700-data",
+   "kind": "station",
+   "title": "Columbia River at The Dalles, OR (USGS 14105700) — Data view",
+   "text": "Statistics and Data view for Columbia River at The Dalles, OR, USGS station 14105700 on the Columbia River. Drainage area 237,000 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "columbia river",
+    "data",
+    "statistics",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-top"
+  },
+  {
+   "id": "station-14105700-3d",
+   "kind": "station",
+   "title": "Columbia River at The Dalles, OR (USGS 14105700) — 3D view",
+   "text": "Interactive 3D digital twin for Columbia River at The Dalles, OR, USGS station 14105700 on the Columbia River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "columbia river",
+    "3d",
+    "terrain",
+    "river",
+    "scene",
+    "vr"
+   ],
+   "url": "stations/USGS-14105700-3d.html",
+   "target": "#ht-date"
+  },
+  {
+   "id": "panel-14105700-hts-sec-hydro",
+   "kind": "panel",
+   "title": "Hydrograph — Columbia River at The Dalles, OR",
+   "text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Hydrograph.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "hydrograph"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-hydro",
+   "button": "Hydrograph"
+  },
+  {
+   "id": "panel-14105700-hts-sec-fc",
+   "kind": "panel",
+   "title": "7-day forecast — Columbia River at The Dalles, OR",
+   "text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named 7-day forecast.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "7-day forecast"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-fc",
+   "button": "7-day forecast"
+  },
+  {
+   "id": "panel-14105700-hts-sec-models",
+   "kind": "panel",
+   "title": "Model statistics — Columbia River at The Dalles, OR",
+   "text": "Per model accuracy statistics for this station. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Model statistics.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "model statistics"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-models",
+   "button": "Model statistics"
+  },
+  {
+   "id": "panel-14105700-hts-sec-ablation",
+   "kind": "panel",
+   "title": "Feature ablation — Columbia River at The Dalles, OR",
+   "text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Feature ablation.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "feature ablation"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-ablation",
+   "button": "Feature ablation"
+  },
+  {
+   "id": "panel-14105700-hts-sec-weekly",
+   "kind": "panel",
+   "title": "Weekly outlook — Columbia River at The Dalles, OR",
+   "text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Weekly outlook.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "weekly outlook"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-weekly",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel-14105700-hts-sec-monthly",
+   "kind": "panel",
+   "title": "Monthly outlook — Columbia River at The Dalles, OR",
+   "text": "The next 6 monthly mean flow outlook. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Monthly outlook.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "monthly outlook"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-monthly",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel-14105700-hts-sec-yearly",
+   "kind": "panel",
+   "title": "Yearly outlook — Columbia River at The Dalles, OR",
+   "text": "The next 12 monthly mean flow outlook. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Yearly outlook.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "yearly outlook"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-yearly",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel-14105700-hts-sec-drift",
+   "kind": "panel",
+   "title": "Drift — Columbia River at The Dalles, OR",
+   "text": "Model drift monitoring for this station. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Drift.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "drift"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-drift",
+   "button": "Drift"
+  },
+  {
+   "id": "panel-14105700-hts-sec-3dchart",
+   "kind": "panel",
+   "title": "3D forecast chart — Columbia River at The Dalles, OR",
+   "text": "Interactive 3D chart of forecast issue date, gauge height and an environmental input. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named 3D forecast chart.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "3d forecast chart"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-3dchart",
+   "button": "3D forecast chart"
+  },
+  {
+   "id": "panel-14105700-hts-sec-corr",
+   "kind": "panel",
+   "title": "Multi-factor correlation — Columbia River at The Dalles, OR",
+   "text": "Correlation matrix between flow and weather, soil and snow factors. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Multi-factor correlation.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "multi-factor correlation"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-corr",
+   "button": "Multi-factor correlation"
+  },
+  {
+   "id": "panel-14105700-hts-sec-featimp",
+   "kind": "panel",
+   "title": "Features affecting discharge flow — Columbia River at The Dalles, OR",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Features affecting discharge flow.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "features affecting discharge flow"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-featimp",
+   "button": "Features affecting discharge flow"
+  },
+  {
+   "id": "panel-14105700-hts-sec-clusters",
+   "kind": "panel",
+   "title": "Station clusters — Columbia River at The Dalles, OR",
+   "text": "How this station clusters with the other HydroTwin stations. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Station clusters.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "station clusters"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-clusters",
+   "button": "Station clusters"
+  },
+  {
+   "id": "panel-14105700-hts-sec-charts3d",
+   "kind": "panel",
+   "title": "Data charts in 3D — Columbia River at The Dalles, OR",
+   "text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Columbia River at The Dalles, OR (USGS 14105700), in the panel named Data charts in 3D.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "data charts in 3d"
+   ],
+   "url": "stations/USGS-14105700.html",
+   "target": "#hts-sec-charts3d",
+   "button": "Data charts in 3D"
+  },
+  {
+   "id": "panel3d-14105700-dock",
+   "kind": "panel",
+   "title": "Daily forecast — Columbia River at The Dalles, OR (3D)",
+   "text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Columbia River at The Dalles, OR (USGS 14105700); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "daily forecast",
+    "3d"
+   ],
+   "url": "stations/USGS-14105700-3d.html",
+   "target": "#dock",
+   "button": "Daily forecast"
+  },
+  {
+   "id": "panel3d-14105700-htwk-panel",
+   "kind": "panel",
+   "title": "Weekly outlook — Columbia River at The Dalles, OR (3D)",
+   "text": "The 12 week outlook of weekly mean flow. Found on the 3D page for Columbia River at The Dalles, OR (USGS 14105700); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "weekly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-14105700-3d.html",
+   "target": "#htwk-panel",
+   "button": "Weekly outlook"
+  },
+  {
+   "id": "panel3d-14105700-htmo-panel",
+   "kind": "panel",
+   "title": "Monthly outlook — Columbia River at The Dalles, OR (3D)",
+   "text": "The next 6 monthly mean flow outlook. Found on the 3D page for Columbia River at The Dalles, OR (USGS 14105700); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "monthly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-14105700-3d.html",
+   "target": "#htmo-panel",
+   "button": "Monthly outlook"
+  },
+  {
+   "id": "panel3d-14105700-htyr-panel",
+   "kind": "panel",
+   "title": "Yearly outlook — Columbia River at The Dalles, OR (3D)",
+   "text": "The next 12 monthly mean flow outlook. Found on the 3D page for Columbia River at The Dalles, OR (USGS 14105700); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "yearly outlook",
+    "3d"
+   ],
+   "url": "stations/USGS-14105700-3d.html",
+   "target": "#htyr-panel",
+   "button": "Yearly outlook"
+  },
+  {
+   "id": "panel3d-14105700-ht-dacp-panel",
+   "kind": "panel",
+   "title": "Confidence interval — Columbia River at The Dalles, OR (3D)",
+   "text": "Forecast confidence intervals for this station. Found on the 3D page for Columbia River at The Dalles, OR (USGS 14105700); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "confidence interval",
+    "3d"
+   ],
+   "url": "stations/USGS-14105700-3d.html",
+   "target": "#ht-dacp-panel",
+   "button": "Confidence interval"
+  },
+  {
+   "id": "panel3d-14105700-ht-drift-panel",
+   "kind": "panel",
+   "title": "Model drift — Columbia River at The Dalles, OR (3D)",
+   "text": "Model drift monitoring for this station. Found on the 3D page for Columbia River at The Dalles, OR (USGS 14105700); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "model drift",
+    "3d"
+   ],
+   "url": "stations/USGS-14105700-3d.html",
+   "target": "#ht-drift-panel",
+   "button": "Model drift"
+  },
+  {
+   "id": "panel3d-14105700-htfi-panel",
+   "kind": "panel",
+   "title": "Features affecting flow — Columbia River at The Dalles, OR (3D)",
+   "text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the 3D page for Columbia River at The Dalles, OR (USGS 14105700); open it from the PANELS bar at the bottom left.",
+   "keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "features affecting flow",
+    "3d"
+   ],
+   "url": "stations/USGS-14105700-3d.html",
+   "target": "#htfi-panel",
+   "button": "Features affecting flow"
+  },
+  {
+   "id": "home",
+   "kind": "page",
+   "title": "Home — USA map of all stations",
+   "text": "The HydroTwin home page: a map of the USA with every station. Hover a pin for basin information, click a pin to open that station.",
+   "keywords": [
+    "home",
+    "map",
+    "usa",
+    "stations",
+    "pins",
+    "start"
+   ],
+   "url": "index.html",
+   "target": "body"
+  },
+  {
+   "id": "howto-date",
+   "kind": "howto",
+   "title": "How to change the date",
+   "text": "Use the Date field at the top left of a station page. Pick any date from 2001-10-01 to 2026-09-30; the scene, hydrograph, forecasts and (on 3D pages) the rain or snow animation all follow the selected day.",
+   "keywords": [
+    "date",
+    "change date",
+    "pick a day",
+    "calendar",
+    "when"
+   ],
+   "url": null,
+   "target": "#ht-date"
+  },
+  {
+   "id": "howto-views",
+   "kind": "howto",
+   "title": "How to switch between Data view, 3D view, Ground and Table",
+   "text": "Each station has a Data view page (statistics) and a 3D page; the link at the top of each page switches between them. On the 3D page, the layer view button switches the scene between Ground (real terrain) and Table (tabletop model).",
+   "keywords": [
+    "switch",
+    "view",
+    "data view",
+    "3d view",
+    "ground",
+    "table",
+    "layer"
+   ],
+   "url": null,
+   "target": "#ht-date"
+  },
+  {
+   "id": "howto-panels",
+   "kind": "howto",
+   "title": "How to open a panel",
+   "text": "Panels load on click only. On a Data view page use the PANELS bar above the sections; on a 3D page use the PANELS bar at the bottom left. Click a panel name to open it, click again to close it.",
+   "keywords": [
+    "panel",
+    "open panel",
+    "panels bar",
+    "button"
+   ],
+   "url": null,
+   "target": "#htlp-bar"
+  },
+  {
+   "id": "howto-precip",
+   "kind": "howto",
+   "title": "Rain and snow animation",
+   "text": "On a 3D station page, pick a date in the Date field: if that day had rain at the station, animated rain falls in the scene; if it had snow, animated snowfall; dry days show neither. The amount comes from the Open-Meteo archive for that day.",
+   "keywords": [
+    "rain",
+    "snow",
+    "precipitation",
+    "weather",
+    "animation"
+   ],
+   "url": null,
+   "target": "#ht-date"
+  },
+  {
+   "id": "mlops",
+   "kind": "page",
+   "title": "MLOps status page",
+   "text": "Model registry, retraining and monitoring status for the HydroTwin models.",
+   "keywords": [
+    "mlops",
+    "models",
+    "retraining",
+    "registry",
+    "monitoring",
+    "status"
+   ],
+   "url": "mlops.html",
+   "target": "body"
+  }
+ ]
+}
