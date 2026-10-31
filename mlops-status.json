@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-31T16:16:04Z",
+  "generated_at": "2026-10-31T16:18:21Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -356,14 +356,14 @@
       "file": ".github/workflows/ci.yml",
       "name": "CI \u2014 site, data & model tests",
       "latest": {
-        "run_id": 41218793126,
-        "title": "Helper Lambda workflow: add push trigger on its own infra files so it\u2026",
+        "run_id": 41218971256,
+        "title": "Helper bot v4 (server-side AI): WebLLM flow removed entirely (no Enab\u2026",
         "event": "push",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-10-31T16:15:24Z",
-        "updated_at": "2026-10-31T16:15:50Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41218793126"
+        "created_at": "2026-10-31T16:17:36Z",
+        "updated_at": "2026-10-31T16:18:05Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41218971256"
       }
     },
     {
@@ -390,14 +390,14 @@
       "file": ".github/workflows/deploy-dev.yml",
       "name": "Deploy DEV to AWS S3",
       "latest": {
-        "run_id": 41218793121,
-        "title": "Helper Lambda workflow: add push trigger on its own infra files so it\u2026",
+        "run_id": 41218971342,
+        "title": "Helper bot v4 (server-side AI): WebLLM flow removed entirely (no Enab\u2026",
         "event": "push",
         "status": "in_progress",
         "conclusion": null,
-        "created_at": "2026-10-31T16:15:24Z",
-        "updated_at": "2026-10-31T16:15:27Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41218793121"
+        "created_at": "2026-10-31T16:17:36Z",
+        "updated_at": "2026-10-31T16:17:39Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41218971342"
       }
     }
   ]
