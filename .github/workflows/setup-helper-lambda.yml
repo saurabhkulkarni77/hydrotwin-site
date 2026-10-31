@@ -1,0 +1,189 @@
+name: Setup helper-bot Lambda (one-off)
+
+# One-off infra for the HydroTwin helper bot server-side model:
+# private S3 bucket holds Qwen2.5-0.5B-Instruct GGUF; a Lambda
+# (python3.12 zip deployment, bundled llama.cpp built for Amazon
+# Linux 2023) serves grounded answers through a Function URL whose
+# CORS is restricted to the DEV CloudFront origin only.
+# Manual dispatch only; never runs on push.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  BUCKET: hydrotwin-helper-2026
+  MODEL_FILE: qwen2.5-0.5b-instruct-q4_k_m.gguf
+  MODEL_URL: https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf
+  ROLE_NAME: hydrotwin-helper-lambda-role
+  FUNCTION_NAME: hydrotwin-helper
+  DEV_ORIGIN: https://d36737oy6jvpd8.cloudfront.net
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Who am I
+        run: |
+          set -euo pipefail
+          aws sts get-caller-identity
+
+      - name: Create private model bucket (if missing)
+        run: |
+          set -euo pipefail
+          if aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null; then
+            echo "Bucket $BUCKET already exists."
+          else
+            aws s3api create-bucket --bucket "$BUCKET" --region "$AWS_REGION"
+            aws s3api put-public-access-block --bucket "$BUCKET" \
+              --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+            echo "Bucket $BUCKET created and blocked from public access."
+          fi
+
+      - name: Upload model to bucket (if missing)
+        run: |
+          set -euo pipefail
+          if aws s3api head-object --bucket "$BUCKET" --key "model/$MODEL_FILE" 2>/dev/null; then
+            echo "Model already in bucket."
+          else
+            curl -fL --retry 3 -o "$MODEL_FILE" "$MODEL_URL"
+            ls -l "$MODEL_FILE"
+            aws s3 cp "$MODEL_FILE" "s3://$BUCKET/model/$MODEL_FILE"
+            echo "Model uploaded."
+          fi
+
+      - name: Create Lambda execution role (if missing)
+        run: |
+          set -euo pipefail
+          if aws iam get-role --role-name "$ROLE_NAME" >/dev/null 2>&1; then
+            echo "Role $ROLE_NAME already exists."
+          else
+            aws iam create-role --role-name "$ROLE_NAME" \
+              --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"lambda.amazonaws.com"},"Action":"sts:AssumeRole"}]}'
+            echo "Role created; waiting for propagation."
+            sleep 15
+          fi
+          aws iam attach-role-policy --role-name "$ROLE_NAME" \
+            --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+          aws iam put-role-policy --role-name "$ROLE_NAME" \
+            --policy-name hydrotwin-helper-s3-read \
+            --policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\"],\"Resource\":\"arn:aws:s3:::$BUCKET/*\"}]}"
+          echo "Role policies in place."
+
+      - name: Build llama.cpp for Amazon Linux 2023
+        run: |
+          set -euo pipefail
+          cp "$MODEL_FILE" model.gguf 2>/dev/null || curl -fL --retry 3 -o model.gguf "$MODEL_URL"
+          docker run --rm -v "$GITHUB_WORKSPACE":/work -w /work \
+            public.ecr.aws/amazonlinux/amazonlinux:2023 bash -euxc '
+              dnf install -y gcc gcc-c++ cmake git make tar gzip >/dev/null
+              git clone --depth 1 --branch b12020 https://github.com/ggml-org/llama.cpp src
+              cmake -S src -B build -DCMAKE_BUILD_TYPE=Release \
+                -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF \
+                -DGGML_NATIVE=OFF -DGGML_OPENMP=OFF
+              cmake --build build --target llama-completion -j"$(nproc)"
+              mkdir -p pkg/llama
+              cp build/bin/llama-completion pkg/llama/
+              find build -name "*.so*" -exec cp -a {} pkg/llama/ \;
+              ls -la pkg/llama
+              export LD_LIBRARY_PATH=/work/pkg/llama
+              PROMPT=$(printf "<|im_start|>system\nYou answer questions about locating information in a hydrology digital twin. Be brief.<|im_end|>\n<|im_start|>user\nQuestion: Where is the hydrograph for Dallas?<|im_end|>\n<|im_start|>assistant\n")
+              /work/pkg/llama/llama-completion -m /work/model.gguf \
+                -p "$PROMPT" -n 48 -c 2048 -t 2 --temp 0.2 --seed 42 \
+                --no-display-prompt -r "<|im_end|>" > smoke_out.txt 2> smoke_err.txt || true
+              echo "--- llama-completion smoke stdout ---"
+              cat smoke_out.txt
+              test -s smoke_out.txt
+            '
+          echo "llama.cpp built and smoke-tested inside Amazon Linux 2023."
+
+      - name: Package and upload deployment zip
+        run: |
+          set -euo pipefail
+          mkdir -p pkgroot
+          cp build25/helper_lambda/handler.py pkgroot/handler.py
+          cp -a pkg/llama pkgroot/llama
+          (cd pkgroot && zip -qr ../helper-fn.zip .)
+          unzip -l helper-fn.zip
+          aws s3 cp helper-fn.zip "s3://$BUCKET/deploy/helper-fn.zip"
+          echo "Deployment zip uploaded."
+
+      - name: Create or update the Lambda function
+        run: |
+          set -euo pipefail
+          ROLE_ARN=$(aws iam get-role --role-name "$ROLE_NAME" --query 'Role.Arn' --output text)
+          echo "Role ARN: $ROLE_ARN"
+          if aws lambda get-function --function-name "$FUNCTION_NAME" >/dev/null 2>&1; then
+            echo "Function exists; updating code and configuration."
+            aws lambda update-function-code --function-name "$FUNCTION_NAME" \
+              --s3-bucket "$BUCKET" --s3-key deploy/helper-fn.zip >/dev/null
+            aws lambda wait function-updated --function-name "$FUNCTION_NAME"
+            aws lambda update-function-configuration --function-name "$FUNCTION_NAME" \
+              --runtime python3.12 --handler handler.lambda_handler \
+              --role "$ROLE_ARN" --memory-size 3008 --timeout 120 \
+              --ephemeral-storage Size=2048 \
+              --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE}" >/dev/null
+            aws lambda wait function-updated --function-name "$FUNCTION_NAME"
+          else
+            aws lambda create-function --function-name "$FUNCTION_NAME" \
+              --runtime python3.12 --handler handler.lambda_handler \
+              --role "$ROLE_ARN" --memory-size 3008 --timeout 120 \
+              --ephemeral-storage Size=2048 \
+              --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE}" \
+              --code "S3Bucket=$BUCKET,S3Key=deploy/helper-fn.zip" >/dev/null
+            echo "Function created."
+          fi
+          aws lambda wait function-active --function-name "$FUNCTION_NAME" || true
+
+      - name: Cap reserved concurrency at 5 (cost guard)
+        run: |
+          set -euo pipefail
+          aws lambda put-function-concurrency --function-name "$FUNCTION_NAME" \
+            --reserved-concurrent-executions 5
+          echo "Reserved concurrency capped at 5."
+
+      - name: Create or update the Function URL (dev origin CORS only)
+        run: |
+          set -euo pipefail
+          CORS="AllowOrigins=[$DEV_ORIGIN],AllowMethods=[POST],AllowHeaders=[content-type],MaxAge=86400"
+          if aws lambda get-function-url-config --function-name "$FUNCTION_NAME" >/dev/null 2>&1; then
+            aws lambda update-function-url-config --function-name "$FUNCTION_NAME" \
+              --auth-type NONE --cors "$CORS" >/dev/null
+            echo "Function URL updated."
+          else
+            aws lambda create-function-url-config --function-name "$FUNCTION_NAME" \
+              --auth-type NONE --cors "$CORS" >/dev/null
+            echo "Function URL created."
+          fi
+          aws lambda add-permission --function-name "$FUNCTION_NAME" \
+            --statement-id FunctionURLAllowPublic \
+            --action lambda:InvokeFunctionUrl \
+            --principal '*' \
+            --function-url-auth-type NONE 2>&1 || echo "add-permission: already present or noted above"
+          URL=$(aws lambda get-function-url-config --function-name "$FUNCTION_NAME" --query 'FunctionUrl' --output text)
+          echo "FUNCTION_URL=$URL" >> "$GITHUB_ENV"
+          echo "Function URL: $URL"
+
+      - name: Smoke test the endpoint (cold + warm)
+        run: |
+          set -euo pipefail
+          PAYLOAD='{"question":"Where is the hydrograph for Dallas?","context":[{"title":"Dallas - Hydrograph panel","text":"The Hydrograph panel on the Dallas station classic page (Data view) shows observed and modelled river discharge over time.","page":"stations/USGS-08057000.html"}]}'
+          echo "--- cold call ---"
+          time curl -s --max-time 300 -X POST "$FUNCTION_URL" -H 'Content-Type: application/json' -d "$PAYLOAD"
+          echo
+          echo "--- warm call ---"
+          time curl -s --max-time 300 -X POST "$FUNCTION_URL" -H 'Content-Type: application/json' -d "$PAYLOAD"
+          echo
