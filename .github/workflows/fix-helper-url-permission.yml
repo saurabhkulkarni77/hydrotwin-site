@@ -9,6 +9,10 @@ name: Fix helper Function URL permission (one-off)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [dev]
+    paths:
+      - '.github/workflows/fix-helper-url-permission.yml'
 
 permissions:
   contents: read
