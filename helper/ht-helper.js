@@ -93,7 +93,7 @@
     + '<button class="hthb-chip" type="button">How do I change the date?</button>'
     + '<button class="hthb-chip" type="button">Which features affect flow in Dallas?</button>'
     + '</div>'
-    + '<div id="hthb-ai"><b>Site AI</b> <span id="hthb-ai-status"></span></div>'
+    + '<div id="hthb-ai"><span id="hthb-ai-status"></span></div>'
     + '<form id="hthb-form"><input id="hthb-in" type="text" autocomplete="off" placeholder="Ask where something is…">'
     + '<button id="hthb-send" type="submit">Ask</button></form>';
   document.body.appendChild(panel);
@@ -102,8 +102,8 @@
   var input = panel.querySelector('#hthb-in');
   var aiStatus = panel.querySelector('#hthb-ai-status');
   aiStatus.textContent = AI_ENDPOINT
-    ? 'is on: answers are located instantly from the built-in site index, then an open source model (Qwen2.5 3B) hosted on this project’s own cloud rephrases them in friendlier words. Your question and the index entries it matched are sent to that endpoint; nothing else leaves your browser, and nothing is downloaded.'
-    : 'is off: answers come straight from the built-in site index.';
+    ? 'Model used: Qwen2.5 3B'
+    : 'Model used: site index';
 
   function addMsg(text, who) {
     var d = document.createElement('div');
