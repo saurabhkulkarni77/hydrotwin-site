@@ -28,7 +28,7 @@
   // ------------------------------------------------------------- config
   // Lambda Function URL for the helper-bot model endpoint.
   // Empty string = endpoint off (pure index bot).
-  var AI_ENDPOINT = '';
+  var AI_ENDPOINT = 'https://7oufr7waqwqmirbvirvcx2a2zi0jiipn.lambda-url.us-east-1.on.aws/';
   var AI_TIMEOUT_MS = 45000;
 
   var scriptEl = document.currentScript || document.querySelector('script[src*="ht-helper.js"]');
