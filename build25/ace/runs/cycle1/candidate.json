@@ -1,0 +1,362 @@
+{
+ "version": 1,
+ "note": "ACE playbook for the HydroTwin helper bot. v0: empty \u2014 the baseline. Bullets are added only by the ACE cycle (ace_reflect.py proposes, ace_curate.py disposes) and ship only when the promotion gate in run_cycle.py passes. Bullet types: 'entry_keywords' (appends keywords to one index entry; applied by ace_lib.apply_playbook locally and by build25/gen_helper_index.py at site build time) and 'note' (auditable knowledge for humans; changes no retrieval).",
+ "bullets": [
+  {
+   "id": "pb-1001",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "station-06214500-data",
+   "add_keywords": [
+    "yellowstone river forecast",
+    "geyser park",
+    "famous geyser"
+   ],
+   "evidence": [
+    "the gateway to the famous geyser park",
+    "the station in Big Sky Country"
+   ],
+   "failure_classes": [
+    "FALSE_REFUSAL",
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture specific elements from the correct entry's content and the visitor's query, making the match stronger These keywords capture the main elements of the visitor's question and are likely to be used by visitors looking for information about famous geyser parks."
+  },
+  {
+   "id": "pb-1002",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "station-09380000-3d",
+   "add_keywords": [
+    "ground table",
+    "canyon station",
+    "daily forecast"
+   ],
+   "evidence": [
+    "open the interactive scene for the canyon station"
+   ],
+   "failure_classes": [
+    "STATION_CONFUSION"
+   ],
+   "rationale": "These keywords capture the station-specific context and features mentioned in the correct entry's text."
+  },
+  {
+   "id": "pb-1003",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-08158000-hts-sec-drift",
+   "add_keywords": [
+    "river drift",
+    "austin station",
+    "colorado drift"
+   ],
+   "evidence": [
+    "is the Austin model getting worse over time"
+   ],
+   "failure_classes": [
+    "PANEL_CONFUSION"
+   ],
+   "rationale": "These keywords capture the core elements of the question and the correct entry's content"
+  },
+  {
+   "id": "pb-1004",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-01646500-hts-sec-monthly",
+   "add_keywords": [
+    "next half year",
+    "potomac river outlook",
+    "long view"
+   ],
+   "evidence": [
+    "the long view for the next half year at the Potomac"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "these keywords capture the essence of the visitor's query and the content of the correct entry's title and text"
+  },
+  {
+   "id": "pb-1005",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-08057000-hts-sec-drift",
+   "add_keywords": [
+    "trinity river",
+    "dallas station",
+    "drift monitoring"
+   ],
+   "evidence": [
+    "where do I see if the model quality is slipping for Dallas"
+   ],
+   "failure_classes": [
+    "PANEL_CONFUSION"
+   ],
+   "rationale": "These keywords capture the core elements of the correct entry's content and title, helping to distinguish it from the incorrect one."
+  },
+  {
+   "id": "pb-1006",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "station-03294500-data",
+   "add_keywords": [
+    "horse race",
+    "bourbon"
+   ],
+   "evidence": [
+    "the station in the city famous for its horse race and bourbon"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture the specific elements of the question about Louisville, Kentucky, known for its horse races and bourbon production."
+  },
+  {
+   "id": "pb-1007",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "station-14105700-data",
+   "add_keywords": [
+    "7 day forecast",
+    "columbia river forecast"
+   ],
+   "evidence": [
+    "the gorge station in the Pacific Northwest"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture the specific data and forecast elements mentioned in the correct entry's text and are likely to be used by visitors seeking information about the Columbia River at The Dalles, OR."
+  },
+  {
+   "id": "pb-1008",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "station-07374000-data",
+   "add_keywords": [
+    "mighty river",
+    "delta station"
+   ],
+   "evidence": [
+    "the last station before the delta on the mighty river"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "these keywords capture the key elements of the question and the correct entry's content"
+  },
+  {
+   "id": "pb-1009",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-08057000-hts-sec-hydro",
+   "add_keywords": [
+    "90 day",
+    "full flow"
+   ],
+   "evidence": [
+    "the chart that plots discharge history for Dallas"
+   ],
+   "failure_classes": [
+    "PANEL_CONFUSION"
+   ],
+   "rationale": "These keywords capture the specific hydrograph and discharge history mentioned in the question and correct entry text."
+  },
+  {
+   "id": "pb-1010",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-11447650-hts-sec-featimp",
+   "add_keywords": [
+    "river model",
+    "discharge flow"
+   ],
+   "evidence": [
+    "which inputs matter most for predicting the Sacramento flow"
+   ],
+   "failure_classes": [
+    "PANEL_CONFUSION"
+   ],
+   "rationale": "These keywords capture the specific context of the correct entry's content and the visitor's query."
+  },
+  {
+   "id": "pb-1011",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-08057000-hts-sec-charts3d",
+   "add_keywords": [
+    "data charts 3d",
+    "trinity river"
+   ],
+   "evidence": [
+    "the rotatable version of the flow history chart for Dallas"
+   ],
+   "failure_classes": [
+    "PANEL_CONFUSION"
+   ],
+   "rationale": "These keywords capture the specific location and interactive 3D nature of the chart, matching the visitor's query closely."
+  },
+  {
+   "id": "pb-1012",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-08057000-hts-sec-featimp",
+   "add_keywords": [
+    "trinity river model",
+    "flow inputs"
+   ],
+   "evidence": [
+    "what drives the Trinity river flow the most"
+   ],
+   "failure_classes": [
+    "PANEL_CONFUSION"
+   ],
+   "rationale": "These keywords capture the essence of the correct entry's content and are likely to be used by visitors seeking information about factors influencing Trinity River flow."
+  },
+  {
+   "id": "pb-1013",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-08158000-hts-sec-fc",
+   "add_keywords": [
+    "colorado",
+    "forecast"
+   ],
+   "evidence": [
+    "show me the week ahead fan of possible flows for Austin"
+   ],
+   "failure_classes": [
+    "PANEL_CONFUSION"
+   ],
+   "rationale": "The keywords 'colorado', 'river', and 'forecast' are short phrases from the question and the correct entry's title that a visitor might type to match this entry."
+  },
+  {
+   "id": "pb-1014",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "station-02320500-data",
+   "add_keywords": [
+    "river statistics"
+   ],
+   "evidence": [
+    "the swampy blackwater river in the Sunshine State"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture the hydrological aspects of the Suwannee River, matching the content of the correct entry"
+  },
+  {
+   "id": "pb-1015",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "station-08158000-data",
+   "add_keywords": [
+    "lone star state"
+   ],
+   "evidence": [
+    "the other big river station in the Lone Star State, in its capital city"
+   ],
+   "failure_classes": [
+    "STATION_CONFUSION"
+   ],
+   "rationale": "These keywords capture key elements from the question and the correct entry's title and text, helping to match similar queries."
+  },
+  {
+   "id": "pb-1016",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "station-08313000-data",
+   "add_keywords": [
+    "3d charts"
+   ],
+   "evidence": [
+    "the numbers and charts page for the desert southwest river"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture key elements from the correct entry and the visitor's question, helping to match the question and similar ones to the correct entry."
+  },
+  {
+   "id": "pb-1017",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-08057000-hts-sec-fc",
+   "add_keywords": [
+    "trinity river"
+   ],
+   "evidence": [
+    "what will the flow be over the coming week in Dallas"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture the essence of the correct entry's content and the visitor's query"
+  },
+  {
+   "id": "pb-1018",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "panel-09380000-hts-sec-ablation",
+   "add_keywords": [
+    "forecast error"
+   ],
+   "evidence": [
+    "what happens to the Lees Ferry predictions if you drop some inputs"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture the essence of the question and the topic of the correct entry"
+  },
+  {
+   "id": "pb-1019",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "howto-panels",
+   "add_keywords": [
+    "3d view"
+   ],
+   "evidence": [
+    "how do I open one of the hidden sections on a station page"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture the main navigation options and switching between different view types mentioned in the correct entry's text"
+  },
+  {
+   "id": "pb-1020",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "howto-precip",
+   "add_keywords": [
+    "3d"
+   ],
+   "evidence": [
+    "will it rain at the station on the day I pick"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture the specific context of the animation and the station page, which are crucial for matching the question and similar ones."
+  },
+  {
+   "id": "pb-1021",
+   "cycle": 1,
+   "type": "entry_keywords",
+   "entry": "station-11447650-data",
+   "add_keywords": [
+    "freeport california"
+   ],
+   "evidence": [
+    "the west coast station where the river meets the capital region"
+   ],
+   "failure_classes": [
+    "WEAK_KEYWORD"
+   ],
+   "rationale": "These keywords capture key elements from the visitor's question and the correct entry's title, making the question match the correct entry more likely."
+  }
+ ]
+}

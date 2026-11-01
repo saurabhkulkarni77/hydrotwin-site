@@ -1,0 +1,1509 @@
+{
+ "source_results": "/home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/eval_before.json",
+ "llm_used": true,
+ "llm_calls": 26,
+ "failures": [
+  {
+   "battery": "paraphrase",
+   "q": "the river out west in the Golden State",
+   "split": "dev",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "station-14105700-data",
+   "kw_rank_accept": 35,
+   "hy_rank_accept": 2,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-11447650-data",
+    "station-11447650-3d"
+   ],
+   "target_title": "Sacramento River at Freeport, CA (USGS 11447650) \u2014 Data view",
+   "target_text": "Statistics and Data view for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River. It is the HydroTwin station in California.Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "sacramento river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station"
+   ],
+   "winner_title": "Columbia River at The Dalles, OR (USGS 14105700) \u2014 Data view",
+   "uncovered_question_words": [
+    "golden",
+    "out",
+    "state",
+    "west"
+   ],
+   "proposals": [
+    {
+     "keyword": "out west",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "golden state",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "columbia river",
+     "valid": false,
+     "reason": "ungrounded words: ['columbia']"
+    }
+   ],
+   "reflector_note": "These keywords capture the specific location and context of the question, improving the match"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the station by the nation's capital",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-14105700-hts-sec-clusters",
+   "kw_rank_accept": 52,
+   "hy_rank_accept": 5,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-01646500-data",
+    "station-01646500-3d"
+   ],
+   "target_title": "Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500) \u2014 Data view",
+   "target_text": "Statistics and Data view for Potomac River at Little Falls, MD (near Washington DC), USGS station 01646500 on the Potomac River. It is the HydroTwin station in Maryland. Drainage area 11,560 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "01646500",
+    "potomac river at little falls, md (near washington dc)",
+    "potomac river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station"
+   ],
+   "winner_title": "Station clusters \u2014 Columbia River at The Dalles, OR",
+   "uncovered_question_words": [
+    "by",
+    "capital",
+    "nation"
+   ],
+   "proposals": [
+    {
+     "keyword": "nation's capital",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "columbia river",
+     "valid": false,
+     "reason": "ungrounded words: ['columbia']"
+    },
+    {
+     "keyword": "the dalles",
+     "valid": false,
+     "reason": "ungrounded words: ['dalles']"
+    }
+   ],
+   "reflector_note": "These keywords capture the visitor's intent and the correct entry's location, improving the match"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the northern city that is twinned with Minneapolis",
+   "split": "heldout",
+   "failure_class": "FALSE_REFUSAL",
+   "winner": "panel-05331000-hts-sec-corr",
+   "kw_rank_accept": 63,
+   "hy_rank_accept": 4,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-05331000-data",
+    "station-05331000-3d"
+   ],
+   "target_title": "Mississippi River at St. Paul, MN (USGS 05331000) \u2014 Data view",
+   "target_text": "Statistics and Data view for Mississippi River at St. Paul, MN, USGS station 05331000 on the Mississippi River. It is the HydroTwin station in Minnesota. Drainage area 36,800 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "05331000",
+    "mississippi river at st. paul, mn",
+    "mississippi river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station"
+   ],
+   "winner_title": "Multi-factor correlation \u2014 Mississippi River at St. Paul, MN",
+   "uncovered_question_words": [
+    "city",
+    "minneapolis",
+    "northern",
+    "twinned"
+   ],
+   "proposals": [
+    {
+     "keyword": "minneapolis twin",
+     "valid": false,
+     "reason": "ungrounded words: ['twin']"
+    },
+    {
+     "keyword": "northern city",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "minnesota twin",
+     "valid": false,
+     "reason": "ungrounded words: ['twin']"
+    }
+   ],
+   "reflector_note": "These keywords capture the specific context of the question and the need for a city that is twinned with Minneapolis"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the station in Big Sky Country",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-06214500-hts-sec-clusters",
+   "kw_rank_accept": 151,
+   "hy_rank_accept": 9,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-06214500-data",
+    "station-06214500-3d"
+   ],
+   "target_title": "Yellowstone River at Billings, MT (USGS 06214500) \u2014 Data view",
+   "target_text": "Statistics and Data view for Yellowstone River at Billings, MT, USGS station 06214500 on the Yellowstone River. It is the HydroTwin station in Montana. Drainage area 11,807 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "yellowstone river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station"
+   ],
+   "winner_title": "Station clusters \u2014 Yellowstone River at Billings, MT",
+   "uncovered_question_words": [
+    "big",
+    "country",
+    "sky"
+   ],
+   "proposals": [
+    {
+     "keyword": "big sky",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "billings",
+     "valid": false,
+     "reason": "already a keyword of the entry"
+    },
+    {
+     "keyword": "river",
+     "valid": false,
+     "reason": "no distinctive word (all generic/high-frequency)"
+    }
+   ],
+   "reflector_note": "These keywords capture the visitor's intent and the context of the correct entry's content"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "where Washington crossed the river on Christmas night",
+   "split": "dev",
+   "failure_class": "COSINE_DOMINANT",
+   "winner": "station-01646500-3d",
+   "kw_rank_accept": 3,
+   "hy_rank_accept": 6,
+   "in_candidate_pool": true,
+   "accept": [
+    "station-01463500-data",
+    "station-01463500-3d"
+   ],
+   "target_title": "Delaware River at Trenton, NJ (USGS 01463500) \u2014 Data view",
+   "target_text": "Statistics and Data view for Delaware River at Trenton, NJ, USGS station 01463500 on the Delaware River. It is the HydroTwin station in New Jersey. Drainage area 6,780 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "delaware river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station"
+   ],
+   "winner_title": "Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500) \u2014 3D view",
+   "uncovered_question_words": [
+    "christmas",
+    "crossed",
+    "night",
+    "washington"
+   ],
+   "proposals": []
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the gorge station in the Pacific Northwest",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-14105700-hts-sec-clusters",
+   "kw_rank_accept": 25,
+   "hy_rank_accept": 2,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-14105700-data",
+    "station-14105700-3d"
+   ],
+   "target_title": "Columbia River at The Dalles, OR (USGS 14105700) \u2014 Data view",
+   "target_text": "Statistics and Data view for Columbia River at The Dalles, OR, USGS station 14105700 on the Columbia River. It is the HydroTwin station in Oregon. Drainage area 237,000 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "14105700",
+    "columbia river at the dalles, or",
+    "columbia river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station"
+   ],
+   "winner_title": "Station clusters \u2014 Columbia River at The Dalles, OR",
+   "uncovered_question_words": [
+    "gorge",
+    "northwest",
+    "pacific"
+   ],
+   "proposals": [
+    {
+     "keyword": "gorge station",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "northwest pacific",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "river data",
+     "valid": false,
+     "reason": "no distinctive word (all generic/high-frequency)"
+    }
+   ],
+   "reflector_note": "These keywords capture the specific location and context of the question, improving the match."
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the river station a short drive from Santa Fe",
+   "split": "dev",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "station-14105700-3d",
+   "kw_rank_accept": 114,
+   "hy_rank_accept": 6,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-08313000-data",
+    "station-08313000-3d"
+   ],
+   "target_title": "Rio Grande at Otowi Bridge, NM (USGS 08313000) \u2014 Data view",
+   "target_text": "Statistics and Data view for Rio Grande at Otowi Bridge, NM, USGS station 08313000 on the Rio Grande. It is the HydroTwin station in New Mexico. Drainage area 14,300 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "rio grande",
+    "data",
+    "statistics",
+    "hydrograph",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station"
+   ],
+   "winner_title": "Columbia River at The Dalles, OR (USGS 14105700) \u2014 3D view",
+   "uncovered_question_words": [
+    "drive",
+    "fe",
+    "from",
+    "santa",
+    "short"
+   ],
+   "proposals": [
+    {
+     "keyword": "drives",
+     "valid": false,
+     "reason": "ungrounded words: ['drives']"
+    },
+    {
+     "keyword": "santa",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "short",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the visitor's intent to find a short drive from Santa Fe to a station"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the swampy blackwater river in the Sunshine State",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-02320500-hts-sec-featimp",
+   "kw_rank_accept": 29,
+   "hy_rank_accept": 27,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-02320500-data",
+    "station-02320500-3d"
+   ],
+   "target_title": "Suwannee River at Branford, FL (USGS 02320500) \u2014 Data view",
+   "target_text": "Statistics and Data view for Suwannee River at Branford, FL, USGS station 02320500 on the Suwannee River. It is the HydroTwin station in Florida. Drainage area 7,880 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "suwannee river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station"
+   ],
+   "winner_title": "Features affecting discharge flow \u2014 Suwannee River at Branford, FL",
+   "uncovered_question_words": [
+    "blackwater",
+    "state",
+    "sunshine",
+    "swampy"
+   ],
+   "proposals": [
+    {
+     "keyword": "swampy blackwater",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "florida sunshine",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "suwannee river sunshine",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture key elements from the visitor's question and are relevant to the correct entry's content"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the live music capital station",
+   "split": "dev",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-14105700-hts-sec-clusters",
+   "kw_rank_accept": 96,
+   "hy_rank_accept": 37,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-08158000-data",
+    "station-08158000-3d"
+   ],
+   "target_title": "Colorado River at Austin, TX (USGS 08158000) \u2014 Data view",
+   "target_text": "Statistics and Data view for Colorado River at Austin, TX, USGS station 08158000 on the Colorado River. It is the HydroTwin station in Texas. Drainage area 39,009 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "colorado river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station"
+   ],
+   "winner_title": "Station clusters \u2014 Columbia River at The Dalles, OR",
+   "uncovered_question_words": [
+    "capital",
+    "live",
+    "music"
+   ],
+   "proposals": [
+    {
+     "keyword": "music capital",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "columbia river",
+     "valid": false,
+     "reason": "ungrounded words: ['columbia']"
+    },
+    {
+     "keyword": "the dalles",
+     "valid": false,
+     "reason": "ungrounded words: ['dalles']"
+    }
+   ],
+   "reflector_note": "These keywords cover aspects of the question and the correct entry's content"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the German heritage wine town station in the middle of the country",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-14105700-hts-sec-clusters",
+   "kw_rank_accept": 307,
+   "hy_rank_accept": 11,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-06934500-data",
+    "station-06934500-3d"
+   ],
+   "target_title": "Missouri River at Hermann, MO (USGS 06934500) \u2014 Data view",
+   "target_text": "Statistics and Data view for Missouri River at Hermann, MO, USGS station 06934500 on the Missouri River. It is the HydroTwin station in Missouri. Drainage area 522,500 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "06934500",
+    "missouri river at hermann, mo",
+    "missouri river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station"
+   ],
+   "winner_title": "Station clusters \u2014 Columbia River at The Dalles, OR",
+   "uncovered_question_words": [
+    "country",
+    "german",
+    "heritage",
+    "middle",
+    "town",
+    "wine"
+   ],
+   "proposals": [
+    {
+     "keyword": "german heritage",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "wine town",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "middle country",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the specific elements from the visitor's question that were not matched by the current keywords of the correct entry"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the other big river station in the Lone Star State, in its capital city",
+   "split": "dev",
+   "failure_class": "STATION_CONFUSION",
+   "winner": "panel-14105700-hts-sec-clusters",
+   "kw_rank_accept": 10,
+   "hy_rank_accept": 5,
+   "in_candidate_pool": true,
+   "accept": [
+    "station-08158000-data",
+    "station-08158000-3d"
+   ],
+   "target_title": "Colorado River at Austin, TX (USGS 08158000) \u2014 Data view",
+   "target_text": "Statistics and Data view for Colorado River at Austin, TX, USGS station 08158000 on the Colorado River. It is the HydroTwin station in Texas. Drainage area 39,009 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "colorado river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station"
+   ],
+   "winner_title": "Station clusters \u2014 Columbia River at The Dalles, OR",
+   "uncovered_question_words": [
+    "big",
+    "capital",
+    "city",
+    "lone",
+    "other",
+    "star",
+    "state"
+   ],
+   "proposals": [
+    {
+     "keyword": "big river",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "capital city",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "lone star",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the key elements from the visitor's question and are distinct from the current keywords of the correct entry"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the last station before the delta on the mighty river",
+   "split": "heldout",
+   "failure_class": "STATION_CONFUSION",
+   "winner": "station-14105700-3d",
+   "kw_rank_accept": 4,
+   "hy_rank_accept": 8,
+   "in_candidate_pool": true,
+   "accept": [
+    "station-07374000-data",
+    "station-07374000-3d"
+   ],
+   "target_title": "Mississippi River at Baton Rouge, LA (USGS 07374000) \u2014 Data view",
+   "target_text": "Statistics and Data view for Mississippi River at Baton Rouge, LA, USGS station 07374000 on the Mississippi River. It is the HydroTwin station in Louisiana. Drainage area 1,125,810 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "07374000",
+    "mississippi river at baton rouge, la",
+    "mississippi river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station"
+   ],
+   "winner_title": "Columbia River at The Dalles, OR (USGS 14105700) \u2014 3D view",
+   "uncovered_question_words": [
+    "before",
+    "delta",
+    "last",
+    "mighty"
+   ],
+   "proposals": [
+    {
+     "keyword": "mighty river",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "delta",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "last station",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the essential elements of the question and the context of the correct entry's content"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the numbers and charts page for the desert southwest river",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-14105700-hts-sec-charts3d",
+   "kw_rank_accept": 63,
+   "hy_rank_accept": 152,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-08313000-data"
+   ],
+   "target_title": "Rio Grande at Otowi Bridge, NM (USGS 08313000) \u2014 Data view",
+   "target_text": "Statistics and Data view for Rio Grande at Otowi Bridge, NM, USGS station 08313000 on the Rio Grande. It is the HydroTwin station in New Mexico. Drainage area 14,300 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "08313000",
+    "rio grande at otowi bridge, nm",
+    "rio grande",
+    "data",
+    "statistics",
+    "hydrograph",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station"
+   ],
+   "winner_title": "Data charts in 3D \u2014 Columbia River at The Dalles, OR",
+   "uncovered_question_words": [
+    "charts",
+    "desert",
+    "numbers",
+    "page",
+    "southwest"
+   ],
+   "proposals": [
+    {
+     "keyword": "desert southwest",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "charts 3D",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "columbia river",
+     "valid": false,
+     "reason": "ungrounded words: ['columbia']"
+    }
+   ],
+   "reflector_note": "These keywords capture the visitor's interest in charts and the Columbia River, which are not fully covered by the current keywords but are relevant to the question."
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the chart that plots discharge history for Dallas",
+   "split": "dev",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-08057000-hts-sec-charts3d",
+   "kw_rank_accept": 11,
+   "hy_rank_accept": 5,
+   "in_candidate_pool": false,
+   "accept": [
+    "panel-08057000-hts-sec-hydro"
+   ],
+   "target_title": "Hydrograph \u2014 Trinity River at Dallas, TX",
+   "target_text": "The full flow record and the 90 day hydrograph for the selected date. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Hydrograph.",
+   "target_keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "hydrograph",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "hydrograph in texas"
+   ],
+   "winner_title": "Data charts in 3D \u2014 Trinity River at Dallas, TX",
+   "uncovered_question_words": [
+    "chart",
+    "discharge",
+    "history",
+    "plots"
+   ],
+   "proposals": [
+    {
+     "keyword": "discharge history",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "plots history",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "dallas history",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the essence of the visitor's query and the content of the correct entry's title and text."
+  },
+  {
+   "battery": "paraphrase",
+   "q": "what will the flow be over the coming week in Dallas",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-08057000-hts-sec-weekly",
+   "kw_rank_accept": 16,
+   "hy_rank_accept": 7,
+   "in_candidate_pool": false,
+   "accept": [
+    "panel-08057000-hts-sec-fc"
+   ],
+   "target_title": "7-day forecast \u2014 Trinity River at Dallas, TX",
+   "target_text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named 7-day forecast.",
+   "target_keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "7-day forecast",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "7-day forecast in texas"
+   ],
+   "winner_title": "Weekly outlook \u2014 Trinity River at Dallas, TX",
+   "uncovered_question_words": [
+    "be",
+    "coming",
+    "flow",
+    "over",
+    "week",
+    "will"
+   ],
+   "proposals": [
+    {
+     "keyword": "river flow",
+     "valid": false,
+     "reason": "no distinctive word (all generic/high-frequency)"
+    },
+    {
+     "keyword": "forecast week",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "dallas texas",
+     "valid": false,
+     "reason": "ungrounded words: ['texas']"
+    }
+   ],
+   "reflector_note": "These keywords capture the essence of the question and the correct entry's content"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "which inputs matter most for predicting the Sacramento flow",
+   "split": "dev",
+   "failure_class": "PANEL_CONFUSION",
+   "winner": "panel3d-11447650-htfi-panel",
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 2,
+   "in_candidate_pool": true,
+   "accept": [
+    "panel-11447650-hts-sec-featimp"
+   ],
+   "target_title": "Features affecting discharge flow \u2014 Sacramento River at Freeport, CA",
+   "target_text": "XGBoost feature importance: which inputs the flow model leans on most. Found on the Data view page for Sacramento River at Freeport, CA (USGS 11447650), in the panel named Features affecting discharge flow.",
+   "target_keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "features affecting discharge flow",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "features affecting discharge flow in california"
+   ],
+   "winner_title": "Features affecting flow \u2014 Sacramento River at Freeport, CA (3D)",
+   "uncovered_question_words": [
+    "inputs",
+    "matter",
+    "most",
+    "predicting"
+   ],
+   "proposals": [
+    {
+     "keyword": "inputs matter",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "predict flow",
+     "valid": false,
+     "reason": "ungrounded words: ['predict']"
+    },
+    {
+     "keyword": "flow model",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the essence of the visitor's question and the correct entry's content"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "is the Austin model getting worse over time",
+   "split": "heldout",
+   "failure_class": "PANEL_CONFUSION",
+   "winner": "panel-08158000-hts-sec-models",
+   "kw_rank_accept": 6,
+   "hy_rank_accept": 6,
+   "in_candidate_pool": true,
+   "accept": [
+    "panel-08158000-hts-sec-drift"
+   ],
+   "target_title": "Drift \u2014 Colorado River at Austin, TX",
+   "target_text": "Model drift monitoring for this station. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named Drift.",
+   "target_keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "drift",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "drift in texas"
+   ],
+   "winner_title": "Model statistics \u2014 Colorado River at Austin, TX",
+   "uncovered_question_words": [
+    "getting",
+    "model",
+    "over",
+    "time",
+    "worse"
+   ],
+   "proposals": [
+    {
+     "keyword": "worse over time",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "model statistics",
+     "valid": false,
+     "reason": "ungrounded words: ['statistics']"
+    },
+    {
+     "keyword": "drift statistics",
+     "valid": false,
+     "reason": "ungrounded words: ['statistics']"
+    }
+   ],
+   "reflector_note": "These keywords capture the essence of the question and the specific panel content the correct entry should match."
+  },
+  {
+   "battery": "paraphrase",
+   "q": "what happens to the Lees Ferry predictions if you drop some inputs",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel3d-09380000-ht-drift-panel",
+   "kw_rank_accept": 16,
+   "hy_rank_accept": 2,
+   "in_candidate_pool": false,
+   "accept": [
+    "panel-09380000-hts-sec-ablation"
+   ],
+   "target_title": "Feature ablation \u2014 Colorado River at Lees Ferry, AZ",
+   "target_text": "How forecast error changes when input feature groups are removed. Found on the Data view page for Colorado River at Lees Ferry, AZ (USGS 09380000), in the panel named Feature ablation.",
+   "target_keywords": [
+    "09380000",
+    "colorado river at lees ferry, az",
+    "feature ablation",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "feature ablation in arizona"
+   ],
+   "winner_title": "Model drift \u2014 Colorado River at Lees Ferry, AZ (3D)",
+   "uncovered_question_words": [
+    "drop",
+    "happens",
+    "if",
+    "inputs",
+    "predictions",
+    "some"
+   ],
+   "proposals": [
+    {
+     "keyword": "drop inputs",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "happen predictions",
+     "valid": false,
+     "reason": "ungrounded words: ['happen']"
+    },
+    {
+     "keyword": "some inputs",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "these keywords capture the essence of the question and the need to understand what happens to predictions when certain inputs are altered"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the next three months week by week for Billings",
+   "split": "heldout",
+   "failure_class": "PANEL_CONFUSION",
+   "winner": "panel3d-06214500-htwk-panel",
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 2,
+   "in_candidate_pool": true,
+   "accept": [
+    "panel-06214500-hts-sec-weekly"
+   ],
+   "target_title": "Weekly outlook \u2014 Yellowstone River at Billings, MT",
+   "target_text": "The 12 week outlook of weekly mean flow. Found on the Data view page for Yellowstone River at Billings, MT (USGS 06214500), in the panel named Weekly outlook.",
+   "target_keywords": [
+    "06214500",
+    "yellowstone river at billings, mt",
+    "weekly outlook",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "weekly outlook in montana"
+   ],
+   "winner_title": "Weekly outlook \u2014 Yellowstone River at Billings, MT (3D)",
+   "uncovered_question_words": [
+    "by",
+    "months",
+    "next",
+    "three",
+    "week"
+   ],
+   "proposals": [
+    {
+     "keyword": "by week",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "next three",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "months week",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "these keywords capture the visitor's specific query about a week-by-week schedule for the next three months"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the rotatable version of the flow history chart for Dallas",
+   "split": "dev",
+   "failure_class": "PANEL_CONFUSION",
+   "winner": "panel3d-08057000-htfi-panel",
+   "kw_rank_accept": 7,
+   "hy_rank_accept": 5,
+   "in_candidate_pool": true,
+   "accept": [
+    "panel-08057000-hts-sec-charts3d"
+   ],
+   "target_title": "Data charts in 3D \u2014 Trinity River at Dallas, TX",
+   "target_text": "The hydrograph and the feature importance chart rendered as interactive 3D charts. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Data charts in 3D.",
+   "target_keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "data charts in 3d",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "data charts in 3d in texas"
+   ],
+   "winner_title": "Features affecting flow \u2014 Trinity River at Dallas, TX (3D)",
+   "uncovered_question_words": [
+    "chart",
+    "flow",
+    "history",
+    "rotatable",
+    "version"
+   ],
+   "proposals": [
+    {
+     "keyword": "flow history",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "rotatable chart",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "trinity river",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the essential elements of the visitor's question and align with the correct entry's content"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the little card on the Suwannee 3D page with today's prediction and the day controls",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel3d-14105700-dock",
+   "kw_rank_accept": 26,
+   "hy_rank_accept": 2,
+   "in_candidate_pool": false,
+   "accept": [
+    "panel3d-02320500-dock"
+   ],
+   "target_title": "Daily forecast \u2014 Suwannee River at Branford, FL (3D)",
+   "target_text": "The Flow and forecast card with the selected date, model and lead controls. Found on the 3D page for Suwannee River at Branford, FL (USGS 02320500); open it from the PANELS bar at the bottom left.",
+   "target_keywords": [
+    "02320500",
+    "suwannee river at branford, fl",
+    "daily forecast",
+    "3d",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "daily forecast in florida"
+   ],
+   "winner_title": "Daily forecast \u2014 Columbia River at The Dalles, OR (3D)",
+   "uncovered_question_words": [
+    "card",
+    "controls",
+    "day",
+    "little",
+    "page",
+    "prediction",
+    "today"
+   ],
+   "proposals": [
+    {
+     "keyword": "card controls",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "day prediction",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "little page",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the specific elements mentioned in the visitor's question and are relevant to the correct entry's content."
+  },
+  {
+   "battery": "paraphrase",
+   "q": "where do I see if the model quality is slipping for Dallas",
+   "split": "dev",
+   "failure_class": "PANEL_CONFUSION",
+   "winner": "panel3d-08057000-ht-drift-panel",
+   "kw_rank_accept": 3,
+   "hy_rank_accept": 3,
+   "in_candidate_pool": true,
+   "accept": [
+    "panel-08057000-hts-sec-drift"
+   ],
+   "target_title": "Drift \u2014 Trinity River at Dallas, TX",
+   "target_text": "Model drift monitoring for this station. Found on the Data view page for Trinity River at Dallas, TX (USGS 08057000), in the panel named Drift.",
+   "target_keywords": [
+    "08057000",
+    "trinity river at dallas, tx",
+    "drift",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "drift in texas"
+   ],
+   "winner_title": "Model drift \u2014 Trinity River at Dallas, TX (3D)",
+   "uncovered_question_words": [
+    "if",
+    "model",
+    "quality",
+    "see",
+    "slipping"
+   ],
+   "proposals": [
+    {
+     "keyword": "model quality",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "slipping",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "trinity river",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the essence of the question and the context of the correct entry's title and text"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "how do I open one of the hidden sections on a station page",
+   "split": "dev",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "howto-views",
+   "kw_rank_accept": 98,
+   "hy_rank_accept": 2,
+   "in_candidate_pool": false,
+   "accept": [
+    "howto-panels"
+   ],
+   "target_title": "How to open a panel",
+   "target_text": "Panels load on click only. On a Data view page use the PANELS bar above the sections; on a 3D page use the PANELS bar at the bottom left. Click a panel name to open it, click again to close it.",
+   "target_keywords": [
+    "panel",
+    "open panel",
+    "panels bar",
+    "button"
+   ],
+   "winner_title": "How to switch between Data view, 3D view, Ground and Table",
+   "uncovered_question_words": [
+    "hidden",
+    "one",
+    "page",
+    "sections",
+    "station"
+   ],
+   "proposals": [
+    {
+     "keyword": "hidden sections",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "station page",
+     "valid": false,
+     "reason": "no distinctive word (all generic/high-frequency)"
+    },
+    {
+     "keyword": "open sections",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords cover the specific terms from the question and are relevant to the correct entry's content"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "one map with every gauge on it",
+   "split": "dev",
+   "failure_class": "COSINE_DOMINANT",
+   "winner": "panel-08313000-hts-sec-charts3d",
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 2,
+   "in_candidate_pool": true,
+   "accept": [
+    "home"
+   ],
+   "target_title": "Home \u2014 USA map of all stations",
+   "target_text": "The HydroTwin home page: a map of the USA with every station. Hover a pin for basin information, click a pin to open that station.",
+   "target_keywords": [
+    "home",
+    "map",
+    "usa",
+    "stations",
+    "pins",
+    "start"
+   ],
+   "winner_title": "Data charts in 3D \u2014 Rio Grande at Otowi Bridge, NM",
+   "uncovered_question_words": [
+    "every",
+    "gauge",
+    "one"
+   ],
+   "proposals": []
+  },
+  {
+   "battery": "paraphrase",
+   "q": "will it rain at the station on the day I pick",
+   "split": "dev",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "explainer-rain-snow",
+   "kw_rank_accept": 32,
+   "hy_rank_accept": 3,
+   "in_candidate_pool": false,
+   "accept": [
+    "howto-precip"
+   ],
+   "target_title": "Rain and snow animation",
+   "target_text": "On a 3D station page, pick a date in the Date field: if that day had rain at the station, animated rain falls in the scene; if it had snow, animated snowfall; dry days show neither. The amount comes from the Open-Meteo archive for that day.",
+   "target_keywords": [
+    "rain",
+    "snow",
+    "precipitation",
+    "weather",
+    "animation"
+   ],
+   "winner_title": "Why no rain or snow falls on some days",
+   "uncovered_question_words": [
+    "day",
+    "pick",
+    "station",
+    "will"
+   ],
+   "proposals": [
+    {
+     "keyword": "date",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "animation",
+     "valid": false,
+     "reason": "already a keyword of the entry"
+    },
+    {
+     "keyword": "pick",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords directly relate to the visitor's query about a specific date and animation for weather conditions at a station."
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the west coast station where the river meets the capital region",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-14105700-hts-sec-clusters",
+   "kw_rank_accept": 34,
+   "hy_rank_accept": 19,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-11447650-data",
+    "station-11447650-3d"
+   ],
+   "target_title": "Sacramento River at Freeport, CA (USGS 11447650) \u2014 Data view",
+   "target_text": "Statistics and Data view for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River. It is the HydroTwin station in California.Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "11447650",
+    "sacramento river at freeport, ca",
+    "sacramento river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station"
+   ],
+   "winner_title": "Station clusters \u2014 Columbia River at The Dalles, OR",
+   "uncovered_question_words": [
+    "capital",
+    "coast",
+    "meets",
+    "region",
+    "west"
+   ],
+   "proposals": [
+    {
+     "keyword": "capital region",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "west coast",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "river meets",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the key elements of the question and the context of the correct entry's content"
+  },
+  {
+   "battery": "paraphrase",
+   "q": "show me the week ahead fan of possible flows for Austin",
+   "split": "dev",
+   "failure_class": "PANEL_CONFUSION",
+   "winner": "panel-08158000-hts-sec-weekly",
+   "kw_rank_accept": 3,
+   "hy_rank_accept": 3,
+   "in_candidate_pool": true,
+   "accept": [
+    "panel-08158000-hts-sec-fc"
+   ],
+   "target_title": "7-day forecast \u2014 Colorado River at Austin, TX",
+   "target_text": "The 7 day forecast fan and interval band for the selected date and model. Found on the Data view page for Colorado River at Austin, TX (USGS 08158000), in the panel named 7-day forecast.",
+   "target_keywords": [
+    "08158000",
+    "colorado river at austin, tx",
+    "7-day forecast",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "7-day forecast in texas"
+   ],
+   "winner_title": "Weekly outlook \u2014 Colorado River at Austin, TX",
+   "uncovered_question_words": [
+    "ahead",
+    "fan",
+    "flows",
+    "possible",
+    "show",
+    "week"
+   ],
+   "proposals": [
+    {
+     "keyword": "show week",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "possible flows",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "austin forecast",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture the essence of the visitor's question and the content of the correct entry's text."
+  },
+  {
+   "battery": "paraphrase",
+   "q": "where is the gauge that Washington's army story is tied to",
+   "split": "heldout",
+   "failure_class": "WEAK_KEYWORD",
+   "winner": "panel-01646500-hts-sec-models",
+   "kw_rank_accept": 160,
+   "hy_rank_accept": 84,
+   "in_candidate_pool": false,
+   "accept": [
+    "station-01463500-data",
+    "station-01463500-3d"
+   ],
+   "target_title": "Delaware River at Trenton, NJ (USGS 01463500) \u2014 Data view",
+   "target_text": "Statistics and Data view for Delaware River at Trenton, NJ, USGS station 01463500 on the Delaware River. It is the HydroTwin station in New Jersey. Drainage area 6,780 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "target_keywords": [
+    "01463500",
+    "delaware river at trenton, nj",
+    "delaware river",
+    "data",
+    "statistics",
+    "hydrograph",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station"
+   ],
+   "winner_title": "Model statistics \u2014 Potomac River at Little Falls, MD (near Washington DC)",
+   "uncovered_question_words": [
+    "army",
+    "gauge",
+    "story",
+    "tied",
+    "washington"
+   ],
+   "proposals": [
+    {
+     "keyword": "washington army",
+     "valid": true,
+     "reason": "ok"
+    },
+    {
+     "keyword": "trenton gauges",
+     "valid": false,
+     "reason": "ungrounded words: ['gauges']"
+    },
+    {
+     "keyword": "delaware river data",
+     "valid": true,
+     "reason": "ok"
+    }
+   ],
+   "reflector_note": "These keywords capture key elements from the question and the correct entry's content, making the match stronger"
+  }
+ ]
+}
