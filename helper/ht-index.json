@@ -3223,9 +3223,9 @@
     "station in missouri",
     "missouri river",
     "missouri station",
-    "wine town",
     "middle country",
-    "german heritage"
+    "german heritage",
+    "wine"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-top"
@@ -6523,7 +6523,6 @@
     "california river",
     "california station",
     "features affecting discharge flow in california",
-    "river model",
     "discharge flow",
     "flow model",
     "inputs matter"

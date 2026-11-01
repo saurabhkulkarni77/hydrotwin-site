@@ -1,0 +1,2439 @@
+{
+ "label": "v1 on extended gate battery",
+ "index_md5": "f4e602cc5887c3bd49879f48f18023dc",
+ "playbook_version": 1,
+ "applied_keywords": [
+  [
+   "station-06214500-data",
+   "yellowstone river forecast"
+  ],
+  [
+   "station-06214500-data",
+   "geyser park"
+  ],
+  [
+   "station-06214500-data",
+   "famous geyser"
+  ],
+  [
+   "station-09380000-3d",
+   "ground table"
+  ],
+  [
+   "station-09380000-3d",
+   "canyon station"
+  ],
+  [
+   "station-09380000-3d",
+   "daily forecast"
+  ],
+  [
+   "panel-08158000-hts-sec-drift",
+   "river drift"
+  ],
+  [
+   "panel-08158000-hts-sec-drift",
+   "austin station"
+  ],
+  [
+   "panel-08158000-hts-sec-drift",
+   "colorado drift"
+  ],
+  [
+   "panel-01646500-hts-sec-monthly",
+   "next half year"
+  ],
+  [
+   "panel-01646500-hts-sec-monthly",
+   "potomac river outlook"
+  ],
+  [
+   "panel-01646500-hts-sec-monthly",
+   "long view"
+  ],
+  [
+   "panel-08057000-hts-sec-drift",
+   "trinity river"
+  ],
+  [
+   "panel-08057000-hts-sec-drift",
+   "dallas station"
+  ],
+  [
+   "panel-08057000-hts-sec-drift",
+   "drift monitoring"
+  ],
+  [
+   "station-03294500-data",
+   "horse race"
+  ],
+  [
+   "station-03294500-data",
+   "bourbon"
+  ],
+  [
+   "station-14105700-data",
+   "7 day forecast"
+  ],
+  [
+   "station-14105700-data",
+   "columbia river forecast"
+  ],
+  [
+   "station-07374000-data",
+   "mighty river"
+  ],
+  [
+   "station-07374000-data",
+   "delta station"
+  ],
+  [
+   "panel-08057000-hts-sec-hydro",
+   "90 day"
+  ],
+  [
+   "panel-08057000-hts-sec-hydro",
+   "full flow"
+  ],
+  [
+   "panel-11447650-hts-sec-featimp",
+   "river model"
+  ],
+  [
+   "panel-11447650-hts-sec-featimp",
+   "discharge flow"
+  ],
+  [
+   "panel-08057000-hts-sec-charts3d",
+   "data charts 3d"
+  ],
+  [
+   "panel-08057000-hts-sec-charts3d",
+   "trinity river"
+  ],
+  [
+   "panel-08057000-hts-sec-featimp",
+   "trinity river model"
+  ],
+  [
+   "panel-08057000-hts-sec-featimp",
+   "flow inputs"
+  ],
+  [
+   "panel-08158000-hts-sec-fc",
+   "colorado"
+  ],
+  [
+   "panel-08158000-hts-sec-fc",
+   "forecast"
+  ],
+  [
+   "station-02320500-data",
+   "river statistics"
+  ],
+  [
+   "station-08158000-data",
+   "lone star state"
+  ],
+  [
+   "station-08313000-data",
+   "3d charts"
+  ],
+  [
+   "panel-08057000-hts-sec-fc",
+   "trinity river"
+  ],
+  [
+   "panel-09380000-hts-sec-ablation",
+   "forecast error"
+  ],
+  [
+   "howto-panels",
+   "3d view"
+  ],
+  [
+   "howto-precip",
+   "3d"
+  ],
+  [
+   "station-11447650-data",
+   "freeport california"
+  ]
+ ],
+ "summary": {
+  "gate": {
+   "correct": 41,
+   "total": 41,
+   "false_refusals": 0,
+   "false_passes": 0
+  },
+  "paraphrase": {
+   "all": {
+    "n": 56,
+    "gate_failed": 1,
+    "kw_top1": 0.179,
+    "kw_top3": 0.304,
+    "hy_top1": 0.5,
+    "hy_top3": 0.696
+   },
+   "dev": {
+    "n": 28,
+    "gate_failed": 0,
+    "kw_top1": 0.25,
+    "kw_top3": 0.393,
+    "hy_top1": 0.536,
+    "hy_top3": 0.786
+   },
+   "heldout": {
+    "n": 28,
+    "gate_failed": 1,
+    "kw_top1": 0.107,
+    "kw_top3": 0.214,
+    "hy_top1": 0.464,
+    "hy_top3": 0.607
+   }
+  },
+  "explainer": {
+   "all": {
+    "n": 20,
+    "gate_failed": 0,
+    "kw_top1": 0.6,
+    "kw_top3": 0.85,
+    "hy_top1": 1.0,
+    "hy_top3": 1.0
+   },
+   "dev": {
+    "n": 12,
+    "gate_failed": 0,
+    "kw_top1": 0.75,
+    "kw_top3": 0.917,
+    "hy_top1": 1.0,
+    "hy_top3": 1.0
+   },
+   "heldout": {
+    "n": 8,
+    "gate_failed": 0,
+    "kw_top1": 0.375,
+    "kw_top3": 0.75,
+    "hy_top1": 1.0,
+    "hy_top3": 1.0
+   }
+  },
+  "retrieval_all": {
+   "n": 76,
+   "kw_top1": 0.289,
+   "kw_top3": 0.447,
+   "hy_top1": 0.632,
+   "hy_top3": 0.776
+  }
+ },
+ "tasks": [
+  {
+   "battery": "gate",
+   "q": "Where is the hydrograph?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the forecast?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "How do I change the date?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Which features affect flow in Dallas?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the 3D terrain view?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "How do I see rain and snow?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Lees Ferry 3D page",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the river in California?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Show me the California river",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Which station is in California?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Which river is in Texas?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the station in Minnesota?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the hydrograph in California?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Open the Sacramento station",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the drift panel?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Show me the map",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "How do I open a panel?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the MLOps page?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "What is the drainage area of the Dallas station?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the weekly outlook for Austin?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Show me the Colorado River station in Arizona",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Which station is near Washington DC?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the model statistics panel?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "How do I switch to the 3D view?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the river in Oregon?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Tell me about the Mississippi River station",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Where is the feature importance chart?",
+   "gate": true,
+   "expect": "answer",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "what is the best pizza near me",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Who won the football game last night?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "How do I cook pasta?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "What is the capital of France?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Tell me a joke",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "How tall is the Eiffel Tower?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "What movies are playing this weekend?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "How do I fix a flat tire?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "What is the stock price of Apple?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "Who is the president?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "How do I lose weight fast?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "What is a good birthday gift?",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "what is the best pizza near me",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "gate",
+   "q": "what is the best pizza in town",
+   "gate": false,
+   "expect": "refuse",
+   "gate_ok": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the river out west in the Golden State",
+   "gate": true,
+   "accept": [
+    "station-11447650-data",
+    "station-11447650-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "station-14105700-3d",
+    "panel-14105700-hts-sec-charts3d",
+    "panel-14105700-hts-sec-weekly"
+   ],
+   "hy_top": [
+    "station-14105700-data",
+    "station-11447650-data",
+    "panel3d-11447650-ht-drift-panel"
+   ],
+   "kw_rank_accept": 35,
+   "hy_rank_accept": 2,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the station in the Lone Star State city where the Cowboys play",
+   "gate": true,
+   "accept": [
+    "station-08057000-data",
+    "station-08057000-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-14105700-hts-sec-charts3d",
+    "panel3d-14105700-ht-dacp-panel"
+   ],
+   "hy_top": [
+    "station-08057000-data",
+    "station-08057000-3d",
+    "panel-08057000-hts-sec-clusters"
+   ],
+   "kw_rank_accept": 158,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the rafting put in just below the Glen Canyon dam",
+   "gate": true,
+   "accept": [
+    "station-09380000-data",
+    "station-09380000-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-14105700-hts-sec-charts3d",
+    "panel-14105700-hts-sec-featimp",
+    "panel3d-14105700-htfi-panel"
+   ],
+   "hy_top": [
+    "station-09380000-data",
+    "station-09380000-3d",
+    "panel-09380000-hts-sec-hydro"
+   ],
+   "kw_rank_accept": 145,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the station by the nation's capital",
+   "gate": true,
+   "accept": [
+    "station-01646500-data",
+    "station-01646500-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "station-14105700-data",
+    "station-14105700-3d"
+   ],
+   "hy_top": [
+    "panel-14105700-hts-sec-clusters",
+    "station-14105700-3d",
+    "station-14105700-data"
+   ],
+   "kw_rank_accept": 52,
+   "hy_rank_accept": 5,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the station in the city famous for its horse race and bourbon",
+   "gate": true,
+   "accept": [
+    "station-03294500-data",
+    "station-03294500-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-14105700-hts-sec-charts3d",
+    "panel-14105700-hts-sec-fc"
+   ],
+   "hy_top": [
+    "station-03294500-data",
+    "panel-14105700-hts-sec-clusters",
+    "panel-03294500-hts-sec-clusters"
+   ],
+   "kw_rank_accept": 9,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the northern city that is twinned with Minneapolis",
+   "gate": false,
+   "accept": [
+    "station-05331000-data",
+    "station-05331000-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "explainer-date-level",
+    "explainer-water-buildings",
+    "panel-14105700-hts-sec-models"
+   ],
+   "hy_top": [
+    "panel-05331000-hts-sec-corr",
+    "panel-06214500-hts-sec-corr",
+    "panel-01646500-hts-sec-corr"
+   ],
+   "kw_rank_accept": 63,
+   "hy_rank_accept": 4,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the station in the capital of the bayou state",
+   "gate": true,
+   "accept": [
+    "station-07374000-data",
+    "station-07374000-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-14105700-hts-sec-charts3d",
+    "panel3d-14105700-ht-dacp-panel"
+   ],
+   "hy_top": [
+    "station-07374000-3d",
+    "panel-07374000-hts-sec-clusters",
+    "station-07374000-data"
+   ],
+   "kw_rank_accept": 187,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the station in Big Sky Country",
+   "gate": true,
+   "accept": [
+    "station-06214500-data",
+    "station-06214500-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-14105700-hts-sec-charts3d",
+    "panel3d-14105700-ht-dacp-panel"
+   ],
+   "hy_top": [
+    "panel-06214500-hts-sec-clusters",
+    "panel-14105700-hts-sec-clusters",
+    "panel-01646500-hts-sec-clusters"
+   ],
+   "kw_rank_accept": 151,
+   "hy_rank_accept": 9,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "where Washington crossed the river on Christmas night",
+   "gate": true,
+   "accept": [
+    "station-01463500-data",
+    "station-01463500-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "station-01646500-3d",
+    "station-14105700-3d",
+    "station-01463500-3d"
+   ],
+   "hy_top": [
+    "station-01646500-3d",
+    "station-14105700-3d",
+    "station-01646500-data"
+   ],
+   "kw_rank_accept": 3,
+   "hy_rank_accept": 6,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the gorge station in the Pacific Northwest",
+   "gate": true,
+   "accept": [
+    "station-14105700-data",
+    "station-14105700-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-14105700-hts-sec-charts3d",
+    "panel3d-14105700-ht-dacp-panel"
+   ],
+   "hy_top": [
+    "panel-14105700-hts-sec-clusters",
+    "station-14105700-3d",
+    "station-14105700-data"
+   ],
+   "kw_rank_accept": 25,
+   "hy_rank_accept": 2,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the river station a short drive from Santa Fe",
+   "gate": true,
+   "accept": [
+    "station-08313000-data",
+    "station-08313000-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "station-09380000-3d",
+    "station-14105700-3d",
+    "panel-14105700-hts-sec-clusters"
+   ],
+   "hy_top": [
+    "station-14105700-3d",
+    "station-14105700-data",
+    "station-09380000-3d"
+   ],
+   "kw_rank_accept": 114,
+   "hy_rank_accept": 6,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the swampy blackwater river in the Sunshine State",
+   "gate": true,
+   "accept": [
+    "station-02320500-data",
+    "station-02320500-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-14105700-3d",
+    "panel-14105700-hts-sec-charts3d",
+    "panel-14105700-hts-sec-featimp"
+   ],
+   "hy_top": [
+    "panel-02320500-hts-sec-featimp",
+    "station-14105700-data",
+    "panel-14105700-hts-sec-featimp"
+   ],
+   "kw_rank_accept": 29,
+   "hy_rank_accept": 27,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the live music capital station",
+   "gate": true,
+   "accept": [
+    "station-08158000-data",
+    "station-08158000-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-01463500-hts-sec-clusters",
+    "panel-01646500-hts-sec-clusters"
+   ],
+   "hy_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-01646500-hts-sec-clusters",
+    "panel-03294500-hts-sec-clusters"
+   ],
+   "kw_rank_accept": 96,
+   "hy_rank_accept": 37,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the German heritage wine town station in the middle of the country",
+   "gate": true,
+   "accept": [
+    "station-06934500-data",
+    "station-06934500-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-14105700-hts-sec-charts3d",
+    "panel3d-14105700-ht-dacp-panel"
+   ],
+   "hy_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-01463500-hts-sec-clusters",
+    "panel-09380000-hts-sec-clusters"
+   ],
+   "kw_rank_accept": 307,
+   "hy_rank_accept": 11,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the other big river station in the Lone Star State, in its capital city",
+   "gate": true,
+   "accept": [
+    "station-08158000-data",
+    "station-08158000-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-14105700-hts-sec-charts3d",
+    "station-14105700-3d",
+    "panel-14105700-hts-sec-clusters"
+   ],
+   "hy_top": [
+    "panel-14105700-hts-sec-clusters",
+    "station-08057000-3d",
+    "panel-08057000-hts-sec-clusters"
+   ],
+   "kw_rank_accept": 10,
+   "hy_rank_accept": 5,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the last station before the delta on the mighty river",
+   "gate": true,
+   "accept": [
+    "station-07374000-data",
+    "station-07374000-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "station-14105700-3d",
+    "station-14105700-data"
+   ],
+   "hy_top": [
+    "station-14105700-3d",
+    "panel-14105700-hts-sec-clusters",
+    "station-14105700-data"
+   ],
+   "kw_rank_accept": 4,
+   "hy_rank_accept": 8,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the gateway to the famous geyser park",
+   "gate": true,
+   "accept": [
+    "station-06214500-data",
+    "station-06214500-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "station-06214500-data",
+    "explainer-date-level",
+    "panel-14105700-hts-sec-corr"
+   ],
+   "hy_top": [
+    "station-06214500-data",
+    "panel3d-08313000-htfi-panel",
+    "panel-08313000-hts-sec-hydro"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the 3D twin for the city across the river from Minneapolis",
+   "gate": true,
+   "accept": [
+    "station-05331000-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-14105700-3d",
+    "panel3d-14105700-dock",
+    "station-02320500-3d"
+   ],
+   "hy_top": [
+    "station-05331000-3d",
+    "station-14105700-3d",
+    "panel-05331000-hts-sec-charts3d"
+   ],
+   "kw_rank_accept": 4,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "open the interactive scene for the canyon station",
+   "gate": true,
+   "accept": [
+    "station-09380000-3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "station-14105700-3d",
+    "station-09380000-3d",
+    "panel-14105700-hts-sec-clusters"
+   ],
+   "hy_top": [
+    "station-09380000-3d",
+    "howto-views",
+    "station-14105700-3d"
+   ],
+   "kw_rank_accept": 2,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the numbers and charts page for the desert southwest river",
+   "gate": true,
+   "accept": [
+    "station-08313000-data"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-14105700-3d",
+    "station-14105700-data",
+    "station-02320500-3d"
+   ],
+   "hy_top": [
+    "panel-14105700-hts-sec-charts3d",
+    "panel-09380000-hts-sec-charts3d",
+    "station-14105700-3d"
+   ],
+   "kw_rank_accept": 63,
+   "hy_rank_accept": 152,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the chart that plots discharge history for Dallas",
+   "gate": true,
+   "accept": [
+    "panel-08057000-hts-sec-hydro"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-08057000-hts-sec-3dchart",
+    "panel-08057000-hts-sec-featimp",
+    "panel-14105700-hts-sec-3dchart"
+   ],
+   "hy_top": [
+    "panel-08057000-hts-sec-charts3d",
+    "panel-08057000-hts-sec-3dchart",
+    "panel-08057000-hts-sec-featimp"
+   ],
+   "kw_rank_accept": 11,
+   "hy_rank_accept": 5,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "what will the flow be over the coming week in Dallas",
+   "gate": true,
+   "accept": [
+    "panel-08057000-hts-sec-fc"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-08057000-hts-sec-featimp",
+    "panel3d-08057000-htfi-panel",
+    "panel-08057000-hts-sec-weekly"
+   ],
+   "hy_top": [
+    "panel-08057000-hts-sec-weekly",
+    "panel3d-08057000-htwk-panel",
+    "panel-08057000-hts-sec-featimp"
+   ],
+   "kw_rank_accept": 16,
+   "hy_rank_accept": 7,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "which inputs matter most for predicting the Sacramento flow",
+   "gate": true,
+   "accept": [
+    "panel-11447650-hts-sec-featimp"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-11447650-hts-sec-featimp",
+    "panel3d-11447650-htfi-panel",
+    "panel-14105700-hts-sec-featimp"
+   ],
+   "hy_top": [
+    "panel3d-11447650-htfi-panel",
+    "panel-11447650-hts-sec-featimp",
+    "panel-11447650-hts-sec-corr"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 2,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "is the Austin model getting worse over time",
+   "gate": true,
+   "accept": [
+    "panel-08158000-hts-sec-drift"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-08158000-hts-sec-models",
+    "panel3d-08158000-ht-drift-panel",
+    "panel-14105700-hts-sec-models"
+   ],
+   "hy_top": [
+    "panel-08158000-hts-sec-models",
+    "panel3d-08158000-ht-drift-panel",
+    "panel-08158000-hts-sec-featimp"
+   ],
+   "kw_rank_accept": 6,
+   "hy_rank_accept": 6,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "how accurate is each model at St. Paul",
+   "gate": true,
+   "accept": [
+    "panel-05331000-hts-sec-models"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-05331000-hts-sec-models",
+    "panel3d-05331000-ht-drift-panel",
+    "station-05331000-data"
+   ],
+   "hy_top": [
+    "panel-05331000-hts-sec-models",
+    "panel3d-05331000-ht-drift-panel",
+    "panel3d-05331000-ht-dacp-panel"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "what happens to the Lees Ferry predictions if you drop some inputs",
+   "gate": true,
+   "accept": [
+    "panel-09380000-hts-sec-ablation"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-09380000-hts-sec-drift",
+    "panel3d-09380000-ht-drift-panel",
+    "panel-09380000-hts-sec-corr"
+   ],
+   "hy_top": [
+    "panel3d-09380000-ht-drift-panel",
+    "panel-09380000-hts-sec-ablation",
+    "panel3d-09380000-htfi-panel"
+   ],
+   "kw_rank_accept": 16,
+   "hy_rank_accept": 2,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "how do rain and soil relate to the river flow in Baton Rouge",
+   "gate": true,
+   "accept": [
+    "panel-07374000-hts-sec-corr"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-07374000-hts-sec-featimp",
+    "panel3d-07374000-htfi-panel",
+    "station-07374000-3d"
+   ],
+   "hy_top": [
+    "panel-07374000-hts-sec-corr",
+    "panel-07374000-hts-sec-featimp",
+    "panel3d-07374000-htfi-panel"
+   ],
+   "kw_rank_accept": 7,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the long view for the next half year at the Potomac",
+   "gate": true,
+   "accept": [
+    "panel-01646500-hts-sec-monthly"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-01646500-hts-sec-monthly",
+    "panel-14105700-hts-sec-yearly",
+    "station-14105700-data"
+   ],
+   "hy_top": [
+    "panel-01646500-hts-sec-monthly",
+    "panel-01646500-hts-sec-yearly",
+    "panel3d-01646500-htyr-panel"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the year ahead for Trenton in monthly steps",
+   "gate": true,
+   "accept": [
+    "panel-01463500-hts-sec-yearly"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-01463500-hts-sec-monthly",
+    "panel-01463500-hts-sec-charts3d",
+    "panel3d-01463500-htmo-panel"
+   ],
+   "hy_top": [
+    "panel-01463500-hts-sec-yearly",
+    "panel-01463500-hts-sec-monthly",
+    "panel3d-01463500-htmo-panel"
+   ],
+   "kw_rank_accept": 4,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the next three months week by week for Billings",
+   "gate": true,
+   "accept": [
+    "panel-06214500-hts-sec-weekly"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-06214500-hts-sec-weekly",
+    "panel3d-06214500-htwk-panel",
+    "panel-06214500-hts-sec-fc"
+   ],
+   "hy_top": [
+    "panel3d-06214500-htwk-panel",
+    "panel-06214500-hts-sec-weekly",
+    "panel-06214500-hts-sec-monthly"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 2,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the rotatable version of the flow history chart for Dallas",
+   "gate": true,
+   "accept": [
+    "panel-08057000-hts-sec-charts3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-08057000-hts-sec-3dchart",
+    "panel-08057000-hts-sec-featimp",
+    "panel-14105700-hts-sec-3dchart"
+   ],
+   "hy_top": [
+    "panel3d-08057000-htfi-panel",
+    "panel-08057000-hts-sec-3dchart",
+    "panel-08057000-hts-sec-hydro"
+   ],
+   "kw_rank_accept": 7,
+   "hy_rank_accept": 5,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the uncertainty band around the Austin prediction in the 3D scene",
+   "gate": true,
+   "accept": [
+    "panel3d-08158000-ht-dacp-panel"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-08158000-3d",
+    "station-14105700-3d",
+    "panel3d-14105700-ht-dacp-panel"
+   ],
+   "hy_top": [
+    "panel3d-08158000-ht-dacp-panel",
+    "panel3d-08158000-ht-drift-panel",
+    "panel3d-08158000-htwk-panel"
+   ],
+   "kw_rank_accept": 9,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "in the 3D scene for Hermann, which inputs drive the flow",
+   "gate": true,
+   "accept": [
+    "panel3d-06934500-htfi-panel"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel3d-06934500-htfi-panel",
+    "panel3d-14105700-htfi-panel",
+    "station-06934500-3d"
+   ],
+   "hy_top": [
+    "panel3d-06934500-htfi-panel",
+    "panel3d-14105700-htfi-panel",
+    "panel-06934500-hts-sec-featimp"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the little card on the Suwannee 3D page with today's prediction and the day controls",
+   "gate": true,
+   "accept": [
+    "panel3d-02320500-dock"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "explainer-date-level",
+    "station-14105700-3d",
+    "station-01646500-3d"
+   ],
+   "hy_top": [
+    "panel3d-14105700-dock",
+    "panel3d-02320500-dock",
+    "panel3d-01646500-dock"
+   ],
+   "kw_rank_accept": 26,
+   "hy_rank_accept": 2,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the uncertainty range for The Dalles in 3D",
+   "gate": true,
+   "accept": [
+    "panel3d-14105700-ht-dacp-panel"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel3d-14105700-ht-dacp-panel",
+    "panel3d-14105700-htfi-panel",
+    "panel3d-14105700-dock"
+   ],
+   "hy_top": [
+    "panel3d-14105700-ht-dacp-panel",
+    "panel3d-14105700-ht-drift-panel",
+    "panel-14105700-hts-sec-3dchart"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the next six months for the Columbia gorge station, month by month",
+   "gate": true,
+   "accept": [
+    "panel-14105700-hts-sec-monthly"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-14105700-hts-sec-monthly",
+    "panel-14105700-hts-sec-clusters",
+    "panel3d-14105700-htmo-panel"
+   ],
+   "hy_top": [
+    "panel-14105700-hts-sec-monthly",
+    "panel3d-14105700-htmo-panel",
+    "panel-14105700-hts-sec-yearly"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "where do I see if the model quality is slipping for Dallas",
+   "gate": true,
+   "accept": [
+    "panel-08057000-hts-sec-drift"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel3d-08057000-ht-drift-panel",
+    "panel-08057000-hts-sec-models",
+    "panel-08057000-hts-sec-drift"
+   ],
+   "hy_top": [
+    "panel3d-08057000-ht-drift-panel",
+    "panel-08057000-hts-sec-models",
+    "panel-08057000-hts-sec-drift"
+   ],
+   "kw_rank_accept": 3,
+   "hy_rank_accept": 3,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "show me the expected flows for the Sacramento station for the next seven days",
+   "gate": true,
+   "accept": [
+    "panel-11447650-hts-sec-fc"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-11447650-hts-sec-clusters",
+    "panel-11447650-hts-sec-fc",
+    "panel-11447650-hts-sec-3dchart"
+   ],
+   "hy_top": [
+    "panel-11447650-hts-sec-fc",
+    "panel-14105700-hts-sec-fc",
+    "panel3d-11447650-dock"
+   ],
+   "kw_rank_accept": 2,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "which other stations act like the Dallas one",
+   "gate": true,
+   "accept": [
+    "panel-08057000-hts-sec-clusters"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-08057000-hts-sec-corr",
+    "explainer-date-level",
+    "panel-08057000-hts-sec-drift"
+   ],
+   "hy_top": [
+    "panel-08057000-hts-sec-clusters",
+    "station-08057000-3d",
+    "station-08057000-data"
+   ],
+   "kw_rank_accept": 4,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "what drives the Trinity river flow the most",
+   "gate": true,
+   "accept": [
+    "panel-08057000-hts-sec-featimp"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-08057000-3d",
+    "panel-08057000-hts-sec-featimp",
+    "station-14105700-3d"
+   ],
+   "hy_top": [
+    "panel-08057000-hts-sec-featimp",
+    "panel3d-08057000-htfi-panel",
+    "panel-08057000-hts-sec-corr"
+   ],
+   "kw_rank_accept": 2,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the whole record of the river's ups and downs at Trenton",
+   "gate": true,
+   "accept": [
+    "panel-01463500-hts-sec-hydro"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "station-01463500-3d",
+    "station-14105700-3d",
+    "station-01463500-data"
+   ],
+   "hy_top": [
+    "panel-01463500-hts-sec-hydro",
+    "station-01463500-data",
+    "panel-01463500-hts-sec-weekly"
+   ],
+   "kw_rank_accept": 5,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the error bars on the 3D forecast for Louisville",
+   "gate": true,
+   "accept": [
+    "panel3d-03294500-ht-dacp-panel"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel3d-03294500-dock",
+    "panel3d-14105700-dock",
+    "panel-03294500-hts-sec-3dchart"
+   ],
+   "hy_top": [
+    "panel3d-03294500-ht-dacp-panel",
+    "panel-03294500-hts-sec-3dchart",
+    "panel3d-03294500-dock"
+   ],
+   "kw_rank_accept": 4,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "how can I look at a different day in the past",
+   "gate": true,
+   "accept": [
+    "howto-date"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-14105700-hts-sec-fc",
+    "panel-14105700-hts-sec-charts3d",
+    "panel-01646500-hts-sec-fc"
+   ],
+   "hy_top": [
+    "howto-date",
+    "panel-14105700-hts-sec-fc",
+    "explainer-date-level"
+   ],
+   "kw_rank_accept": 284,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "I want to see it snowing in the scene",
+   "gate": true,
+   "accept": [
+    "howto-precip"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-01646500-3d",
+    "panel-01646500-hts-sec-charts3d",
+    "station-14105700-3d"
+   ],
+   "hy_top": [
+    "howto-precip",
+    "panel-14105700-hts-sec-corr",
+    "explainer-rain-snow"
+   ],
+   "kw_rank_accept": 318,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "how do I open one of the hidden sections on a station page",
+   "gate": true,
+   "accept": [
+    "howto-panels"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-06214500-hts-sec-clusters",
+    "panel-08158000-hts-sec-clusters"
+   ],
+   "hy_top": [
+    "howto-views",
+    "howto-panels",
+    "home"
+   ],
+   "kw_rank_accept": 98,
+   "hy_rank_accept": 2,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "switch the scene to look like a tabletop model",
+   "gate": true,
+   "accept": [
+    "howto-views"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel3d-14105700-ht-drift-panel",
+    "howto-views",
+    "panel-14105700-hts-sec-models"
+   ],
+   "hy_top": [
+    "howto-views",
+    "panel3d-14105700-ht-drift-panel",
+    "panel3d-01463500-ht-drift-panel"
+   ],
+   "kw_rank_accept": 2,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "one map with every gauge on it",
+   "gate": true,
+   "accept": [
+    "home"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "home",
+    "panel-06214500-hts-sec-clusters",
+    "panel3d-06214500-dock"
+   ],
+   "hy_top": [
+    "panel-08313000-hts-sec-charts3d",
+    "home",
+    "panel-14105700-hts-sec-charts3d"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 2,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "are the models being retrained properly, where is that tracked",
+   "gate": true,
+   "accept": [
+    "mlops"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "explainer-date-level",
+    "explainer-water-buildings",
+    "explainer-buildings-source"
+   ],
+   "hy_top": [
+    "mlops",
+    "explainer-data-sources",
+    "panel-14105700-hts-sec-models"
+   ],
+   "kw_rank_accept": 15,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "will it rain at the station on the day I pick",
+   "gate": true,
+   "accept": [
+    "howto-precip"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-14105700-hts-sec-clusters",
+    "panel-14105700-hts-sec-fc",
+    "explainer-rain-snow"
+   ],
+   "hy_top": [
+    "explainer-rain-snow",
+    "howto-date",
+    "howto-precip"
+   ],
+   "kw_rank_accept": 32,
+   "hy_rank_accept": 3,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "how do I jump between the numbers page and the 3D one",
+   "gate": true,
+   "accept": [
+    "howto-views"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-14105700-3d",
+    "panel3d-14105700-dock",
+    "panel3d-14105700-htwk-panel"
+   ],
+   "hy_top": [
+    "howto-views",
+    "howto-panels",
+    "howto-date"
+   ],
+   "kw_rank_accept": 17,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the spinning rotatable charts for Austin",
+   "gate": true,
+   "accept": [
+    "panel-08158000-hts-sec-charts3d"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-08158000-hts-sec-charts3d",
+    "panel-08158000-hts-sec-fc",
+    "panel-08158000-hts-sec-3dchart"
+   ],
+   "hy_top": [
+    "panel-08158000-hts-sec-charts3d",
+    "panel-08158000-hts-sec-3dchart",
+    "panel-08158000-hts-sec-drift"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the west coast station where the river meets the capital region",
+   "gate": true,
+   "accept": [
+    "station-11447650-data",
+    "station-11447650-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-14105700-3d",
+    "panel-14105700-hts-sec-clusters",
+    "station-14105700-data"
+   ],
+   "hy_top": [
+    "panel-14105700-hts-sec-clusters",
+    "station-14105700-3d",
+    "station-14105700-data"
+   ],
+   "kw_rank_accept": 34,
+   "hy_rank_accept": 19,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "paraphrase",
+   "q": "show me the week ahead fan of possible flows for Austin",
+   "gate": true,
+   "accept": [
+    "panel-08158000-hts-sec-fc"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-08158000-hts-sec-weekly",
+    "panel3d-08158000-htwk-panel",
+    "panel-08158000-hts-sec-fc"
+   ],
+   "hy_top": [
+    "panel-08158000-hts-sec-weekly",
+    "panel3d-08158000-htwk-panel",
+    "panel-08158000-hts-sec-fc"
+   ],
+   "kw_rank_accept": 3,
+   "hy_rank_accept": 3,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": false,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "how the flow in Louisville responds when you remove weather inputs entirely",
+   "gate": true,
+   "accept": [
+    "panel-03294500-hts-sec-ablation"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-03294500-hts-sec-featimp",
+    "panel3d-03294500-htfi-panel",
+    "panel-03294500-hts-sec-charts3d"
+   ],
+   "hy_top": [
+    "panel-03294500-hts-sec-ablation",
+    "panel-03294500-hts-sec-featimp",
+    "panel3d-03294500-htfi-panel"
+   ],
+   "kw_rank_accept": 7,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "the dozen week outlook for the canyon station",
+   "gate": true,
+   "accept": [
+    "panel-09380000-hts-sec-weekly"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "panel-14105700-hts-sec-weekly",
+    "panel3d-14105700-htwk-panel",
+    "panel-14105700-hts-sec-monthly"
+   ],
+   "hy_top": [
+    "panel-09380000-hts-sec-weekly",
+    "panel-14105700-hts-sec-weekly",
+    "panel3d-14105700-htwk-panel"
+   ],
+   "kw_rank_accept": 10,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "paraphrase",
+   "q": "where is the gauge that Washington's army story is tied to",
+   "gate": true,
+   "accept": [
+    "station-01463500-data",
+    "station-01463500-3d"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "panel-01646500-hts-sec-models",
+    "panel-01646500-hts-sec-featimp",
+    "explainer-water-buildings"
+   ],
+   "hy_top": [
+    "panel-01646500-hts-sec-models",
+    "panel-01646500-hts-sec-featimp",
+    "panel-14105700-hts-sec-models"
+   ],
+   "kw_rank_accept": 160,
+   "hy_rank_accept": 84,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": false,
+   "hit3_hy": false
+  },
+  {
+   "battery": "explainer",
+   "q": "Why water is overlapping buildings in this river",
+   "gate": true,
+   "accept": [
+    "explainer-water-buildings"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-water-buildings",
+    "station-01646500-3d",
+    "station-03294500-3d"
+   ],
+   "hy_top": [
+    "explainer-water-buildings",
+    "explainer-bridge-gaps",
+    "explainer-date-level"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "why is the water covering the houses by the river",
+   "gate": true,
+   "accept": [
+    "explainer-water-buildings"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "explainer-water-buildings",
+    "station-14105700-3d",
+    "explainer-bridge-gaps"
+   ],
+   "hy_top": [
+    "explainer-water-buildings",
+    "explainer-bridge-gaps",
+    "explainer-date-level"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "the water looks like it floods the buildings, why",
+   "gate": true,
+   "accept": [
+    "explainer-water-buildings"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-water-buildings",
+    "explainer-bridge-gaps",
+    "explainer-date-level"
+   ],
+   "hy_top": [
+    "explainer-water-buildings",
+    "explainer-bridge-gaps",
+    "explainer-date-level"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "why do buildings look flooded in the 3d scene",
+   "gate": true,
+   "accept": [
+    "explainer-water-buildings"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "explainer-water-buildings",
+    "station-14105700-3d",
+    "station-08158000-3d"
+   ],
+   "hy_top": [
+    "explainer-water-buildings",
+    "explainer-buildings-source",
+    "explainer-bridge-gaps"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "why does water go under the bridge",
+   "gate": true,
+   "accept": [
+    "explainer-bridge-gaps"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-bridge-gaps",
+    "explainer-water-buildings",
+    "explainer-date-level"
+   ],
+   "hy_top": [
+    "explainer-bridge-gaps",
+    "explainer-water-buildings",
+    "explainer-date-level"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "why doesn't the river cover the highway bridge",
+   "gate": true,
+   "accept": [
+    "explainer-bridge-gaps"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "explainer-bridge-gaps",
+    "station-14105700-3d",
+    "station-14105700-data"
+   ],
+   "hy_top": [
+    "explainer-bridge-gaps",
+    "explainer-water-buildings",
+    "explainer-date-level"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "how come the water stops at bridges",
+   "gate": true,
+   "accept": [
+    "explainer-bridge-gaps"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-bridge-gaps",
+    "explainer-water-buildings",
+    "explainer-data-sources"
+   ],
+   "hy_top": [
+    "explainer-bridge-gaps",
+    "explainer-water-buildings",
+    "explainer-date-level"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "where do the buildings come from",
+   "gate": true,
+   "accept": [
+    "explainer-buildings-source"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-buildings-source",
+    "explainer-water-buildings",
+    "explainer-data-sources"
+   ],
+   "hy_top": [
+    "explainer-buildings-source",
+    "explainer-water-buildings",
+    "explainer-data-sources"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "what data set are the buildings from",
+   "gate": true,
+   "accept": [
+    "explainer-buildings-source"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "explainer-water-buildings",
+    "explainer-data-sources",
+    "explainer-buildings-source"
+   ],
+   "hy_top": [
+    "explainer-buildings-source",
+    "explainer-water-buildings",
+    "explainer-data-sources"
+   ],
+   "kw_rank_accept": 3,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "why is a building missing from the 3d view",
+   "gate": true,
+   "accept": [
+    "explainer-buildings-source"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-buildings-source",
+    "howto-views",
+    "station-14105700-3d"
+   ],
+   "hy_top": [
+    "explainer-buildings-source",
+    "explainer-water-buildings",
+    "howto-views"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "where does the data come from",
+   "gate": true,
+   "accept": [
+    "explainer-data-sources"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-data-sources",
+    "explainer-buildings-source",
+    "station-14105700-data"
+   ],
+   "hy_top": [
+    "explainer-data-sources",
+    "explainer-buildings-source",
+    "panel-14105700-hts-sec-charts3d"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "what is the source of the terrain in the 3d view",
+   "gate": true,
+   "accept": [
+    "explainer-data-sources"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-14105700-3d",
+    "panel3d-14105700-ht-dacp-panel",
+    "panel3d-14105700-htfi-panel"
+   ],
+   "hy_top": [
+    "explainer-data-sources",
+    "howto-views",
+    "explainer-water-buildings"
+   ],
+   "kw_rank_accept": 18,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "where do the flow numbers come from",
+   "gate": true,
+   "accept": [
+    "explainer-data-sources"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-buildings-source",
+    "explainer-data-sources",
+    "panel3d-14105700-htfi-panel"
+   ],
+   "hy_top": [
+    "explainer-data-sources",
+    "panel3d-14105700-htfi-panel",
+    "panel-14105700-hts-sec-featimp"
+   ],
+   "kw_rank_accept": 2,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "why is there no rain today",
+   "gate": true,
+   "accept": [
+    "explainer-rain-snow"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-rain-snow",
+    "howto-precip",
+    "explainer-water-buildings"
+   ],
+   "hy_top": [
+    "explainer-rain-snow",
+    "howto-precip",
+    "explainer-date-level"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "why isn't it snowing on the date I picked",
+   "gate": true,
+   "accept": [
+    "explainer-rain-snow"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "explainer-date-level",
+    "explainer-rain-snow",
+    "howto-date"
+   ],
+   "hy_top": [
+    "explainer-rain-snow",
+    "howto-date",
+    "howto-precip"
+   ],
+   "kw_rank_accept": 2,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "how come no rain animation shows",
+   "gate": true,
+   "accept": [
+    "explainer-rain-snow",
+    "howto-precip"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "howto-precip",
+    "explainer-rain-snow",
+    "explainer-data-sources"
+   ],
+   "hy_top": [
+    "howto-precip",
+    "explainer-rain-snow",
+    "explainer-date-level"
+   ],
+   "kw_rank_accept": 1,
+   "hy_rank_accept": 1,
+   "hit1_kw": true,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "why does the river level change when I change the date",
+   "gate": true,
+   "accept": [
+    "explainer-date-level"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "howto-date",
+    "explainer-date-level",
+    "station-14105700-3d"
+   ],
+   "hy_top": [
+    "explainer-date-level",
+    "howto-date",
+    "panel-14105700-hts-sec-ablation"
+   ],
+   "kw_rank_accept": 2,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "how come the river is higher on some dates",
+   "gate": true,
+   "accept": [
+    "explainer-date-level"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-07374000-3d",
+    "station-14105700-3d",
+    "explainer-date-level"
+   ],
+   "hy_top": [
+    "explainer-date-level",
+    "panel-09380000-hts-sec-corr",
+    "panel-06214500-hts-sec-corr"
+   ],
+   "kw_rank_accept": 3,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": true,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "why is the water lower today than yesterday in the scene",
+   "gate": true,
+   "accept": [
+    "explainer-date-level"
+   ],
+   "split": "dev",
+   "kw_top": [
+    "explainer-water-buildings",
+    "panel-14105700-hts-sec-featimp",
+    "explainer-bridge-gaps"
+   ],
+   "hy_top": [
+    "explainer-date-level",
+    "explainer-water-buildings",
+    "explainer-rain-snow"
+   ],
+   "kw_rank_accept": 4,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  },
+  {
+   "battery": "explainer",
+   "q": "what makes the river go up and down",
+   "gate": true,
+   "accept": [
+    "explainer-date-level"
+   ],
+   "split": "heldout",
+   "kw_top": [
+    "station-14105700-3d",
+    "station-14105700-data",
+    "station-01463500-3d"
+   ],
+   "hy_top": [
+    "explainer-date-level",
+    "explainer-bridge-gaps",
+    "panel3d-02320500-htfi-panel"
+   ],
+   "kw_rank_accept": 15,
+   "hy_rank_accept": 1,
+   "hit1_kw": false,
+   "hit3_kw": false,
+   "hit1_hy": true,
+   "hit3_hy": true
+  }
+ ]
+}

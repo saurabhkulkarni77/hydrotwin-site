@@ -83,3 +83,15 @@ Measured in the same runs (runs/cycle2 + runs/cycle3 reports):
 - `pb-2021` station-06214500-data += ['big sky'] (evidence: the station in Big Sky Country)
 - `pb-2022` panel-08057000-hts-sec-fc += ['forecast week'] (evidence: what will the flow be over the coming week in Dallas)
 - `pb-2023` panel-08158000-hts-sec-drift += ['worse over time'] (evidence: is the Austin model getting worse over time)
+
+## v3 — cycle 4 repair (PROMOTED)
+
+Post-ship smoke defects in v2, both fixed by measured repair:
+'wine town' (pb-2005) put 'town' in the gate vocabulary and made
+"what is the best pizza in town" answerable — removed, residue
+'wine' substituted. 'river model' (pb-1010, from cycle 1) flipped
+the flagship California question to the Sacramento feature panel —
+removed by single-keyword ablation evidence. The gate battery grew
+39 -> 41 with the project's two canonical pizza refusals; v3 scores
+41/41 with every retrieval metric identical to v2 (held-out hybrid
+top-1 0.643, retrieval hybrid top-1 0.737). Detail: runs/cycle4/.

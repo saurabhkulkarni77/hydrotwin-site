@@ -1,5 +1,5 @@
 {
- "source": "Gate battery from ~/workspace/hydrotwin_dev_build/gate_battery.mjs (the project's own 39-question relevance-gate battery: 27 in-domain questions that must be answered, 12 off-topic that must be refused). Vendored into build25/ace so the ACE cycle is self-contained.",
+ "source": "Gate battery from ~/workspace/hydrotwin_dev_build/gate_battery.mjs (the project's own 39-question relevance-gate battery: 27 in-domain questions that must be answered, 12 off-topic that must be refused). Vendored into build25/ace so the ACE cycle is self-contained. Extended in ACE cycle 4 (2026-11-01) with the project's two canonical refusal-smoke questions ('what is the best pizza near me' from the Oct 31 refusal smoke, 'what is the best pizza in town' from the explainer smoke) after the v2 smoke caught a false pass the 39-question battery did not cover.",
  "tasks": [
   {
    "q": "Where is the hydrograph?",
@@ -155,6 +155,14 @@
   },
   {
    "q": "What is a good birthday gift?",
+   "expect": "refuse"
+  },
+  {
+   "q": "what is the best pizza near me",
+   "expect": "refuse"
+  },
+  {
+   "q": "what is the best pizza in town",
    "expect": "refuse"
   }
  ]

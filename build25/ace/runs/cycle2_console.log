@@ -1,0 +1,92 @@
++ /home/hatch/workspace/hydrotwin_dev_build/ace/ace_eval.py --index ../ace_work/src/helper/ht-index.json --playbook /home/hatch/workspace/hydrotwin_dev_build/ace/playbook.json --label cycle 2 before (playbook v1) --out /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/eval_before.json
+== cycle 2 before (playbook v1) ==
+gate: 39/39 decisions (false refusals 0, false passes 0)
+paraphrase/all (n=56, gate-failed 1): kw top1 0.179 top3 0.304 | hy top1 0.500 top3 0.696
+paraphrase/dev (n=28, gate-failed 0): kw top1 0.250 top3 0.393 | hy top1 0.536 top3 0.786
+paraphrase/heldout (n=28, gate-failed 1): kw top1 0.107 top3 0.214 | hy top1 0.464 top3 0.607
+explainer/all (n=20, gate-failed 0): kw top1 0.600 top3 0.850 | hy top1 1.000 top3 1.000
+explainer/dev (n=12, gate-failed 0): kw top1 0.750 top3 0.917 | hy top1 1.000 top3 1.000
+explainer/heldout (n=8, gate-failed 0): kw top1 0.375 top3 0.750 | hy top1 1.000 top3 1.000
+retrieval all (n=76): kw top1 0.289 top3 0.447 | hy top1 0.632 top3 0.776
+playbook bullets applied: 39 keyword additions
+wrote /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/eval_before.json
++ /home/hatch/workspace/hydrotwin_dev_build/ace/ace_reflect.py --results /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/eval_before.json --index ../ace_work/src/helper/ht-index.json --out /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/reflection.json --llm
+failure classes: {'WEAK_KEYWORD': 17, 'FALSE_REFUSAL': 1, 'COSINE_DOMINANT': 2, 'STATION_CONFUSION': 2, 'PANEL_CONFUSION': 6}
+failures: 28; with valid proposals: 26
+wrote /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/reflection.json
++ /home/hatch/workspace/hydrotwin_dev_build/ace/ace_curate.py --reflection /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/reflection.json --playbook /home/hatch/workspace/hydrotwin_dev_build/ace/playbook.json --cycle 2 --out /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/candidate.json
+proposals: 78 seen, 57 valid, rejected: {"ungrounded words: ['columbia']": 4, "ungrounded words: ['dalles']": 2, "ungrounded words: ['twin']": 2, 'already a keyword of the entry': 2, 'no distinctive word (all generic/high-frequency)': 4, "ungrounded words: ['drives']": 1, "ungrounded words: ['texas']": 1, "ungrounded words: ['predict']": 1, "ungrounded words: ['statistics']": 2, "ungrounded words: ['happen']": 1, "ungrounded words: ['gauges']": 1}
+candidate playbook v2: 23 new bullets, 50 new keywords
+  pb-2001 station-11447650-data: ['out west', 'west coast', 'river meets']
+  pb-2002 station-08313000-data: ['charts 3d', 'desert southwest', 'santa']
+  pb-2003 station-08158000-data: ['big river', 'lone star', 'capital city']
+  pb-2004 station-02320500-data: ['suwannee river sunshine', 'florida sunshine', 'swampy blackwater']
+  pb-2005 station-06934500-data: ['wine town', 'middle country', 'german heritage']
+  pb-2006 station-07374000-data: ['last station', 'delta']
+  pb-2007 panel-08057000-hts-sec-hydro: ['plots history', 'dallas history', 'discharge history']
+  pb-2008 panel-06214500-hts-sec-weekly: ['by week', 'next three', 'months week']
+  pb-2009 panel-08057000-hts-sec-charts3d: ['flow history', 'rotatable chart']
+  pb-2010 panel3d-02320500-dock: ['little page', 'card controls', 'day prediction']
+  pb-2011 panel-08057000-hts-sec-drift: ['model quality', 'slipping']
+  pb-2012 panel-08158000-hts-sec-fc: ['show week', 'possible flows', 'austin forecast']
+  pb-2013 station-14105700-data: ['gorge station', 'northwest pacific']
+  pb-2014 panel-11447650-hts-sec-featimp: ['flow model', 'inputs matter']
+  pb-2015 panel-09380000-hts-sec-ablation: ['drop inputs', 'some inputs']
+  pb-2016 howto-panels: ['open sections', 'hidden sections']
+  pb-2017 howto-precip: ['date', 'pick']
+  pb-2018 station-01463500-data: ['delaware river data', 'washington army']
+  pb-2019 station-01646500-data: ['nation s capital']
+  pb-2020 station-05331000-data: ['northern city']
+  pb-2021 station-06214500-data: ['big sky']
+  pb-2022 panel-08057000-hts-sec-fc: ['forecast week']
+  pb-2023 panel-08158000-hts-sec-drift: ['worse over time']
+wrote /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/candidate.json
++ /home/hatch/workspace/hydrotwin_dev_build/ace/ace_eval.py --index ../ace_work/src/helper/ht-index.json --playbook /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/candidate.json --label cycle 2 candidate --out /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/eval_after.json
+== cycle 2 candidate ==
+gate: 37/39 decisions (false refusals 0, false passes 2)
+paraphrase/all (n=56, gate-failed 0): kw top1 0.304 top3 0.500 | hy top1 0.643 top3 0.786
+paraphrase/dev (n=28, gate-failed 0): kw top1 0.429 top3 0.571 | hy top1 0.643 top3 0.857
+paraphrase/heldout (n=28, gate-failed 0): kw top1 0.179 top3 0.429 | hy top1 0.643 top3 0.714
+explainer/all (n=20, gate-failed 0): kw top1 0.600 top3 0.850 | hy top1 1.000 top3 1.000
+explainer/dev (n=12, gate-failed 0): kw top1 0.750 top3 0.917 | hy top1 1.000 top3 1.000
+explainer/heldout (n=8, gate-failed 0): kw top1 0.375 top3 0.750 | hy top1 1.000 top3 1.000
+retrieval all (n=76): kw top1 0.382 top3 0.592 | hy top1 0.737 top3 0.842
+playbook bullets applied: 89 keyword additions
+wrote /home/hatch/workspace/hydrotwin_dev_build/ace/runs/cycle2/eval_after.json
+# ACE cycle 2 — report
+
+| run | gate | paraphrase held-out hy top1 | hy top3 | retrieval hy top1 | retrieval kw top1 | explainer hy top1 |
+| --- | --- | --- | --- | --- | --- | --- |
+| playbook v1 (before) | 39/39 | 0.464 | 0.607 | 0.632 | 0.289 | 1.000 |
+| candidate v2 | 37/39 | 0.643 | 0.714 | 0.737 | 0.382 | 1.000 |
+
+Promotion guards: G1 gate perfect FAIL; G2 heldout hy top3 PASS; G3 explainer hy top1 PASS; G4 heldout hy top1 PASS
+Improvements: I1 retrieval hy top1 YES; I2 retrieval kw top1 +0.03, hy not down YES
+
+**Decision: REJECTED** — candidate v2 does not replace playbook v1.
+
+New bullets in the candidate:
+- `pb-2001` **station-11447650-data** += ['out west', 'west coast', 'river meets'] (evidence: 2 failed questions; classes: WEAK_KEYWORD)
+- `pb-2002` **station-08313000-data** += ['charts 3d', 'desert southwest', 'santa'] (evidence: 2 failed questions; classes: WEAK_KEYWORD)
+- `pb-2003` **station-08158000-data** += ['big river', 'lone star', 'capital city'] (evidence: 1 failed questions; classes: STATION_CONFUSION, WEAK_KEYWORD)
+- `pb-2004` **station-02320500-data** += ['suwannee river sunshine', 'florida sunshine', 'swampy blackwater'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2005` **station-06934500-data** += ['wine town', 'middle country', 'german heritage'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2006` **station-07374000-data** += ['last station', 'delta'] (evidence: 1 failed questions; classes: STATION_CONFUSION)
+- `pb-2007` **panel-08057000-hts-sec-hydro** += ['plots history', 'dallas history', 'discharge history'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2008` **panel-06214500-hts-sec-weekly** += ['by week', 'next three', 'months week'] (evidence: 1 failed questions; classes: PANEL_CONFUSION)
+- `pb-2009` **panel-08057000-hts-sec-charts3d** += ['flow history', 'rotatable chart'] (evidence: 1 failed questions; classes: PANEL_CONFUSION)
+- `pb-2010` **panel3d-02320500-dock** += ['little page', 'card controls', 'day prediction'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2011` **panel-08057000-hts-sec-drift** += ['model quality', 'slipping'] (evidence: 1 failed questions; classes: PANEL_CONFUSION)
+- `pb-2012` **panel-08158000-hts-sec-fc** += ['show week', 'possible flows', 'austin forecast'] (evidence: 1 failed questions; classes: PANEL_CONFUSION)
+- `pb-2013` **station-14105700-data** += ['gorge station', 'northwest pacific'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2014` **panel-11447650-hts-sec-featimp** += ['flow model', 'inputs matter'] (evidence: 1 failed questions; classes: PANEL_CONFUSION)
+- `pb-2015` **panel-09380000-hts-sec-ablation** += ['drop inputs', 'some inputs'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2016` **howto-panels** += ['open sections', 'hidden sections'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2017` **howto-precip** += ['date', 'pick'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2018` **station-01463500-data** += ['delaware river data', 'washington army'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2019` **station-01646500-data** += ['nation s capital'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2020` **station-05331000-data** += ['northern city'] (evidence: 1 failed questions; classes: FALSE_REFUSAL)
+- `pb-2021` **station-06214500-data** += ['big sky'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2022` **panel-08057000-hts-sec-fc** += ['forecast week'] (evidence: 1 failed questions; classes: WEAK_KEYWORD)
+- `pb-2023` **panel-08158000-hts-sec-drift** += ['worse over time'] (evidence: 1 failed questions; classes: PANEL_CONFUSION)
+candidate rejected; playbook unchanged (rejection logged)

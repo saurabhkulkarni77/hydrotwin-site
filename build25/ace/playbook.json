@@ -1,5 +1,5 @@
 {
- "version": 2,
+ "version": 3,
  "note": "ACE playbook for the HydroTwin helper bot. v0: empty \u2014 the baseline. Bullets are added only by the ACE cycle (ace_reflect.py proposes, ace_curate.py disposes) and ship only when the promotion gate in run_cycle.py passes. Bullet types: 'entry_keywords' (appends keywords to one index entry; applied by ace_lib.apply_playbook locally and by build25/gen_helper_index.py at site build time) and 'note' (auditable knowledge for humans; changes no retrieval).",
  "bullets": [
   {
@@ -168,7 +168,6 @@
    "type": "entry_keywords",
    "entry": "panel-11447650-hts-sec-featimp",
    "add_keywords": [
-    "river model",
     "discharge flow"
    ],
    "evidence": [
@@ -177,7 +176,14 @@
    "failure_classes": [
     "PANEL_CONFUSION"
    ],
-   "rationale": "These keywords capture the specific context of the correct entry's content and the visitor's query."
+   "rationale": "These keywords capture the specific context of the correct entry's content and the visitor's query.",
+   "repaired": {
+    "removed_keywords": [
+     "river model"
+    ],
+    "substituted_keywords": [],
+    "reason": "single-keyword ablation: this cycle-1 keyword alone flips the flagship question \"Where is the river in California?\" from station-11447650-3d (51) to the Sacramento featimp panel (52); the bullet evidence question is still served by cycle-2 keywords on the same entry (flow model, inputs matter)"
+   }
   },
   {
    "id": "pb-1011",
@@ -447,9 +453,9 @@
    "type": "entry_keywords",
    "entry": "station-06934500-data",
    "add_keywords": [
-    "wine town",
     "middle country",
-    "german heritage"
+    "german heritage",
+    "wine"
    ],
    "evidence": [
     "the German heritage wine town station in the middle of the country"
@@ -457,7 +463,15 @@
    "failure_classes": [
     "WEAK_KEYWORD"
    ],
-   "rationale": "These keywords capture the specific elements from the visitor's question that were not matched by the current keywords of the correct entry"
+   "rationale": "These keywords capture the specific elements from the visitor's question that were not matched by the current keywords of the correct entry",
+   "repaired": {
+    "removed_keywords": [
+     "wine town"
+    ],
+    "substituted_keywords": [
+     "wine"
+    ]
+   }
   },
   {
    "id": "pb-2006",
