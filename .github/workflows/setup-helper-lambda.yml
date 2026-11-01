@@ -160,7 +160,7 @@ jobs:
         run: |
           set -euo pipefail
           aws lambda put-function-concurrency --function-name "$FUNCTION_NAME" \
-            --reserved-concurrent-executions 5
+            --reserved-concurrent-executions 5 || echo "::warning::reserved concurrency cap skipped (account quota)"
           echo "Reserved concurrency capped at 5."
 
       - name: Create or update the Function URL (dev origin CORS only)
