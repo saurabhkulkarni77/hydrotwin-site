@@ -44,6 +44,7 @@ Run from the repo root, AFTER gen_helper_index.py:
 """
 import hashlib
 import json
+import math
 import os
 import struct
 import subprocess
@@ -52,7 +53,8 @@ import time
 import urllib.request
 from pathlib import Path
 
-import numpy as np
+# NOTE: stdlib only on purpose — the GitHub Actions runner's stock
+# python3 has no numpy, and this script must run there unchanged.
 
 PORT = int(os.environ.get("HT_EMBED_PORT", "18123"))
 BASE = f"http://127.0.0.1:{PORT}"
@@ -81,8 +83,8 @@ def embed(server_proc, texts):
                                      headers={"Content-Type": "application/json"})
         with urllib.request.urlopen(req, timeout=120) as r:
             data = json.loads(r.read().decode())
-        out.append(np.array(data[0]["embedding"][0], dtype=np.float64))
-    return np.stack(out)
+        out.append([float(x) for x in data[0]["embedding"][0]])
+    return out
 
 
 def main():
@@ -114,21 +116,38 @@ def main():
         except Exception:
             proc.kill()
 
-    norms = np.linalg.norm(vecs, axis=1, keepdims=True)
-    unit = vecs / np.maximum(norms, 1e-9)
-    scales = (np.abs(unit).max(axis=1) / 127.0).astype(np.float32)
-    q = np.round(unit / scales[:, None]).clip(-127, 127).astype(np.int8)
+    # Unit-normalize, then int8-quantize with a per-entry scale
+    # (max|component|/127, stored as float32). Python's round() is
+    # round-half-to-even, matching the numpy version this replaced,
+    # so the asset bytes are unchanged.
+    dim = len(vecs[0]) if vecs else 0
+    scales = []
+    qrows = []
+    for v in vecs:
+        norm = math.sqrt(sum(x * x for x in v))
+        denom = norm if norm > 1e-9 else 1e-9
+        unit = [x / denom for x in v]
+        maxabs = max((abs(x) for x in unit), default=0.0)
+        scale = struct.unpack("<f", struct.pack("<f", maxabs / 127.0))[0]
+        scales.append(scale)
+        if scale == 0.0:
+            qrows.append(bytes(len(unit)))
+        else:
+            qrows.append(struct.pack(
+                f"<{len(unit)}b",
+                *[max(-127, min(127, round(x / scale))) for x in unit]))
 
     ids = [e["id"] for e in entries]
     id_hash = hashlib.md5("\n".join(ids).encode()).digest()
     dest = root / "helper" / "ht-emb.bin"
     with open(dest, "wb") as f:
         f.write(b"HTEMB1")
-        f.write(struct.pack("<II", len(entries), unit.shape[1]))
+        f.write(struct.pack("<II", len(entries), dim))
         f.write(id_hash)
-        f.write(scales.tobytes())
-        f.write(q.tobytes())
-    print(f"helper/ht-emb.bin: {len(entries)} entries x {unit.shape[1]} dims, "
+        f.write(struct.pack(f"<{len(scales)}f", *scales))
+        for row in qrows:
+            f.write(row)
+    print(f"helper/ht-emb.bin: {len(entries)} entries x {dim} dims, "
           f"{dest.stat().st_size} bytes")
     return 0
 
