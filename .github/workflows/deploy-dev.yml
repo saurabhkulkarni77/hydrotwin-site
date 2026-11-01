@@ -118,6 +118,9 @@ jobs:
       - name: Water under bridges - ribbon gaps at OSM bridge crossings (dev only)
         run: python3 build25/patch_bridgegap.py
 
+      - name: Water under bridges - polygon water gaps at the same crossings (dev only)
+        run: python3 build25/patch_polygap.py
+
       - name: Keyboard shortcuts must not steal typing from form fields (dev only)
         run: python3 build25/patch_keyfix.py
 
