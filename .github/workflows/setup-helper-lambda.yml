@@ -138,12 +138,32 @@ jobs:
             echo "Function exists; updating code and configuration."
             aws lambda update-function-code --function-name "$FUNCTION_NAME" \
               --s3-bucket "$BUCKET" --s3-key deploy/helper-fn.zip >/dev/null
+            echo "Settling 30s after the code update before the configuration update."
+            sleep 30
             aws lambda wait function-updated --function-name "$FUNCTION_NAME" || true
-            aws lambda update-function-configuration --function-name "$FUNCTION_NAME" \
-              --runtime python3.12 --handler handler.lambda_handler \
-              --role "$ROLE_ARN" --memory-size 3008 --timeout 120 \
-              --ephemeral-storage Size=2048 \
-              --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE}" >/dev/null
+            attempt=1
+            while true; do
+              if out=$(aws lambda update-function-configuration --function-name "$FUNCTION_NAME" \
+                --runtime python3.12 --handler handler.lambda_handler \
+                --role "$ROLE_ARN" --memory-size 3008 --timeout 120 \
+                --ephemeral-storage Size=2048 \
+                --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE}" 2>&1); then
+                echo "Configuration updated on attempt $attempt."
+                break
+              fi
+              echo "$out"
+              if ! echo "$out" | grep -q ResourceConflictException; then
+                echo "::error::update-function-configuration failed with a non-retryable error (shown above)."
+                exit 1
+              fi
+              if [ "$attempt" -ge 12 ]; then
+                echo "::error::update-function-configuration still conflicting after $attempt attempts."
+                exit 1
+              fi
+              echo "ResourceConflictException: an update is still in progress; retrying in 20s (attempt $((attempt+1)) of 12)."
+              attempt=$((attempt+1))
+              sleep 20
+            done
             aws lambda wait function-updated --function-name "$FUNCTION_NAME" || true
           else
             aws lambda create-function --function-name "$FUNCTION_NAME" \
@@ -172,9 +192,30 @@ jobs:
               --auth-type NONE --cors "$CORS" >/dev/null
             echo "Function URL updated."
           else
-            aws lambda create-function-url-config --function-name "$FUNCTION_NAME" \
-              --auth-type NONE --cors "$CORS" >/dev/null
-            echo "Function URL created."
+            attempt=1
+            while true; do
+              if out=$(aws lambda create-function-url-config --function-name "$FUNCTION_NAME" \
+                --auth-type NONE --cors "$CORS" 2>&1); then
+                echo "Function URL created on attempt $attempt."
+                break
+              fi
+              echo "$out"
+              if echo "$out" | grep -q FunctionUrlConfigExists; then
+                echo "Function URL config already exists; fetching and using it."
+                break
+              fi
+              if ! echo "$out" | grep -q ResourceConflictException; then
+                echo "::error::create-function-url-config failed with a non-retryable error (shown above)."
+                exit 1
+              fi
+              if [ "$attempt" -ge 12 ]; then
+                echo "::error::create-function-url-config still conflicting after $attempt attempts."
+                exit 1
+              fi
+              echo "ResourceConflictException: retrying in 20s (attempt $((attempt+1)) of 12)."
+              attempt=$((attempt+1))
+              sleep 20
+            done
           fi
           aws lambda add-permission --function-name "$FUNCTION_NAME" \
             --statement-id FunctionURLAllowPublic \
