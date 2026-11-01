@@ -67,7 +67,7 @@ MAX_ENTRIES = 5
 # Entry text is trimmed: the rephrase only needs the gist of each
 # entry — the bot's own index answer keeps the full text on screen
 # regardless — and a shorter prompt is faster to process.
-MAX_ENTRY_TEXT = 240
+MAX_ENTRY_TEXT = 200
 MAX_OUTPUT_TOKENS = "160"
 
 
