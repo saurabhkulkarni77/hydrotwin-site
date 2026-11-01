@@ -90,6 +90,11 @@ def _generate(prompt):
     out = proc.stdout or ""
     # Defensive cleanup: cut at any chat-token remnant and trim.
     out = out.split("<|")[0].strip()
+    # llama-completion appends its own console marker ("> EOF by user")
+    # when its stdin closes; it is not part of the model's answer.
+    marker = out.rfind("EOF by user")
+    if marker != -1:
+        out = out[:marker].rstrip().rstrip(">").strip()
     return out
 
 

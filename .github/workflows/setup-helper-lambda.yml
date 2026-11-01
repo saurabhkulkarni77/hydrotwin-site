@@ -225,8 +225,7 @@ jobs:
           aws lambda add-permission --function-name "$FUNCTION_NAME" \
             --statement-id FunctionURLAllowPublicInvoke \
             --action lambda:InvokeFunction \
-            --principal '*' \
-            --function-url-auth-type NONE 2>&1 || echo "add-permission (InvokeFunction): already present or noted above"
+            --principal '*' 2>&1 || echo "add-permission (InvokeFunction): already present or noted above"
           URL=$(aws lambda get-function-url-config --function-name "$FUNCTION_NAME" --query 'FunctionUrl' --output text)
           echo "FUNCTION_URL=$URL" >> "$GITHUB_ENV"
           echo "Function URL: $URL"
