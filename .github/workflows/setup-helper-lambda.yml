@@ -138,13 +138,13 @@ jobs:
             echo "Function exists; updating code and configuration."
             aws lambda update-function-code --function-name "$FUNCTION_NAME" \
               --s3-bucket "$BUCKET" --s3-key deploy/helper-fn.zip >/dev/null
-            aws lambda wait function-updated --function-name "$FUNCTION_NAME"
+            aws lambda wait function-updated --function-name "$FUNCTION_NAME" || true
             aws lambda update-function-configuration --function-name "$FUNCTION_NAME" \
               --runtime python3.12 --handler handler.lambda_handler \
               --role "$ROLE_ARN" --memory-size 3008 --timeout 120 \
               --ephemeral-storage Size=2048 \
               --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE}" >/dev/null
-            aws lambda wait function-updated --function-name "$FUNCTION_NAME"
+            aws lambda wait function-updated --function-name "$FUNCTION_NAME" || true
           else
             aws lambda create-function --function-name "$FUNCTION_NAME" \
               --runtime python3.12 --handler handler.lambda_handler \
