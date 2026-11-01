@@ -28,7 +28,7 @@
   // ------------------------------------------------------------- config
   // Lambda Function URL for the helper-bot model endpoint.
   // Empty string = endpoint off (pure index bot).
-  var AI_ENDPOINT = 'https://7oufr7waqwqmirbvirvcx2a2zi0jiipn.lambda-url.us-east-1.on.aws/';
+  var AI_ENDPOINT = '';
   var AI_TIMEOUT_MS = 45000;
 
   var scriptEl = document.currentScript || document.querySelector('script[src*="ht-helper.js"]');
@@ -134,6 +134,34 @@
     scored.sort(function (a, b) { return b[0] - a[0]; });
     return scored.slice(0, 3).map(function (x) { return x[1]; });
   }
+
+  // Relevance gate: a question counts as a HydroTwin question only if
+  // one of its content words (question words and filler stripped) is a
+  // word of some index keyword or appears in an entry title. The raw
+  // retrieval score cannot decide this — generic words in entry text
+  // inflate it for off-topic questions ("what is the best pizza near
+  // me" scored 15 on text matches alone and got a station answer).
+  var STOP = { what: 1, where: 1, when: 1, which: 1, who: 1, why: 1, how: 1,
+    is: 1, are: 1, was: 1, were: 1, do: 1, does: 1, did: 1, can: 1, could: 1,
+    should: 1, would: 1, the: 1, a: 1, an: 1, and: 1, or: 1, of: 1, to: 1,
+    in: 1, on: 1, at: 1, for: 1, with: 1, near: 1, me: 1, my: 1, i: 1,
+    you: 1, your: 1, it: 1, its: 1, this: 1, that: 1, there: 1, tell: 1, please: 1 };
+  function relevant(q) {
+    if (!INDEX) return false;
+    var toks = norm(q).split(' ').filter(function (t) { return t.length > 1 && !STOP[t]; });
+    if (!toks.length) return false;
+    for (var i = 0; i < INDEX.entries.length; i++) {
+      var e = INDEX.entries[i], title = norm(e.title);
+      for (var k = 0; k < e.keywords.length; k++) {
+        var words = norm(e.keywords[k]).split(' ');
+        for (var w = 0; w < words.length; w++) if (toks.indexOf(words[w]) >= 0) return true;
+      }
+      for (var t = 0; t < toks.length; t++) if (title.indexOf(toks[t]) >= 0) return true;
+    }
+    return false;
+  }
+  var SUGGESTIONS = ['Where is the forecast?', 'Which features affect flow in Dallas?',
+    'Where is the 3D terrain view?', 'How do I see rain and snow?'];
 
   function currentPagePath() {
     var p = location.pathname;
@@ -271,6 +299,23 @@
       return;
     }
     var hits = retrieve(q);
+    if (!hits.length || !relevant(q)) {
+      // Off-topic (or nothing matched): polite refusal plus tappable
+      // relevant questions. This path never calls the AI endpoint.
+      var rb = addMsg('', 'a');
+      var rt = document.createElement('span');
+      rt.textContent = 'I can’t answer that. I only help with HydroTwin: finding stations, pages, panels and controls on this site. Try one of these:';
+      rb.appendChild(rt);
+      rb.appendChild(document.createElement('br'));
+      SUGGESTIONS.forEach(function (s) {
+        var chip = document.createElement('button');
+        chip.className = 'hthb-chip'; chip.type = 'button'; chip.textContent = s;
+        chip.addEventListener('click', function () { ask(s); });
+        rb.appendChild(chip);
+      });
+      msgs.scrollTop = msgs.scrollHeight;
+      return;
+    }
     var bubble = addMsg('', 'a');
     var txtSpan = document.createElement('span');
     txtSpan.textContent = fallbackAnswer(q, hits);

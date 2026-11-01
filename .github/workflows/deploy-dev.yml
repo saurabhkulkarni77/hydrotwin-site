@@ -115,6 +115,9 @@ jobs:
       - name: Ribbon shading fix - water normals up, double-sided (dev only)
         run: python3 build25/patch_ribbonshade.py
 
+      - name: Water under bridges - ribbon gaps at OSM bridge crossings (dev only)
+        run: python3 build25/patch_bridgegap.py
+
       - name: Generate helper-bot site index (dev only)
         run: python3 build25/gen_helper_index.py
 
