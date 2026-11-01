@@ -26,8 +26,10 @@ MODEL_PATH = os.environ.get("MODEL_PATH", "/tmp/model.gguf")
 MODEL_NAME = os.environ.get(
     "MODEL_NAME", os.path.basename(MODEL_KEY).replace(".gguf", "")
 )
-# llama.cpp threads: Lambda vCPU scales with memory (8192 MB is about
-# 4.6 vCPU), so the workflow sets LLAMA_THREADS=4 alongside the raise.
+# llama.cpp threads. The account's Lambda quota caps MemorySize at
+# 3008 MB (a raise to 8192 was refused with a ValidationException on
+# 2026-11-01), which is about 1.7 vCPU, so 2 threads is the match;
+# the workflow passes LLAMA_THREADS explicitly.
 LLAMA_THREADS = os.environ.get("LLAMA_THREADS", "2")
 TASK_ROOT = os.environ.get("LAMBDA_TASK_ROOT", os.path.dirname(os.path.abspath(__file__)))
 LLAMA_BIN = os.path.join(TASK_ROOT, "llama", "llama-completion")

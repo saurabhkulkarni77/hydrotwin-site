@@ -146,9 +146,9 @@ jobs:
             while true; do
               if out=$(aws lambda update-function-configuration --function-name "$FUNCTION_NAME" \
                 --runtime python3.12 --handler handler.lambda_handler \
-                --role "$ROLE_ARN" --memory-size 8192 --timeout 300 \
+                --role "$ROLE_ARN" --memory-size 3008 --timeout 300 \
                 --ephemeral-storage Size=10240 \
-                --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE,LLAMA_THREADS=4}" 2>&1); then
+                --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE,LLAMA_THREADS=2}" 2>&1); then
                 echo "Configuration updated on attempt $attempt."
                 break
               fi
@@ -169,9 +169,9 @@ jobs:
           else
             aws lambda create-function --function-name "$FUNCTION_NAME" \
               --runtime python3.12 --handler handler.lambda_handler \
-              --role "$ROLE_ARN" --memory-size 8192 --timeout 300 \
+              --role "$ROLE_ARN" --memory-size 3008 --timeout 300 \
               --ephemeral-storage Size=10240 \
-              --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE,LLAMA_THREADS=4}" \
+              --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE,LLAMA_THREADS=2}" \
               --code "S3Bucket=$BUCKET,S3Key=deploy/helper-fn.zip" >/dev/null
             echo "Function created."
           fi
