@@ -1,15 +1,22 @@
 """HydroTwin helper-bot inference Lambda.
 
-Hosts an open source instruct model (GGUF Q4_K_M, stored in a private S3 bucket;
-MODEL_KEY selects the file — Qwen2.5-3B-Instruct since 2026-11-01.
-Qwen3-4B-Instruct-2507 was tried first and rejected on measured
-latency: ~37 s warm at this account's 3008 MB Lambda cap, where the
-3B stays near the ~15 s bound. The 4B and 0.5B files stay in the
-bucket for rollback.)
-and runs it with a bundled llama.cpp `llama-completion` binary built for
-Amazon Linux 2023. The model is downloaded to /tmp on cold start and
-reused on warm starts. No always-on resources; invoked only through the
-Lambda Function URL by the dev site's helper bot.
+Hosts an open source instruct model (GGUF Q4_K_M, stored in a private
+S3 bucket; MODEL_KEY selects the file — Qwen3-4B-Instruct-2507 since
+2026-11-01) behind llama.cpp, invoked only through the Lambda
+Function URL by the dev site's helper bot.
+
+Serving design (v2, 2026-11-01): a persistent llama-server process
+per execution environment. The first design spawned llama-completion
+per request, which re-read the whole GGUF from /tmp on every call —
+fine for the old 0.5B (469 MB, ~4.5 s warm) but measured ~25 s of
+fixed overhead per call for a 2-4 GB model on this account's
+3008 MB-capped Lambda (a MemorySize raise was refused by account
+quota), putting warm answers at 30-40 s. Now the model loads once
+per environment; warm requests only pay prompt processing +
+generation (~10 s for the 4B). If llama-server is unavailable for
+any reason the handler falls back to the original one-shot
+llama-completion path, and any failure still returns 502 so the bot
+silently keeps its index answer.
 
 Request  JSON: {"question": str, "context": [{"title","text","page"}, ...]}
 Response JSON: {"answer": str, "model": str}
@@ -18,6 +25,9 @@ Response JSON: {"answer": str, "model": str}
 import json
 import os
 import subprocess
+import time
+import urllib.error
+import urllib.request
 
 import boto3
 
@@ -36,7 +46,13 @@ MODEL_NAME = os.environ.get(
 LLAMA_THREADS = os.environ.get("LLAMA_THREADS", "2")
 TASK_ROOT = os.environ.get("LAMBDA_TASK_ROOT", os.path.dirname(os.path.abspath(__file__)))
 LLAMA_BIN = os.path.join(TASK_ROOT, "llama", "llama-completion")
+LLAMA_SERVER_BIN = os.path.join(TASK_ROOT, "llama", "llama-server")
 LLAMA_LIB = os.path.join(TASK_ROOT, "llama")
+
+SERVER_PORT = 18080
+SERVER_URL = "http://127.0.0.1:%d" % SERVER_PORT
+SERVER_START_DEADLINE_S = 240
+GEN_TIMEOUT_S = 240
 
 SYSTEM = (
     "You answer questions about locating information in the HydroTwin "
@@ -48,14 +64,11 @@ SYSTEM = (
 
 MAX_QUESTION_CHARS = 600
 MAX_ENTRIES = 5
-# Entry text is trimmed harder than the original 600 chars: on this
-# account's 3008 MB Lambda cap, prompt prefill is the latency
-# bottleneck (the 4B model needed ~37 s warm, mostly prefill), and
-# the rephrase only needs the gist of each entry — the bot's own
-# index answer keeps the full text on screen regardless.
+# Entry text is trimmed: the rephrase only needs the gist of each
+# entry — the bot's own index answer keeps the full text on screen
+# regardless — and a shorter prompt is faster to process.
 MAX_ENTRY_TEXT = 240
 MAX_OUTPUT_TOKENS = "160"
-GEN_TIMEOUT_S = 100
 
 
 def _ensure_model():
@@ -83,7 +96,86 @@ def _build_prompt(question, entries):
     return prompt[:7000]
 
 
-def _generate(prompt):
+def _clean(out):
+    # Defensive cleanup (same as the v1 handler): cut at any chat-token
+    # remnant, then strip llama-completion's console marker
+    # ("> EOF by user"), which the server path does not emit.
+    out = (out or "").split("<|")[0].strip()
+    marker = out.rfind("EOF by user")
+    if marker != -1:
+        out = out[:marker].rstrip().rstrip(">").strip()
+    return out
+
+
+# ------------------------------------------------------- llama-server
+_server = {"proc": None}
+
+
+def _server_healthy():
+    proc = _server["proc"]
+    if proc is None or proc.poll() is not None:
+        return False
+    try:
+        with urllib.request.urlopen(SERVER_URL + "/health", timeout=3) as r:
+            return r.status == 200
+    except Exception:
+        return False
+
+
+def _ensure_server():
+    """Start llama-server once per environment and wait for readiness."""
+    if _server_healthy():
+        return True
+    if not os.path.exists(LLAMA_SERVER_BIN):
+        return False
+    env = dict(os.environ)
+    env["LD_LIBRARY_PATH"] = LLAMA_LIB + ":" + env.get("LD_LIBRARY_PATH", "")
+    log = open("/tmp/llama-server.log", "ab")
+    proc = subprocess.Popen(
+        [
+            LLAMA_SERVER_BIN,
+            "-m", MODEL_PATH,
+            "-c", "2048",
+            "-t", LLAMA_THREADS,
+            "--host", "127.0.0.1",
+            "--port", str(SERVER_PORT),
+        ],
+        stdin=subprocess.DEVNULL,
+        stdout=log,
+        stderr=subprocess.STDOUT,
+        env=env,
+    )
+    _server["proc"] = proc
+    deadline = time.time() + SERVER_START_DEADLINE_S
+    while time.time() < deadline:
+        if proc.poll() is not None:
+            return False  # died during load; caller falls back to CLI
+        if _server_healthy():
+            return True
+        time.sleep(1.0)
+    return False
+
+
+def _generate_server(prompt):
+    body = json.dumps({
+        "prompt": prompt,
+        "n_predict": int(MAX_OUTPUT_TOKENS),
+        "temperature": 0.2,
+        "seed": 42,
+        "cache_prompt": True,
+        "stop": ["<|im_end|>", "<|im_start|>"],
+    }).encode()
+    req = urllib.request.Request(
+        SERVER_URL + "/completion", data=body,
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=GEN_TIMEOUT_S) as r:
+        data = json.loads(r.read().decode("utf-8", "replace"))
+    return _clean(data.get("content", ""))
+
+
+# ------------------------------------------------- llama-completion
+def _generate_cli(prompt):
     env = dict(os.environ)
     env["LD_LIBRARY_PATH"] = LLAMA_LIB + ":" + env.get("LD_LIBRARY_PATH", "")
     proc = subprocess.run(
@@ -104,15 +196,17 @@ def _generate(prompt):
         timeout=GEN_TIMEOUT_S,
         env=env,
     )
-    out = proc.stdout or ""
-    # Defensive cleanup: cut at any chat-token remnant and trim.
-    out = out.split("<|")[0].strip()
-    # llama-completion appends its own console marker ("> EOF by user")
-    # when its stdin closes; it is not part of the model's answer.
-    marker = out.rfind("EOF by user")
-    if marker != -1:
-        out = out[:marker].rstrip().rstrip(">").strip()
-    return out
+    return _clean(proc.stdout or "")
+
+
+def _generate(prompt):
+    _ensure_model()
+    try:
+        if _ensure_server():
+            return _generate_server(prompt)
+    except Exception:
+        pass  # any server-path failure falls back to the one-shot CLI
+    return _generate_cli(prompt)
 
 
 def _reply(status, payload):
@@ -142,7 +236,6 @@ def lambda_handler(event, context):
         entries = []
 
     try:
-        _ensure_model()
         answer = _generate(_build_prompt(question, entries))
     except subprocess.TimeoutExpired:
         return _reply(502, {"error": "generation timed out"})
