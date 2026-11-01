@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-01T14:03:19Z",
+  "generated_at": "2026-11-01T14:55:06Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -356,14 +356,14 @@
       "file": ".github/workflows/ci.yml",
       "name": "CI \u2014 site, data & model tests",
       "latest": {
-        "run_id": 41314143772,
-        "title": "Helper Lambda config: memory stays 3008 (account quota cap), ephemera\u2026",
+        "run_id": 41318492861,
+        "title": "Helper serving v2: persistent llama-server per environment + Qwen3-4B\u2026",
         "event": "push",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-11-01T14:02:10Z",
-        "updated_at": "2026-11-01T14:02:41Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41314143772"
+        "created_at": "2026-11-01T14:54:27Z",
+        "updated_at": "2026-11-01T14:54:51Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41318492861"
       }
     },
     {
@@ -390,14 +390,14 @@
       "file": ".github/workflows/deploy-dev.yml",
       "name": "Deploy DEV to AWS S3",
       "latest": {
-        "run_id": 41314143803,
-        "title": "Helper Lambda config: memory stays 3008 (account quota cap), ephemera\u2026",
+        "run_id": 41318493098,
+        "title": "Helper serving v2: persistent llama-server per environment + Qwen3-4B\u2026",
         "event": "push",
         "status": "in_progress",
         "conclusion": null,
-        "created_at": "2026-11-01T14:02:10Z",
-        "updated_at": "2026-11-01T14:02:13Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41314143803"
+        "created_at": "2026-11-01T14:54:27Z",
+        "updated_at": "2026-11-01T14:54:31Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41318493098"
       }
     }
   ]
