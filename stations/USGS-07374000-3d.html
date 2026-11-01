@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "41211660560-6de1e1032c7a2025a358da82e0169c8e59d20085";
+  var BID = "41314837720-57ec8babbc11c6b8eab5e48391cf320f1ddcc0fb";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -975,7 +976,7 @@ function act(a) {
   else if (a === 'map') location.href = D.mapUrl; else if (a === 'data') location.href = D.classicUrl;
   else if (a === 'relief') { EXAG = EXAGS[(EXAGS.indexOf(EXAG) + 1) % EXAGS.length]; buildHeights(); buildOverlays(); levelDirty = true; ghostKey = ''; drawFlow(); }
 }
-addEventListener('keydown', (e) => { const k = e.key.toLowerCase();
+addEventListener('keydown', (e) => { /* ht-keyfix v1: typing in a form field is exempt from page shortcuts */ const __t = e.target; if (__t && (__t.tagName === 'INPUT' || __t.tagName === 'TEXTAREA' || __t.tagName === 'SELECT' || __t.isContentEditable)) return; const k = e.key.toLowerCase();
   if (k === 'arrowright') act('next'); else if (k === 'arrowleft') act('prev'); else if (k === ' ') { e.preventDefault(); act('play'); }
   else if (k === 'f') act('fc'); else if (k === 'm') act('model'); else if (k === 'k') act('lead'); else if (k === 'l') act('layer'); else if (k === 'v') act('view');
   else if (k === '1') act('drone'); else if (k === '2') act('bank'); else if (k === 'e') act('relief'); });
@@ -1729,7 +1730,7 @@ act = function (a) {
   if (a === 'bigmodel') { bigModelLive(); return; }
   return act0(a);
 };
-addEventListener('keydown', (e) => { if (e.key.toLowerCase() === 'g') act('live'); else if (e.key.toLowerCase() === 'b') act('bigmodel'); });
+addEventListener('keydown', (e) => { /* ht-keyfix v1: typing in a form field is exempt from page shortcuts */ const __t = e.target; if (__t && (__t.tagName === 'INPUT' || __t.tagName === 'TEXTAREA' || __t.tagName === 'SELECT' || __t.isContentEditable)) return; if (e.key.toLowerCase() === 'g') act('live'); else if (e.key.toLowerCase() === 'b') act('bigmodel'); });
 const shownQ0 = shownQ;
 shownQ = () => (LIVE.on && LIVE.q ? LIVE.q : shownQ0());
 const drawFlow0 = drawFlow;
@@ -2399,6 +2400,68 @@ const htTFR = initTableFlood;
 initTableFlood = function () { htTFR(); htReseat(); htCarve(); };
 const htBOR = buildOuter;
 buildOuter = function () { htBOR(); htCarve(); };
+
+
+// ------------------------------------------------------------------ ht-bridgegap v1
+// Water passes under bridges: baked OSM bridge crossings of this river
+// ([x, z, halfwidth] in page coordinates, from build25/bridgegap_data.py).
+// buildRibbon is wrapped so its point list gets an exact gap cut at each
+// crossing: interpolated boundary sections at the interval edges, points
+// inside dropped, a {brk} break between the edges. The original list is
+// restored afterwards; nothing else about the water changes.
+const HT_BRIDGES = [[-588.7,-6833.8,7.6],[-588.6,-6809.9,7.6],[-613.0,673.6,9.4]];
+window.__htBridgeGaps = { crossings: HT_BRIDGES.length, gaps: 0, removedPts: 0 };
+function htGapPts(pts) {
+  const runs = []; let cur = null;
+  for (const p of pts) { if (!p || p.brk) { cur = null; continue; } if (!cur) { cur = []; runs.push(cur); } cur.push(p); }
+  const out = []; let gaps = 0, removed = 0;
+  runs.forEach((run, ri) => {
+    if (ri > 0) out.push({ brk: true });
+    if (run.length < 2 || !HT_BRIDGES.length) { for (const p of run) out.push(p); return; }
+    const S = [0];
+    for (let i = 1; i < run.length; i++) S.push(S[i - 1] + Math.hypot(run[i].x - run[i - 1].x, run[i].z - run[i - 1].z));
+    const ivs = [];
+    for (const c of HT_BRIDGES) {
+      let best = null;
+      for (let j = 0; j + 1 < run.length; j++) {
+        const ax = run[j].x, az = run[j].z, dx = run[j + 1].x - ax, dz = run[j + 1].z - az, L2 = dx * dx + dz * dz || 1;
+        let t = ((c[0] - ax) * dx + (c[1] - az) * dz) / L2; t = Math.max(0, Math.min(1, t));
+        const d = Math.hypot(c[0] - (ax + dx * t), c[1] - (az + dz * t));
+        if (!best || d < best.d) best = { d, s: S[j] + t * Math.sqrt(L2) };
+      }
+      if (best && best.d < 80) ivs.push([best.s - c[2], best.s + c[2]]);
+    }
+    if (!ivs.length) { for (const p of run) out.push(p); return; }
+    ivs.sort((a, b) => a[0] - b[0]);
+    const merged = [ivs[0].slice()];
+    for (let m = 1; m < ivs.length; m++) { const last = merged[merged.length - 1];
+      if (ivs[m][0] <= last[1]) last[1] = Math.max(last[1], ivs[m][1]); else merged.push(ivs[m].slice()); }
+    const nodeAt = (s) => { let j = 0; while (j < run.length - 2 && S[j + 1] < s) j++;
+      const seg = S[j + 1] - S[j] || 1, t = (s - S[j]) / seg, A = run[j], B = run[j + 1];
+      return { x: A.x + (B.x - A.x) * t, z: A.z + (B.z - A.z) * t, bed: A.bed + (B.bed - A.bed) * t, top: A.top + (B.top - A.top) * t }; };
+    let nodes = run.map((p, ix) => ({ s: S[ix], p }));
+    for (const iv of merged) { nodes.push({ s: iv[0], p: nodeAt(iv[0]) }); nodes.push({ s: iv[1], p: nodeAt(iv[1]) }); }
+    nodes.sort((a, b) => a.s - b.s);
+    const dedup = [];
+    for (const nd of nodes) { if (dedup.length && Math.abs(nd.s - dedup[dedup.length - 1].s) < 0.01) continue; dedup.push(nd); }
+    let pending = null;
+    for (const nd of dedup) {
+      const inside = merged.some((iv) => nd.s > iv[0] + 0.01 && nd.s < iv[1] - 0.01);
+      if (inside) { removed++; continue; }
+      if (pending !== null && nd.s >= pending - 0.01) { out.push({ brk: true }); gaps++; pending = null; }
+      out.push(nd.p);
+      for (const iv of merged) if (Math.abs(nd.s - iv[0]) < 0.01) pending = iv[1];
+    }
+  });
+  window.__htBridgeGaps = { crossings: HT_BRIDGES.length, gaps, removedPts: removed };
+  return out;
+}
+const htBridgeGap0 = buildRibbon;
+buildRibbon = function (dH, w) {
+  if (!HT_BRIDGES.length || !ribbonPts || !ribbonPts.length) { htBridgeGap0(dH, w); return; }
+  const saved = ribbonPts; ribbonPts = htGapPts(saved);
+  try { htBridgeGap0(dH, w); } finally { ribbonPts = saved; }
+};
 
 window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater, tWater, VIEWS, BLD, stageFt, dHof, goView, get REFE() { return REFE; }, get elevRange() { return [eMin, eMax, EXAG]; }, get curDH() { return curDH; }, get floods() { return floodsReady; } };
 window.HT3_READY = true;
@@ -6068,6 +6131,13 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
+
+<!-- ht-helperbot v1 -->
+<script src="../helper/ht-helper.js" defer></script>
+
+<!-- ht-precip v1 -->
+<script type="module" src="../assets/precip/ht-precip.mjs"></script>
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -6519,10 +6589,4 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   setInterval(poll, 60000);
 })();
 </script>
-
-<!-- ht-helperbot v1 -->
-<script src="../helper/ht-helper.js" defer></script>
-
-<!-- ht-precip v1 -->
-<script type="module" src="../assets/precip/ht-precip.mjs"></script>
 </body></html>
