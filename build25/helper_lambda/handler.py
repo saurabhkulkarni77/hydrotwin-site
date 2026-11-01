@@ -1,8 +1,11 @@
 """HydroTwin helper-bot inference Lambda.
 
 Hosts an open source instruct model (GGUF Q4_K_M, stored in a private S3 bucket;
-MODEL_KEY selects the file — Qwen3-4B-Instruct-2507 since 2026-11-01,
-previously Qwen2.5-0.5B-Instruct, whose file stays in the bucket for rollback)
+MODEL_KEY selects the file — Qwen2.5-3B-Instruct since 2026-11-01.
+Qwen3-4B-Instruct-2507 was tried first and rejected on measured
+latency: ~37 s warm at this account's 3008 MB Lambda cap, where the
+3B stays near the ~15 s bound. The 4B and 0.5B files stay in the
+bucket for rollback.)
 and runs it with a bundled llama.cpp `llama-completion` binary built for
 Amazon Linux 2023. The model is downloaded to /tmp on cold start and
 reused on warm starts. No always-on resources; invoked only through the
@@ -45,8 +48,13 @@ SYSTEM = (
 
 MAX_QUESTION_CHARS = 600
 MAX_ENTRIES = 5
-MAX_ENTRY_TEXT = 600
-MAX_OUTPUT_TOKENS = "192"
+# Entry text is trimmed harder than the original 600 chars: on this
+# account's 3008 MB Lambda cap, prompt prefill is the latency
+# bottleneck (the 4B model needed ~37 s warm, mostly prefill), and
+# the rephrase only needs the gist of each entry — the bot's own
+# index answer keeps the full text on screen regardless.
+MAX_ENTRY_TEXT = 240
+MAX_OUTPUT_TOKENS = "160"
 GEN_TIMEOUT_S = 100
 
 

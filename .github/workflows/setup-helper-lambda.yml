@@ -1,8 +1,9 @@
 name: Setup helper-bot Lambda (one-off)
 
 # One-off infra for the HydroTwin helper bot server-side model:
-# private S3 bucket holds the model GGUF (Qwen3-4B-Instruct-2507
-# since 2026-11-01; the Qwen2.5-0.5B file stays for rollback); a Lambda
+# private S3 bucket holds the model GGUF (Qwen2.5-3B-Instruct
+# since 2026-11-01; the Qwen3-4B and Qwen2.5-0.5B files stay in the
+# bucket for rollback); a Lambda
 # (python3.12 zip deployment, bundled llama.cpp built for Amazon
 # Linux 2023) serves grounded answers through a Function URL whose
 # CORS is restricted to the DEV CloudFront origin only.
@@ -25,8 +26,8 @@ permissions:
 env:
   AWS_REGION: us-east-1
   BUCKET: hydrotwin-helper-2026
-  MODEL_FILE: Qwen3-4B-Instruct-2507-Q4_K_M.gguf
-  MODEL_URL: https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/main/Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+  MODEL_FILE: qwen2.5-3b-instruct-q4_k_m.gguf
+  MODEL_URL: https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf
   ROLE_NAME: hydrotwin-helper-lambda-role
   FUNCTION_NAME: hydrotwin-helper
   DEV_ORIGIN: https://d36737oy6jvpd8.cloudfront.net
