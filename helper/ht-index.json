@@ -7233,6 +7233,113 @@
    ],
    "url": "mlops.html",
    "target": "body"
+  },
+  {
+   "id": "explainer-water-buildings",
+   "kind": "explainer",
+   "title": "Why the water is overlapping buildings",
+   "text": "On the 3D pages the water is a modeled surface laid over the real terrain at the level the selected date gives for that station, drawn across the channel and the low ground beside it. The buildings are real building footprints, and footprints that clearly sit in the channel are removed when the pages are built: 1,068 were dropped across the 14 stations and 18,203 were kept. Where the terrain data and a footprint disagree by a small amount, or a building stands right at the bank inside the edge of the modeled water, the water surface can clip through the bottom of the building and look as if it is overlapping it. It is a limit of the data resolution in the scene, not a flood forecast for that building.",
+   "keywords": [
+    "why water is overlapping buildings",
+    "water is overlapping buildings",
+    "water overlapping buildings",
+    "overlapping buildings",
+    "water over buildings",
+    "water covering buildings",
+    "water through buildings",
+    "buildings in water",
+    "flooded buildings",
+    "overlapping"
+   ],
+   "url": null,
+   "target": "#htd-body"
+  },
+  {
+   "id": "explainer-bridge-gaps",
+   "kind": "explainer",
+   "title": "Why the water passes under bridges",
+   "text": "The water on the 3D pages is a ribbon drawn along the channel. At each bridge crossing a gap is cut into the ribbon, so the water passes under the deck instead of painting over the road. The crossings come from OpenStreetMap bridge data baked in when the pages are built, 141 across the 14 stations. Roads that run beside the channel rather than across it are not cut.",
+   "keywords": [
+    "why does water go under bridge",
+    "water under the bridge",
+    "water under bridge",
+    "bridge over river",
+    "bridge gap",
+    "water flows under bridge",
+    "highway over river",
+    "bridges"
+   ],
+   "url": null,
+   "target": "#htd-body"
+  },
+  {
+   "id": "explainer-buildings-source",
+   "kind": "explainer",
+   "title": "Where the buildings come from",
+   "text": "The buildings on the 3D pages come from Microsoft Building Footprints, a public data set of building outlines drawn from satellite imagery. Each station page keeps the footprints around the river and drops the ones that clearly sit in the water. A building can be missing when the data set holds no outline for it, when it went up after the imagery was taken, or when the water filter removed it because its outline touched the modeled channel.",
+   "keywords": [
+    "where do the buildings come from",
+    "buildings come from",
+    "building data",
+    "buildings source",
+    "missing building",
+    "why is a building missing",
+    "building footprints",
+    "microsoft building footprints"
+   ],
+   "url": null,
+   "target": "#htd-body"
+  },
+  {
+   "id": "explainer-data-sources",
+   "kind": "explainer",
+   "title": "Where the water and terrain data comes from",
+   "text": "The flow and water level numbers come from the USGS gauge at each station. The ground in the 3D view is built from USGS 3DEP elevation data, and SRTM terrain with Esri satellite imagery gives the wider scene its shape and surface. The forecast and outlook panels come from the HydroTwin models run for each basin.",
+   "keywords": [
+    "data source",
+    "data sources",
+    "where does the data come from",
+    "terrain data",
+    "elevation data",
+    "satellite imagery source",
+    "terrain source",
+    "usgs data"
+   ],
+   "url": null,
+   "target": "#htd-body"
+  },
+  {
+   "id": "explainer-rain-snow",
+   "kind": "explainer",
+   "title": "Why no rain or snow falls on some days",
+   "text": "The rain and snow on a 3D page replay the recorded weather of the date in the Date field, taken from the Open-Meteo archive for that station. If the archive recorded rain that day, rain falls; if it recorded snow, snow falls. When the record for the day is dry, the archive holds nothing to replay, so no rain and no snow appear. It is the weather of the selected day, not a live forecast.",
+   "keywords": [
+    "why is there no rain today",
+    "no rain today",
+    "why no rain",
+    "why is it not raining",
+    "why no snow",
+    "why is it not snowing",
+    "nothing falls",
+    "dry day no rain"
+   ],
+   "url": null,
+   "target": "#ht-date"
+  },
+  {
+   "id": "explainer-date-level",
+   "kind": "explainer",
+   "title": "Why the river runs high on some days and low on others",
+   "text": "The river in the scene is drawn for the day in the Date field: the water level and flow are the values the gauge recorded that day, so a wet day in the record shows a higher river and a dry spell shows a lower one. The hydrograph and the outlooks are drawn for the same day, and the rain or snow animation follows it too.",
+   "keywords": [
+    "why does the river change when i change the date",
+    "why does the river change",
+    "when i change the date",
+    "water level changes with date",
+    "date drives the scene"
+   ],
+   "url": null,
+   "target": "#ht-date"
   }
  ]
 }
