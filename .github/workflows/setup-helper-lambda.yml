@@ -29,6 +29,8 @@ env:
   BUCKET: hydrotwin-helper-2026
   MODEL_FILE: qwen2.5-3b-instruct-q4_k_m.gguf
   MODEL_URL: https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf
+  EMBED_MODEL_FILE: bge-small-en-v1.5-q8_0.gguf
+  EMBED_MODEL_URL: https://huggingface.co/ggml-org/bge-small-en-v1.5-Q8_0-GGUF/resolve/main/bge-small-en-v1.5-q8_0.gguf
   ROLE_NAME: hydrotwin-helper-lambda-role
   FUNCTION_NAME: hydrotwin-helper
   DEV_ORIGIN: https://d36737oy6jvpd8.cloudfront.net
@@ -74,6 +76,18 @@ jobs:
             ls -l "$MODEL_FILE"
             aws s3 cp "$MODEL_FILE" "s3://$BUCKET/model/$MODEL_FILE"
             echo "Model uploaded."
+          fi
+
+      - name: Upload embedding model to bucket (if missing)
+        run: |
+          set -euo pipefail
+          if aws s3api head-object --bucket "$BUCKET" --key "model/$EMBED_MODEL_FILE" 2>/dev/null; then
+            echo "Embedding model already in bucket."
+          else
+            curl -fL --retry 3 -o "$EMBED_MODEL_FILE" "$EMBED_MODEL_URL"
+            ls -l "$EMBED_MODEL_FILE"
+            aws s3 cp "$EMBED_MODEL_FILE" "s3://$BUCKET/model/$EMBED_MODEL_FILE"
+            echo "Embedding model uploaded."
           fi
 
       - name: Create Lambda execution role (if missing)
@@ -150,7 +164,7 @@ jobs:
                 --runtime python3.12 --handler handler.lambda_handler \
                 --role "$ROLE_ARN" --memory-size 3008 --timeout 300 \
                 --ephemeral-storage Size=10240 \
-                --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE,LLAMA_THREADS=2}" 2>&1); then
+                --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE,EMBED_MODEL_KEY=model/$EMBED_MODEL_FILE,SITE_BASE=$DEV_ORIGIN,LLAMA_THREADS=2}" 2>&1); then
                 echo "Configuration updated on attempt $attempt."
                 break
               fi
@@ -173,7 +187,7 @@ jobs:
               --runtime python3.12 --handler handler.lambda_handler \
               --role "$ROLE_ARN" --memory-size 3008 --timeout 300 \
               --ephemeral-storage Size=10240 \
-              --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE,LLAMA_THREADS=2}" \
+              --environment "Variables={MODEL_BUCKET=$BUCKET,MODEL_KEY=model/$MODEL_FILE,EMBED_MODEL_KEY=model/$EMBED_MODEL_FILE,SITE_BASE=$DEV_ORIGIN,LLAMA_THREADS=2}" \
               --code "S3Bucket=$BUCKET,S3Key=deploy/helper-fn.zip" >/dev/null
             echo "Function created."
           fi
@@ -242,4 +256,8 @@ jobs:
           echo
           echo "--- warm call ---"
           time curl -s --max-time 300 -X POST "$FUNCTION_URL" -H 'Content-Type: application/json' -d "$PAYLOAD"
+          echo
+          echo "--- hybrid rerank call (informational: order appears once helper/ht-emb.bin is live on the dev site) ---"
+          PAYLOAD2='{"question":"the river out west in the Golden State","context":[{"title":"Columbia River at The Dalles, OR (USGS 14105700) — 3D view","text":"Interactive 3D digital twin for Columbia River at The Dalles, OR.","page":"stations/USGS-14105700-3d.html"}],"candidates":[{"id":"station-14105700-3d","score":31},{"id":"panel-14105700-hts-sec-charts3d","score":24}],"debug":true}'
+          curl -s --max-time 300 -X POST "$FUNCTION_URL" -H 'Content-Type: application/json' -d "$PAYLOAD2" || true
           echo
