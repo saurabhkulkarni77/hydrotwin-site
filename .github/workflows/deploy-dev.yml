@@ -109,10 +109,8 @@ jobs:
         run: python3 build25/patch_polywater.py
       - name: Real river from USGS 3DEP elevation (dev only)
         run: python3 build25/patch_realriver.py
-      - name: Buildings present but never in water (dev only)
-        run: python3 build25/patch_buildingsback.py
-      - name: Scene water fix - drop buildings intersecting water polygons (dev only)
-        run: python3 build25/patch_waterfilter.py
+      - name: No buildings - 3D buildings layer removed entirely (dev only)
+        run: python3 build25/patch_nobuildings.py
 
       - name: Ribbon shading fix - water normals up, double-sided (dev only)
         run: python3 build25/patch_ribbonshade.py
