@@ -22,6 +22,18 @@
  * failure (network, timeout, bad JSON, 5xx) silently keeps the index
  * answer. If AI_ENDPOINT is empty the bot is exactly the pure index
  * bot. There is no model download, no Enable button, and no worker.
+ *
+ * Hybrid rerank (2026-11-01): the same endpoint call also carries
+ * the top-10 keyword-scored candidates. The Lambda reranks the
+ * whole index by keyword+embedding hybrid score (bge-small
+ * embeddings, precomputed into helper/ht-emb.bin at build time,
+ * question embedded server-side — nothing embedding-related ever
+ * runs in the browser) and may return an `order`; when it differs,
+ * the answer and Show me buttons are rebuilt from the reranked
+ * hits before the rephrase lands. Shipped because a 56-question
+ * paraphrase battery measured held-out top-1 accuracy 0.071 for
+ * the keyword ranking alone vs 0.500 with the rerank. The instant
+ * first pass and the relevance gate are unchanged.
  */
 (function () {
   'use strict';
@@ -114,7 +126,10 @@
   });
 
   function norm(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim(); }
-  function retrieve(q) {
+  // The keyword scoring loop, shared by retrieve() (the instant
+  // top-3 the visitor sees) and retrieveCandidates() (the wider
+  // scored list sent to the endpoint for the hybrid rerank).
+  function scoredList(q) {
     if (!INDEX) return [];
     var nq = ' ' + norm(q) + ' ';
     var toks = norm(q).split(' ').filter(function (t) { return t.length > 1; });
@@ -135,7 +150,13 @@
       if (s > 0) scored.push([s, e]);
     }
     scored.sort(function (a, b) { return b[0] - a[0]; });
-    return scored.slice(0, 3).map(function (x) { return x[1]; });
+    return scored;
+  }
+  function retrieve(q) {
+    return scoredList(q).slice(0, 3).map(function (x) { return x[1]; });
+  }
+  function retrieveCandidates(q, n) {
+    return scoredList(q).slice(0, n).map(function (x) { return { id: x[1].id, score: x[0] }; });
   }
 
   // Relevance gate: a question counts as a HydroTwin question only if
@@ -243,11 +264,28 @@
     return out;
   }
 
-  // Server-side AI rephrase. The index answer is already on screen;
-  // this only swaps the answer text when a good reply arrives, and
-  // silently keeps the index answer on ANY failure. The Show me
-  // buttons live outside the text span and are never touched.
-  function askServer(q, hits, txtSpan, tag) {
+  // Server-side AI rephrase + hybrid rerank. The index answer is
+  // already on screen; this call rides along silently. The endpoint
+  // may return an `order` (entry ids reranked by keyword+embedding
+  // hybrid score — see the Lambda handler): when it differs from
+  // the keyword order, the answer text and the Show me buttons are
+  // rebuilt from the reranked hits first, and then the rephrased
+  // text (grounded in those same hits) replaces the text as before.
+  // ANY failure (network, timeout, bad JSON, 5xx) silently keeps
+  // the keyword answer and its buttons exactly as they were.
+  function renderShowButtons(box, list) {
+    box.textContent = '';
+    list.slice(0, 2).forEach(function (e) {
+      var b = document.createElement('button');
+      b.className = 'hthb-act'; b.type = 'button';
+      b.textContent = 'Show me: ' + e.title;
+      b.addEventListener('click', function () { showMe(e); });
+      box.appendChild(document.createElement('br'));
+      box.appendChild(b);
+    });
+  }
+  function askServer(q, view) {
+    var hits = view.hits, txtSpan = view.txtSpan, tag = view.tag;
     if (!AI_ENDPOINT || !hits.length) { tag.remove(); return; }
     tag.textContent = 'Asking the site AI…';
     var done = false;
@@ -268,6 +306,7 @@
           context: hits.map(function (e) {
             return { title: e.title, text: e.text, page: e.url || 'this page' };
           }),
+          candidates: retrieveCandidates(q, 10),
         }),
         signal: ctrl ? ctrl.signal : undefined,
       }).then(function (r) {
@@ -275,6 +314,25 @@
         return r.json();
       }).then(function (d) {
         settle();
+        // Hybrid rerank adoption: rebuild answer + buttons from
+        // the reranked hits when the endpoint returned an order
+        // that resolves against the local index and actually
+        // changes the ranking.
+        if (d && Array.isArray(d.order) && d.order.length && INDEX) {
+          var byId = {};
+          INDEX.entries.forEach(function (e) { byId[e.id] = e; });
+          var mapped = d.order.map(function (id) { return byId[id]; })
+            .filter(function (e) { return !!e; }).slice(0, 3);
+          var changed = mapped.length && (mapped[0].id !== hits[0].id
+            || mapped.length !== hits.length
+            || mapped.some(function (e, i) { return !hits[i] || e.id !== hits[i].id; }));
+          if (changed) {
+            view.hits = mapped;
+            txtSpan.textContent = fallbackAnswer(q, mapped);
+            renderShowButtons(view.btnBox, mapped);
+            window.__htHelperLast = { q: q, ids: mapped.map(function (e) { return e.id; }), reranked: true };
+          }
+        }
         var txt = d && typeof d.answer === 'string' ? d.answer.trim() : '';
         if (txt) {
           txtSpan.textContent = txt;
@@ -323,19 +381,15 @@
     var txtSpan = document.createElement('span');
     txtSpan.textContent = fallbackAnswer(q, hits);
     bubble.appendChild(txtSpan);
-    hits.slice(0, 2).forEach(function (e) {
-      var b = document.createElement('button');
-      b.className = 'hthb-act'; b.type = 'button';
-      b.textContent = 'Show me: ' + e.title;
-      b.addEventListener('click', function () { showMe(e); });
-      bubble.appendChild(document.createElement('br'));
-      bubble.appendChild(b);
-    });
+    var btnBox = document.createElement('span');
+    bubble.appendChild(btnBox);
+    renderShowButtons(btnBox, hits);
     var tag = document.createElement('div');
     tag.className = 'hthb-aitag';
     bubble.appendChild(tag);
     msgs.scrollTop = msgs.scrollHeight;
-    askServer(q, hits, txtSpan, tag);
+    window.__htHelperLast = { q: q, ids: hits.map(function (e) { return e.id; }), reranked: false };
+    askServer(q, { hits: hits, txtSpan: txtSpan, tag: tag, btnBox: btnBox });
   }
 
   // ------------------------------------------------------------ wiring
