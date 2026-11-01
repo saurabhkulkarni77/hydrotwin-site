@@ -105,14 +105,21 @@
    "id": "station-01463500-data",
    "kind": "station",
    "title": "Delaware River at Trenton, NJ (USGS 01463500) — Data view",
-   "text": "Statistics and Data view for Delaware River at Trenton, NJ, USGS station 01463500 on the Delaware River. Drainage area 6,780 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Delaware River at Trenton, NJ, USGS station 01463500 on the Delaware River. It is the HydroTwin station in New Jersey. Drainage area 6,780 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
     "delaware river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-top"
@@ -121,7 +128,7 @@
    "id": "station-01463500-3d",
    "kind": "station",
    "title": "Delaware River at Trenton, NJ (USGS 01463500) — 3D view",
-   "text": "Interactive 3D digital twin for Delaware River at Trenton, NJ, USGS station 01463500 on the Delaware River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Delaware River at Trenton, NJ, USGS station 01463500 on the Delaware River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in New Jersey.",
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
@@ -130,7 +137,14 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station"
    ],
    "url": "stations/USGS-01463500-3d.html",
    "target": "#ht-date"
@@ -143,7 +157,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "hydrograph"
+    "hydrograph",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "hydrograph in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-hydro",
@@ -157,7 +179,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "7-day forecast"
+    "7-day forecast",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "7-day forecast in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-fc",
@@ -171,7 +201,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "model statistics"
+    "model statistics",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "model statistics in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-models",
@@ -185,7 +223,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "feature ablation"
+    "feature ablation",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "feature ablation in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-ablation",
@@ -199,7 +245,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "weekly outlook"
+    "weekly outlook",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "weekly outlook in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-weekly",
@@ -213,7 +267,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "monthly outlook"
+    "monthly outlook",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "monthly outlook in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-monthly",
@@ -227,7 +289,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "yearly outlook"
+    "yearly outlook",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "yearly outlook in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-yearly",
@@ -241,7 +311,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "drift"
+    "drift",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "drift in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-drift",
@@ -255,7 +333,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "3d forecast chart"
+    "3d forecast chart",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "3d forecast chart in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-3dchart",
@@ -269,7 +355,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "multi-factor correlation in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-corr",
@@ -283,7 +377,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "features affecting discharge flow in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-featimp",
@@ -297,7 +399,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "station clusters"
+    "station clusters",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "station clusters in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-clusters",
@@ -311,7 +421,15 @@
    "keywords": [
     "01463500",
     "delaware river at trenton, nj",
-    "data charts in 3d"
+    "data charts in 3d",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "data charts in 3d in new jersey"
    ],
    "url": "stations/USGS-01463500.html",
    "target": "#hts-sec-charts3d",
@@ -326,7 +444,15 @@
     "01463500",
     "delaware river at trenton, nj",
     "daily forecast",
-    "3d"
+    "3d",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "daily forecast in new jersey"
    ],
    "url": "stations/USGS-01463500-3d.html",
    "target": "#dock",
@@ -341,7 +467,15 @@
     "01463500",
     "delaware river at trenton, nj",
     "weekly outlook",
-    "3d"
+    "3d",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "weekly outlook in new jersey"
    ],
    "url": "stations/USGS-01463500-3d.html",
    "target": "#htwk-panel",
@@ -356,7 +490,15 @@
     "01463500",
     "delaware river at trenton, nj",
     "monthly outlook",
-    "3d"
+    "3d",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "monthly outlook in new jersey"
    ],
    "url": "stations/USGS-01463500-3d.html",
    "target": "#htmo-panel",
@@ -371,7 +513,15 @@
     "01463500",
     "delaware river at trenton, nj",
     "yearly outlook",
-    "3d"
+    "3d",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "yearly outlook in new jersey"
    ],
    "url": "stations/USGS-01463500-3d.html",
    "target": "#htyr-panel",
@@ -386,7 +536,15 @@
     "01463500",
     "delaware river at trenton, nj",
     "confidence interval",
-    "3d"
+    "3d",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "confidence interval in new jersey"
    ],
    "url": "stations/USGS-01463500-3d.html",
    "target": "#ht-dacp-panel",
@@ -401,7 +559,15 @@
     "01463500",
     "delaware river at trenton, nj",
     "model drift",
-    "3d"
+    "3d",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "model drift in new jersey"
    ],
    "url": "stations/USGS-01463500-3d.html",
    "target": "#ht-drift-panel",
@@ -416,7 +582,15 @@
     "01463500",
     "delaware river at trenton, nj",
     "features affecting flow",
-    "3d"
+    "3d",
+    "trenton",
+    "new jersey",
+    "nj",
+    "river in new jersey",
+    "station in new jersey",
+    "new jersey river",
+    "new jersey station",
+    "features affecting flow in new jersey"
    ],
    "url": "stations/USGS-01463500-3d.html",
    "target": "#htfi-panel",
@@ -426,14 +600,23 @@
    "id": "station-01646500-data",
    "kind": "station",
    "title": "Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500) — Data view",
-   "text": "Statistics and Data view for Potomac River at Little Falls, MD (near Washington DC), USGS station 01646500 on the Potomac River. Drainage area 11,560 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Potomac River at Little Falls, MD (near Washington DC), USGS station 01646500 on the Potomac River. It is the HydroTwin station in Maryland. Drainage area 11,560 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
     "potomac river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-top"
@@ -442,7 +625,7 @@
    "id": "station-01646500-3d",
    "kind": "station",
    "title": "Potomac River at Little Falls, MD (near Washington DC) (USGS 01646500) — 3D view",
-   "text": "Interactive 3D digital twin for Potomac River at Little Falls, MD (near Washington DC), USGS station 01646500 on the Potomac River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Potomac River at Little Falls, MD (near Washington DC), USGS station 01646500 on the Potomac River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Maryland.",
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
@@ -451,7 +634,16 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station"
    ],
    "url": "stations/USGS-01646500-3d.html",
    "target": "#ht-date"
@@ -464,7 +656,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "hydrograph"
+    "hydrograph",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "hydrograph in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-hydro",
@@ -478,7 +680,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "7-day forecast"
+    "7-day forecast",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "7-day forecast in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-fc",
@@ -492,7 +704,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "model statistics"
+    "model statistics",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "model statistics in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-models",
@@ -506,7 +728,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "feature ablation"
+    "feature ablation",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "feature ablation in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-ablation",
@@ -520,7 +752,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "weekly outlook"
+    "weekly outlook",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "weekly outlook in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-weekly",
@@ -534,7 +776,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "monthly outlook"
+    "monthly outlook",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "monthly outlook in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-monthly",
@@ -548,7 +800,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "yearly outlook"
+    "yearly outlook",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "yearly outlook in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-yearly",
@@ -562,7 +824,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "drift"
+    "drift",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "drift in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-drift",
@@ -576,7 +848,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "3d forecast chart"
+    "3d forecast chart",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "3d forecast chart in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-3dchart",
@@ -590,7 +872,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "multi-factor correlation in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-corr",
@@ -604,7 +896,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "features affecting discharge flow in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-featimp",
@@ -618,7 +920,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "station clusters"
+    "station clusters",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "station clusters in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-clusters",
@@ -632,7 +944,17 @@
    "keywords": [
     "01646500",
     "potomac river at little falls, md (near washington dc)",
-    "data charts in 3d"
+    "data charts in 3d",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "data charts in 3d in maryland"
    ],
    "url": "stations/USGS-01646500.html",
    "target": "#hts-sec-charts3d",
@@ -647,7 +969,17 @@
     "01646500",
     "potomac river at little falls, md (near washington dc)",
     "daily forecast",
-    "3d"
+    "3d",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "daily forecast in maryland"
    ],
    "url": "stations/USGS-01646500-3d.html",
    "target": "#dock",
@@ -662,7 +994,17 @@
     "01646500",
     "potomac river at little falls, md (near washington dc)",
     "weekly outlook",
-    "3d"
+    "3d",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "weekly outlook in maryland"
    ],
    "url": "stations/USGS-01646500-3d.html",
    "target": "#htwk-panel",
@@ -677,7 +1019,17 @@
     "01646500",
     "potomac river at little falls, md (near washington dc)",
     "monthly outlook",
-    "3d"
+    "3d",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "monthly outlook in maryland"
    ],
    "url": "stations/USGS-01646500-3d.html",
    "target": "#htmo-panel",
@@ -692,7 +1044,17 @@
     "01646500",
     "potomac river at little falls, md (near washington dc)",
     "yearly outlook",
-    "3d"
+    "3d",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "yearly outlook in maryland"
    ],
    "url": "stations/USGS-01646500-3d.html",
    "target": "#htyr-panel",
@@ -707,7 +1069,17 @@
     "01646500",
     "potomac river at little falls, md (near washington dc)",
     "confidence interval",
-    "3d"
+    "3d",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "confidence interval in maryland"
    ],
    "url": "stations/USGS-01646500-3d.html",
    "target": "#ht-dacp-panel",
@@ -722,7 +1094,17 @@
     "01646500",
     "potomac river at little falls, md (near washington dc)",
     "model drift",
-    "3d"
+    "3d",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "model drift in maryland"
    ],
    "url": "stations/USGS-01646500-3d.html",
    "target": "#ht-drift-panel",
@@ -737,7 +1119,17 @@
     "01646500",
     "potomac river at little falls, md (near washington dc)",
     "features affecting flow",
-    "3d"
+    "3d",
+    "little falls",
+    "maryland",
+    "md",
+    "washington dc",
+    "dc",
+    "river in maryland",
+    "station in maryland",
+    "maryland river",
+    "maryland station",
+    "features affecting flow in maryland"
    ],
    "url": "stations/USGS-01646500-3d.html",
    "target": "#htfi-panel",
@@ -747,14 +1139,21 @@
    "id": "station-02320500-data",
    "kind": "station",
    "title": "Suwannee River at Branford, FL (USGS 02320500) — Data view",
-   "text": "Statistics and Data view for Suwannee River at Branford, FL, USGS station 02320500 on the Suwannee River. Drainage area 7,880 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Suwannee River at Branford, FL, USGS station 02320500 on the Suwannee River. It is the HydroTwin station in Florida. Drainage area 7,880 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
     "suwannee river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-top"
@@ -763,7 +1162,7 @@
    "id": "station-02320500-3d",
    "kind": "station",
    "title": "Suwannee River at Branford, FL (USGS 02320500) — 3D view",
-   "text": "Interactive 3D digital twin for Suwannee River at Branford, FL, USGS station 02320500 on the Suwannee River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Suwannee River at Branford, FL, USGS station 02320500 on the Suwannee River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Florida.",
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
@@ -772,7 +1171,14 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station"
    ],
    "url": "stations/USGS-02320500-3d.html",
    "target": "#ht-date"
@@ -785,7 +1191,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "hydrograph"
+    "hydrograph",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "hydrograph in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-hydro",
@@ -799,7 +1213,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "7-day forecast"
+    "7-day forecast",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "7-day forecast in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-fc",
@@ -813,7 +1235,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "model statistics"
+    "model statistics",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "model statistics in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-models",
@@ -827,7 +1257,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "feature ablation"
+    "feature ablation",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "feature ablation in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-ablation",
@@ -841,7 +1279,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "weekly outlook"
+    "weekly outlook",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "weekly outlook in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-weekly",
@@ -855,7 +1301,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "monthly outlook"
+    "monthly outlook",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "monthly outlook in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-monthly",
@@ -869,7 +1323,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "yearly outlook"
+    "yearly outlook",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "yearly outlook in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-yearly",
@@ -883,7 +1345,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "drift"
+    "drift",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "drift in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-drift",
@@ -897,7 +1367,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "3d forecast chart"
+    "3d forecast chart",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "3d forecast chart in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-3dchart",
@@ -911,7 +1389,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "multi-factor correlation in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-corr",
@@ -925,7 +1411,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "features affecting discharge flow in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-featimp",
@@ -939,7 +1433,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "station clusters"
+    "station clusters",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "station clusters in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-clusters",
@@ -953,7 +1455,15 @@
    "keywords": [
     "02320500",
     "suwannee river at branford, fl",
-    "data charts in 3d"
+    "data charts in 3d",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "data charts in 3d in florida"
    ],
    "url": "stations/USGS-02320500.html",
    "target": "#hts-sec-charts3d",
@@ -968,7 +1478,15 @@
     "02320500",
     "suwannee river at branford, fl",
     "daily forecast",
-    "3d"
+    "3d",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "daily forecast in florida"
    ],
    "url": "stations/USGS-02320500-3d.html",
    "target": "#dock",
@@ -983,7 +1501,15 @@
     "02320500",
     "suwannee river at branford, fl",
     "weekly outlook",
-    "3d"
+    "3d",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "weekly outlook in florida"
    ],
    "url": "stations/USGS-02320500-3d.html",
    "target": "#htwk-panel",
@@ -998,7 +1524,15 @@
     "02320500",
     "suwannee river at branford, fl",
     "monthly outlook",
-    "3d"
+    "3d",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "monthly outlook in florida"
    ],
    "url": "stations/USGS-02320500-3d.html",
    "target": "#htmo-panel",
@@ -1013,7 +1547,15 @@
     "02320500",
     "suwannee river at branford, fl",
     "yearly outlook",
-    "3d"
+    "3d",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "yearly outlook in florida"
    ],
    "url": "stations/USGS-02320500-3d.html",
    "target": "#htyr-panel",
@@ -1028,7 +1570,15 @@
     "02320500",
     "suwannee river at branford, fl",
     "confidence interval",
-    "3d"
+    "3d",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "confidence interval in florida"
    ],
    "url": "stations/USGS-02320500-3d.html",
    "target": "#ht-dacp-panel",
@@ -1043,7 +1593,15 @@
     "02320500",
     "suwannee river at branford, fl",
     "model drift",
-    "3d"
+    "3d",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "model drift in florida"
    ],
    "url": "stations/USGS-02320500-3d.html",
    "target": "#ht-drift-panel",
@@ -1058,7 +1616,15 @@
     "02320500",
     "suwannee river at branford, fl",
     "features affecting flow",
-    "3d"
+    "3d",
+    "branford",
+    "florida",
+    "fl",
+    "river in florida",
+    "station in florida",
+    "florida river",
+    "florida station",
+    "features affecting flow in florida"
    ],
    "url": "stations/USGS-02320500-3d.html",
    "target": "#htfi-panel",
@@ -1068,14 +1634,21 @@
    "id": "station-03294500-data",
    "kind": "station",
    "title": "Ohio River at Louisville, KY (USGS 03294500) — Data view",
-   "text": "Statistics and Data view for Ohio River at Louisville, KY, USGS station 03294500 on the Ohio River. Drainage area 91,170 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Ohio River at Louisville, KY, USGS station 03294500 on the Ohio River. It is the HydroTwin station in Kentucky. Drainage area 91,170 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
     "ohio river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-top"
@@ -1084,7 +1657,7 @@
    "id": "station-03294500-3d",
    "kind": "station",
    "title": "Ohio River at Louisville, KY (USGS 03294500) — 3D view",
-   "text": "Interactive 3D digital twin for Ohio River at Louisville, KY, USGS station 03294500 on the Ohio River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Ohio River at Louisville, KY, USGS station 03294500 on the Ohio River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Kentucky.",
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
@@ -1093,7 +1666,14 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station"
    ],
    "url": "stations/USGS-03294500-3d.html",
    "target": "#ht-date"
@@ -1106,7 +1686,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "hydrograph"
+    "hydrograph",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "hydrograph in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-hydro",
@@ -1120,7 +1708,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "7-day forecast"
+    "7-day forecast",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "7-day forecast in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-fc",
@@ -1134,7 +1730,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "model statistics"
+    "model statistics",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "model statistics in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-models",
@@ -1148,7 +1752,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "feature ablation"
+    "feature ablation",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "feature ablation in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-ablation",
@@ -1162,7 +1774,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "weekly outlook"
+    "weekly outlook",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "weekly outlook in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-weekly",
@@ -1176,7 +1796,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "monthly outlook"
+    "monthly outlook",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "monthly outlook in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-monthly",
@@ -1190,7 +1818,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "yearly outlook"
+    "yearly outlook",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "yearly outlook in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-yearly",
@@ -1204,7 +1840,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "drift"
+    "drift",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "drift in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-drift",
@@ -1218,7 +1862,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "3d forecast chart"
+    "3d forecast chart",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "3d forecast chart in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-3dchart",
@@ -1232,7 +1884,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "multi-factor correlation in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-corr",
@@ -1246,7 +1906,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "features affecting discharge flow in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-featimp",
@@ -1260,7 +1928,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "station clusters"
+    "station clusters",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "station clusters in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-clusters",
@@ -1274,7 +1950,15 @@
    "keywords": [
     "03294500",
     "ohio river at louisville, ky",
-    "data charts in 3d"
+    "data charts in 3d",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "data charts in 3d in kentucky"
    ],
    "url": "stations/USGS-03294500.html",
    "target": "#hts-sec-charts3d",
@@ -1289,7 +1973,15 @@
     "03294500",
     "ohio river at louisville, ky",
     "daily forecast",
-    "3d"
+    "3d",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "daily forecast in kentucky"
    ],
    "url": "stations/USGS-03294500-3d.html",
    "target": "#dock",
@@ -1304,7 +1996,15 @@
     "03294500",
     "ohio river at louisville, ky",
     "weekly outlook",
-    "3d"
+    "3d",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "weekly outlook in kentucky"
    ],
    "url": "stations/USGS-03294500-3d.html",
    "target": "#htwk-panel",
@@ -1319,7 +2019,15 @@
     "03294500",
     "ohio river at louisville, ky",
     "monthly outlook",
-    "3d"
+    "3d",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "monthly outlook in kentucky"
    ],
    "url": "stations/USGS-03294500-3d.html",
    "target": "#htmo-panel",
@@ -1334,7 +2042,15 @@
     "03294500",
     "ohio river at louisville, ky",
     "yearly outlook",
-    "3d"
+    "3d",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "yearly outlook in kentucky"
    ],
    "url": "stations/USGS-03294500-3d.html",
    "target": "#htyr-panel",
@@ -1349,7 +2065,15 @@
     "03294500",
     "ohio river at louisville, ky",
     "confidence interval",
-    "3d"
+    "3d",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "confidence interval in kentucky"
    ],
    "url": "stations/USGS-03294500-3d.html",
    "target": "#ht-dacp-panel",
@@ -1364,7 +2088,15 @@
     "03294500",
     "ohio river at louisville, ky",
     "model drift",
-    "3d"
+    "3d",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "model drift in kentucky"
    ],
    "url": "stations/USGS-03294500-3d.html",
    "target": "#ht-drift-panel",
@@ -1379,7 +2111,15 @@
     "03294500",
     "ohio river at louisville, ky",
     "features affecting flow",
-    "3d"
+    "3d",
+    "louisville",
+    "kentucky",
+    "ky",
+    "river in kentucky",
+    "station in kentucky",
+    "kentucky river",
+    "kentucky station",
+    "features affecting flow in kentucky"
    ],
    "url": "stations/USGS-03294500-3d.html",
    "target": "#htfi-panel",
@@ -1389,14 +2129,24 @@
    "id": "station-05331000-data",
    "kind": "station",
    "title": "Mississippi River at St. Paul, MN (USGS 05331000) — Data view",
-   "text": "Statistics and Data view for Mississippi River at St. Paul, MN, USGS station 05331000 on the Mississippi River. Drainage area 36,800 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Mississippi River at St. Paul, MN, USGS station 05331000 on the Mississippi River. It is the HydroTwin station in Minnesota. Drainage area 36,800 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
     "mississippi river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-top"
@@ -1405,7 +2155,7 @@
    "id": "station-05331000-3d",
    "kind": "station",
    "title": "Mississippi River at St. Paul, MN (USGS 05331000) — 3D view",
-   "text": "Interactive 3D digital twin for Mississippi River at St. Paul, MN, USGS station 05331000 on the Mississippi River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Mississippi River at St. Paul, MN, USGS station 05331000 on the Mississippi River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Minnesota.",
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
@@ -1414,7 +2164,17 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station"
    ],
    "url": "stations/USGS-05331000-3d.html",
    "target": "#ht-date"
@@ -1427,7 +2187,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "hydrograph"
+    "hydrograph",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "hydrograph in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-hydro",
@@ -1441,7 +2212,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "7-day forecast"
+    "7-day forecast",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "7-day forecast in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-fc",
@@ -1455,7 +2237,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "model statistics"
+    "model statistics",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "model statistics in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-models",
@@ -1469,7 +2262,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "feature ablation"
+    "feature ablation",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "feature ablation in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-ablation",
@@ -1483,7 +2287,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "weekly outlook"
+    "weekly outlook",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "weekly outlook in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-weekly",
@@ -1497,7 +2312,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "monthly outlook"
+    "monthly outlook",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "monthly outlook in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-monthly",
@@ -1511,7 +2337,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "yearly outlook"
+    "yearly outlook",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "yearly outlook in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-yearly",
@@ -1525,7 +2362,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "drift"
+    "drift",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "drift in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-drift",
@@ -1539,7 +2387,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "3d forecast chart"
+    "3d forecast chart",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "3d forecast chart in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-3dchart",
@@ -1553,7 +2412,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "multi-factor correlation in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-corr",
@@ -1567,7 +2437,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "features affecting discharge flow in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-featimp",
@@ -1581,7 +2462,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "station clusters"
+    "station clusters",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "station clusters in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-clusters",
@@ -1595,7 +2487,18 @@
    "keywords": [
     "05331000",
     "mississippi river at st. paul, mn",
-    "data charts in 3d"
+    "data charts in 3d",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "data charts in 3d in minnesota"
    ],
    "url": "stations/USGS-05331000.html",
    "target": "#hts-sec-charts3d",
@@ -1610,7 +2513,18 @@
     "05331000",
     "mississippi river at st. paul, mn",
     "daily forecast",
-    "3d"
+    "3d",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "daily forecast in minnesota"
    ],
    "url": "stations/USGS-05331000-3d.html",
    "target": "#dock",
@@ -1625,7 +2539,18 @@
     "05331000",
     "mississippi river at st. paul, mn",
     "weekly outlook",
-    "3d"
+    "3d",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "weekly outlook in minnesota"
    ],
    "url": "stations/USGS-05331000-3d.html",
    "target": "#htwk-panel",
@@ -1640,7 +2565,18 @@
     "05331000",
     "mississippi river at st. paul, mn",
     "monthly outlook",
-    "3d"
+    "3d",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "monthly outlook in minnesota"
    ],
    "url": "stations/USGS-05331000-3d.html",
    "target": "#htmo-panel",
@@ -1655,7 +2591,18 @@
     "05331000",
     "mississippi river at st. paul, mn",
     "yearly outlook",
-    "3d"
+    "3d",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "yearly outlook in minnesota"
    ],
    "url": "stations/USGS-05331000-3d.html",
    "target": "#htyr-panel",
@@ -1670,7 +2617,18 @@
     "05331000",
     "mississippi river at st. paul, mn",
     "confidence interval",
-    "3d"
+    "3d",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "confidence interval in minnesota"
    ],
    "url": "stations/USGS-05331000-3d.html",
    "target": "#ht-dacp-panel",
@@ -1685,7 +2643,18 @@
     "05331000",
     "mississippi river at st. paul, mn",
     "model drift",
-    "3d"
+    "3d",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "model drift in minnesota"
    ],
    "url": "stations/USGS-05331000-3d.html",
    "target": "#ht-drift-panel",
@@ -1700,7 +2669,18 @@
     "05331000",
     "mississippi river at st. paul, mn",
     "features affecting flow",
-    "3d"
+    "3d",
+    "st. paul",
+    "minnesota",
+    "mn",
+    "saint paul",
+    "st paul",
+    "twin cities",
+    "river in minnesota",
+    "station in minnesota",
+    "minnesota river",
+    "minnesota station",
+    "features affecting flow in minnesota"
    ],
    "url": "stations/USGS-05331000-3d.html",
    "target": "#htfi-panel",
@@ -1710,14 +2690,21 @@
    "id": "station-06214500-data",
    "kind": "station",
    "title": "Yellowstone River at Billings, MT (USGS 06214500) — Data view",
-   "text": "Statistics and Data view for Yellowstone River at Billings, MT, USGS station 06214500 on the Yellowstone River. Drainage area 11,807 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Yellowstone River at Billings, MT, USGS station 06214500 on the Yellowstone River. It is the HydroTwin station in Montana. Drainage area 11,807 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
     "yellowstone river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-top"
@@ -1726,7 +2713,7 @@
    "id": "station-06214500-3d",
    "kind": "station",
    "title": "Yellowstone River at Billings, MT (USGS 06214500) — 3D view",
-   "text": "Interactive 3D digital twin for Yellowstone River at Billings, MT, USGS station 06214500 on the Yellowstone River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Yellowstone River at Billings, MT, USGS station 06214500 on the Yellowstone River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Montana.",
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
@@ -1735,7 +2722,14 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station"
    ],
    "url": "stations/USGS-06214500-3d.html",
    "target": "#ht-date"
@@ -1748,7 +2742,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "hydrograph"
+    "hydrograph",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "hydrograph in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-hydro",
@@ -1762,7 +2764,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "7-day forecast"
+    "7-day forecast",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "7-day forecast in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-fc",
@@ -1776,7 +2786,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "model statistics"
+    "model statistics",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "model statistics in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-models",
@@ -1790,7 +2808,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "feature ablation"
+    "feature ablation",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "feature ablation in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-ablation",
@@ -1804,7 +2830,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "weekly outlook"
+    "weekly outlook",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "weekly outlook in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-weekly",
@@ -1818,7 +2852,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "monthly outlook"
+    "monthly outlook",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "monthly outlook in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-monthly",
@@ -1832,7 +2874,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "yearly outlook"
+    "yearly outlook",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "yearly outlook in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-yearly",
@@ -1846,7 +2896,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "drift"
+    "drift",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "drift in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-drift",
@@ -1860,7 +2918,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "3d forecast chart"
+    "3d forecast chart",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "3d forecast chart in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-3dchart",
@@ -1874,7 +2940,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "multi-factor correlation in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-corr",
@@ -1888,7 +2962,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "features affecting discharge flow in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-featimp",
@@ -1902,7 +2984,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "station clusters"
+    "station clusters",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "station clusters in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-clusters",
@@ -1916,7 +3006,15 @@
    "keywords": [
     "06214500",
     "yellowstone river at billings, mt",
-    "data charts in 3d"
+    "data charts in 3d",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "data charts in 3d in montana"
    ],
    "url": "stations/USGS-06214500.html",
    "target": "#hts-sec-charts3d",
@@ -1931,7 +3029,15 @@
     "06214500",
     "yellowstone river at billings, mt",
     "daily forecast",
-    "3d"
+    "3d",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "daily forecast in montana"
    ],
    "url": "stations/USGS-06214500-3d.html",
    "target": "#dock",
@@ -1946,7 +3052,15 @@
     "06214500",
     "yellowstone river at billings, mt",
     "weekly outlook",
-    "3d"
+    "3d",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "weekly outlook in montana"
    ],
    "url": "stations/USGS-06214500-3d.html",
    "target": "#htwk-panel",
@@ -1961,7 +3075,15 @@
     "06214500",
     "yellowstone river at billings, mt",
     "monthly outlook",
-    "3d"
+    "3d",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "monthly outlook in montana"
    ],
    "url": "stations/USGS-06214500-3d.html",
    "target": "#htmo-panel",
@@ -1976,7 +3098,15 @@
     "06214500",
     "yellowstone river at billings, mt",
     "yearly outlook",
-    "3d"
+    "3d",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "yearly outlook in montana"
    ],
    "url": "stations/USGS-06214500-3d.html",
    "target": "#htyr-panel",
@@ -1991,7 +3121,15 @@
     "06214500",
     "yellowstone river at billings, mt",
     "confidence interval",
-    "3d"
+    "3d",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "confidence interval in montana"
    ],
    "url": "stations/USGS-06214500-3d.html",
    "target": "#ht-dacp-panel",
@@ -2006,7 +3144,15 @@
     "06214500",
     "yellowstone river at billings, mt",
     "model drift",
-    "3d"
+    "3d",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "model drift in montana"
    ],
    "url": "stations/USGS-06214500-3d.html",
    "target": "#ht-drift-panel",
@@ -2021,7 +3167,15 @@
     "06214500",
     "yellowstone river at billings, mt",
     "features affecting flow",
-    "3d"
+    "3d",
+    "billings",
+    "montana",
+    "mt",
+    "river in montana",
+    "station in montana",
+    "montana river",
+    "montana station",
+    "features affecting flow in montana"
    ],
    "url": "stations/USGS-06214500-3d.html",
    "target": "#htfi-panel",
@@ -2031,14 +3185,21 @@
    "id": "station-06934500-data",
    "kind": "station",
    "title": "Missouri River at Hermann, MO (USGS 06934500) — Data view",
-   "text": "Statistics and Data view for Missouri River at Hermann, MO, USGS station 06934500 on the Missouri River. Drainage area 522,500 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Missouri River at Hermann, MO, USGS station 06934500 on the Missouri River. It is the HydroTwin station in Missouri. Drainage area 522,500 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
     "missouri river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-top"
@@ -2047,7 +3208,7 @@
    "id": "station-06934500-3d",
    "kind": "station",
    "title": "Missouri River at Hermann, MO (USGS 06934500) — 3D view",
-   "text": "Interactive 3D digital twin for Missouri River at Hermann, MO, USGS station 06934500 on the Missouri River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Missouri River at Hermann, MO, USGS station 06934500 on the Missouri River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Missouri.",
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
@@ -2056,7 +3217,14 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station"
    ],
    "url": "stations/USGS-06934500-3d.html",
    "target": "#ht-date"
@@ -2069,7 +3237,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "hydrograph"
+    "hydrograph",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "hydrograph in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-hydro",
@@ -2083,7 +3259,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "7-day forecast"
+    "7-day forecast",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "7-day forecast in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-fc",
@@ -2097,7 +3281,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "model statistics"
+    "model statistics",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "model statistics in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-models",
@@ -2111,7 +3303,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "feature ablation"
+    "feature ablation",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "feature ablation in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-ablation",
@@ -2125,7 +3325,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "weekly outlook"
+    "weekly outlook",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "weekly outlook in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-weekly",
@@ -2139,7 +3347,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "monthly outlook"
+    "monthly outlook",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "monthly outlook in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-monthly",
@@ -2153,7 +3369,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "yearly outlook"
+    "yearly outlook",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "yearly outlook in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-yearly",
@@ -2167,7 +3391,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "drift"
+    "drift",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "drift in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-drift",
@@ -2181,7 +3413,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "3d forecast chart"
+    "3d forecast chart",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "3d forecast chart in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-3dchart",
@@ -2195,7 +3435,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "multi-factor correlation in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-corr",
@@ -2209,7 +3457,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "features affecting discharge flow in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-featimp",
@@ -2223,7 +3479,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "station clusters"
+    "station clusters",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "station clusters in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-clusters",
@@ -2237,7 +3501,15 @@
    "keywords": [
     "06934500",
     "missouri river at hermann, mo",
-    "data charts in 3d"
+    "data charts in 3d",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "data charts in 3d in missouri"
    ],
    "url": "stations/USGS-06934500.html",
    "target": "#hts-sec-charts3d",
@@ -2252,7 +3524,15 @@
     "06934500",
     "missouri river at hermann, mo",
     "daily forecast",
-    "3d"
+    "3d",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "daily forecast in missouri"
    ],
    "url": "stations/USGS-06934500-3d.html",
    "target": "#dock",
@@ -2267,7 +3547,15 @@
     "06934500",
     "missouri river at hermann, mo",
     "weekly outlook",
-    "3d"
+    "3d",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "weekly outlook in missouri"
    ],
    "url": "stations/USGS-06934500-3d.html",
    "target": "#htwk-panel",
@@ -2282,7 +3570,15 @@
     "06934500",
     "missouri river at hermann, mo",
     "monthly outlook",
-    "3d"
+    "3d",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "monthly outlook in missouri"
    ],
    "url": "stations/USGS-06934500-3d.html",
    "target": "#htmo-panel",
@@ -2297,7 +3593,15 @@
     "06934500",
     "missouri river at hermann, mo",
     "yearly outlook",
-    "3d"
+    "3d",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "yearly outlook in missouri"
    ],
    "url": "stations/USGS-06934500-3d.html",
    "target": "#htyr-panel",
@@ -2312,7 +3616,15 @@
     "06934500",
     "missouri river at hermann, mo",
     "confidence interval",
-    "3d"
+    "3d",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "confidence interval in missouri"
    ],
    "url": "stations/USGS-06934500-3d.html",
    "target": "#ht-dacp-panel",
@@ -2327,7 +3639,15 @@
     "06934500",
     "missouri river at hermann, mo",
     "model drift",
-    "3d"
+    "3d",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "model drift in missouri"
    ],
    "url": "stations/USGS-06934500-3d.html",
    "target": "#ht-drift-panel",
@@ -2342,7 +3662,15 @@
     "06934500",
     "missouri river at hermann, mo",
     "features affecting flow",
-    "3d"
+    "3d",
+    "hermann",
+    "missouri",
+    "mo",
+    "river in missouri",
+    "station in missouri",
+    "missouri river",
+    "missouri station",
+    "features affecting flow in missouri"
    ],
    "url": "stations/USGS-06934500-3d.html",
    "target": "#htfi-panel",
@@ -2352,14 +3680,20 @@
    "id": "station-07374000-data",
    "kind": "station",
    "title": "Mississippi River at Baton Rouge, LA (USGS 07374000) — Data view",
-   "text": "Statistics and Data view for Mississippi River at Baton Rouge, LA, USGS station 07374000 on the Mississippi River. Drainage area 1,125,810 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Mississippi River at Baton Rouge, LA, USGS station 07374000 on the Mississippi River. It is the HydroTwin station in Louisiana. Drainage area 1,125,810 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
     "mississippi river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-top"
@@ -2368,7 +3702,7 @@
    "id": "station-07374000-3d",
    "kind": "station",
    "title": "Mississippi River at Baton Rouge, LA (USGS 07374000) — 3D view",
-   "text": "Interactive 3D digital twin for Mississippi River at Baton Rouge, LA, USGS station 07374000 on the Mississippi River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Mississippi River at Baton Rouge, LA, USGS station 07374000 on the Mississippi River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Louisiana.",
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
@@ -2377,7 +3711,13 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station"
    ],
    "url": "stations/USGS-07374000-3d.html",
    "target": "#ht-date"
@@ -2390,7 +3730,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "hydrograph"
+    "hydrograph",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "hydrograph in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-hydro",
@@ -2404,7 +3751,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "7-day forecast"
+    "7-day forecast",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "7-day forecast in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-fc",
@@ -2418,7 +3772,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "model statistics"
+    "model statistics",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "model statistics in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-models",
@@ -2432,7 +3793,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "feature ablation"
+    "feature ablation",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "feature ablation in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-ablation",
@@ -2446,7 +3814,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "weekly outlook"
+    "weekly outlook",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "weekly outlook in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-weekly",
@@ -2460,7 +3835,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "monthly outlook"
+    "monthly outlook",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "monthly outlook in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-monthly",
@@ -2474,7 +3856,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "yearly outlook"
+    "yearly outlook",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "yearly outlook in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-yearly",
@@ -2488,7 +3877,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "drift"
+    "drift",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "drift in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-drift",
@@ -2502,7 +3898,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "3d forecast chart"
+    "3d forecast chart",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "3d forecast chart in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-3dchart",
@@ -2516,7 +3919,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "multi-factor correlation in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-corr",
@@ -2530,7 +3940,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "features affecting discharge flow in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-featimp",
@@ -2544,7 +3961,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "station clusters"
+    "station clusters",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "station clusters in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-clusters",
@@ -2558,7 +3982,14 @@
    "keywords": [
     "07374000",
     "mississippi river at baton rouge, la",
-    "data charts in 3d"
+    "data charts in 3d",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "data charts in 3d in louisiana"
    ],
    "url": "stations/USGS-07374000.html",
    "target": "#hts-sec-charts3d",
@@ -2573,7 +4004,14 @@
     "07374000",
     "mississippi river at baton rouge, la",
     "daily forecast",
-    "3d"
+    "3d",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "daily forecast in louisiana"
    ],
    "url": "stations/USGS-07374000-3d.html",
    "target": "#dock",
@@ -2588,7 +4026,14 @@
     "07374000",
     "mississippi river at baton rouge, la",
     "weekly outlook",
-    "3d"
+    "3d",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "weekly outlook in louisiana"
    ],
    "url": "stations/USGS-07374000-3d.html",
    "target": "#htwk-panel",
@@ -2603,7 +4048,14 @@
     "07374000",
     "mississippi river at baton rouge, la",
     "monthly outlook",
-    "3d"
+    "3d",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "monthly outlook in louisiana"
    ],
    "url": "stations/USGS-07374000-3d.html",
    "target": "#htmo-panel",
@@ -2618,7 +4070,14 @@
     "07374000",
     "mississippi river at baton rouge, la",
     "yearly outlook",
-    "3d"
+    "3d",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "yearly outlook in louisiana"
    ],
    "url": "stations/USGS-07374000-3d.html",
    "target": "#htyr-panel",
@@ -2633,7 +4092,14 @@
     "07374000",
     "mississippi river at baton rouge, la",
     "confidence interval",
-    "3d"
+    "3d",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "confidence interval in louisiana"
    ],
    "url": "stations/USGS-07374000-3d.html",
    "target": "#ht-dacp-panel",
@@ -2648,7 +4114,14 @@
     "07374000",
     "mississippi river at baton rouge, la",
     "model drift",
-    "3d"
+    "3d",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "model drift in louisiana"
    ],
    "url": "stations/USGS-07374000-3d.html",
    "target": "#ht-drift-panel",
@@ -2663,7 +4136,14 @@
     "07374000",
     "mississippi river at baton rouge, la",
     "features affecting flow",
-    "3d"
+    "3d",
+    "baton rouge",
+    "louisiana",
+    "river in louisiana",
+    "station in louisiana",
+    "louisiana river",
+    "louisiana station",
+    "features affecting flow in louisiana"
    ],
    "url": "stations/USGS-07374000-3d.html",
    "target": "#htfi-panel",
@@ -2673,14 +4153,21 @@
    "id": "station-08057000-data",
    "kind": "station",
    "title": "Trinity River at Dallas, TX (USGS 08057000) — Data view",
-   "text": "Statistics and Data view for Trinity River at Dallas, TX, USGS station 08057000 on the Trinity River. Drainage area 6,106 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Trinity River at Dallas, TX, USGS station 08057000 on the Trinity River. It is the HydroTwin station in Texas. Drainage area 6,106 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
     "trinity river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-top"
@@ -2689,7 +4176,7 @@
    "id": "station-08057000-3d",
    "kind": "station",
    "title": "Trinity River at Dallas, TX (USGS 08057000) — 3D view",
-   "text": "Interactive 3D digital twin for Trinity River at Dallas, TX, USGS station 08057000 on the Trinity River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Trinity River at Dallas, TX, USGS station 08057000 on the Trinity River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Texas.",
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
@@ -2698,7 +4185,14 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station"
    ],
    "url": "stations/USGS-08057000-3d.html",
    "target": "#ht-date"
@@ -2711,7 +4205,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "hydrograph"
+    "hydrograph",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "hydrograph in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-hydro",
@@ -2725,7 +4227,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "7-day forecast"
+    "7-day forecast",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "7-day forecast in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-fc",
@@ -2739,7 +4249,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "model statistics"
+    "model statistics",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "model statistics in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-models",
@@ -2753,7 +4271,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "feature ablation"
+    "feature ablation",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "feature ablation in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-ablation",
@@ -2767,7 +4293,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "weekly outlook"
+    "weekly outlook",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "weekly outlook in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-weekly",
@@ -2781,7 +4315,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "monthly outlook"
+    "monthly outlook",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "monthly outlook in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-monthly",
@@ -2795,7 +4337,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "yearly outlook"
+    "yearly outlook",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "yearly outlook in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-yearly",
@@ -2809,7 +4359,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "drift"
+    "drift",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "drift in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-drift",
@@ -2823,7 +4381,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "3d forecast chart"
+    "3d forecast chart",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "3d forecast chart in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-3dchart",
@@ -2837,7 +4403,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "multi-factor correlation in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-corr",
@@ -2851,7 +4425,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "features affecting discharge flow in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-featimp",
@@ -2865,7 +4447,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "station clusters"
+    "station clusters",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "station clusters in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-clusters",
@@ -2879,7 +4469,15 @@
    "keywords": [
     "08057000",
     "trinity river at dallas, tx",
-    "data charts in 3d"
+    "data charts in 3d",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "data charts in 3d in texas"
    ],
    "url": "stations/USGS-08057000.html",
    "target": "#hts-sec-charts3d",
@@ -2894,7 +4492,15 @@
     "08057000",
     "trinity river at dallas, tx",
     "daily forecast",
-    "3d"
+    "3d",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "daily forecast in texas"
    ],
    "url": "stations/USGS-08057000-3d.html",
    "target": "#dock",
@@ -2909,7 +4515,15 @@
     "08057000",
     "trinity river at dallas, tx",
     "weekly outlook",
-    "3d"
+    "3d",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "weekly outlook in texas"
    ],
    "url": "stations/USGS-08057000-3d.html",
    "target": "#htwk-panel",
@@ -2924,7 +4538,15 @@
     "08057000",
     "trinity river at dallas, tx",
     "monthly outlook",
-    "3d"
+    "3d",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "monthly outlook in texas"
    ],
    "url": "stations/USGS-08057000-3d.html",
    "target": "#htmo-panel",
@@ -2939,7 +4561,15 @@
     "08057000",
     "trinity river at dallas, tx",
     "yearly outlook",
-    "3d"
+    "3d",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "yearly outlook in texas"
    ],
    "url": "stations/USGS-08057000-3d.html",
    "target": "#htyr-panel",
@@ -2954,7 +4584,15 @@
     "08057000",
     "trinity river at dallas, tx",
     "confidence interval",
-    "3d"
+    "3d",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "confidence interval in texas"
    ],
    "url": "stations/USGS-08057000-3d.html",
    "target": "#ht-dacp-panel",
@@ -2969,7 +4607,15 @@
     "08057000",
     "trinity river at dallas, tx",
     "model drift",
-    "3d"
+    "3d",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "model drift in texas"
    ],
    "url": "stations/USGS-08057000-3d.html",
    "target": "#ht-drift-panel",
@@ -2984,7 +4630,15 @@
     "08057000",
     "trinity river at dallas, tx",
     "features affecting flow",
-    "3d"
+    "3d",
+    "dallas",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "features affecting flow in texas"
    ],
    "url": "stations/USGS-08057000-3d.html",
    "target": "#htfi-panel",
@@ -2994,14 +4648,21 @@
    "id": "station-08158000-data",
    "kind": "station",
    "title": "Colorado River at Austin, TX (USGS 08158000) — Data view",
-   "text": "Statistics and Data view for Colorado River at Austin, TX, USGS station 08158000 on the Colorado River. Drainage area 39,009 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Colorado River at Austin, TX, USGS station 08158000 on the Colorado River. It is the HydroTwin station in Texas. Drainage area 39,009 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
     "colorado river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-top"
@@ -3010,7 +4671,7 @@
    "id": "station-08158000-3d",
    "kind": "station",
    "title": "Colorado River at Austin, TX (USGS 08158000) — 3D view",
-   "text": "Interactive 3D digital twin for Colorado River at Austin, TX, USGS station 08158000 on the Colorado River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Colorado River at Austin, TX, USGS station 08158000 on the Colorado River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Texas.",
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
@@ -3019,7 +4680,14 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station"
    ],
    "url": "stations/USGS-08158000-3d.html",
    "target": "#ht-date"
@@ -3032,7 +4700,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "hydrograph"
+    "hydrograph",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "hydrograph in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-hydro",
@@ -3046,7 +4722,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "7-day forecast"
+    "7-day forecast",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "7-day forecast in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-fc",
@@ -3060,7 +4744,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "model statistics"
+    "model statistics",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "model statistics in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-models",
@@ -3074,7 +4766,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "feature ablation"
+    "feature ablation",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "feature ablation in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-ablation",
@@ -3088,7 +4788,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "weekly outlook"
+    "weekly outlook",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "weekly outlook in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-weekly",
@@ -3102,7 +4810,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "monthly outlook"
+    "monthly outlook",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "monthly outlook in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-monthly",
@@ -3116,7 +4832,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "yearly outlook"
+    "yearly outlook",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "yearly outlook in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-yearly",
@@ -3130,7 +4854,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "drift"
+    "drift",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "drift in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-drift",
@@ -3144,7 +4876,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "3d forecast chart"
+    "3d forecast chart",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "3d forecast chart in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-3dchart",
@@ -3158,7 +4898,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "multi-factor correlation in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-corr",
@@ -3172,7 +4920,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "features affecting discharge flow in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-featimp",
@@ -3186,7 +4942,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "station clusters"
+    "station clusters",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "station clusters in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-clusters",
@@ -3200,7 +4964,15 @@
    "keywords": [
     "08158000",
     "colorado river at austin, tx",
-    "data charts in 3d"
+    "data charts in 3d",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "data charts in 3d in texas"
    ],
    "url": "stations/USGS-08158000.html",
    "target": "#hts-sec-charts3d",
@@ -3215,7 +4987,15 @@
     "08158000",
     "colorado river at austin, tx",
     "daily forecast",
-    "3d"
+    "3d",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "daily forecast in texas"
    ],
    "url": "stations/USGS-08158000-3d.html",
    "target": "#dock",
@@ -3230,7 +5010,15 @@
     "08158000",
     "colorado river at austin, tx",
     "weekly outlook",
-    "3d"
+    "3d",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "weekly outlook in texas"
    ],
    "url": "stations/USGS-08158000-3d.html",
    "target": "#htwk-panel",
@@ -3245,7 +5033,15 @@
     "08158000",
     "colorado river at austin, tx",
     "monthly outlook",
-    "3d"
+    "3d",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "monthly outlook in texas"
    ],
    "url": "stations/USGS-08158000-3d.html",
    "target": "#htmo-panel",
@@ -3260,7 +5056,15 @@
     "08158000",
     "colorado river at austin, tx",
     "yearly outlook",
-    "3d"
+    "3d",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "yearly outlook in texas"
    ],
    "url": "stations/USGS-08158000-3d.html",
    "target": "#htyr-panel",
@@ -3275,7 +5079,15 @@
     "08158000",
     "colorado river at austin, tx",
     "confidence interval",
-    "3d"
+    "3d",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "confidence interval in texas"
    ],
    "url": "stations/USGS-08158000-3d.html",
    "target": "#ht-dacp-panel",
@@ -3290,7 +5102,15 @@
     "08158000",
     "colorado river at austin, tx",
     "model drift",
-    "3d"
+    "3d",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "model drift in texas"
    ],
    "url": "stations/USGS-08158000-3d.html",
    "target": "#ht-drift-panel",
@@ -3305,7 +5125,15 @@
     "08158000",
     "colorado river at austin, tx",
     "features affecting flow",
-    "3d"
+    "3d",
+    "austin",
+    "texas",
+    "tx",
+    "river in texas",
+    "station in texas",
+    "texas river",
+    "texas station",
+    "features affecting flow in texas"
    ],
    "url": "stations/USGS-08158000-3d.html",
    "target": "#htfi-panel",
@@ -3315,14 +5143,21 @@
    "id": "station-08313000-data",
    "kind": "station",
    "title": "Rio Grande at Otowi Bridge, NM (USGS 08313000) — Data view",
-   "text": "Statistics and Data view for Rio Grande at Otowi Bridge, NM, USGS station 08313000 on the Rio Grande. Drainage area 14,300 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Rio Grande at Otowi Bridge, NM, USGS station 08313000 on the Rio Grande. It is the HydroTwin station in New Mexico. Drainage area 14,300 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
     "rio grande",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-top"
@@ -3331,7 +5166,7 @@
    "id": "station-08313000-3d",
    "kind": "station",
    "title": "Rio Grande at Otowi Bridge, NM (USGS 08313000) — 3D view",
-   "text": "Interactive 3D digital twin for Rio Grande at Otowi Bridge, NM, USGS station 08313000 on the Rio Grande: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Rio Grande at Otowi Bridge, NM, USGS station 08313000 on the Rio Grande: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in New Mexico.",
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
@@ -3340,7 +5175,14 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station"
    ],
    "url": "stations/USGS-08313000-3d.html",
    "target": "#ht-date"
@@ -3353,7 +5195,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "hydrograph"
+    "hydrograph",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "hydrograph in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-hydro",
@@ -3367,7 +5217,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "7-day forecast"
+    "7-day forecast",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "7-day forecast in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-fc",
@@ -3381,7 +5239,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "model statistics"
+    "model statistics",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "model statistics in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-models",
@@ -3395,7 +5261,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "feature ablation"
+    "feature ablation",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "feature ablation in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-ablation",
@@ -3409,7 +5283,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "weekly outlook"
+    "weekly outlook",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "weekly outlook in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-weekly",
@@ -3423,7 +5305,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "monthly outlook"
+    "monthly outlook",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "monthly outlook in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-monthly",
@@ -3437,7 +5327,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "yearly outlook"
+    "yearly outlook",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "yearly outlook in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-yearly",
@@ -3451,7 +5349,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "drift"
+    "drift",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "drift in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-drift",
@@ -3465,7 +5371,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "3d forecast chart"
+    "3d forecast chart",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "3d forecast chart in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-3dchart",
@@ -3479,7 +5393,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "multi-factor correlation in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-corr",
@@ -3493,7 +5415,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "features affecting discharge flow in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-featimp",
@@ -3507,7 +5437,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "station clusters"
+    "station clusters",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "station clusters in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-clusters",
@@ -3521,7 +5459,15 @@
    "keywords": [
     "08313000",
     "rio grande at otowi bridge, nm",
-    "data charts in 3d"
+    "data charts in 3d",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "data charts in 3d in new mexico"
    ],
    "url": "stations/USGS-08313000.html",
    "target": "#hts-sec-charts3d",
@@ -3536,7 +5482,15 @@
     "08313000",
     "rio grande at otowi bridge, nm",
     "daily forecast",
-    "3d"
+    "3d",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "daily forecast in new mexico"
    ],
    "url": "stations/USGS-08313000-3d.html",
    "target": "#dock",
@@ -3551,7 +5505,15 @@
     "08313000",
     "rio grande at otowi bridge, nm",
     "weekly outlook",
-    "3d"
+    "3d",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "weekly outlook in new mexico"
    ],
    "url": "stations/USGS-08313000-3d.html",
    "target": "#htwk-panel",
@@ -3566,7 +5528,15 @@
     "08313000",
     "rio grande at otowi bridge, nm",
     "monthly outlook",
-    "3d"
+    "3d",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "monthly outlook in new mexico"
    ],
    "url": "stations/USGS-08313000-3d.html",
    "target": "#htmo-panel",
@@ -3581,7 +5551,15 @@
     "08313000",
     "rio grande at otowi bridge, nm",
     "yearly outlook",
-    "3d"
+    "3d",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "yearly outlook in new mexico"
    ],
    "url": "stations/USGS-08313000-3d.html",
    "target": "#htyr-panel",
@@ -3596,7 +5574,15 @@
     "08313000",
     "rio grande at otowi bridge, nm",
     "confidence interval",
-    "3d"
+    "3d",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "confidence interval in new mexico"
    ],
    "url": "stations/USGS-08313000-3d.html",
    "target": "#ht-dacp-panel",
@@ -3611,7 +5597,15 @@
     "08313000",
     "rio grande at otowi bridge, nm",
     "model drift",
-    "3d"
+    "3d",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "model drift in new mexico"
    ],
    "url": "stations/USGS-08313000-3d.html",
    "target": "#ht-drift-panel",
@@ -3626,7 +5620,15 @@
     "08313000",
     "rio grande at otowi bridge, nm",
     "features affecting flow",
-    "3d"
+    "3d",
+    "otowi bridge",
+    "new mexico",
+    "nm",
+    "river in new mexico",
+    "station in new mexico",
+    "new mexico river",
+    "new mexico station",
+    "features affecting flow in new mexico"
    ],
    "url": "stations/USGS-08313000-3d.html",
    "target": "#htfi-panel",
@@ -3636,14 +5638,22 @@
    "id": "station-09380000-data",
    "kind": "station",
    "title": "Colorado River at Lees Ferry, AZ (USGS 09380000) — Data view",
-   "text": "Statistics and Data view for Colorado River at Lees Ferry, AZ, USGS station 09380000 on the Colorado River. Drainage area 111,800 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Colorado River at Lees Ferry, AZ, USGS station 09380000 on the Colorado River. It is the HydroTwin station in Arizona. Drainage area 111,800 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
     "colorado river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-top"
@@ -3652,7 +5662,7 @@
    "id": "station-09380000-3d",
    "kind": "station",
    "title": "Colorado River at Lees Ferry, AZ (USGS 09380000) — 3D view",
-   "text": "Interactive 3D digital twin for Colorado River at Lees Ferry, AZ, USGS station 09380000 on the Colorado River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Colorado River at Lees Ferry, AZ, USGS station 09380000 on the Colorado River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Arizona.",
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
@@ -3661,7 +5671,15 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station"
    ],
    "url": "stations/USGS-09380000-3d.html",
    "target": "#ht-date"
@@ -3674,7 +5692,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "hydrograph"
+    "hydrograph",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "hydrograph in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-hydro",
@@ -3688,7 +5715,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "7-day forecast"
+    "7-day forecast",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "7-day forecast in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-fc",
@@ -3702,7 +5738,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "model statistics"
+    "model statistics",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "model statistics in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-models",
@@ -3716,7 +5761,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "feature ablation"
+    "feature ablation",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "feature ablation in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-ablation",
@@ -3730,7 +5784,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "weekly outlook"
+    "weekly outlook",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "weekly outlook in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-weekly",
@@ -3744,7 +5807,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "monthly outlook"
+    "monthly outlook",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "monthly outlook in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-monthly",
@@ -3758,7 +5830,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "yearly outlook"
+    "yearly outlook",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "yearly outlook in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-yearly",
@@ -3772,7 +5853,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "drift"
+    "drift",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "drift in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-drift",
@@ -3786,7 +5876,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "3d forecast chart"
+    "3d forecast chart",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "3d forecast chart in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-3dchart",
@@ -3800,7 +5899,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "multi-factor correlation in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-corr",
@@ -3814,7 +5922,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "features affecting discharge flow in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-featimp",
@@ -3828,7 +5945,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "station clusters"
+    "station clusters",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "station clusters in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-clusters",
@@ -3842,7 +5968,16 @@
    "keywords": [
     "09380000",
     "colorado river at lees ferry, az",
-    "data charts in 3d"
+    "data charts in 3d",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "data charts in 3d in arizona"
    ],
    "url": "stations/USGS-09380000.html",
    "target": "#hts-sec-charts3d",
@@ -3857,7 +5992,16 @@
     "09380000",
     "colorado river at lees ferry, az",
     "daily forecast",
-    "3d"
+    "3d",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "daily forecast in arizona"
    ],
    "url": "stations/USGS-09380000-3d.html",
    "target": "#dock",
@@ -3872,7 +6016,16 @@
     "09380000",
     "colorado river at lees ferry, az",
     "weekly outlook",
-    "3d"
+    "3d",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "weekly outlook in arizona"
    ],
    "url": "stations/USGS-09380000-3d.html",
    "target": "#htwk-panel",
@@ -3887,7 +6040,16 @@
     "09380000",
     "colorado river at lees ferry, az",
     "monthly outlook",
-    "3d"
+    "3d",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "monthly outlook in arizona"
    ],
    "url": "stations/USGS-09380000-3d.html",
    "target": "#htmo-panel",
@@ -3902,7 +6064,16 @@
     "09380000",
     "colorado river at lees ferry, az",
     "yearly outlook",
-    "3d"
+    "3d",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "yearly outlook in arizona"
    ],
    "url": "stations/USGS-09380000-3d.html",
    "target": "#htyr-panel",
@@ -3917,7 +6088,16 @@
     "09380000",
     "colorado river at lees ferry, az",
     "confidence interval",
-    "3d"
+    "3d",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "confidence interval in arizona"
    ],
    "url": "stations/USGS-09380000-3d.html",
    "target": "#ht-dacp-panel",
@@ -3932,7 +6112,16 @@
     "09380000",
     "colorado river at lees ferry, az",
     "model drift",
-    "3d"
+    "3d",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "model drift in arizona"
    ],
    "url": "stations/USGS-09380000-3d.html",
    "target": "#ht-drift-panel",
@@ -3947,7 +6136,16 @@
     "09380000",
     "colorado river at lees ferry, az",
     "features affecting flow",
-    "3d"
+    "3d",
+    "lees ferry",
+    "arizona",
+    "az",
+    "grand canyon",
+    "river in arizona",
+    "station in arizona",
+    "arizona river",
+    "arizona station",
+    "features affecting flow in arizona"
    ],
    "url": "stations/USGS-09380000-3d.html",
    "target": "#htfi-panel",
@@ -3957,14 +6155,22 @@
    "id": "station-11447650-data",
    "kind": "station",
    "title": "Sacramento River at Freeport, CA (USGS 11447650) — Data view",
-   "text": "Statistics and Data view for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River. It is the HydroTwin station in California.Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
     "sacramento river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-top"
@@ -3973,7 +6179,7 @@
    "id": "station-11447650-3d",
    "kind": "station",
    "title": "Sacramento River at Freeport, CA (USGS 11447650) — 3D view",
-   "text": "Interactive 3D digital twin for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Sacramento River at Freeport, CA, USGS station 11447650 on the Sacramento River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in California.",
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
@@ -3982,7 +6188,15 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station"
    ],
    "url": "stations/USGS-11447650-3d.html",
    "target": "#ht-date"
@@ -3995,7 +6209,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "hydrograph"
+    "hydrograph",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "hydrograph in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-hydro",
@@ -4009,7 +6232,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "7-day forecast"
+    "7-day forecast",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "7-day forecast in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-fc",
@@ -4023,7 +6255,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "model statistics"
+    "model statistics",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "model statistics in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-models",
@@ -4037,7 +6278,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "feature ablation"
+    "feature ablation",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "feature ablation in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-ablation",
@@ -4051,7 +6301,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "weekly outlook"
+    "weekly outlook",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "weekly outlook in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-weekly",
@@ -4065,7 +6324,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "monthly outlook"
+    "monthly outlook",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "monthly outlook in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-monthly",
@@ -4079,7 +6347,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "yearly outlook"
+    "yearly outlook",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "yearly outlook in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-yearly",
@@ -4093,7 +6370,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "drift"
+    "drift",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "drift in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-drift",
@@ -4107,7 +6393,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "3d forecast chart"
+    "3d forecast chart",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "3d forecast chart in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-3dchart",
@@ -4121,7 +6416,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "multi-factor correlation in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-corr",
@@ -4135,7 +6439,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "features affecting discharge flow in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-featimp",
@@ -4149,7 +6462,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "station clusters"
+    "station clusters",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "station clusters in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-clusters",
@@ -4163,7 +6485,16 @@
    "keywords": [
     "11447650",
     "sacramento river at freeport, ca",
-    "data charts in 3d"
+    "data charts in 3d",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "data charts in 3d in california"
    ],
    "url": "stations/USGS-11447650.html",
    "target": "#hts-sec-charts3d",
@@ -4178,7 +6509,16 @@
     "11447650",
     "sacramento river at freeport, ca",
     "daily forecast",
-    "3d"
+    "3d",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "daily forecast in california"
    ],
    "url": "stations/USGS-11447650-3d.html",
    "target": "#dock",
@@ -4193,7 +6533,16 @@
     "11447650",
     "sacramento river at freeport, ca",
     "weekly outlook",
-    "3d"
+    "3d",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "weekly outlook in california"
    ],
    "url": "stations/USGS-11447650-3d.html",
    "target": "#htwk-panel",
@@ -4208,7 +6557,16 @@
     "11447650",
     "sacramento river at freeport, ca",
     "monthly outlook",
-    "3d"
+    "3d",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "monthly outlook in california"
    ],
    "url": "stations/USGS-11447650-3d.html",
    "target": "#htmo-panel",
@@ -4223,7 +6581,16 @@
     "11447650",
     "sacramento river at freeport, ca",
     "yearly outlook",
-    "3d"
+    "3d",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "yearly outlook in california"
    ],
    "url": "stations/USGS-11447650-3d.html",
    "target": "#htyr-panel",
@@ -4238,7 +6605,16 @@
     "11447650",
     "sacramento river at freeport, ca",
     "confidence interval",
-    "3d"
+    "3d",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "confidence interval in california"
    ],
    "url": "stations/USGS-11447650-3d.html",
    "target": "#ht-dacp-panel",
@@ -4253,7 +6629,16 @@
     "11447650",
     "sacramento river at freeport, ca",
     "model drift",
-    "3d"
+    "3d",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "model drift in california"
    ],
    "url": "stations/USGS-11447650-3d.html",
    "target": "#ht-drift-panel",
@@ -4268,7 +6653,16 @@
     "11447650",
     "sacramento river at freeport, ca",
     "features affecting flow",
-    "3d"
+    "3d",
+    "freeport",
+    "california",
+    "ca",
+    "sacramento",
+    "river in california",
+    "station in california",
+    "california river",
+    "california station",
+    "features affecting flow in california"
    ],
    "url": "stations/USGS-11447650-3d.html",
    "target": "#htfi-panel",
@@ -4278,14 +6672,20 @@
    "id": "station-14105700-data",
    "kind": "station",
    "title": "Columbia River at The Dalles, OR (USGS 14105700) — Data view",
-   "text": "Statistics and Data view for Columbia River at The Dalles, OR, USGS station 14105700 on the Columbia River. Drainage area 237,000 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
+   "text": "Statistics and Data view for Columbia River at The Dalles, OR, USGS station 14105700 on the Columbia River. It is the HydroTwin station in Oregon. Drainage area 237,000 sq mi. Panels: hydrograph, 7-day forecast, model statistics, weekly, monthly and yearly outlooks, drift, correlations, feature importance and 3D charts.",
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
     "columbia river",
     "data",
     "statistics",
-    "hydrograph"
+    "hydrograph",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-top"
@@ -4294,7 +6694,7 @@
    "id": "station-14105700-3d",
    "kind": "station",
    "title": "Columbia River at The Dalles, OR (USGS 14105700) — 3D view",
-   "text": "Interactive 3D digital twin for Columbia River at The Dalles, OR, USGS station 14105700 on the Columbia River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance.",
+   "text": "Interactive 3D digital twin for Columbia River at The Dalles, OR, USGS station 14105700 on the Columbia River: terrain, river, buildings, the date field, Ground and Table views, and panels for the daily forecast, outlooks, confidence interval, drift and feature importance. It is the HydroTwin station in Oregon.",
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
@@ -4303,7 +6703,13 @@
     "terrain",
     "river",
     "scene",
-    "vr"
+    "vr",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station"
    ],
    "url": "stations/USGS-14105700-3d.html",
    "target": "#ht-date"
@@ -4316,7 +6722,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "hydrograph"
+    "hydrograph",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "hydrograph in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-hydro",
@@ -4330,7 +6743,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "7-day forecast"
+    "7-day forecast",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "7-day forecast in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-fc",
@@ -4344,7 +6764,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "model statistics"
+    "model statistics",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "model statistics in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-models",
@@ -4358,7 +6785,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "feature ablation"
+    "feature ablation",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "feature ablation in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-ablation",
@@ -4372,7 +6806,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "weekly outlook"
+    "weekly outlook",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "weekly outlook in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-weekly",
@@ -4386,7 +6827,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "monthly outlook"
+    "monthly outlook",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "monthly outlook in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-monthly",
@@ -4400,7 +6848,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "yearly outlook"
+    "yearly outlook",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "yearly outlook in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-yearly",
@@ -4414,7 +6869,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "drift"
+    "drift",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "drift in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-drift",
@@ -4428,7 +6890,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "3d forecast chart"
+    "3d forecast chart",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "3d forecast chart in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-3dchart",
@@ -4442,7 +6911,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "multi-factor correlation"
+    "multi-factor correlation",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "multi-factor correlation in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-corr",
@@ -4456,7 +6932,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "features affecting discharge flow"
+    "features affecting discharge flow",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "features affecting discharge flow in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-featimp",
@@ -4470,7 +6953,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "station clusters"
+    "station clusters",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "station clusters in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-clusters",
@@ -4484,7 +6974,14 @@
    "keywords": [
     "14105700",
     "columbia river at the dalles, or",
-    "data charts in 3d"
+    "data charts in 3d",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "data charts in 3d in oregon"
    ],
    "url": "stations/USGS-14105700.html",
    "target": "#hts-sec-charts3d",
@@ -4499,7 +6996,14 @@
     "14105700",
     "columbia river at the dalles, or",
     "daily forecast",
-    "3d"
+    "3d",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "daily forecast in oregon"
    ],
    "url": "stations/USGS-14105700-3d.html",
    "target": "#dock",
@@ -4514,7 +7018,14 @@
     "14105700",
     "columbia river at the dalles, or",
     "weekly outlook",
-    "3d"
+    "3d",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "weekly outlook in oregon"
    ],
    "url": "stations/USGS-14105700-3d.html",
    "target": "#htwk-panel",
@@ -4529,7 +7040,14 @@
     "14105700",
     "columbia river at the dalles, or",
     "monthly outlook",
-    "3d"
+    "3d",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "monthly outlook in oregon"
    ],
    "url": "stations/USGS-14105700-3d.html",
    "target": "#htmo-panel",
@@ -4544,7 +7062,14 @@
     "14105700",
     "columbia river at the dalles, or",
     "yearly outlook",
-    "3d"
+    "3d",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "yearly outlook in oregon"
    ],
    "url": "stations/USGS-14105700-3d.html",
    "target": "#htyr-panel",
@@ -4559,7 +7084,14 @@
     "14105700",
     "columbia river at the dalles, or",
     "confidence interval",
-    "3d"
+    "3d",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "confidence interval in oregon"
    ],
    "url": "stations/USGS-14105700-3d.html",
    "target": "#ht-dacp-panel",
@@ -4574,7 +7106,14 @@
     "14105700",
     "columbia river at the dalles, or",
     "model drift",
-    "3d"
+    "3d",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "model drift in oregon"
    ],
    "url": "stations/USGS-14105700-3d.html",
    "target": "#ht-drift-panel",
@@ -4589,7 +7128,14 @@
     "14105700",
     "columbia river at the dalles, or",
     "features affecting flow",
-    "3d"
+    "3d",
+    "the dalles",
+    "oregon",
+    "river in oregon",
+    "station in oregon",
+    "oregon river",
+    "oregon station",
+    "features affecting flow in oregon"
    ],
    "url": "stations/USGS-14105700-3d.html",
    "target": "#htfi-panel",

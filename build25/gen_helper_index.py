@@ -41,6 +41,67 @@ PANELS_3D = [
 ]
 
 
+STATE_NAMES = {
+    "NJ": "New Jersey", "MD": "Maryland", "FL": "Florida", "KY": "Kentucky",
+    "MN": "Minnesota", "MT": "Montana", "MO": "Missouri", "LA": "Louisiana",
+    "TX": "Texas", "NM": "New Mexico", "AZ": "Arizona", "CA": "California",
+    "OR": "Oregon",
+}
+# State abbreviations that are also common English words ("or", "in",
+# "la", "me") are deliberately NOT used as keywords: a question
+# containing "or" would falsely boost that station. The full state
+# name always works.
+SAFE_ABBREVS = {"ca", "tx", "az", "mn", "ky", "mt", "mo", "nm", "fl", "nj", "md"}
+# Extra truthful geographic aliases per station (city spellings and
+# major nearby geography a visitor might actually type).
+GEO_EXTRA = {
+    "01646500": ["washington dc", "dc", "little falls"],
+    "05331000": ["saint paul", "st paul", "twin cities"],
+    "09380000": ["grand canyon", "lees ferry"],
+    "11447650": ["sacramento", "freeport"],
+    "14105700": ["the dalles"],
+}
+
+
+def geo_keywords(site, name):
+    """State/city keywords for one station, parsed from its name.
+
+    Station names look like "Sacramento River at Freeport, CA" (the
+    Potomac adds "(near Washington DC)"). Returns the full state name,
+    the city, a safe state abbreviation and any hand-listed aliases —
+    so questions like "Where is the river in California?" retrieve the
+    right station. Before this, the index carried only the two-letter
+    abbreviation inside the name string, the word "california" matched
+    nothing, and every station scored alike on the generic word
+    "river", so state questions returned arbitrary stations.
+    """
+    import re
+    kws = []
+    m = re.search(r"\bat\s+(.+?),\s*([A-Z]{2})\b", name)
+    if m:
+        city, abbrev = m.group(1).strip().lower(), m.group(2)
+        if city:
+            kws.append(city)
+        full = STATE_NAMES.get(abbrev)
+        if full:
+            kws.append(full.lower())
+        if abbrev.lower() in SAFE_ABBREVS:
+            kws.append(abbrev.lower())
+    kws.extend(GEO_EXTRA.get(site, []))
+    seen, out = set(), []
+    for k in kws:
+        if k and k not in seen:
+            seen.add(k)
+            out.append(k)
+    return out
+
+
+def state_full(name):
+    import re
+    m = re.search(r",\s*([A-Z]{2})\b", name)
+    return STATE_NAMES.get(m.group(1)) if m else None
+
+
 def main():
     root = Path(".")
     entries = []
@@ -57,16 +118,28 @@ def main():
         })
         river = name.split(" at ")[0] if " at " in name else name
         drainage = st.get("drainage") or ""
+        geo = geo_keywords(site, name)
+        sfull = state_full(name)
+        state_sent = f" It is the HydroTwin station in {sfull}." if sfull else ""
+        if sfull:
+            # Phrase keywords: state questions are phrased exactly
+            # like this ("river in California", "station in Texas"),
+            # and an exact phrase match (+9) is what lets the right
+            # station beat the generic-word noise every other station
+            # entry scores on words like "river" and "the".
+            geo = geo + [f"river in {sfull.lower()}", f"station in {sfull.lower()}",
+                         f"{sfull.lower()} river", f"{sfull.lower()} station"]
         entries.append({
             "id": f"station-{site}-data",
             "kind": "station",
             "title": f"{name} (USGS {site}) — Data view",
-            "text": (f"Statistics and Data view for {name}, USGS station {site} on the {river}. "
-                     + (f"Drainage area {drainage}. " if drainage else "")
+            "text": (f"Statistics and Data view for {name}, USGS station {site} on the {river}."
+                     + state_sent
+                     + (f" Drainage area {drainage}. " if drainage else "")
                      + "Panels: hydrograph, 7-day forecast, "
                      "model statistics, weekly, monthly and yearly outlooks, drift, correlations, "
                      "feature importance and 3D charts."),
-            "keywords": [site, name.lower(), river.lower(), "data", "statistics", "hydrograph"],
+            "keywords": [site, name.lower(), river.lower(), "data", "statistics", "hydrograph"] + geo,
             "url": f"stations/USGS-{site}.html",
             "target": "#hts-top",
         })
@@ -76,8 +149,9 @@ def main():
             "title": f"{name} (USGS {site}) — 3D view",
             "text": (f"Interactive 3D digital twin for {name}, USGS station {site} on the {river}: "
                      "terrain, river, buildings, the date field, Ground and Table views, and panels "
-                     "for the daily forecast, outlooks, confidence interval, drift and feature importance."),
-            "keywords": [site, name.lower(), river.lower(), "3d", "terrain", "river", "scene", "vr"],
+                     "for the daily forecast, outlooks, confidence interval, drift and feature importance."
+                     + state_sent),
+            "keywords": [site, name.lower(), river.lower(), "3d", "terrain", "river", "scene", "vr"] + geo,
             "url": f"stations/USGS-{site}-3d.html",
             "target": "#ht-date",
         })
@@ -87,7 +161,8 @@ def main():
                 "kind": "panel",
                 "title": f"{label} — {name}",
                 "text": f"{desc} Found on the Data view page for {name} (USGS {site}), in the panel named {label}.",
-                "keywords": [site, name.lower(), label.lower()],
+                "keywords": [site, name.lower(), label.lower()] + geo
+                            + ([f"{label.lower()} in {sfull.lower()}"] if sfull else []),
                 "url": f"stations/USGS-{site}.html",
                 "target": f"#{pid}",
                 "button": label,
@@ -98,7 +173,8 @@ def main():
                 "kind": "panel",
                 "title": f"{label} — {name} (3D)",
                 "text": f"{desc} Found on the 3D page for {name} (USGS {site}); open it from the PANELS bar at the bottom left.",
-                "keywords": [site, name.lower(), label.lower(), "3d"],
+                "keywords": [site, name.lower(), label.lower(), "3d"] + geo
+                            + ([f"{label.lower()} in {sfull.lower()}"] if sfull else []),
                 "url": f"stations/USGS-{site}-3d.html",
                 "target": f"#{pid}",
                 "button": label,

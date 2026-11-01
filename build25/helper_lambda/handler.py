@@ -1,6 +1,8 @@
 """HydroTwin helper-bot inference Lambda.
 
-Hosts Qwen2.5-0.5B-Instruct (GGUF Q4_K_M, stored in a private S3 bucket)
+Hosts an open source instruct model (GGUF Q4_K_M, stored in a private S3 bucket;
+MODEL_KEY selects the file — Qwen3-4B-Instruct-2507 since 2026-11-01,
+previously Qwen2.5-0.5B-Instruct, whose file stays in the bucket for rollback)
 and runs it with a bundled llama.cpp `llama-completion` binary built for
 Amazon Linux 2023. The model is downloaded to /tmp on cold start and
 reused on warm starts. No always-on resources; invoked only through the
@@ -21,7 +23,12 @@ MODEL_KEY = os.environ.get(
     "MODEL_KEY", "model/qwen2.5-0.5b-instruct-q4_k_m.gguf"
 )
 MODEL_PATH = os.environ.get("MODEL_PATH", "/tmp/model.gguf")
-MODEL_NAME = "qwen2.5-0.5b-instruct-q4_k_m"
+MODEL_NAME = os.environ.get(
+    "MODEL_NAME", os.path.basename(MODEL_KEY).replace(".gguf", "")
+)
+# llama.cpp threads: Lambda vCPU scales with memory (8192 MB is about
+# 4.6 vCPU), so the workflow sets LLAMA_THREADS=4 alongside the raise.
+LLAMA_THREADS = os.environ.get("LLAMA_THREADS", "2")
 TASK_ROOT = os.environ.get("LAMBDA_TASK_ROOT", os.path.dirname(os.path.abspath(__file__)))
 LLAMA_BIN = os.path.join(TASK_ROOT, "llama", "llama-completion")
 LLAMA_LIB = os.path.join(TASK_ROOT, "llama")
@@ -76,7 +83,7 @@ def _generate(prompt):
             "-p", prompt,
             "-n", MAX_OUTPUT_TOKENS,
             "-c", "2048",
-            "-t", "2",
+            "-t", LLAMA_THREADS,
             "--temp", "0.2",
             "--seed", "42",
             "--no-display-prompt",
