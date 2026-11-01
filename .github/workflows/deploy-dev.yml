@@ -121,6 +121,18 @@ jobs:
       - name: Water under bridges - polygon water gaps at the same crossings (dev only)
         run: python3 build25/patch_polygap.py
 
+      - name: Realism - per-station terrain exaggeration + hillshade blend (dev only)
+        run: python3 build25/patch_realism_terrain.py
+
+      - name: Realism - flow-aligned animated water shader (dev only)
+        run: python3 build25/patch_realism_flowwater.py
+
+      - name: Realism - 3D staff gauge + flood extent overlay (dev only)
+        run: python3 build25/patch_realism_gauge.py
+
+      - name: Realism - NLCD instanced trees + USACE levees (dev only)
+        run: python3 build25/patch_realism_context.py
+
       - name: Keyboard shortcuts must not steal typing from form fields (dev only)
         run: python3 build25/patch_keyfix.py
 
