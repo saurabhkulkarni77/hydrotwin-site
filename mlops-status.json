@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-01T17:33:24Z",
+  "generated_at": "2026-11-01T17:47:42Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -356,14 +356,14 @@
       "file": ".github/workflows/ci.yml",
       "name": "CI \u2014 site, data & model tests",
       "latest": {
-        "run_id": 41332007911,
-        "title": "ACE playbook v2 for the helper bot (ACE, arXiv:2510.04618): gen_helpe\u2026",
+        "run_id": 41333188861,
+        "title": "ACE: add live v3 verification results (runs/live_v3) \u2014 full-battery e\u2026",
         "event": "push",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-11-01T17:32:40Z",
-        "updated_at": "2026-11-01T17:33:08Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41332007911"
+        "created_at": "2026-11-01T17:46:36Z",
+        "updated_at": "2026-11-01T17:47:26Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41333188861"
       }
     },
     {
@@ -390,14 +390,14 @@
       "file": ".github/workflows/deploy-dev.yml",
       "name": "Deploy DEV to AWS S3",
       "latest": {
-        "run_id": 41332007845,
-        "title": "ACE playbook v2 for the helper bot (ACE, arXiv:2510.04618): gen_helpe\u2026",
+        "run_id": 41333188869,
+        "title": "ACE: add live v3 verification results (runs/live_v3) \u2014 full-battery e\u2026",
         "event": "push",
         "status": "in_progress",
         "conclusion": null,
-        "created_at": "2026-11-01T17:32:40Z",
-        "updated_at": "2026-11-01T17:32:44Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41332007845"
+        "created_at": "2026-11-01T17:46:36Z",
+        "updated_at": "2026-11-01T17:46:39Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41333188869"
       }
     }
   ]
