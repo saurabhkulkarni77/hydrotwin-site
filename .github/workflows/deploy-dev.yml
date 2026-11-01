@@ -111,6 +111,8 @@ jobs:
         run: python3 build25/patch_realriver.py
       - name: Buildings present but never in water (dev only)
         run: python3 build25/patch_buildingsback.py
+      - name: Scene water fix - drop buildings intersecting water polygons (dev only)
+        run: python3 build25/patch_waterfilter.py
 
       - name: Ribbon shading fix - water normals up, double-sided (dev only)
         run: python3 build25/patch_ribbonshade.py
