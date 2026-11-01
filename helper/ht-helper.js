@@ -11,7 +11,7 @@
  * in the visitor's browser. v1-v3 loaded WebLLM on-device; the model
  * load crashed mobile Safari tabs outright (memory pressure kills
  * the web content process, worker isolation or not). Now an open
- * source model (Qwen3 4B Instruct, GGUF; hosted by a persistent
+ * source model (Qwen2.5 3B Instruct, GGUF; hosted by a persistent
  * llama.cpp server per Lambda environment — the original 0.5B was
  * replaced on 2026-11-01 after it confabulated about locations the
  * index had not given it) is hosted on the
@@ -90,7 +90,7 @@
   var input = panel.querySelector('#hthb-in');
   var aiStatus = panel.querySelector('#hthb-ai-status');
   aiStatus.textContent = AI_ENDPOINT
-    ? 'is on: answers are located instantly from the built-in site index, then an open source model (Qwen3 4B) hosted on this project’s own cloud rephrases them in friendlier words. Your question and the index entries it matched are sent to that endpoint; nothing else leaves your browser, and nothing is downloaded.'
+    ? 'is on: answers are located instantly from the built-in site index, then an open source model (Qwen2.5 3B) hosted on this project’s own cloud rephrases them in friendlier words. Your question and the index entries it matched are sent to that endpoint; nothing else leaves your browser, and nothing is downloaded.'
     : 'is off: answers come straight from the built-in site index.';
 
   function addMsg(text, who) {
@@ -278,7 +278,7 @@
         var txt = d && typeof d.answer === 'string' ? d.answer.trim() : '';
         if (txt) {
           txtSpan.textContent = txt;
-          tag.textContent = 'Answer rephrased by the site AI (open source Qwen3 4B, hosted by this project). Locations come from the site index.';
+          tag.textContent = 'Answer rephrased by the site AI (open source Qwen2.5 3B, hosted by this project). Locations come from the site index.';
         } else {
           tag.remove();
         }
