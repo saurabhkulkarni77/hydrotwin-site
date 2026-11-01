@@ -10,8 +10,11 @@
  * Server-side AI (v4): the optional open source model no longer runs
  * in the visitor's browser. v1-v3 loaded WebLLM on-device; the model
  * load crashed mobile Safari tabs outright (memory pressure kills
- * the web content process, worker isolation or not). Now a small
- * open source model (Qwen2.5 0.5B Instruct, GGUF) is hosted on the
+ * the web content process, worker isolation or not). Now an open
+ * source model (Qwen3 4B Instruct, GGUF; hosted by a persistent
+ * llama.cpp server per Lambda environment — the original 0.5B was
+ * replaced on 2026-11-01 after it confabulated about locations the
+ * index had not given it) is hosted on the
  * project's own cloud (private S3 bucket + AWS Lambda llama.cpp) and
  * the bot calls its HTTPS endpoint with the question plus the
  * retrieved index entries; when the rephrased answer arrives it
@@ -29,7 +32,7 @@
   // Lambda Function URL for the helper-bot model endpoint.
   // Empty string = endpoint off (pure index bot).
   var AI_ENDPOINT = 'https://7oufr7waqwqmirbvirvcx2a2zi0jiipn.lambda-url.us-east-1.on.aws/';
-  var AI_TIMEOUT_MS = 45000;
+  var AI_TIMEOUT_MS = 60000;
 
   var scriptEl = document.currentScript || document.querySelector('script[src*="ht-helper.js"]');
   var base = scriptEl ? new URL('.', scriptEl.src).href : '../helper/';
@@ -87,7 +90,7 @@
   var input = panel.querySelector('#hthb-in');
   var aiStatus = panel.querySelector('#hthb-ai-status');
   aiStatus.textContent = AI_ENDPOINT
-    ? 'is on: answers are located instantly from the built-in site index, then a small open source model (Qwen2.5 0.5B) hosted on this project’s own cloud rephrases them in friendlier words. Your question and the index entries it matched are sent to that endpoint; nothing else leaves your browser, and nothing is downloaded.'
+    ? 'is on: answers are located instantly from the built-in site index, then an open source model (Qwen3 4B) hosted on this project’s own cloud rephrases them in friendlier words. Your question and the index entries it matched are sent to that endpoint; nothing else leaves your browser, and nothing is downloaded.'
     : 'is off: answers come straight from the built-in site index.';
 
   function addMsg(text, who) {
@@ -275,7 +278,7 @@
         var txt = d && typeof d.answer === 'string' ? d.answer.trim() : '';
         if (txt) {
           txtSpan.textContent = txt;
-          tag.textContent = 'Answer rephrased by the site AI (open source Qwen2.5 0.5B, hosted by this project). Locations come from the site index.';
+          tag.textContent = 'Answer rephrased by the site AI (open source Qwen3 4B, hosted by this project). Locations come from the site index.';
         } else {
           tag.remove();
         }
@@ -349,6 +352,13 @@
   panel.querySelector('#hthb-form').addEventListener('submit', function (ev) {
     ev.preventDefault(); ask(input.value); input.value = '';
   });
+  // Typing in the box must never reach page-level keyboard shortcuts.
+  // The station pages bind Space and single letters globally (on 3D
+  // pages Space toggles Play and used to eat every space typed here,
+  // ht-keyfix v1); the pages now exempt form fields themselves, and
+  // this stopPropagation is the belt-and-braces half inside the bot.
+  input.addEventListener('keydown', function (ev) { ev.stopPropagation(); });
+  input.addEventListener('keyup', function (ev) { ev.stopPropagation(); });
   Array.prototype.forEach.call(panel.querySelectorAll('.hthb-chip'), function (chip) {
     chip.addEventListener('click', function () { ask(chip.textContent); });
   });
