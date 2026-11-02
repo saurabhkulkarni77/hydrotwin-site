@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-02T04:37:31Z",
+  "generated_at": "2026-11-02T19:35:21Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -348,7 +348,7 @@
       "title": "MLOps monitor: drift threshold breaches detected",
       "state": "open",
       "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/issues/1",
-      "updated_at": "2026-10-26T16:12:57Z"
+      "updated_at": "2026-11-02T19:34:39Z"
     }
   },
   "workflows": [
@@ -374,7 +374,16 @@
     {
       "file": ".github/workflows/monitor.yml",
       "name": "MLOps monitor \u2014 drift & freshness",
-      "latest": null
+      "latest": {
+        "run_id": 41511096954,
+        "title": "MLOps monitor \u2014 drift & freshness",
+        "event": "schedule",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-02T19:33:54Z",
+        "updated_at": "2026-11-02T19:34:45Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41511096954"
+      }
     },
     {
       "file": ".github/workflows/retrain.yml",
@@ -393,10 +402,10 @@
         "run_id": 41389391409,
         "title": "ht-3dhp v1 rollout: polygon water rebuilt from USGS 3DHP for 12 stati\u2026",
         "event": "push",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "created_at": "2026-11-02T04:36:14Z",
-        "updated_at": "2026-11-02T04:36:17Z",
+        "updated_at": "2026-11-02T04:38:26Z",
         "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41389391409"
       }
     }
