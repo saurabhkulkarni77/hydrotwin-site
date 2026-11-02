@@ -124,6 +124,9 @@ jobs:
       - name: Dallas polygon water rebuilt from USGS 3DHP (dev only)
         run: python3 build25/patch_3dhp_dallas.py stations
 
+      - name: All-stations polygon water rebuilt from USGS 3DHP (dev only)
+        run: python3 build25/patch_3dhp_all.py stations
+
       - name: Realism - per-station terrain exaggeration + hillshade blend (dev only)
         run: python3 build25/patch_realism_terrain.py
 
