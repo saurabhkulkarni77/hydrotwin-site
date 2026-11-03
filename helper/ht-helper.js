@@ -11,10 +11,11 @@
  * in the visitor's browser. v1-v3 loaded WebLLM on-device; the model
  * load crashed mobile Safari tabs outright (memory pressure kills
  * the web content process, worker isolation or not). Now an open
- * source model (Qwen2.5 3B Instruct, GGUF; hosted by a persistent
+ * source model (Llama 3.2 3B Instruct, GGUF; hosted by a persistent
  * llama.cpp server per Lambda environment — the original 0.5B was
  * replaced on 2026-11-01 after it confabulated about locations the
- * index had not given it) is hosted on the
+ * index had not given it, and the Qwen2.5 3B that followed it was
+ * replaced by Llama 3.2 3B on 2026-11-03) is hosted on the
  * project's own cloud (private S3 bucket + AWS Lambda llama.cpp) and
  * the bot calls its HTTPS endpoint with the question plus the
  * retrieved index entries; when the rephrased answer arrives it
@@ -102,7 +103,7 @@
   var input = panel.querySelector('#hthb-in');
   var aiStatus = panel.querySelector('#hthb-ai-status');
   aiStatus.textContent = AI_ENDPOINT
-    ? 'Model used: Qwen2.5 3B'
+    ? 'Model used: Llama 3.2 3B'
     : 'Model used: site index';
 
   function addMsg(text, who) {
@@ -336,7 +337,7 @@
         var txt = d && typeof d.answer === 'string' ? d.answer.trim() : '';
         if (txt) {
           txtSpan.textContent = txt;
-          tag.textContent = 'Answer rephrased by the site AI (open source Qwen2.5 3B, hosted by this project). Locations come from the site index.';
+          tag.textContent = 'Answer rephrased by the site AI (open source Llama 3.2 3B, hosted by this project). Locations come from the site index.';
         } else {
           tag.remove();
         }
