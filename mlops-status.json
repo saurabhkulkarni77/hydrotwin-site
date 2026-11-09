@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-03T18:03:05Z",
+  "generated_at": "2026-11-09T19:55:09Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -348,7 +348,7 @@
       "title": "MLOps monitor: drift threshold breaches detected",
       "state": "open",
       "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/issues/1",
-      "updated_at": "2026-11-02T19:34:39Z"
+      "updated_at": "2026-11-09T19:54:21Z"
     }
   },
   "workflows": [
@@ -356,14 +356,14 @@
       "file": ".github/workflows/ci.yml",
       "name": "CI \u2014 site, data & model tests",
       "latest": {
-        "run_id": 41689435573,
-        "title": "Helper bot: swap generation model Qwen2.5-3B to Meta Llama-3.2-3B-Ins\u2026",
+        "run_id": 41691792802,
+        "title": "Helper bot: panel copy names the live model - Model used: Llama 3.2 3\u2026",
         "event": "push",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-11-03T17:59:09Z",
-        "updated_at": "2026-11-03T18:01:35Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41689435573"
+        "created_at": "2026-11-03T18:13:56Z",
+        "updated_at": "2026-11-03T18:15:06Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41691792802"
       }
     },
     {
@@ -375,14 +375,14 @@
       "file": ".github/workflows/monitor.yml",
       "name": "MLOps monitor \u2014 drift & freshness",
       "latest": {
-        "run_id": 41511096954,
+        "run_id": 42687687205,
         "title": "MLOps monitor \u2014 drift & freshness",
         "event": "schedule",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-11-02T19:33:54Z",
-        "updated_at": "2026-11-02T19:34:45Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41511096954"
+        "created_at": "2026-11-09T19:53:37Z",
+        "updated_at": "2026-11-09T19:54:24Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/42687687205"
       }
     },
     {
@@ -399,14 +399,14 @@
       "file": ".github/workflows/deploy-dev.yml",
       "name": "Deploy DEV to AWS S3",
       "latest": {
-        "run_id": 41689435495,
-        "title": "Helper bot: swap generation model Qwen2.5-3B to Meta Llama-3.2-3B-Ins\u2026",
+        "run_id": 41691792374,
+        "title": "Helper bot: panel copy names the live model - Model used: Llama 3.2 3\u2026",
         "event": "push",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-11-03T17:59:08Z",
-        "updated_at": "2026-11-03T18:02:19Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41689435495"
+        "created_at": "2026-11-03T18:13:56Z",
+        "updated_at": "2026-11-03T18:17:30Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/41691792374"
       }
     }
   ]
