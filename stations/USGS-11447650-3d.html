@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "41211660560-6de1e1032c7a2025a358da82e0169c8e59d20085";
+  var BID = "42918202804-2a6947bd2c6ba06b2fd0c4266a1a2b91a20abcf4";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -2399,6 +2400,123 @@ const htTFR = initTableFlood;
 initTableFlood = function () { htTFR(); htReseat(); htCarve(); };
 const htBOR = buildOuter;
 buildOuter = function () { htBOR(); htCarve(); };
+
+
+// ht-waterbody3dhp v1: baked USGS 3DHP waterbody polygons (River/Lake,
+// areasqkm > 1) rendered as filled water scenery, seated on the ribbon's
+// water-surface profile like ht-polywater. Data: build25/waterbody3dhp_data.py.
+const WATERBODY3DHP = [[[-121.502273,38.459389,-121.501806,38.458018,-121.501728,38.458057,-121.501771,38.45831,-121.502099,38.459234,-121.502229,38.459411,-121.502273,38.459389]],[[-121.501759,38.457891,-121.501703,38.457643,-121.501615,38.457686,-121.501711,38.45789,-121.501759,38.457891]]];
+let htWb3Mesh = null, htWb3Meta = null;
+function htWb3Build() {
+  if (htWb3Mesh || !WATERBODY3DHP) return;
+  const samples = (ribbonPts || []).filter((p) => !p.brk);
+  if (!samples.length) return;
+  const pos = [], meta = [], idx = [];
+  const inBlk = (x, z, m) => x > IX0 - m && x < IX0 + IWM + m && z > IZ0 - m && z < IZ0 + IWM + m;
+  for (const poly of WATERBODY3DHP) {
+    const rings = poly.map((ring) => { const v = []; for (let i = 0; i + 1 < ring.length; i += 2) v.push(new THREE.Vector2(mx(ring[i]), mz(ring[i + 1]))); return v; });
+    if (!rings.length || rings[0].length < 3) continue;
+    let tris; try { tris = THREE.ShapeUtils.triangulateShape(rings[0], rings.slice(1)); } catch (e) { continue; }
+    const all = rings[0].concat(...rings.slice(1));
+    const base = pos.length / 3;
+    for (const v of all) {
+      let bk = -1, bd = Infinity;
+      for (let k = 0; k < samples.length; k++) { const dx = samples[k].x - v.x, dz = samples[k].z - v.y, d = dx * dx + dz * dz; if (d < bd) { bd = d; bk = k; } }
+      const sm = samples[bk], near = bd <= 500 * 500;
+      const dOut = Math.max(IX0 - sm.x, sm.x - (IX0 + IWM), IZ0 - sm.z, sm.z - (IZ0 + IWM), 0);
+      meta.push({ bed: sm.bed, top: sm.top, taper: OUT_DROP * Math.max(0, 1 - dOut / 200), near, gy: near ? 0 : elevGround(v.x, v.y) });
+      pos.push(v.x, 0, v.y);
+    }
+    for (const t of tris) {
+      const cx = (all[t[0]].x + all[t[1]].x + all[t[2]].x) / 3, cz = (all[t[0]].y + all[t[1]].y + all[t[2]].y) / 3;
+      if (inBlk(cx, cz, 40)) continue;
+      idx.push(base + t[0], base + t[1], base + t[2]);
+    }
+  }
+  if (!idx.length) { htWb3Mesh = false; return; }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+  const uv = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) { uv[2 * i] = pos[3 * i]; uv[2 * i + 1] = pos[3 * i + 2]; }
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  const nrm = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) nrm[3 * i + 1] = 1;
+  g.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
+  g.setIndex(idx); g.computeBoundingSphere();
+  const mat = ribbonMat.clone(); mat.side = THREE.DoubleSide;
+  htWb3Mesh = new THREE.Mesh(g, mat); htWb3Mesh.name = 'htWb3Water'; htWb3Mesh.frustumCulled = false; htWb3Mesh.renderOrder = 3;
+  htWb3Meta = meta; groundRoot.add(htWb3Mesh);
+}
+function htWb3Update(dH) {
+  if (!htWb3Mesh) htWb3Build();
+  if (!htWb3Mesh || htWb3Mesh === false) return;
+  htWb3Mesh.material.color.copy(ribbonMat.color);
+  const add = Math.max(0.3, dH + 0.3), pa = htWb3Mesh.geometry.attributes.position;
+  for (let i = 0; i < htWb3Meta.length; i++) { const m = htWb3Meta[i];
+    pa.array[3 * i + 1] = m.near ? Math.max(m.bed + add, m.top + 0.8) - REFE - OUT_DROP + m.taper + 0.12 : m.gy - REFE - 0.22; }
+  pa.needsUpdate = true;
+}
+const htBuildRibbonWb3 = buildRibbon;
+buildRibbon = function (dH, w) { htBuildRibbonWb3(dH, w); htWb3Update(dH); };   // ht-waterbody3dhp v1: same rebuild cadence as the ribbon
+
+// ------------------------------------------------------------------ ht-bridgegap v1
+// Water passes under bridges: baked OSM bridge crossings of this river
+// ([x, z, halfwidth] in page coordinates, from build25/bridgegap_data.py).
+// buildRibbon is wrapped so its point list gets an exact gap cut at each
+// crossing: interpolated boundary sections at the interval edges, points
+// inside dropped, a {brk} break between the edges. The original list is
+// restored afterwards; nothing else about the water changes.
+const HT_BRIDGES = [[-4049.5,-15900.9,9.4],[-4022.8,-15885.9,9.4],[-1572.1,-16503.0,5.5],[-1370.5,-16439.4,5.5],[-442.8,-14567.1,8.0],[-602.7,-13922.6,11.2],[-1244.5,-12896.9,11.2],[-6615.9,15236.3,7.6]];
+window.__htBridgeGaps = { crossings: HT_BRIDGES.length, gaps: 0, removedPts: 0 };
+function htGapPts(pts) {
+  const runs = []; let cur = null;
+  for (const p of pts) { if (!p || p.brk) { cur = null; continue; } if (!cur) { cur = []; runs.push(cur); } cur.push(p); }
+  const out = []; let gaps = 0, removed = 0;
+  runs.forEach((run, ri) => {
+    if (ri > 0) out.push({ brk: true });
+    if (run.length < 2 || !HT_BRIDGES.length) { for (const p of run) out.push(p); return; }
+    const S = [0];
+    for (let i = 1; i < run.length; i++) S.push(S[i - 1] + Math.hypot(run[i].x - run[i - 1].x, run[i].z - run[i - 1].z));
+    const ivs = [];
+    for (const c of HT_BRIDGES) {
+      let best = null;
+      for (let j = 0; j + 1 < run.length; j++) {
+        const ax = run[j].x, az = run[j].z, dx = run[j + 1].x - ax, dz = run[j + 1].z - az, L2 = dx * dx + dz * dz || 1;
+        let t = ((c[0] - ax) * dx + (c[1] - az) * dz) / L2; t = Math.max(0, Math.min(1, t));
+        const d = Math.hypot(c[0] - (ax + dx * t), c[1] - (az + dz * t));
+        if (!best || d < best.d) best = { d, s: S[j] + t * Math.sqrt(L2) };
+      }
+      if (best && best.d < 80) ivs.push([best.s - c[2], best.s + c[2]]);
+    }
+    if (!ivs.length) { for (const p of run) out.push(p); return; }
+    ivs.sort((a, b) => a[0] - b[0]);
+    const merged = [ivs[0].slice()];
+    for (let m = 1; m < ivs.length; m++) { const last = merged[merged.length - 1];
+      if (ivs[m][0] <= last[1]) last[1] = Math.max(last[1], ivs[m][1]); else merged.push(ivs[m].slice()); }
+    const nodeAt = (s) => { let j = 0; while (j < run.length - 2 && S[j + 1] < s) j++;
+      const seg = S[j + 1] - S[j] || 1, t = (s - S[j]) / seg, A = run[j], B = run[j + 1];
+      return { x: A.x + (B.x - A.x) * t, z: A.z + (B.z - A.z) * t, bed: A.bed + (B.bed - A.bed) * t, top: A.top + (B.top - A.top) * t }; };
+    let nodes = run.map((p, ix) => ({ s: S[ix], p }));
+    for (const iv of merged) { nodes.push({ s: iv[0], p: nodeAt(iv[0]) }); nodes.push({ s: iv[1], p: nodeAt(iv[1]) }); }
+    nodes.sort((a, b) => a.s - b.s);
+    const dedup = [];
+    for (const nd of nodes) { if (dedup.length && Math.abs(nd.s - dedup[dedup.length - 1].s) < 0.01) continue; dedup.push(nd); }
+    let pending = null;
+    for (const nd of dedup) {
+      const inside = merged.some((iv) => nd.s > iv[0] + 0.01 && nd.s < iv[1] - 0.01);
+      if (inside) { removed++; continue; }
+      if (pending !== null && nd.s >= pending - 0.01) { out.push({ brk: true }); gaps++; pending = null; }
+      out.push(nd.p);
+      for (const iv of merged) if (Math.abs(nd.s - iv[0]) < 0.01) pending = iv[1];
+    }
+  });
+  window.__htBridgeGaps = { crossings: HT_BRIDGES.length, gaps, removedPts: removed };
+  return out;
+}
+const htBridgeGap0 = buildRibbon;
+buildRibbon = function (dH, w) {
+  if (!HT_BRIDGES.length || !ribbonPts || !ribbonPts.length) { htBridgeGap0(dH, w); return; }
+  const saved = ribbonPts; ribbonPts = htGapPts(saved);
+  try { htBridgeGap0(dH, w); } finally { ribbonPts = saved; }
+};
 
 window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater, tWater, VIEWS, BLD, stageFt, dHof, goView, get REFE() { return REFE; }, get elevRange() { return [eMin, eMax, EXAG]; }, get curDH() { return curDH; }, get floods() { return floodsReady; } };
 window.HT3_READY = true;
@@ -6068,6 +6186,13 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
+
+<!-- ht-helperbot v1 -->
+<script src="../helper/ht-helper.js" defer></script>
+
+<!-- ht-precip v1 -->
+<script type="module" src="../assets/precip/ht-precip.mjs"></script>
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -6519,10 +6644,4 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   setInterval(poll, 60000);
 })();
 </script>
-
-<!-- ht-helperbot v1 -->
-<script src="../helper/ht-helper.js" defer></script>
-
-<!-- ht-precip v1 -->
-<script type="module" src="../assets/precip/ht-precip.mjs"></script>
 </body></html>

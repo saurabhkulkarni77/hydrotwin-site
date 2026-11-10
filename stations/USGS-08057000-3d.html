@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "41211660560-6de1e1032c7a2025a358da82e0169c8e59d20085";
+  var BID = "42918202804-2a6947bd2c6ba06b2fd0c4266a1a2b91a20abcf4";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -2402,6 +2403,123 @@ const htTFR = initTableFlood;
 initTableFlood = function () { htTFR(); htReseat(); htCarve(); };
 const htBOR = buildOuter;
 buildOuter = function () { htBOR(); htCarve(); };
+
+
+// ht-waterbody3dhp v1: baked USGS 3DHP waterbody polygons (River/Lake,
+// areasqkm > 1) rendered as filled water scenery, seated on the ribbon's
+// water-surface profile like ht-polywater. Data: build25/waterbody3dhp_data.py.
+const WATERBODY3DHP = [[[-96.7769464,32.749497557894756,-96.777058,32.749655,-96.777337,32.749633,-96.777643,32.749776,-96.778248,32.749644,-96.778729,32.749644,-96.778957,32.749793,-96.779741,32.750007,-96.780529,32.750532,-96.781654,32.751653,-96.782759,32.751983,-96.783371,32.751956,-96.784268,32.751511,-96.785973,32.751006,-96.787026,32.751017,-96.787716,32.75122,-96.790675,32.7526,-96.79245,32.75359,-96.794323,32.754772,-96.798785,32.757389,-96.800495,32.758527,-96.801061,32.759043,-96.80136,32.75945,-96.803006,32.760714,-96.806089,32.762704,-96.807331,32.763265,-96.808066,32.763501,-96.809042,32.763693,-96.810519,32.764161,-96.813446,32.765507,-96.815788,32.766969,-96.817479,32.769481,-96.818813,32.77224,-96.819236,32.773548,-96.821364,32.776719,-96.821748,32.778297,-96.82262,32.780039,-96.82286,32.780308,-96.823348,32.781413,-96.825424,32.784117,-96.8275,32.785963,-96.832686,32.788486,-96.833747,32.788865,-96.834827,32.789425,-96.835205,32.789497,-96.838374,32.791326,-96.841745,32.792727,-96.84457,32.794062,-96.845728,32.794688,-96.847082,32.795628,-96.848286,32.796342,-96.851261,32.797512,-96.852055,32.797732,-96.854567,32.797923,-96.855602,32.797895,-96.856155,32.797994,-96.857489,32.797988,-96.85773,32.797906,-96.858354,32.7979,-96.859272,32.797977,-96.859812,32.797839,-96.860918,32.797932,-96.86261,32.797772,-96.863938,32.79792,-96.865285,32.797809,-96.8669464,32.7978201229572,-96.8669464,32.798135221906115,-96.865389,32.798084,-96.863886,32.798184,-96.863359,32.79809,-96.861491,32.798119,-96.861107,32.798196,-96.860007,32.798174,-96.858537,32.798274,-96.855908,32.798247,-96.855432,32.798159,-96.852855,32.798094,-96.851547,32.797886,-96.850649,32.797589,-96.847981,32.796452,-96.846392,32.795375,-96.844199,32.794139,-96.840717,32.792546,-96.840418,32.792552,-96.839142,32.791892,-96.83855,32.791667,-96.838348,32.791667,-96.837125,32.790876,-96.835739,32.79015,-96.832686,32.788832,-96.83158,32.788167,-96.829752,32.787392,-96.82817,32.786535,-96.826927,32.785964,-96.826446,32.785557,-96.824852,32.783886,-96.823342,32.781919,-96.82258,32.780682,-96.822581,32.780473,-96.822288,32.780105,-96.821936,32.779204,-96.821312,32.77806,-96.82122,32.777159,-96.821032,32.776747,-96.81988,32.775104,-96.818891,32.773482,-96.818442,32.771976,-96.817928,32.771168,-96.817694,32.770503,-96.817186,32.769509,-96.815833,32.767458,-96.815079,32.766876,-96.813478,32.765898,-96.811416,32.765002,-96.810336,32.764392,-96.80899,32.763957,-96.807357,32.763573,-96.805406,32.762666,-96.803058,32.761082,-96.801197,32.759659,-96.801074,32.759587,-96.801009,32.759758,-96.800742,32.759747,-96.800677,32.759626,-96.800723,32.759208,-96.800482,32.759054,-96.799968,32.758504,-96.797926,32.757147,-96.795702,32.755943,-96.79485,32.755371,-96.793796,32.754827,-96.792574,32.754024,-96.790844,32.753046,-96.7886,32.751946,-96.787384,32.751423,-96.786428,32.751297,-96.785823,32.751319,-96.784685,32.751687,-96.783689,32.752181,-96.78274,32.752296,-96.78231,32.752214,-96.782076,32.752664,-96.781504,32.75334,-96.781439,32.753137,-96.782024,32.752533,-96.782122,32.752208,-96.78112,32.751625,-96.780139,32.75063,-96.778813,32.74987,-96.778261,32.749864,-96.777851,32.749985,-96.777461,32.749985,-96.7769464,32.749800008496734,-96.7769464,32.749497557894756]]];
+let htWb3Mesh = null, htWb3Meta = null;
+function htWb3Build() {
+  if (htWb3Mesh || !WATERBODY3DHP) return;
+  const samples = (ribbonPts || []).filter((p) => !p.brk);
+  if (!samples.length) return;
+  const pos = [], meta = [], idx = [];
+  const inBlk = (x, z, m) => x > IX0 - m && x < IX0 + IWM + m && z > IZ0 - m && z < IZ0 + IWM + m;
+  for (const poly of WATERBODY3DHP) {
+    const rings = poly.map((ring) => { const v = []; for (let i = 0; i + 1 < ring.length; i += 2) v.push(new THREE.Vector2(mx(ring[i]), mz(ring[i + 1]))); return v; });
+    if (!rings.length || rings[0].length < 3) continue;
+    let tris; try { tris = THREE.ShapeUtils.triangulateShape(rings[0], rings.slice(1)); } catch (e) { continue; }
+    const all = rings[0].concat(...rings.slice(1));
+    const base = pos.length / 3;
+    for (const v of all) {
+      let bk = -1, bd = Infinity;
+      for (let k = 0; k < samples.length; k++) { const dx = samples[k].x - v.x, dz = samples[k].z - v.y, d = dx * dx + dz * dz; if (d < bd) { bd = d; bk = k; } }
+      const sm = samples[bk], near = bd <= 500 * 500;
+      const dOut = Math.max(IX0 - sm.x, sm.x - (IX0 + IWM), IZ0 - sm.z, sm.z - (IZ0 + IWM), 0);
+      meta.push({ bed: sm.bed, top: sm.top, taper: OUT_DROP * Math.max(0, 1 - dOut / 200), near, gy: near ? 0 : elevGround(v.x, v.y) });
+      pos.push(v.x, 0, v.y);
+    }
+    for (const t of tris) {
+      const cx = (all[t[0]].x + all[t[1]].x + all[t[2]].x) / 3, cz = (all[t[0]].y + all[t[1]].y + all[t[2]].y) / 3;
+      if (inBlk(cx, cz, 40)) continue;
+      idx.push(base + t[0], base + t[1], base + t[2]);
+    }
+  }
+  if (!idx.length) { htWb3Mesh = false; return; }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+  const uv = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) { uv[2 * i] = pos[3 * i]; uv[2 * i + 1] = pos[3 * i + 2]; }
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  const nrm = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) nrm[3 * i + 1] = 1;
+  g.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
+  g.setIndex(idx); g.computeBoundingSphere();
+  const mat = ribbonMat.clone(); mat.side = THREE.DoubleSide;
+  htWb3Mesh = new THREE.Mesh(g, mat); htWb3Mesh.name = 'htWb3Water'; htWb3Mesh.frustumCulled = false; htWb3Mesh.renderOrder = 3;
+  htWb3Meta = meta; groundRoot.add(htWb3Mesh);
+}
+function htWb3Update(dH) {
+  if (!htWb3Mesh) htWb3Build();
+  if (!htWb3Mesh || htWb3Mesh === false) return;
+  htWb3Mesh.material.color.copy(ribbonMat.color);
+  const add = Math.max(0.3, dH + 0.3), pa = htWb3Mesh.geometry.attributes.position;
+  for (let i = 0; i < htWb3Meta.length; i++) { const m = htWb3Meta[i];
+    pa.array[3 * i + 1] = m.near ? Math.max(m.bed + add, m.top + 0.8) - REFE - OUT_DROP + m.taper + 0.12 : m.gy - REFE - 0.22; }
+  pa.needsUpdate = true;
+}
+const htBuildRibbonWb3 = buildRibbon;
+buildRibbon = function (dH, w) { htBuildRibbonWb3(dH, w); htWb3Update(dH); };   // ht-waterbody3dhp v1: same rebuild cadence as the ribbon
+
+// ------------------------------------------------------------------ ht-bridgegap v1
+// Water passes under bridges: baked OSM bridge crossings of this river
+// ([x, z, halfwidth] in page coordinates, from build25/bridgegap_data.py).
+// buildRibbon is wrapped so its point list gets an exact gap cut at each
+// crossing: interpolated boundary sections at the interval edges, points
+// inside dropped, a {brk} break between the edges. The original list is
+// restored afterwards; nothing else about the water changes.
+const HT_BRIDGES = [[-19620.9,-1501.1,7.6],[-18568.5,-1186.9,11.2],[-18550.1,-1172.8,11.2],[-16208.3,1334.9,9.4],[-12916.7,171.0,10.0],[-11325.8,-590.4,5.0],[-9095.6,-1338.6,5.0],[-4867.2,-2582.3,9.4],[-3077.2,-2591.4,9.4],[-1298.8,-1440.6,5.5],[-1251.9,-1395.0,5.5],[-337.8,-507.2,9.0],[-298.0,-468.5,11.2],[595.6,399.5,7.6],[614.4,417.8,13.0],[642.7,445.3,5.8],[661.7,463.8,9.4],[676.5,478.1,7.6],[698.9,499.9,5.5],[1034.2,825.6,8.0],[1134.3,922.8,5.5],[1372.0,1153.8,11.2],[1410.2,1190.9,11.2],[1494.4,1272.6,9.4],[1515.7,1293.4,9.4],[1531.9,1309.1,5.5],[2840.5,2404.2,8.0],[4134.5,2785.6,8.0],[5986.3,5215.5,7.6],[6265.9,5172.5,8.0],[11216.8,8364.7,5.0],[12427.5,10801.7,11.2],[12431.5,10833.5,11.2],[12993.3,13903.0,7.6],[18701.0,17479.8,7.6]];
+window.__htBridgeGaps = { crossings: HT_BRIDGES.length, gaps: 0, removedPts: 0 };
+function htGapPts(pts) {
+  const runs = []; let cur = null;
+  for (const p of pts) { if (!p || p.brk) { cur = null; continue; } if (!cur) { cur = []; runs.push(cur); } cur.push(p); }
+  const out = []; let gaps = 0, removed = 0;
+  runs.forEach((run, ri) => {
+    if (ri > 0) out.push({ brk: true });
+    if (run.length < 2 || !HT_BRIDGES.length) { for (const p of run) out.push(p); return; }
+    const S = [0];
+    for (let i = 1; i < run.length; i++) S.push(S[i - 1] + Math.hypot(run[i].x - run[i - 1].x, run[i].z - run[i - 1].z));
+    const ivs = [];
+    for (const c of HT_BRIDGES) {
+      let best = null;
+      for (let j = 0; j + 1 < run.length; j++) {
+        const ax = run[j].x, az = run[j].z, dx = run[j + 1].x - ax, dz = run[j + 1].z - az, L2 = dx * dx + dz * dz || 1;
+        let t = ((c[0] - ax) * dx + (c[1] - az) * dz) / L2; t = Math.max(0, Math.min(1, t));
+        const d = Math.hypot(c[0] - (ax + dx * t), c[1] - (az + dz * t));
+        if (!best || d < best.d) best = { d, s: S[j] + t * Math.sqrt(L2) };
+      }
+      if (best && best.d < 80) ivs.push([best.s - c[2], best.s + c[2]]);
+    }
+    if (!ivs.length) { for (const p of run) out.push(p); return; }
+    ivs.sort((a, b) => a[0] - b[0]);
+    const merged = [ivs[0].slice()];
+    for (let m = 1; m < ivs.length; m++) { const last = merged[merged.length - 1];
+      if (ivs[m][0] <= last[1]) last[1] = Math.max(last[1], ivs[m][1]); else merged.push(ivs[m].slice()); }
+    const nodeAt = (s) => { let j = 0; while (j < run.length - 2 && S[j + 1] < s) j++;
+      const seg = S[j + 1] - S[j] || 1, t = (s - S[j]) / seg, A = run[j], B = run[j + 1];
+      return { x: A.x + (B.x - A.x) * t, z: A.z + (B.z - A.z) * t, bed: A.bed + (B.bed - A.bed) * t, top: A.top + (B.top - A.top) * t }; };
+    let nodes = run.map((p, ix) => ({ s: S[ix], p }));
+    for (const iv of merged) { nodes.push({ s: iv[0], p: nodeAt(iv[0]) }); nodes.push({ s: iv[1], p: nodeAt(iv[1]) }); }
+    nodes.sort((a, b) => a.s - b.s);
+    const dedup = [];
+    for (const nd of nodes) { if (dedup.length && Math.abs(nd.s - dedup[dedup.length - 1].s) < 0.01) continue; dedup.push(nd); }
+    let pending = null;
+    for (const nd of dedup) {
+      const inside = merged.some((iv) => nd.s > iv[0] + 0.01 && nd.s < iv[1] - 0.01);
+      if (inside) { removed++; continue; }
+      if (pending !== null && nd.s >= pending - 0.01) { out.push({ brk: true }); gaps++; pending = null; }
+      out.push(nd.p);
+      for (const iv of merged) if (Math.abs(nd.s - iv[0]) < 0.01) pending = iv[1];
+    }
+  });
+  window.__htBridgeGaps = { crossings: HT_BRIDGES.length, gaps, removedPts: removed };
+  return out;
+}
+const htBridgeGap0 = buildRibbon;
+buildRibbon = function (dH, w) {
+  if (!HT_BRIDGES.length || !ribbonPts || !ribbonPts.length) { htBridgeGap0(dH, w); return; }
+  const saved = ribbonPts; ribbonPts = htGapPts(saved);
+  try { htBridgeGap0(dH, w); } finally { ribbonPts = saved; }
+};
 
 window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater, tWater, VIEWS, BLD, stageFt, dHof, goView, get REFE() { return REFE; }, get elevRange() { return [eMin, eMax, EXAG]; }, get curDH() { return curDH; }, get floods() { return floodsReady; } };
 window.HT3_READY = true;
@@ -6071,6 +6189,13 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
+
+<!-- ht-helperbot v1 -->
+<script src="../helper/ht-helper.js" defer></script>
+
+<!-- ht-precip v1 -->
+<script type="module" src="../assets/precip/ht-precip.mjs"></script>
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -6522,10 +6647,4 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   setInterval(poll, 60000);
 })();
 </script>
-
-<!-- ht-helperbot v1 -->
-<script src="../helper/ht-helper.js" defer></script>
-
-<!-- ht-precip v1 -->
-<script type="module" src="../assets/precip/ht-precip.mjs"></script>
 </body></html>
