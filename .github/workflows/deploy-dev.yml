@@ -107,37 +107,19 @@ jobs:
 
       - name: Baked water polygons for the out-of-block river (dev only)
         run: python3 build25/patch_polywater.py
+
+      - name: USGS 3DHP waterbody scenery (dev only)
+        run: python3 build25/patch_waterbody3dhp.py
       - name: Real river from USGS 3DEP elevation (dev only)
         run: python3 build25/patch_realriver.py
-      - name: No buildings - 3D buildings layer removed entirely (dev only)
-        run: python3 build25/patch_nobuildings.py
+      - name: Buildings present but never in water (dev only)
+        run: python3 build25/patch_buildingsback.py
 
       - name: Ribbon shading fix - water normals up, double-sided (dev only)
         run: python3 build25/patch_ribbonshade.py
 
       - name: Water under bridges - ribbon gaps at OSM bridge crossings (dev only)
         run: python3 build25/patch_bridgegap.py
-
-      - name: Water under bridges - polygon water gaps at the same crossings (dev only)
-        run: python3 build25/patch_polygap.py
-
-      - name: Dallas polygon water rebuilt from USGS 3DHP (dev only)
-        run: python3 build25/patch_3dhp_dallas.py stations
-
-      - name: All-stations polygon water rebuilt from USGS 3DHP (dev only)
-        run: python3 build25/patch_3dhp_all.py stations
-
-      - name: Realism - per-station terrain exaggeration + hillshade blend (dev only)
-        run: python3 build25/patch_realism_terrain.py
-
-      - name: Realism - flow-aligned animated water shader (dev only)
-        run: python3 build25/patch_realism_flowwater.py
-
-      - name: Realism - 3D staff gauge + flood extent overlay (dev only)
-        run: python3 build25/patch_realism_gauge.py
-
-      - name: Realism - NLCD instanced trees + USACE levees (dev only)
-        run: python3 build25/patch_realism_context.py
 
       - name: Keyboard shortcuts must not steal typing from form fields (dev only)
         run: python3 build25/patch_keyfix.py

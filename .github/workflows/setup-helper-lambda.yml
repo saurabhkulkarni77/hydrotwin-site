@@ -1,10 +1,10 @@
 name: Setup helper-bot Lambda (one-off)
 
 # One-off infra for the HydroTwin helper bot server-side model:
-# private S3 bucket holds the model GGUF (Meta Llama-3.2-3B-Instruct
-# since 2026-11-03, served by a persistent llama-server per Lambda
-# environment; the Qwen2.5-3B, Qwen3-4B and Qwen2.5-0.5B files stay
-# in the bucket for rollback); a Lambda
+# private S3 bucket holds the model GGUF (Qwen2.5-3B-Instruct
+# since 2026-11-01, served by a persistent llama-server per Lambda
+# environment; the Qwen3-4B and Qwen2.5-0.5B files stay in the
+# bucket for rollback); a Lambda
 # (python3.12 zip deployment, bundled llama.cpp built for Amazon
 # Linux 2023) serves grounded answers through a Function URL whose
 # CORS is restricted to the DEV CloudFront origin only.
@@ -27,8 +27,8 @@ permissions:
 env:
   AWS_REGION: us-east-1
   BUCKET: hydrotwin-helper-2026
-  MODEL_FILE: Llama-3.2-3B-Instruct-Q4_K_M.gguf
-  MODEL_URL: https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf
+  MODEL_FILE: qwen2.5-3b-instruct-q4_k_m.gguf
+  MODEL_URL: https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf
   EMBED_MODEL_FILE: bge-small-en-v1.5-q8_0.gguf
   EMBED_MODEL_URL: https://huggingface.co/ggml-org/bge-small-en-v1.5-Q8_0-GGUF/resolve/main/bge-small-en-v1.5-q8_0.gguf
   ROLE_NAME: hydrotwin-helper-lambda-role
@@ -125,10 +125,10 @@ jobs:
               find build -name "*.so*" -exec cp -a {} pkg/llama/ \;
               ls -la pkg/llama
               export LD_LIBRARY_PATH=/work/pkg/llama
-              PROMPT=$(printf "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nYou answer questions about locating information in a hydrology digital twin. Be brief.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\nQuestion: Where is the hydrograph for Dallas?<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n")
+              PROMPT=$(printf "<|im_start|>system\nYou answer questions about locating information in a hydrology digital twin. Be brief.<|im_end|>\n<|im_start|>user\nQuestion: Where is the hydrograph for Dallas?<|im_end|>\n<|im_start|>assistant\n")
               /work/pkg/llama/llama-completion -m /work/model.gguf \
                 -p "$PROMPT" -n 48 -c 2048 -t 2 --temp 0.2 --seed 42 \
-                --no-display-prompt -r "<|eot_id|>" > smoke_out.txt 2> smoke_err.txt || true
+                --no-display-prompt -r "<|im_end|>" > smoke_out.txt 2> smoke_err.txt || true
               echo "--- llama-completion smoke stdout ---"
               cat smoke_out.txt
               test -s smoke_out.txt

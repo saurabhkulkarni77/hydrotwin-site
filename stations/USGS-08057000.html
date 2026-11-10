@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "41691792374-2e37d7f38c0d4f2c25d9f52e9867a049cd0c92aa";
+  var BID = "41133831116-15385b09477ab97f06e88b04947f85f6ce6d2b91";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,11 +52,6 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
-
-
-
-
-
 
 
 
@@ -1513,7 +1508,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 
 
 <script type="importmap">
-{ "imports": { "three": "../assets/3dchart/three.module.js?htv=41691792374-2e37d7f38c0d4f2c25d9f52e9867a049cd0c92aa" } }
+{ "imports": { "three": "../assets/3dchart/three.module.js?htv=41133831116-15385b09477ab97f06e88b04947f85f6ce6d2b91" } }
 </script>
 <script type="text/plain" data-htlp-boot="chart3d" data-htlp-module="1">
 // ht-3dchart v1 boot: mount the 3D chart only when its section nears the
@@ -1522,7 +1517,7 @@ window.__wkMeta = {"leader":{"PILSTMv1":0.4987,"LSTM":0.5124,"Transformer":0.485
 {
   const root = document.getElementById('ht3dc-root');
   if (root) {
-    const start = () => import('../assets/3dchart/embed.mjs?htv=41691792374-2e37d7f38c0d4f2c25d9f52e9867a049cd0c92aa')
+    const start = () => import('../assets/3dchart/embed.mjs?htv=41133831116-15385b09477ab97f06e88b04947f85f6ce6d2b91')
       .then((m) => m.mount(root))
       .catch((e) => {
         const l = root.querySelector('.ht3dc-loading');
@@ -4816,37 +4811,6 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
-
-
-
-<!-- ht-helperbot v1 -->
-<script src="../helper/ht-helper.js" defer></script>
-
-<script>
-// ht-charts3d v1 boot: import the 3D charts module only when the
-// section nears the viewport.
-{
-  const root = document.getElementById('htc3-root');
-  if (root) {
-    const start = () => import('../assets/htcharts3d/htcharts3d.mjs')
-      .then((m) => m.mount(root))
-      .catch((e) => {
-        const l = root.querySelector('.htc3-loading');
-        if (l) { l.hidden = false; l.textContent = '3D charts unavailable: ' + e.message; }
-        console.error(e);
-      });
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((es) => {
-        if (es.some((x) => x.isIntersecting)) { io.disconnect(); start(); }
-      }, { rootMargin: '300px' });
-      io.observe(root);
-    } else start();
-  }
-}
-</script>
-
-
-
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -5027,4 +4991,30 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   setInterval(poll, 60000);
 })();
 </script>
+
+<script>
+// ht-charts3d v1 boot: import the 3D charts module only when the
+// section nears the viewport.
+{
+  const root = document.getElementById('htc3-root');
+  if (root) {
+    const start = () => import('../assets/htcharts3d/htcharts3d.mjs')
+      .then((m) => m.mount(root))
+      .catch((e) => {
+        const l = root.querySelector('.htc3-loading');
+        if (l) { l.hidden = false; l.textContent = '3D charts unavailable: ' + e.message; }
+        console.error(e);
+      });
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => {
+        if (es.some((x) => x.isIntersecting)) { io.disconnect(); start(); }
+      }, { rootMargin: '300px' });
+      io.observe(root);
+    } else start();
+  }
+}
+</script>
+
+<!-- ht-helperbot v1 -->
+<script src="../helper/ht-helper.js" defer></script>
 </body></html>
