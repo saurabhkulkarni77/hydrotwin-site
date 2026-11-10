@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "41211660560-6de1e1032c7a2025a358da82e0169c8e59d20085";
+  var BID = "42918202804-2a6947bd2c6ba06b2fd0c4266a1a2b91a20abcf4";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -2399,6 +2400,123 @@ const htTFR = initTableFlood;
 initTableFlood = function () { htTFR(); htReseat(); htCarve(); };
 const htBOR = buildOuter;
 buildOuter = function () { htBOR(); htCarve(); };
+
+
+// ht-waterbody3dhp v1: baked USGS 3DHP waterbody polygons (River/Lake,
+// areasqkm > 1) rendered as filled water scenery, seated on the ribbon's
+// water-surface profile like ht-polywater. Data: build25/waterbody3dhp_data.py.
+const WATERBODY3DHP = [[[-106.11461861578947,35.9195,-106.114339,35.91857,-106.114399,35.918026,-106.114662,35.916937,-106.11508,35.915794,-106.115526,35.915211,-106.11637,35.914546,-106.116626,35.913513,-106.117058,35.912875,-106.117719,35.912193,-106.117976,35.911726,-106.118259,35.910902,-106.118637,35.910264,-106.118818,35.908961,-106.119439,35.907818,-106.119998,35.905971,-106.12018,35.905559,-106.120713,35.904866,-106.121212,35.90391,-106.121914,35.903124,-106.122954,35.902639,-106.12375,35.901743,-106.124287,35.901346,-106.125296,35.90105,-106.126011,35.900986,-106.127308,35.900701,-106.127963,35.90047,-106.128125,35.90013,-106.127681,35.898931,-106.127728,35.89836,-106.128337,35.897761,-106.128397,35.897574,-106.128357,35.897212,-106.128689,35.896371,-106.128628,35.896184,-106.128872,35.895651,-106.128818,35.895459,-106.12894,35.895025,-106.129129,35.894503,-106.129345,35.894217,-106.129495,35.893195,-106.129961,35.893014,-106.130833,35.892503,-106.131799,35.892245,-106.132859,35.892669,-106.133142,35.892713,-106.13371,35.892587,-106.133966,35.892477,-106.133939,35.892367,-106.133196,35.892427,-106.133183,35.892328,-106.134737,35.892032,-106.135317,35.891791,-106.136027,35.89134,-106.136716,35.890621,-106.136953,35.889659,-106.137825,35.8885,-106.138373,35.887368,-106.138421,35.88623,-106.138347,35.885609,-106.138172,35.885247,-106.138132,35.88451,-106.138206,35.884087,-106.13874,35.883192,-106.13897,35.882637,-106.138876,35.882065,-106.138107,35.880652,-106.138033,35.879806,-106.138087,35.879383,-106.138209,35.879059,-106.138419,35.878795,-106.139175,35.878053,-106.139419,35.877372,-106.140108,35.876795,-106.140588,35.87557,-106.140859,35.875174,-106.14125,35.874984,-106.141529,35.875031,-106.140588,35.876636,-106.140161,35.878015,-106.139972,35.878389,-106.139695,35.878598,-106.139236,35.878642,-106.139013,35.87874,-106.138749,35.879004,-106.138432,35.879559,-106.138411,35.88035,-106.138505,35.880752,-106.139221,35.881384,-106.139524,35.882428,-106.139517,35.883373,-106.139618,35.883604,-106.140131,35.884115,-106.140272,35.884934,-106.140252,35.885176,-106.140015,35.885775,-106.139664,35.885907,-106.139069,35.885813,-106.138988,35.885874,-106.13888,35.886203,-106.139231,35.886962,-106.139102,35.887473,-106.138744,35.887868,-106.138136,35.888852,-106.137669,35.889368,-106.137311,35.890341,-106.137006,35.890923,-106.136472,35.891692,-106.136182,35.891945,-106.135128,35.89239,-106.132953,35.893092,-106.132115,35.892954,-106.130994,35.892926,-106.130501,35.893118,-106.130237,35.893596,-106.130318,35.893976,-106.130541,35.894229,-106.130541,35.894388,-106.130196,35.89475,-106.130183,35.894877,-106.130236,35.895295,-106.130445,35.895822,-106.130411,35.896037,-106.130236,35.896201,-106.130235,35.896449,-106.129945,35.896619,-106.129688,35.896894,-106.129478,35.897487,-106.128397,35.898173,-106.128208,35.898415,-106.128194,35.898844,-106.128497,35.899404,-106.128517,35.899839,-106.128605,35.900026,-106.12851,35.900333,-106.127996,35.901036,-106.127672,35.901201,-106.127382,35.901179,-106.12701,35.901289,-106.126672,35.901217,-106.126004,35.901244,-106.124654,35.901579,-106.124142,35.90182,-106.123305,35.902584,-106.121995,35.903376,-106.121402,35.904613,-106.12068,35.905504,-106.120512,35.906625,-106.119655,35.907906,-106.119196,35.90895,-106.119102,35.909604,-106.11888,35.910209,-106.11884,35.911176,-106.118719,35.911616,-106.117193,35.91348,-106.116647,35.91481,-106.116309,35.915244,-106.115905,35.915986,-106.115729,35.916168,-106.115216,35.916432,-106.114878,35.917014,-106.114852,35.917586,-106.11519,35.91813,-106.1153965159396,35.9195,-106.11461861578947,35.9195],[-106.138799,35.885835,-106.139117,35.885527,-106.13961,35.885725,-106.139974,35.885687,-106.140076,35.885522,-106.140177,35.884995,-106.13957,35.883978,-106.139355,35.883467,-106.139247,35.883351,-106.139138,35.883362,-106.13872,35.883769,-106.13855,35.884219,-106.138638,35.885016,-106.138624,35.885901,-106.138718,35.885961,-106.138799,35.885868,-106.138799,35.885835],[-106.129744,35.894256,-106.129656,35.894195,-106.12921,35.894964,-106.129061,35.895789,-106.128817,35.896349,-106.12883,35.896613,-106.128627,35.897382,-106.128702,35.897437,-106.128911,35.897025,-106.129445,35.896624,-106.129891,35.895822,-106.129892,35.89525,-106.129764,35.894388,-106.129744,35.894256],[-106.114771,35.918174,-106.114703,35.918108,-106.114622,35.918185,-106.114515,35.918756,-106.11479006633907,35.9195,-106.114995,35.9195,-106.114805,35.918751,-106.114771,35.918174],[-106.116026,35.915101,-106.115971,35.915024,-106.115445,35.915486,-106.115364,35.915657,-106.115486,35.915948,-106.115904,35.915662,-106.116026,35.915101],[-106.139966,35.877955,-106.139628,35.878125,-106.139331,35.878455,-106.139452,35.87851,-106.139729,35.878411,-106.139999,35.878081,-106.139966,35.877955]]];
+let htWb3Mesh = null, htWb3Meta = null;
+function htWb3Build() {
+  if (htWb3Mesh || !WATERBODY3DHP) return;
+  const samples = (ribbonPts || []).filter((p) => !p.brk);
+  if (!samples.length) return;
+  const pos = [], meta = [], idx = [];
+  const inBlk = (x, z, m) => x > IX0 - m && x < IX0 + IWM + m && z > IZ0 - m && z < IZ0 + IWM + m;
+  for (const poly of WATERBODY3DHP) {
+    const rings = poly.map((ring) => { const v = []; for (let i = 0; i + 1 < ring.length; i += 2) v.push(new THREE.Vector2(mx(ring[i]), mz(ring[i + 1]))); return v; });
+    if (!rings.length || rings[0].length < 3) continue;
+    let tris; try { tris = THREE.ShapeUtils.triangulateShape(rings[0], rings.slice(1)); } catch (e) { continue; }
+    const all = rings[0].concat(...rings.slice(1));
+    const base = pos.length / 3;
+    for (const v of all) {
+      let bk = -1, bd = Infinity;
+      for (let k = 0; k < samples.length; k++) { const dx = samples[k].x - v.x, dz = samples[k].z - v.y, d = dx * dx + dz * dz; if (d < bd) { bd = d; bk = k; } }
+      const sm = samples[bk], near = bd <= 500 * 500;
+      const dOut = Math.max(IX0 - sm.x, sm.x - (IX0 + IWM), IZ0 - sm.z, sm.z - (IZ0 + IWM), 0);
+      meta.push({ bed: sm.bed, top: sm.top, taper: OUT_DROP * Math.max(0, 1 - dOut / 200), near, gy: near ? 0 : elevGround(v.x, v.y) });
+      pos.push(v.x, 0, v.y);
+    }
+    for (const t of tris) {
+      const cx = (all[t[0]].x + all[t[1]].x + all[t[2]].x) / 3, cz = (all[t[0]].y + all[t[1]].y + all[t[2]].y) / 3;
+      if (inBlk(cx, cz, 40)) continue;
+      idx.push(base + t[0], base + t[1], base + t[2]);
+    }
+  }
+  if (!idx.length) { htWb3Mesh = false; return; }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+  const uv = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) { uv[2 * i] = pos[3 * i]; uv[2 * i + 1] = pos[3 * i + 2]; }
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  const nrm = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) nrm[3 * i + 1] = 1;
+  g.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
+  g.setIndex(idx); g.computeBoundingSphere();
+  const mat = ribbonMat.clone(); mat.side = THREE.DoubleSide;
+  htWb3Mesh = new THREE.Mesh(g, mat); htWb3Mesh.name = 'htWb3Water'; htWb3Mesh.frustumCulled = false; htWb3Mesh.renderOrder = 3;
+  htWb3Meta = meta; groundRoot.add(htWb3Mesh);
+}
+function htWb3Update(dH) {
+  if (!htWb3Mesh) htWb3Build();
+  if (!htWb3Mesh || htWb3Mesh === false) return;
+  htWb3Mesh.material.color.copy(ribbonMat.color);
+  const add = Math.max(0.3, dH + 0.3), pa = htWb3Mesh.geometry.attributes.position;
+  for (let i = 0; i < htWb3Meta.length; i++) { const m = htWb3Meta[i];
+    pa.array[3 * i + 1] = m.near ? Math.max(m.bed + add, m.top + 0.8) - REFE - OUT_DROP + m.taper + 0.12 : m.gy - REFE - 0.22; }
+  pa.needsUpdate = true;
+}
+const htBuildRibbonWb3 = buildRibbon;
+buildRibbon = function (dH, w) { htBuildRibbonWb3(dH, w); htWb3Update(dH); };   // ht-waterbody3dhp v1: same rebuild cadence as the ribbon
+
+// ------------------------------------------------------------------ ht-bridgegap v1
+// Water passes under bridges: baked OSM bridge crossings of this river
+// ([x, z, halfwidth] in page coordinates, from build25/bridgegap_data.py).
+// buildRibbon is wrapped so its point list gets an exact gap cut at each
+// crossing: interpolated boundary sections at the interval edges, points
+// inside dropped, a {brk} break between the edges. The original list is
+// restored afterwards; nothing else about the water changes.
+const HT_BRIDGES = [[6313.6,-14892.2,7.6],[6163.4,-12671.7,11.2]];
+window.__htBridgeGaps = { crossings: HT_BRIDGES.length, gaps: 0, removedPts: 0 };
+function htGapPts(pts) {
+  const runs = []; let cur = null;
+  for (const p of pts) { if (!p || p.brk) { cur = null; continue; } if (!cur) { cur = []; runs.push(cur); } cur.push(p); }
+  const out = []; let gaps = 0, removed = 0;
+  runs.forEach((run, ri) => {
+    if (ri > 0) out.push({ brk: true });
+    if (run.length < 2 || !HT_BRIDGES.length) { for (const p of run) out.push(p); return; }
+    const S = [0];
+    for (let i = 1; i < run.length; i++) S.push(S[i - 1] + Math.hypot(run[i].x - run[i - 1].x, run[i].z - run[i - 1].z));
+    const ivs = [];
+    for (const c of HT_BRIDGES) {
+      let best = null;
+      for (let j = 0; j + 1 < run.length; j++) {
+        const ax = run[j].x, az = run[j].z, dx = run[j + 1].x - ax, dz = run[j + 1].z - az, L2 = dx * dx + dz * dz || 1;
+        let t = ((c[0] - ax) * dx + (c[1] - az) * dz) / L2; t = Math.max(0, Math.min(1, t));
+        const d = Math.hypot(c[0] - (ax + dx * t), c[1] - (az + dz * t));
+        if (!best || d < best.d) best = { d, s: S[j] + t * Math.sqrt(L2) };
+      }
+      if (best && best.d < 80) ivs.push([best.s - c[2], best.s + c[2]]);
+    }
+    if (!ivs.length) { for (const p of run) out.push(p); return; }
+    ivs.sort((a, b) => a[0] - b[0]);
+    const merged = [ivs[0].slice()];
+    for (let m = 1; m < ivs.length; m++) { const last = merged[merged.length - 1];
+      if (ivs[m][0] <= last[1]) last[1] = Math.max(last[1], ivs[m][1]); else merged.push(ivs[m].slice()); }
+    const nodeAt = (s) => { let j = 0; while (j < run.length - 2 && S[j + 1] < s) j++;
+      const seg = S[j + 1] - S[j] || 1, t = (s - S[j]) / seg, A = run[j], B = run[j + 1];
+      return { x: A.x + (B.x - A.x) * t, z: A.z + (B.z - A.z) * t, bed: A.bed + (B.bed - A.bed) * t, top: A.top + (B.top - A.top) * t }; };
+    let nodes = run.map((p, ix) => ({ s: S[ix], p }));
+    for (const iv of merged) { nodes.push({ s: iv[0], p: nodeAt(iv[0]) }); nodes.push({ s: iv[1], p: nodeAt(iv[1]) }); }
+    nodes.sort((a, b) => a.s - b.s);
+    const dedup = [];
+    for (const nd of nodes) { if (dedup.length && Math.abs(nd.s - dedup[dedup.length - 1].s) < 0.01) continue; dedup.push(nd); }
+    let pending = null;
+    for (const nd of dedup) {
+      const inside = merged.some((iv) => nd.s > iv[0] + 0.01 && nd.s < iv[1] - 0.01);
+      if (inside) { removed++; continue; }
+      if (pending !== null && nd.s >= pending - 0.01) { out.push({ brk: true }); gaps++; pending = null; }
+      out.push(nd.p);
+      for (const iv of merged) if (Math.abs(nd.s - iv[0]) < 0.01) pending = iv[1];
+    }
+  });
+  window.__htBridgeGaps = { crossings: HT_BRIDGES.length, gaps, removedPts: removed };
+  return out;
+}
+const htBridgeGap0 = buildRibbon;
+buildRibbon = function (dH, w) {
+  if (!HT_BRIDGES.length || !ribbonPts || !ribbonPts.length) { htBridgeGap0(dH, w); return; }
+  const saved = ribbonPts; ribbonPts = htGapPts(saved);
+  try { htBridgeGap0(dH, w); } finally { ribbonPts = saved; }
+};
 
 window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater, tWater, VIEWS, BLD, stageFt, dHof, goView, get REFE() { return REFE; }, get elevRange() { return [eMin, eMax, EXAG]; }, get curDH() { return curDH; }, get floods() { return floodsReady; } };
 window.HT3_READY = true;
@@ -6068,6 +6186,13 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 
 
+
+
+<!-- ht-helperbot v1 -->
+<script src="../helper/ht-helper.js" defer></script>
+
+<!-- ht-precip v1 -->
+<script type="module" src="../assets/precip/ht-precip.mjs"></script>
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -6519,10 +6644,4 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   setInterval(poll, 60000);
 })();
 </script>
-
-<!-- ht-helperbot v1 -->
-<script src="../helper/ht-helper.js" defer></script>
-
-<!-- ht-precip v1 -->
-<script type="module" src="../assets/precip/ht-precip.mjs"></script>
 </body></html>
