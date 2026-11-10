@@ -315,6 +315,36 @@ def main():
         },
     ])
 
+    # ---------------------------------------------------------------
+    # ACE playbook merge (build25/ace/playbook.json, added 2026-11-01).
+    # The ACE loop (Agentic Context Engineering, arXiv:2510.04618)
+    # evolves this versioned playbook from the bot's measured
+    # retrieval failures: each "entry_keywords" bullet appends
+    # curator-validated keywords to one entry. Titles and texts are
+    # never touched, so the embedding asset (built from title+text)
+    # is unaffected. The merge is fully described by the playbook
+    # file; playbook_changelog.md records every promotion with its
+    # measured eval delta. A missing playbook file is not an error
+    # (the index then builds exactly as before ACE).
+    # ---------------------------------------------------------------
+    pb_path = root / "build25" / "ace" / "playbook.json"
+    if pb_path.exists():
+        pb = json.loads(pb_path.read_text(encoding="utf-8"))
+        extra = {}
+        for b in pb.get("bullets", []):
+            if b.get("type") == "entry_keywords":
+                extra.setdefault(b["entry"], []).extend(b.get("add_keywords", []))
+        merged = 0
+        for e in entries:
+            have = {k.strip().lower() for k in e["keywords"]}
+            for kw in extra.get(e["id"], []):
+                if kw.strip() and kw.strip().lower() not in have:
+                    e["keywords"].append(kw)
+                    have.add(kw.strip().lower())
+                    merged += 1
+        print(f"ACE playbook v{pb.get('version')}: {merged} keywords merged "
+              f"into {len(extra)} entries")
+
     out = {"v": "ht-helperbot v1", "stations": stations, "entries": entries}
     dest = root / "helper" / "ht-index.json"
     dest.parent.mkdir(parents=True, exist_ok=True)

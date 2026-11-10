@@ -1,9 +1,10 @@
 """HydroTwin helper-bot inference Lambda.
 
 Hosts an open source instruct model (GGUF Q4_K_M, stored in a private
-S3 bucket; MODEL_KEY selects the file — Qwen2.5-3B-Instruct since
-2026-11-01) behind llama.cpp, invoked only through the Lambda
-Function URL by the dev site's helper bot.
+S3 bucket; MODEL_KEY selects the file — Meta Llama-3.2-3B-Instruct
+since 2026-11-03; before that Qwen2.5-3B-Instruct, whose GGUF stays
+in the bucket for rollback) behind llama.cpp, invoked only through
+the Lambda Function URL by the dev site's helper bot.
 
 Hybrid rerank (v3, 2026-11-01): when the request carries the bot's
 keyword-scored candidate list, the handler ALSO reranks the whole
@@ -127,10 +128,23 @@ def _build_prompt(question, entries):
         lines.append("- %s: %s (page: %s)" % (title, text, page))
     entries_text = "\n".join(lines) if lines else "(no entries matched)"
     user = "Question: %s\n\nSite index entries:\n%s" % (question, entries_text)
+    # Rendered exactly per the chat template embedded in the
+    # Llama-3.2 GGUF (tokenizer.chat_template): BOS token, header
+    # blocks, the template's own knowledge-date preamble (with its
+    # strftime_now date), <|eot_id|> separators, and the assistant
+    # generation header. (The Qwen models used before 2026-11-03
+    # took ChatML <|im_start|> formatting here instead.)
+    system = (
+        "Cutting Knowledge Date: December 2023\n"
+        "Today Date: " + time.strftime("%d %b %Y", time.gmtime()) + "\n\n"
+        + SYSTEM
+    )
     prompt = (
-        "<|im_start|>system\n" + SYSTEM + "<|im_end|>\n"
-        "<|im_start|>user\n" + user + "<|im_end|>\n"
-        "<|im_start|>assistant\n"
+        "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n"
+        + system + "<|eot_id|>"
+        "<|start_header_id|>user<|end_header_id|>\n\n"
+        + user + "<|eot_id|>"
+        "<|start_header_id|>assistant<|end_header_id|>\n\n"
     )
     return prompt[:7000]
 
@@ -202,7 +216,7 @@ def _generate_server(prompt):
         "temperature": 0.2,
         "seed": 42,
         "cache_prompt": True,
-        "stop": ["<|im_end|>", "<|im_start|>"],
+        "stop": ["<|eot_id|>", "<|end_of_text|>", "<|start_header_id|>"],
     }).encode()
     req = urllib.request.Request(
         SERVER_URL + "/completion", data=body,
@@ -228,7 +242,7 @@ def _generate_cli(prompt):
             "--temp", "0.2",
             "--seed", "42",
             "--no-display-prompt",
-            "-r", "<|im_end|>",
+            "-r", "<|eot_id|>",
         ],
         capture_output=True,
         text=True,
