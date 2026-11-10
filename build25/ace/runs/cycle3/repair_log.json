@@ -1,0 +1,39 @@
+{
+ "broken_gate_tasks": [
+  "Who won the football game last night?",
+  "What is the capital of France?"
+ ],
+ "repairs": [
+  {
+   "bullet": "pb-2003",
+   "entry": "station-08158000-data",
+   "removed": "capital city",
+   "substituted": [
+    "city"
+   ],
+   "because_flips": [
+    "What is the capital of France?"
+   ]
+  },
+  {
+   "bullet": "pb-2006",
+   "entry": "station-07374000-data",
+   "removed": "last station",
+   "substituted": [],
+   "because_flips": [
+    "Who won the football game last night?"
+   ]
+  },
+  {
+   "bullet": "pb-2019",
+   "entry": "station-01646500-data",
+   "removed": "nation s capital",
+   "substituted": [
+    "nation"
+   ],
+   "because_flips": [
+    "What is the capital of France?"
+   ]
+  }
+ ]
+}

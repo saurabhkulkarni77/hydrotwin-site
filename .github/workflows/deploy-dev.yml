@@ -107,18 +107,50 @@ jobs:
 
       - name: Baked water polygons for the out-of-block river (dev only)
         run: python3 build25/patch_polywater.py
+
+      - name: USGS 3DHP waterbody scenery (dev only)
+        run: python3 build25/patch_waterbody3dhp.py
       - name: Real river from USGS 3DEP elevation (dev only)
         run: python3 build25/patch_realriver.py
       - name: Buildings present but never in water (dev only)
         run: python3 build25/patch_buildingsback.py
 
+      - name: Ribbon shading fix - water normals up, double-sided (dev only)
+        run: python3 build25/patch_ribbonshade.py
+
+      - name: Water under bridges - ribbon gaps at OSM bridge crossings (dev only)
+        run: python3 build25/patch_bridgegap.py
+
+      - name: Keyboard shortcuts must not steal typing from form fields (dev only)
+        run: python3 build25/patch_keyfix.py
+
+      - name: Generate helper-bot site index (dev only)
+        run: python3 build25/gen_helper_index.py
+
+      - name: Generate helper-bot entry embeddings (dev only)
+        run: |
+          mkdir -p /tmp/llama-emb
+          curl -fL --retry 3 -o /tmp/llama-emb/llama.tar.gz https://github.com/ggml-org/llama.cpp/releases/download/b12032/llama-b12032-bin-ubuntu-x64.tar.gz
+          tar -xzf /tmp/llama-emb/llama.tar.gz -C /tmp/llama-emb
+          curl -fL --retry 3 -o /tmp/llama-emb/bge-small-en-v1.5-q8_0.gguf https://huggingface.co/ggml-org/bge-small-en-v1.5-Q8_0-GGUF/resolve/main/bge-small-en-v1.5-q8_0.gguf
+          HT_LLAMA_SERVER=/tmp/llama-emb/llama-b12032/llama-server HT_EMBED_MODEL=/tmp/llama-emb/bge-small-en-v1.5-q8_0.gguf python3 build25/gen_helper_embeddings.py
+
+      - name: Helper bot widget on all pages (dev only)
+        run: python3 build25/patch_helperbot.py
+
+      - name: Rain/snow animation by selected date (dev only)
+        run: python3 build25/patch_precip.py
+
+      - name: Data view charts in 3D (dev only)
+        run: python3 build25/patch_charts3d.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
-          if [ -n "$(git status --porcelain stations index.html mlops.html)" ]; then
+          if [ -n "$(git status --porcelain stations index.html mlops.html helper)" ]; then
             git config user.name "hydrotwin-dev"
             git config user.email "actions@github.com"
-            git add stations index.html mlops.html
+            git add stations index.html mlops.html helper
             git commit -m "Bake station pages (dev)"
             git push
           else

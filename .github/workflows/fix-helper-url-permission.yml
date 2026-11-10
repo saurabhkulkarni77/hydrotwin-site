@@ -1,0 +1,59 @@
+name: Fix helper Function URL permission (one-off)
+
+# One-off: the public Function URL of hydrotwin-helper returns 403
+# because the resource policy only grants lambda:InvokeFunctionUrl.
+# AWS's current Function URL authorization also requires a
+# lambda:InvokeFunction statement for principal '*'. The
+# --function-url-auth-type parameter is rejected by the service for
+# the InvokeFunction action, so the statement is added without it.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [dev]
+    paths:
+      - '.github/workflows/fix-helper-url-permission.yml'
+
+permissions:
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  FUNCTION_NAME: hydrotwin-helper
+  FUNCTION_URL: https://7oufr7waqwqmirbvirvcx2a2zi0jiipn.lambda-url.us-east-1.on.aws/
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Resource policy before
+        run: |
+          aws lambda get-policy --function-name "$FUNCTION_NAME" --query Policy --output text | python3 -m json.tool || echo "get-policy failed (noted above)"
+
+      - name: Add lambda:InvokeFunction statement for the public Function URL
+        run: |
+          aws lambda add-permission --function-name "$FUNCTION_NAME" \
+            --statement-id FunctionURLAllowPublicInvoke \
+            --action lambda:InvokeFunction \
+            --principal '*' 2>&1 || echo "add-permission: outcome noted above"
+
+      - name: Resource policy after
+        run: |
+          aws lambda get-policy --function-name "$FUNCTION_NAME" --query Policy --output text | python3 -m json.tool
+
+      - name: Test the Function URL (cold + warm)
+        run: |
+          PAYLOAD='{"question":"Where is the hydrograph for Dallas?","context":[{"title":"Dallas - Hydrograph panel","text":"The Hydrograph panel on the Dallas station classic page (Data view) shows observed and modelled river discharge over time.","page":"stations/USGS-08057000.html"}]}'
+          sleep 20
+          echo "--- cold call ---"
+          time curl -s -w '\nHTTP %{http_code}\n' --max-time 300 -X POST "$FUNCTION_URL" -H 'Content-Type: application/json' -d "$PAYLOAD"
+          echo "--- warm call ---"
+          time curl -s -w '\nHTTP %{http_code}\n' --max-time 300 -X POST "$FUNCTION_URL" -H 'Content-Type: application/json' -d "$PAYLOAD"

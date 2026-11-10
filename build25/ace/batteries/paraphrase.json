@@ -1,0 +1,416 @@
+{
+ "source": "The 56-question paraphrase battery from the hybrid-retrieval experiment (~/workspace/hydrotwin_dev_build/hybrid/battery.json), vendored verbatim: each question avoids its target entry's discriminating vocabulary; split is 28 dev / 28 held-out by list parity. Held-out numbers are the promotion verdict; dev numbers are for tuning only.",
+ "tasks": [
+  {
+   "q": "the river out west in the Golden State",
+   "accept": [
+    "station-11447650-data",
+    "station-11447650-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the station in the Lone Star State city where the Cowboys play",
+   "accept": [
+    "station-08057000-data",
+    "station-08057000-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the rafting put in just below the Glen Canyon dam",
+   "accept": [
+    "station-09380000-data",
+    "station-09380000-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the station by the nation's capital",
+   "accept": [
+    "station-01646500-data",
+    "station-01646500-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the station in the city famous for its horse race and bourbon",
+   "accept": [
+    "station-03294500-data",
+    "station-03294500-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the northern city that is twinned with Minneapolis",
+   "accept": [
+    "station-05331000-data",
+    "station-05331000-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the station in the capital of the bayou state",
+   "accept": [
+    "station-07374000-data",
+    "station-07374000-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the station in Big Sky Country",
+   "accept": [
+    "station-06214500-data",
+    "station-06214500-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "where Washington crossed the river on Christmas night",
+   "accept": [
+    "station-01463500-data",
+    "station-01463500-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the gorge station in the Pacific Northwest",
+   "accept": [
+    "station-14105700-data",
+    "station-14105700-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the river station a short drive from Santa Fe",
+   "accept": [
+    "station-08313000-data",
+    "station-08313000-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the swampy blackwater river in the Sunshine State",
+   "accept": [
+    "station-02320500-data",
+    "station-02320500-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the live music capital station",
+   "accept": [
+    "station-08158000-data",
+    "station-08158000-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the German heritage wine town station in the middle of the country",
+   "accept": [
+    "station-06934500-data",
+    "station-06934500-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the other big river station in the Lone Star State, in its capital city",
+   "accept": [
+    "station-08158000-data",
+    "station-08158000-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the last station before the delta on the mighty river",
+   "accept": [
+    "station-07374000-data",
+    "station-07374000-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the gateway to the famous geyser park",
+   "accept": [
+    "station-06214500-data",
+    "station-06214500-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the 3D twin for the city across the river from Minneapolis",
+   "accept": [
+    "station-05331000-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "open the interactive scene for the canyon station",
+   "accept": [
+    "station-09380000-3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the numbers and charts page for the desert southwest river",
+   "accept": [
+    "station-08313000-data"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the chart that plots discharge history for Dallas",
+   "accept": [
+    "panel-08057000-hts-sec-hydro"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "what will the flow be over the coming week in Dallas",
+   "accept": [
+    "panel-08057000-hts-sec-fc"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "which inputs matter most for predicting the Sacramento flow",
+   "accept": [
+    "panel-11447650-hts-sec-featimp"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "is the Austin model getting worse over time",
+   "accept": [
+    "panel-08158000-hts-sec-drift"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "how accurate is each model at St. Paul",
+   "accept": [
+    "panel-05331000-hts-sec-models"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "what happens to the Lees Ferry predictions if you drop some inputs",
+   "accept": [
+    "panel-09380000-hts-sec-ablation"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "how do rain and soil relate to the river flow in Baton Rouge",
+   "accept": [
+    "panel-07374000-hts-sec-corr"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the long view for the next half year at the Potomac",
+   "accept": [
+    "panel-01646500-hts-sec-monthly"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the year ahead for Trenton in monthly steps",
+   "accept": [
+    "panel-01463500-hts-sec-yearly"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the next three months week by week for Billings",
+   "accept": [
+    "panel-06214500-hts-sec-weekly"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the rotatable version of the flow history chart for Dallas",
+   "accept": [
+    "panel-08057000-hts-sec-charts3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the uncertainty band around the Austin prediction in the 3D scene",
+   "accept": [
+    "panel3d-08158000-ht-dacp-panel"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "in the 3D scene for Hermann, which inputs drive the flow",
+   "accept": [
+    "panel3d-06934500-htfi-panel"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the little card on the Suwannee 3D page with today's prediction and the day controls",
+   "accept": [
+    "panel3d-02320500-dock"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the uncertainty range for The Dalles in 3D",
+   "accept": [
+    "panel3d-14105700-ht-dacp-panel"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the next six months for the Columbia gorge station, month by month",
+   "accept": [
+    "panel-14105700-hts-sec-monthly"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "where do I see if the model quality is slipping for Dallas",
+   "accept": [
+    "panel-08057000-hts-sec-drift"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "show me the expected flows for the Sacramento station for the next seven days",
+   "accept": [
+    "panel-11447650-hts-sec-fc"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "which other stations act like the Dallas one",
+   "accept": [
+    "panel-08057000-hts-sec-clusters"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "what drives the Trinity river flow the most",
+   "accept": [
+    "panel-08057000-hts-sec-featimp"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the whole record of the river's ups and downs at Trenton",
+   "accept": [
+    "panel-01463500-hts-sec-hydro"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the error bars on the 3D forecast for Louisville",
+   "accept": [
+    "panel3d-03294500-ht-dacp-panel"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "how can I look at a different day in the past",
+   "accept": [
+    "howto-date"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "I want to see it snowing in the scene",
+   "accept": [
+    "howto-precip"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "how do I open one of the hidden sections on a station page",
+   "accept": [
+    "howto-panels"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "switch the scene to look like a tabletop model",
+   "accept": [
+    "howto-views"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "one map with every gauge on it",
+   "accept": [
+    "home"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "are the models being retrained properly, where is that tracked",
+   "accept": [
+    "mlops"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "will it rain at the station on the day I pick",
+   "accept": [
+    "howto-precip"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "how do I jump between the numbers page and the 3D one",
+   "accept": [
+    "howto-views"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the spinning rotatable charts for Austin",
+   "accept": [
+    "panel-08158000-hts-sec-charts3d"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "the west coast station where the river meets the capital region",
+   "accept": [
+    "station-11447650-data",
+    "station-11447650-3d"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "show me the week ahead fan of possible flows for Austin",
+   "accept": [
+    "panel-08158000-hts-sec-fc"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "how the flow in Louisville responds when you remove weather inputs entirely",
+   "accept": [
+    "panel-03294500-hts-sec-ablation"
+   ],
+   "split": "heldout"
+  },
+  {
+   "q": "the dozen week outlook for the canyon station",
+   "accept": [
+    "panel-09380000-hts-sec-weekly"
+   ],
+   "split": "dev"
+  },
+  {
+   "q": "where is the gauge that Washington's army story is tied to",
+   "accept": [
+    "station-01463500-data",
+    "station-01463500-3d"
+   ],
+   "split": "heldout"
+  }
+ ]
+}

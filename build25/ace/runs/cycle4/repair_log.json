@@ -1,0 +1,18 @@
+{
+ "broken_gate_tasks": [
+  "what is the best pizza in town"
+ ],
+ "repairs": [
+  {
+   "bullet": "pb-2005",
+   "entry": "station-06934500-data",
+   "removed": "wine town",
+   "substituted": [
+    "wine"
+   ],
+   "because_flips": [
+    "what is the best pizza in town"
+   ]
+  }
+ ]
+}

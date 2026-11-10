@@ -1,0 +1,63 @@
+name: Grant helper Lambda IAM policy (one-off)
+
+# One-off: attach the inline policy hydrotwin-helper-lambda to the
+# hydrotwin-github IAM user so the setup-helper-lambda workflow can
+# create its Lambda execution role and function. Runs the single
+# command: aws iam put-user-policy --user-name hydrotwin-github
+# --policy-name hydrotwin-helper-lambda --policy-document <JSON below>.
+# The JSON is byte-for-byte the policy recorded in
+# ~/workspace/hydrotwin_dev_build/status.md (Helper bot v4 section).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [dev]
+    paths:
+      - '.github/workflows/grant-helper-iam-policy.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  grant:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Who am I
+        run: aws sts get-caller-identity
+
+      - name: Attach inline policy hydrotwin-helper-lambda to hydrotwin-github
+        run: |
+          cat > policy.json <<'EOF'
+          {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "HelperLambdaRole",
+                "Effect": "Allow",
+                "Action": ["iam:CreateRole", "iam:GetRole", "iam:AttachRolePolicy", "iam:PutRolePolicy", "iam:PassRole"],
+                "Resource": "arn:aws:iam::786016560522:role/hydrotwin-helper-lambda-role"
+              },
+              {
+                "Sid": "HelperLambdaFunction",
+                "Effect": "Allow",
+                "Action": ["lambda:CreateFunction", "lambda:GetFunction", "lambda:UpdateFunctionCode", "lambda:UpdateFunctionConfiguration", "lambda:PutFunctionConcurrency", "lambda:CreateFunctionUrlConfig", "lambda:GetFunctionUrlConfig", "lambda:UpdateFunctionUrlConfig", "lambda:AddPermission"],
+                "Resource": "arn:aws:lambda:us-east-1:786016560522:function:hydrotwin-helper"
+              }
+            ]
+          }
+          EOF
+          aws iam put-user-policy --user-name hydrotwin-github --policy-name hydrotwin-helper-lambda --policy-document file://policy.json
+          echo "PUT-USER-POLICY SUCCEEDED"
+
+      - name: Verify policy is attached
+        run: aws iam get-user-policy --user-name hydrotwin-github --policy-name hydrotwin-helper-lambda

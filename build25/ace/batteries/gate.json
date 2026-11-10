@@ -1,0 +1,169 @@
+{
+ "source": "Gate battery from ~/workspace/hydrotwin_dev_build/gate_battery.mjs (the project's own 39-question relevance-gate battery: 27 in-domain questions that must be answered, 12 off-topic that must be refused). Vendored into build25/ace so the ACE cycle is self-contained. Extended in ACE cycle 4 (2026-11-01) with the project's two canonical refusal-smoke questions ('what is the best pizza near me' from the Oct 31 refusal smoke, 'what is the best pizza in town' from the explainer smoke) after the v2 smoke caught a false pass the 39-question battery did not cover.",
+ "tasks": [
+  {
+   "q": "Where is the hydrograph?",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the forecast?",
+   "expect": "answer"
+  },
+  {
+   "q": "How do I change the date?",
+   "expect": "answer"
+  },
+  {
+   "q": "Which features affect flow in Dallas?",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the 3D terrain view?",
+   "expect": "answer"
+  },
+  {
+   "q": "How do I see rain and snow?",
+   "expect": "answer"
+  },
+  {
+   "q": "Lees Ferry 3D page",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the river in California?",
+   "expect": "answer"
+  },
+  {
+   "q": "Show me the California river",
+   "expect": "answer"
+  },
+  {
+   "q": "Which station is in California?",
+   "expect": "answer"
+  },
+  {
+   "q": "Which river is in Texas?",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the station in Minnesota?",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the hydrograph in California?",
+   "expect": "answer"
+  },
+  {
+   "q": "Open the Sacramento station",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the drift panel?",
+   "expect": "answer"
+  },
+  {
+   "q": "Show me the map",
+   "expect": "answer"
+  },
+  {
+   "q": "How do I open a panel?",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the MLOps page?",
+   "expect": "answer"
+  },
+  {
+   "q": "What is the drainage area of the Dallas station?",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the weekly outlook for Austin?",
+   "expect": "answer"
+  },
+  {
+   "q": "Show me the Colorado River station in Arizona",
+   "expect": "answer"
+  },
+  {
+   "q": "Which station is near Washington DC?",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the model statistics panel?",
+   "expect": "answer"
+  },
+  {
+   "q": "How do I switch to the 3D view?",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the river in Oregon?",
+   "expect": "answer"
+  },
+  {
+   "q": "Tell me about the Mississippi River station",
+   "expect": "answer"
+  },
+  {
+   "q": "Where is the feature importance chart?",
+   "expect": "answer"
+  },
+  {
+   "q": "what is the best pizza near me",
+   "expect": "refuse"
+  },
+  {
+   "q": "Who won the football game last night?",
+   "expect": "refuse"
+  },
+  {
+   "q": "How do I cook pasta?",
+   "expect": "refuse"
+  },
+  {
+   "q": "What is the capital of France?",
+   "expect": "refuse"
+  },
+  {
+   "q": "Tell me a joke",
+   "expect": "refuse"
+  },
+  {
+   "q": "How tall is the Eiffel Tower?",
+   "expect": "refuse"
+  },
+  {
+   "q": "What movies are playing this weekend?",
+   "expect": "refuse"
+  },
+  {
+   "q": "How do I fix a flat tire?",
+   "expect": "refuse"
+  },
+  {
+   "q": "What is the stock price of Apple?",
+   "expect": "refuse"
+  },
+  {
+   "q": "Who is the president?",
+   "expect": "refuse"
+  },
+  {
+   "q": "How do I lose weight fast?",
+   "expect": "refuse"
+  },
+  {
+   "q": "What is a good birthday gift?",
+   "expect": "refuse"
+  },
+  {
+   "q": "what is the best pizza near me",
+   "expect": "refuse"
+  },
+  {
+   "q": "what is the best pizza in town",
+   "expect": "refuse"
+  }
+ ]
+}
