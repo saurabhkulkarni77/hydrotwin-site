@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "42918202804-2a6947bd2c6ba06b2fd0c4266a1a2b91a20abcf4";
+  var BID = "42925215918-32b9d860543704ac34cd1e4405db79e56dafc28f";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -2402,60 +2403,101 @@ const htBOR = buildOuter;
 buildOuter = function () { htBOR(); htCarve(); };
 
 
-// ht-waterbody3dhp v1: baked USGS 3DHP waterbody polygons (River/Lake,
-// areasqkm > 1) rendered as filled water scenery, seated on the ribbon's
+// ht-waterbody3dhp v2: baked USGS 3DHP waterbody polygons (River/Lake,
+// areasqkm > 1) drawn as cyan bank outline lines, River Twin style: a
+// 2.5 m core line blended 0.85 toward rgb(0.025, 0.70, 0.78) over a 6 m
+// halo at 0.2 strength, round joins, no fill. Seated on the ribbon's
 // water-surface profile like ht-polywater. Data: build25/waterbody3dhp_data.py.
 const WATERBODY3DHP = [[[-111.63055997606061,36.81933333,-111.629749,36.821025,-111.629208,36.821937,-111.629242,36.82269,-111.628995,36.823409,-111.628892,36.82425,-111.628645,36.825003,-111.627865,36.826332,-111.62716,36.827019,-111.626702,36.828074,-111.624394,36.830101,-111.623581,36.831118,-111.622843,36.831552,-111.622358,36.832119,-111.621532,36.832608,-111.620356,36.833114,-111.619051,36.833945,-111.61888,36.834181,-111.618819,36.834445,-111.61828,36.835269,-111.617945,36.836297,-111.617713,36.836721,-111.617604,36.837155,-111.617646,36.837715,-111.61729,36.837891,-111.617167,36.838298,-111.617188,36.838869,-111.617332,36.839292,-111.617469,36.839435,-111.617893,36.839594,-111.617996,36.839935,-111.617923,36.842798,-111.617684,36.844101,-111.617679,36.845623,-111.617508,36.846365,-111.61686,36.848151,-111.616327,36.848948,-111.615972,36.849333,-111.615562,36.849613,-111.614503,36.850081,-111.613949,36.85024,-111.613019,36.850373,-111.611911,36.850379,-111.609607,36.850556,-111.608896,36.850776,-111.60826,36.8511,-111.607556,36.85182,-111.607051,36.852931,-111.60671,36.853464,-111.606382,36.853805,-111.605616,36.854453,-111.604604,36.854816,-111.603729,36.855696,-111.603107,36.856097,-111.602629,36.856713,-111.602472,36.856328,-111.602102,36.856301,-111.602711,36.855641,-111.603073,36.854965,-111.604207,36.85375,-111.604842,36.852662,-111.605369,36.8522,-111.605573,36.851876,-111.605703,36.851442,-111.606339,36.850826,-111.607125,36.850485,-111.608089,36.849743,-111.608601,36.849528,-111.610071,36.849324,-111.613039,36.84923,-111.61362,36.849114,-111.614974,36.849031,-111.615411,36.848789,-111.615876,36.84825,-111.616101,36.847783,-111.61619,36.847393,-111.616141,36.846536,-111.616243,36.845316,-111.616611,36.844194,-111.617028,36.843414,-111.617129,36.842414,-111.617013,36.842035,-111.617224,36.841485,-111.616779,36.840254,-111.616731,36.839507,-111.616416,36.839013,-111.61647,36.838463,-111.616305,36.837529,-111.616557,36.835864,-111.617015,36.835155,-111.617342,36.834468,-111.618128,36.833412,-111.619098,36.83334,-111.619918,36.83295,-111.620684,36.832257,-111.62149,36.831789,-111.62231,36.831069,-111.622651,36.830926,-111.622952,36.830332,-111.623696,36.829596,-111.624803,36.828793,-111.625506,36.828029,-111.625936,36.827821,-111.625868,36.827491,-111.626299,36.827106,-111.627484,36.824519,-111.627771,36.82414,-111.62825,36.823772,-111.628298,36.823129,-111.628469,36.822623,-111.628435,36.822244,-111.628655,36.821239,-111.62965827454546,36.81933333,-111.63055997606061,36.81933333],[-111.617433,36.836275,-111.617603,36.836253,-111.61774,36.835473,-111.617535,36.835556,-111.617309,36.835874,-111.617289,36.8361,-111.617378,36.836232,-111.617433,36.836275]],[[-111.54287221999999,36.87761873634043,-111.545455,36.876885,-111.546256,36.876347,-111.546447,36.875951,-111.54668,36.875732,-111.547316,36.875369,-111.548205,36.874995,-111.548822,36.874348,-111.549424,36.873854,-111.549985,36.873524,-111.551251,36.872568,-111.55188,36.872326,-111.552879,36.872502,-111.55385,36.872261,-111.554383,36.872195,-111.554766,36.872244,-111.555546,36.872552,-111.555915,36.873036,-111.556244,36.873222,-111.55846,36.87375,-111.558925,36.873981,-111.559705,36.874223,-111.560922,36.874442,-111.562687,36.874442,-111.563275,36.87431,-111.56374,36.874387,-111.564233,36.874255,-111.565423,36.873123,-111.565559,36.872871,-111.565546,36.872365,-111.565765,36.871255,-111.56534,36.870046,-111.564656,36.868958,-111.563836,36.867892,-111.562413,36.866804,-111.559773,36.863848,-111.559486,36.863012,-111.559349,36.862858,-111.554918,36.859231,-111.553591,36.858242,-111.551936,36.857242,-111.550993,36.856385,-111.549789,36.85545,-111.545967,36.852801,-111.545776,36.852417,-111.545571,36.852208,-111.545051,36.851823,-111.543547,36.850372,-111.54287221999999,36.84946329196628,-111.54287221999999,36.84700792224722,-111.543193,36.845701,-111.543493,36.845316,-111.544355,36.84458,-111.546277,36.843393,-111.548533,36.842723,-111.549217,36.842416,-111.550201,36.842152,-111.551158,36.841998,-111.551651,36.842042,-111.55295,36.842383,-111.553893,36.842405,-111.555343,36.842619,-111.555753,36.842751,-111.55645,36.843125,-111.557257,36.843729,-111.557927,36.843927,-111.558351,36.84396,-111.558939,36.843949,-111.55963,36.843795,-111.562153,36.842652,-111.563096,36.842334,-111.56378,36.842345,-111.564477,36.842548,-111.565024,36.84257,-111.566091,36.842059,-111.566966,36.842125,-111.568484,36.84207,-111.569113,36.842333,-111.569783,36.842355,-111.569892,36.842465,-111.570002,36.84307,-111.570685,36.843421,-111.571,36.843476,-111.571601,36.84374,-111.571902,36.843949,-111.572053,36.844191,-111.572928,36.844784,-111.573038,36.845158,-111.57301,36.846773,-111.57312,36.847026,-111.572983,36.847586,-111.57379,36.848905,-111.574625,36.849993,-111.575459,36.850675,-111.575705,36.85129,-111.576034,36.851521,-111.576061,36.851729,-111.575911,36.852213,-111.575965,36.852477,-111.576102,36.852785,-111.577046,36.854015,-111.577881,36.856037,-111.578052,36.857153,-111.578196,36.859477,-111.57808,36.859972,-111.577841,36.860357,-111.577779,36.860654,-111.578087,36.861747,-111.57832,36.862258,-111.578642,36.862709,-111.579483,36.863285,-111.579982,36.863753,-111.581294,36.864367,-111.582032,36.864611,-111.583797,36.864611,-111.584973,36.864532,-111.585915,36.864375,-111.587483,36.864297,-111.587836,36.864415,-111.588126,36.864377,-111.589115,36.865122,-111.587444,36.865434,-111.585287,36.866022,-111.584385,36.866062,-111.582699,36.865866,-111.58164,36.865905,-111.581173,36.865478,-111.580578,36.865654,-111.579306,36.865203,-111.578717,36.864879,-111.578457,36.864632,-111.577958,36.863929,-111.577636,36.86294,-111.576843,36.862192,-111.576884,36.86128,-111.576856,36.861148,-111.57672,36.861049,-111.576706,36.860742,-111.577034,36.858884,-111.576965,36.857862,-111.576541,36.855851,-111.575898,36.854005,-111.574571,36.851675,-111.573421,36.849839,-111.573175,36.849631,-111.572683,36.848488,-111.572231,36.847663,-111.572122,36.846729,-111.571944,36.846136,-111.571588,36.84563,-111.570398,36.844542,-111.568935,36.843586,-111.568115,36.843399,-111.567376,36.843356,-111.566815,36.843191,-111.565051,36.843268,-111.563629,36.843466,-111.563301,36.843609,-111.562385,36.843686,-111.561701,36.844257,-111.561318,36.844367,-111.559226,36.844708,-111.557599,36.84485,-111.55671,36.844631,-111.555739,36.844191,-111.55429,36.84379,-111.550297,36.843746,-111.549039,36.843899,-111.547671,36.844251,-111.546215,36.8448,-111.545531,36.845218,-111.544738,36.845844,-111.544396,36.846251,-111.544273,36.846569,-111.54419,36.847196,-111.544368,36.848185,-111.545298,36.850559,-111.546364,36.851669,-111.546911,36.851878,-111.547048,36.851834,-111.547102,36.851702,-111.547048,36.851526,-111.546159,36.850284,-111.546186,36.850219,-111.546296,36.850252,-111.546761,36.850603,-111.548764,36.852703,-111.54968,36.853461,-111.550405,36.854307,-111.552073,36.855484,-111.552784,36.856165,-111.553359,36.856495,-111.553919,36.857132,-111.55567,36.858165,-111.556039,36.858616,-111.556833,36.85921,-111.558337,36.860682,-111.55872,36.860847,-111.559117,36.861265,-111.559664,36.861496,-111.559828,36.861649,-111.560881,36.862748,-111.56203,36.864518,-111.564041,36.866683,-111.565682,36.867925,-111.566681,36.868969,-111.5669,36.869277,-111.567529,36.870606,-111.567516,36.871288,-111.567434,36.87153,-111.567475,36.872145,-111.567078,36.872728,-111.567133,36.873013,-111.566695,36.874101,-111.566065,36.875018,-111.565859,36.875166,-111.563267,36.87565,-111.56272,36.875282,-111.56222,36.875156,-111.561188,36.875177,-111.560606,36.875342,-111.560093,36.875348,-111.559614,36.875035,-111.559142,36.874996,-111.558774,36.87475,-111.558159,36.874552,-111.557078,36.874355,-111.556545,36.87408,-111.556025,36.873992,-111.555054,36.873645,-111.55411,36.873481,-111.553371,36.873513,-111.552194,36.873931,-111.551278,36.874162,-111.549867,36.874996,-111.549382,36.875177,-111.548876,36.875485,-111.548568,36.875792,-111.54763,36.876358,-111.546789,36.876649,-111.545612,36.877517,-111.544415,36.87788,-111.544333,36.878006,-111.54382,36.878336,-111.54287221999999,36.878548534308514,-111.54287221999999,36.87761873634043]]];
-let htWb3Mesh = null, htWb3Meta = null;
+const HTWB3_CYAN = new THREE.Color(0.025, 0.70, 0.78);
+let htWb3Meta = null, htWb3Strips = null;
 function htWb3Build() {
-  if (htWb3Mesh || !WATERBODY3DHP) return;
+  if (!WATERBODY3DHP) { htWb3Strips = []; return; }
   const samples = (ribbonPts || []).filter((p) => !p.brk);
-  if (!samples.length) return;
-  const pos = [], meta = [], idx = [];
+  if (!samples.length) return;   // ribbon not ready yet; retried on next rebuild
   const inBlk = (x, z, m) => x > IX0 - m && x < IX0 + IWM + m && z > IZ0 - m && z < IZ0 + IWM + m;
+  const meta = [];
+  const strips = { halo: { pos: [], vmeta: [], idx: [] }, core: { pos: [], vmeta: [], idx: [] } };
   for (const poly of WATERBODY3DHP) {
-    const rings = poly.map((ring) => { const v = []; for (let i = 0; i + 1 < ring.length; i += 2) v.push(new THREE.Vector2(mx(ring[i]), mz(ring[i + 1]))); return v; });
-    if (!rings.length || rings[0].length < 3) continue;
-    let tris; try { tris = THREE.ShapeUtils.triangulateShape(rings[0], rings.slice(1)); } catch (e) { continue; }
-    const all = rings[0].concat(...rings.slice(1));
-    const base = pos.length / 3;
-    for (const v of all) {
-      let bk = -1, bd = Infinity;
-      for (let k = 0; k < samples.length; k++) { const dx = samples[k].x - v.x, dz = samples[k].z - v.y, d = dx * dx + dz * dz; if (d < bd) { bd = d; bk = k; } }
-      const sm = samples[bk], near = bd <= 500 * 500;
-      const dOut = Math.max(IX0 - sm.x, sm.x - (IX0 + IWM), IZ0 - sm.z, sm.z - (IZ0 + IWM), 0);
-      meta.push({ bed: sm.bed, top: sm.top, taper: OUT_DROP * Math.max(0, 1 - dOut / 200), near, gy: near ? 0 : elevGround(v.x, v.y) });
-      pos.push(v.x, 0, v.y);
-    }
-    for (const t of tris) {
-      const cx = (all[t[0]].x + all[t[1]].x + all[t[2]].x) / 3, cz = (all[t[0]].y + all[t[1]].y + all[t[2]].y) / 3;
-      if (inBlk(cx, cz, 40)) continue;
-      idx.push(base + t[0], base + t[1], base + t[2]);
+    for (const ring of poly) {
+      let pts = [];
+      for (let i = 0; i + 1 < ring.length; i += 2) pts.push([mx(ring[i]), mz(ring[i + 1])]);
+      pts = pts.filter((p, i) => i === 0 || (p[0] - pts[i - 1][0]) * (p[0] - pts[i - 1][0]) + (p[1] - pts[i - 1][1]) * (p[1] - pts[i - 1][1]) > 1e-9);
+      if (pts.length < 2) continue;
+      let closed = false;
+      if ((pts[0][0] - pts[pts.length - 1][0]) * (pts[0][0] - pts[pts.length - 1][0]) + (pts[0][1] - pts[pts.length - 1][1]) * (pts[0][1] - pts[pts.length - 1][1]) <= 1e-9) { closed = true; pts.pop(); }
+      const n = pts.length;
+      if (n < 2 || (closed && n < 3)) continue;
+      const pmeta = [], mit = [];
+      for (let i = 0; i < n; i++) {
+        const x = pts[i][0], z = pts[i][1];
+        let bk = -1, bd = Infinity;
+        for (let k = 0; k < samples.length; k++) { const dx = samples[k].x - x, dz = samples[k].z - z, d = dx * dx + dz * dz; if (d < bd) { bd = d; bk = k; } }
+        const sm = samples[bk], near = bd <= 500 * 500;
+        const dOut = Math.max(IX0 - sm.x, sm.x - (IX0 + IWM), IZ0 - sm.z, sm.z - (IZ0 + IWM), 0);
+        pmeta.push(meta.length);
+        meta.push({ bed: sm.bed, top: sm.top, taper: OUT_DROP * Math.max(0, 1 - dOut / 200), near, gy: near ? 0 : elevGround(x, z) });
+        const pa = pts[(i - 1 + n) % n], pb = pts[(i + 1) % n];
+        let d1x, d1z, d2x, d2z;
+        if (closed) { d1x = x - pa[0]; d1z = z - pa[1]; d2x = pb[0] - x; d2z = pb[1] - z; }
+        else if (i === 0) { d1x = d2x = pts[1][0] - x; d1z = d2z = pts[1][1] - z; }
+        else if (i === n - 1) { d1x = d2x = x - pts[n - 2][0]; d1z = d2z = z - pts[n - 2][1]; }
+        else { d1x = x - pa[0]; d1z = z - pa[1]; d2x = pb[0] - x; d2z = pb[1] - z; }
+        const l1 = Math.hypot(d1x, d1z) || 1, l2 = Math.hypot(d2x, d2z) || 1;
+        d1x /= l1; d1z /= l1; d2x /= l2; d2z /= l2;
+        let mvx = -(d1z + d2z), mvz = d1x + d2x;
+        const ml = Math.hypot(mvx, mvz);
+        if (ml < 1e-6) { mvx = -d1z; mvz = d1x; } else { mvx /= ml; mvz /= ml; }
+        const cosH = Math.max(0.5, mvx * -d1z + mvz * d1x);
+        mit.push([mvx, mvz, Math.min(2.0, 1 / cosH)]);
+      }
+      const segCount = closed ? n : n - 1;
+      for (let e = 0; e < segCount; e++) {
+        const i2 = (e + 1) % n;
+        const ax = pts[e][0], az = pts[e][1], bx = pts[i2][0], bz = pts[i2][1];
+        if (inBlk((ax + bx) / 2, (az + bz) / 2, 40)) continue;
+        for (const key of ['halo', 'core']) {
+          const half = key === 'core' ? 1.25 : 3.0;
+          const S = strips[key], base = S.pos.length / 3;
+          const eax = mit[e][0] * half * mit[e][2], eaz = mit[e][1] * half * mit[e][2];
+          const ebx = mit[i2][0] * half * mit[i2][2], ebz = mit[i2][1] * half * mit[i2][2];
+          S.pos.push(ax + eax, 0, az + eaz, ax - eax, 0, az - eaz, bx + ebx, 0, bz + ebz, bx - ebx, 0, bz - ebz);
+          S.vmeta.push(pmeta[e], pmeta[e], pmeta[i2], pmeta[i2]);
+          S.idx.push(base, base + 1, base + 2, base + 1, base + 3, base + 2);
+        }
+      }
     }
   }
-  if (!idx.length) { htWb3Mesh = false; return; }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
-  const uv = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) { uv[2 * i] = pos[3 * i]; uv[2 * i + 1] = pos[3 * i + 2]; }
-  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
-  const nrm = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) nrm[3 * i + 1] = 1;
-  g.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
-  g.setIndex(idx); g.computeBoundingSphere();
-  const mat = ribbonMat.clone(); mat.side = THREE.DoubleSide;
-  htWb3Mesh = new THREE.Mesh(g, mat); htWb3Mesh.name = 'htWb3Water'; htWb3Mesh.frustumCulled = false; htWb3Mesh.renderOrder = 3;
-  htWb3Meta = meta; groundRoot.add(htWb3Mesh);
+  htWb3Meta = meta; htWb3Strips = [];
+  const mk = (key, opacity, lift, order, name) => {
+    const S = strips[key];
+    if (!S.pos.length) return;
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(S.pos), 3));
+    g.setIndex(S.idx); g.computeBoundingSphere();
+    const mat = new THREE.MeshBasicMaterial({ color: HTWB3_CYAN, transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false });
+    mat.toneMapped = false;
+    const mesh = new THREE.Mesh(g, mat);
+    mesh.name = name; mesh.frustumCulled = false; mesh.renderOrder = order;
+    groundRoot.add(mesh);
+    htWb3Strips.push({ mesh, vmeta: S.vmeta, lift });
+  };
+  mk('halo', 0.17, 0.16, 3, 'htWb3BankHalo');
+  mk('core', 0.85, 0.19, 4, 'htWb3BankCore');
 }
 function htWb3Update(dH) {
-  if (!htWb3Mesh) htWb3Build();
-  if (!htWb3Mesh || htWb3Mesh === false) return;
-  htWb3Mesh.material.color.copy(ribbonMat.color);
-  const add = Math.max(0.3, dH + 0.3), pa = htWb3Mesh.geometry.attributes.position;
-  for (let i = 0; i < htWb3Meta.length; i++) { const m = htWb3Meta[i];
-    pa.array[3 * i + 1] = m.near ? Math.max(m.bed + add, m.top + 0.8) - REFE - OUT_DROP + m.taper + 0.12 : m.gy - REFE - 0.22; }
-  pa.needsUpdate = true;
+  if (htWb3Strips === null) htWb3Build();
+  if (!htWb3Strips || !htWb3Strips.length) return;
+  const add = Math.max(0.3, dH + 0.3);
+  for (const st of htWb3Strips) {
+    const pa = st.mesh.geometry.attributes.position;
+    for (let v = 0; v < st.vmeta.length; v++) { const m = htWb3Meta[st.vmeta[v]];
+      pa.array[3 * v + 1] = (m.near ? Math.max(m.bed + add, m.top + 0.8) - REFE - OUT_DROP + m.taper : m.gy - REFE - 0.34) + st.lift; }
+    pa.needsUpdate = true;
+  }
 }
 const htBuildRibbonWb3 = buildRibbon;
-buildRibbon = function (dH, w) { htBuildRibbonWb3(dH, w); htWb3Update(dH); };   // ht-waterbody3dhp v1: same rebuild cadence as the ribbon
+buildRibbon = function (dH, w) { htBuildRibbonWb3(dH, w); htWb3Update(dH); };   // ht-waterbody3dhp v2: same rebuild cadence as the ribbon
 
 // ------------------------------------------------------------------ ht-bridgegap v1
 // Water passes under bridges: baked OSM bridge crossings of this river
@@ -6193,6 +6235,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 <!-- ht-precip v1 -->
 <script type="module" src="../assets/precip/ht-precip.mjs"></script>
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);

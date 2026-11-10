@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "42918202804-2a6947bd2c6ba06b2fd0c4266a1a2b91a20abcf4";
+  var BID = "42925215918-32b9d860543704ac34cd1e4405db79e56dafc28f";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -52,6 +52,7 @@
 })();
 </script>
 <!-- /ht-cachebust v1 -->
+
 
 
 
@@ -2402,60 +2403,101 @@ const htBOR = buildOuter;
 buildOuter = function () { htBOR(); htCarve(); };
 
 
-// ht-waterbody3dhp v1: baked USGS 3DHP waterbody polygons (River/Lake,
-// areasqkm > 1) rendered as filled water scenery, seated on the ribbon's
+// ht-waterbody3dhp v2: baked USGS 3DHP waterbody polygons (River/Lake,
+// areasqkm > 1) drawn as cyan bank outline lines, River Twin style: a
+// 2.5 m core line blended 0.85 toward rgb(0.025, 0.70, 0.78) over a 6 m
+// halo at 0.2 strength, round joins, no fill. Seated on the ribbon's
 // water-surface profile like ht-polywater. Data: build25/waterbody3dhp_data.py.
 const WATERBODY3DHP = [[[-106.11461861578947,35.9195,-106.114339,35.91857,-106.114399,35.918026,-106.114662,35.916937,-106.11508,35.915794,-106.115526,35.915211,-106.11637,35.914546,-106.116626,35.913513,-106.117058,35.912875,-106.117719,35.912193,-106.117976,35.911726,-106.118259,35.910902,-106.118637,35.910264,-106.118818,35.908961,-106.119439,35.907818,-106.119998,35.905971,-106.12018,35.905559,-106.120713,35.904866,-106.121212,35.90391,-106.121914,35.903124,-106.122954,35.902639,-106.12375,35.901743,-106.124287,35.901346,-106.125296,35.90105,-106.126011,35.900986,-106.127308,35.900701,-106.127963,35.90047,-106.128125,35.90013,-106.127681,35.898931,-106.127728,35.89836,-106.128337,35.897761,-106.128397,35.897574,-106.128357,35.897212,-106.128689,35.896371,-106.128628,35.896184,-106.128872,35.895651,-106.128818,35.895459,-106.12894,35.895025,-106.129129,35.894503,-106.129345,35.894217,-106.129495,35.893195,-106.129961,35.893014,-106.130833,35.892503,-106.131799,35.892245,-106.132859,35.892669,-106.133142,35.892713,-106.13371,35.892587,-106.133966,35.892477,-106.133939,35.892367,-106.133196,35.892427,-106.133183,35.892328,-106.134737,35.892032,-106.135317,35.891791,-106.136027,35.89134,-106.136716,35.890621,-106.136953,35.889659,-106.137825,35.8885,-106.138373,35.887368,-106.138421,35.88623,-106.138347,35.885609,-106.138172,35.885247,-106.138132,35.88451,-106.138206,35.884087,-106.13874,35.883192,-106.13897,35.882637,-106.138876,35.882065,-106.138107,35.880652,-106.138033,35.879806,-106.138087,35.879383,-106.138209,35.879059,-106.138419,35.878795,-106.139175,35.878053,-106.139419,35.877372,-106.140108,35.876795,-106.140588,35.87557,-106.140859,35.875174,-106.14125,35.874984,-106.141529,35.875031,-106.140588,35.876636,-106.140161,35.878015,-106.139972,35.878389,-106.139695,35.878598,-106.139236,35.878642,-106.139013,35.87874,-106.138749,35.879004,-106.138432,35.879559,-106.138411,35.88035,-106.138505,35.880752,-106.139221,35.881384,-106.139524,35.882428,-106.139517,35.883373,-106.139618,35.883604,-106.140131,35.884115,-106.140272,35.884934,-106.140252,35.885176,-106.140015,35.885775,-106.139664,35.885907,-106.139069,35.885813,-106.138988,35.885874,-106.13888,35.886203,-106.139231,35.886962,-106.139102,35.887473,-106.138744,35.887868,-106.138136,35.888852,-106.137669,35.889368,-106.137311,35.890341,-106.137006,35.890923,-106.136472,35.891692,-106.136182,35.891945,-106.135128,35.89239,-106.132953,35.893092,-106.132115,35.892954,-106.130994,35.892926,-106.130501,35.893118,-106.130237,35.893596,-106.130318,35.893976,-106.130541,35.894229,-106.130541,35.894388,-106.130196,35.89475,-106.130183,35.894877,-106.130236,35.895295,-106.130445,35.895822,-106.130411,35.896037,-106.130236,35.896201,-106.130235,35.896449,-106.129945,35.896619,-106.129688,35.896894,-106.129478,35.897487,-106.128397,35.898173,-106.128208,35.898415,-106.128194,35.898844,-106.128497,35.899404,-106.128517,35.899839,-106.128605,35.900026,-106.12851,35.900333,-106.127996,35.901036,-106.127672,35.901201,-106.127382,35.901179,-106.12701,35.901289,-106.126672,35.901217,-106.126004,35.901244,-106.124654,35.901579,-106.124142,35.90182,-106.123305,35.902584,-106.121995,35.903376,-106.121402,35.904613,-106.12068,35.905504,-106.120512,35.906625,-106.119655,35.907906,-106.119196,35.90895,-106.119102,35.909604,-106.11888,35.910209,-106.11884,35.911176,-106.118719,35.911616,-106.117193,35.91348,-106.116647,35.91481,-106.116309,35.915244,-106.115905,35.915986,-106.115729,35.916168,-106.115216,35.916432,-106.114878,35.917014,-106.114852,35.917586,-106.11519,35.91813,-106.1153965159396,35.9195,-106.11461861578947,35.9195],[-106.138799,35.885835,-106.139117,35.885527,-106.13961,35.885725,-106.139974,35.885687,-106.140076,35.885522,-106.140177,35.884995,-106.13957,35.883978,-106.139355,35.883467,-106.139247,35.883351,-106.139138,35.883362,-106.13872,35.883769,-106.13855,35.884219,-106.138638,35.885016,-106.138624,35.885901,-106.138718,35.885961,-106.138799,35.885868,-106.138799,35.885835],[-106.129744,35.894256,-106.129656,35.894195,-106.12921,35.894964,-106.129061,35.895789,-106.128817,35.896349,-106.12883,35.896613,-106.128627,35.897382,-106.128702,35.897437,-106.128911,35.897025,-106.129445,35.896624,-106.129891,35.895822,-106.129892,35.89525,-106.129764,35.894388,-106.129744,35.894256],[-106.114771,35.918174,-106.114703,35.918108,-106.114622,35.918185,-106.114515,35.918756,-106.11479006633907,35.9195,-106.114995,35.9195,-106.114805,35.918751,-106.114771,35.918174],[-106.116026,35.915101,-106.115971,35.915024,-106.115445,35.915486,-106.115364,35.915657,-106.115486,35.915948,-106.115904,35.915662,-106.116026,35.915101],[-106.139966,35.877955,-106.139628,35.878125,-106.139331,35.878455,-106.139452,35.87851,-106.139729,35.878411,-106.139999,35.878081,-106.139966,35.877955]]];
-let htWb3Mesh = null, htWb3Meta = null;
+const HTWB3_CYAN = new THREE.Color(0.025, 0.70, 0.78);
+let htWb3Meta = null, htWb3Strips = null;
 function htWb3Build() {
-  if (htWb3Mesh || !WATERBODY3DHP) return;
+  if (!WATERBODY3DHP) { htWb3Strips = []; return; }
   const samples = (ribbonPts || []).filter((p) => !p.brk);
-  if (!samples.length) return;
-  const pos = [], meta = [], idx = [];
+  if (!samples.length) return;   // ribbon not ready yet; retried on next rebuild
   const inBlk = (x, z, m) => x > IX0 - m && x < IX0 + IWM + m && z > IZ0 - m && z < IZ0 + IWM + m;
+  const meta = [];
+  const strips = { halo: { pos: [], vmeta: [], idx: [] }, core: { pos: [], vmeta: [], idx: [] } };
   for (const poly of WATERBODY3DHP) {
-    const rings = poly.map((ring) => { const v = []; for (let i = 0; i + 1 < ring.length; i += 2) v.push(new THREE.Vector2(mx(ring[i]), mz(ring[i + 1]))); return v; });
-    if (!rings.length || rings[0].length < 3) continue;
-    let tris; try { tris = THREE.ShapeUtils.triangulateShape(rings[0], rings.slice(1)); } catch (e) { continue; }
-    const all = rings[0].concat(...rings.slice(1));
-    const base = pos.length / 3;
-    for (const v of all) {
-      let bk = -1, bd = Infinity;
-      for (let k = 0; k < samples.length; k++) { const dx = samples[k].x - v.x, dz = samples[k].z - v.y, d = dx * dx + dz * dz; if (d < bd) { bd = d; bk = k; } }
-      const sm = samples[bk], near = bd <= 500 * 500;
-      const dOut = Math.max(IX0 - sm.x, sm.x - (IX0 + IWM), IZ0 - sm.z, sm.z - (IZ0 + IWM), 0);
-      meta.push({ bed: sm.bed, top: sm.top, taper: OUT_DROP * Math.max(0, 1 - dOut / 200), near, gy: near ? 0 : elevGround(v.x, v.y) });
-      pos.push(v.x, 0, v.y);
-    }
-    for (const t of tris) {
-      const cx = (all[t[0]].x + all[t[1]].x + all[t[2]].x) / 3, cz = (all[t[0]].y + all[t[1]].y + all[t[2]].y) / 3;
-      if (inBlk(cx, cz, 40)) continue;
-      idx.push(base + t[0], base + t[1], base + t[2]);
+    for (const ring of poly) {
+      let pts = [];
+      for (let i = 0; i + 1 < ring.length; i += 2) pts.push([mx(ring[i]), mz(ring[i + 1])]);
+      pts = pts.filter((p, i) => i === 0 || (p[0] - pts[i - 1][0]) * (p[0] - pts[i - 1][0]) + (p[1] - pts[i - 1][1]) * (p[1] - pts[i - 1][1]) > 1e-9);
+      if (pts.length < 2) continue;
+      let closed = false;
+      if ((pts[0][0] - pts[pts.length - 1][0]) * (pts[0][0] - pts[pts.length - 1][0]) + (pts[0][1] - pts[pts.length - 1][1]) * (pts[0][1] - pts[pts.length - 1][1]) <= 1e-9) { closed = true; pts.pop(); }
+      const n = pts.length;
+      if (n < 2 || (closed && n < 3)) continue;
+      const pmeta = [], mit = [];
+      for (let i = 0; i < n; i++) {
+        const x = pts[i][0], z = pts[i][1];
+        let bk = -1, bd = Infinity;
+        for (let k = 0; k < samples.length; k++) { const dx = samples[k].x - x, dz = samples[k].z - z, d = dx * dx + dz * dz; if (d < bd) { bd = d; bk = k; } }
+        const sm = samples[bk], near = bd <= 500 * 500;
+        const dOut = Math.max(IX0 - sm.x, sm.x - (IX0 + IWM), IZ0 - sm.z, sm.z - (IZ0 + IWM), 0);
+        pmeta.push(meta.length);
+        meta.push({ bed: sm.bed, top: sm.top, taper: OUT_DROP * Math.max(0, 1 - dOut / 200), near, gy: near ? 0 : elevGround(x, z) });
+        const pa = pts[(i - 1 + n) % n], pb = pts[(i + 1) % n];
+        let d1x, d1z, d2x, d2z;
+        if (closed) { d1x = x - pa[0]; d1z = z - pa[1]; d2x = pb[0] - x; d2z = pb[1] - z; }
+        else if (i === 0) { d1x = d2x = pts[1][0] - x; d1z = d2z = pts[1][1] - z; }
+        else if (i === n - 1) { d1x = d2x = x - pts[n - 2][0]; d1z = d2z = z - pts[n - 2][1]; }
+        else { d1x = x - pa[0]; d1z = z - pa[1]; d2x = pb[0] - x; d2z = pb[1] - z; }
+        const l1 = Math.hypot(d1x, d1z) || 1, l2 = Math.hypot(d2x, d2z) || 1;
+        d1x /= l1; d1z /= l1; d2x /= l2; d2z /= l2;
+        let mvx = -(d1z + d2z), mvz = d1x + d2x;
+        const ml = Math.hypot(mvx, mvz);
+        if (ml < 1e-6) { mvx = -d1z; mvz = d1x; } else { mvx /= ml; mvz /= ml; }
+        const cosH = Math.max(0.5, mvx * -d1z + mvz * d1x);
+        mit.push([mvx, mvz, Math.min(2.0, 1 / cosH)]);
+      }
+      const segCount = closed ? n : n - 1;
+      for (let e = 0; e < segCount; e++) {
+        const i2 = (e + 1) % n;
+        const ax = pts[e][0], az = pts[e][1], bx = pts[i2][0], bz = pts[i2][1];
+        if (inBlk((ax + bx) / 2, (az + bz) / 2, 40)) continue;
+        for (const key of ['halo', 'core']) {
+          const half = key === 'core' ? 1.25 : 3.0;
+          const S = strips[key], base = S.pos.length / 3;
+          const eax = mit[e][0] * half * mit[e][2], eaz = mit[e][1] * half * mit[e][2];
+          const ebx = mit[i2][0] * half * mit[i2][2], ebz = mit[i2][1] * half * mit[i2][2];
+          S.pos.push(ax + eax, 0, az + eaz, ax - eax, 0, az - eaz, bx + ebx, 0, bz + ebz, bx - ebx, 0, bz - ebz);
+          S.vmeta.push(pmeta[e], pmeta[e], pmeta[i2], pmeta[i2]);
+          S.idx.push(base, base + 1, base + 2, base + 1, base + 3, base + 2);
+        }
+      }
     }
   }
-  if (!idx.length) { htWb3Mesh = false; return; }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
-  const uv = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) { uv[2 * i] = pos[3 * i]; uv[2 * i + 1] = pos[3 * i + 2]; }
-  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
-  const nrm = new Float32Array(pos.length); for (let i = 0; i < pos.length / 3; i++) nrm[3 * i + 1] = 1;
-  g.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
-  g.setIndex(idx); g.computeBoundingSphere();
-  const mat = ribbonMat.clone(); mat.side = THREE.DoubleSide;
-  htWb3Mesh = new THREE.Mesh(g, mat); htWb3Mesh.name = 'htWb3Water'; htWb3Mesh.frustumCulled = false; htWb3Mesh.renderOrder = 3;
-  htWb3Meta = meta; groundRoot.add(htWb3Mesh);
+  htWb3Meta = meta; htWb3Strips = [];
+  const mk = (key, opacity, lift, order, name) => {
+    const S = strips[key];
+    if (!S.pos.length) return;
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(S.pos), 3));
+    g.setIndex(S.idx); g.computeBoundingSphere();
+    const mat = new THREE.MeshBasicMaterial({ color: HTWB3_CYAN, transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false });
+    mat.toneMapped = false;
+    const mesh = new THREE.Mesh(g, mat);
+    mesh.name = name; mesh.frustumCulled = false; mesh.renderOrder = order;
+    groundRoot.add(mesh);
+    htWb3Strips.push({ mesh, vmeta: S.vmeta, lift });
+  };
+  mk('halo', 0.17, 0.16, 3, 'htWb3BankHalo');
+  mk('core', 0.85, 0.19, 4, 'htWb3BankCore');
 }
 function htWb3Update(dH) {
-  if (!htWb3Mesh) htWb3Build();
-  if (!htWb3Mesh || htWb3Mesh === false) return;
-  htWb3Mesh.material.color.copy(ribbonMat.color);
-  const add = Math.max(0.3, dH + 0.3), pa = htWb3Mesh.geometry.attributes.position;
-  for (let i = 0; i < htWb3Meta.length; i++) { const m = htWb3Meta[i];
-    pa.array[3 * i + 1] = m.near ? Math.max(m.bed + add, m.top + 0.8) - REFE - OUT_DROP + m.taper + 0.12 : m.gy - REFE - 0.22; }
-  pa.needsUpdate = true;
+  if (htWb3Strips === null) htWb3Build();
+  if (!htWb3Strips || !htWb3Strips.length) return;
+  const add = Math.max(0.3, dH + 0.3);
+  for (const st of htWb3Strips) {
+    const pa = st.mesh.geometry.attributes.position;
+    for (let v = 0; v < st.vmeta.length; v++) { const m = htWb3Meta[st.vmeta[v]];
+      pa.array[3 * v + 1] = (m.near ? Math.max(m.bed + add, m.top + 0.8) - REFE - OUT_DROP + m.taper : m.gy - REFE - 0.34) + st.lift; }
+    pa.needsUpdate = true;
+  }
 }
 const htBuildRibbonWb3 = buildRibbon;
-buildRibbon = function (dH, w) { htBuildRibbonWb3(dH, w); htWb3Update(dH); };   // ht-waterbody3dhp v1: same rebuild cadence as the ribbon
+buildRibbon = function (dH, w) { htBuildRibbonWb3(dH, w); htWb3Update(dH); };   // ht-waterbody3dhp v2: same rebuild cadence as the ribbon
 
 // ------------------------------------------------------------------ ht-bridgegap v1
 // Water passes under bridges: baked OSM bridge crossings of this river
@@ -6193,6 +6235,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 
 <!-- ht-precip v1 -->
 <script type="module" src="../assets/precip/ht-precip.mjs"></script>
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
