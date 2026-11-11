@@ -1,53 +1,57 @@
 #!/usr/bin/env python3
-"""Live outlook resilience for the DEV 3D station pages (ht-outlookfix v1).
+"""Live outlook resilience for the DEV 3D station pages (ht-outlookfix).
 
 Why this exists (found 2026-11-11, Rio Grande screenshot + all-station
 live-pull sweep):
 
-1. htGapAssemble() (ht-live-gap v1) demands a 30-day consecutive run of
-   USGS daily values ending at the newest date. USGS daily values often
-   have a fresh hole near today (Potomac 01646500: 2026-11-07 missing,
-   run = 3 days; Cincinnati 03294500: holes 2026-11-04 + 2026-11-09,
-   run = 1; Lees Ferry 09380000: last value 2026-11-06, run = 9). One
-   missing day throws the assembly, so every outlook panel falls back to
-   htBakedAssemble() - a full-record download (25 years of USGS + 400
-   days of archive weather in 30 s-budget fetches). Under any slowness
-   that chain aborts ("signal is aborted without reason") and ALL THREE
-   panels fail at once.
-   Part S (string surgery, bounded to htGapAssemble): when the final
-   run is short, end the window at the newest date that still completes
-   a 30-day consecutive run. No value is fabricated - the window simply
-   ends a few days early and the panel shows that issue date honestly.
+The live window assembly demands a 30-day consecutive run of USGS daily
+values ending at the newest date. USGS daily values often have a fresh
+hole near today (Potomac 01646500: 2026-11-07 missing, final run = 3
+days; Cincinnati 03294500: holes 2026-11-04 + 2026-11-09, run = 1;
+Lees Ferry 09380000: last value 2026-11-06, run = 9). One missing day
+threw every assembly copy, so the outlook panels fell back to the slow
+full-record download and, under any slowness, died on 30 s fetch aborts
+("signal is aborted without reason") or on htBakedAssemble's unguarded
+weather read ("Cannot read properties of undefined (reading 'time')").
+Nothing retried a failed panel and the master LIVE bar stayed on
+"pulling live data..." forever, so one transient failure looked like a
+permanently broken page, with the panels left on stale baked dead-ends
+("no baked monthly forecast ... Pick a date in that range") - and the
+monthly lead strip kept printing that dead end even under a LIVE panel.
 
-2. Nothing retried a failed panel and the master LIVE bar stayed on
-   "pulling live data..." forever, so one transient abort looked like a
-   permanently broken page, with the panels left on stale baked
-   dead-ends ("no baked monthly forecast ... Pick a date in that
-   range"). Part R (one appended script, same pattern as the other
-   late patchers):
-   - auto-retries a panel whose live run failed (max 3 per streak,
-     reset on success or on a fresh master pull) - a retry reuses the
-     browser-cached downloads and usually succeeds;
-   - if the master pull still has not completed after ~5 minutes,
-     writes an honest completion/failure note into the LIVE bar
-     instead of leaving "pulling..." up forever;
-   - the monthly lead strip (ht-ffmo v1) keeps printing its baked
-     dead-end even while the panel above shows the LIVE forecast:
-     a MutationObserver swaps that readout for a pointer to the live
-     forecast in the panel above;
-   - the weekly/monthly "no baked ... forecast" issue lines gain a
-     pointer to the panel's own Live button (the yearly panel already
-     explains this in its note; these two did not).
+Parts (string surgery / appends, each independently anchored and
+skipped with a warning when its anchor is not exactly as expected):
+
+  S  (v1) htGapAssemble: when the final run is short, end the window at
+     the newest date that still completes a 30-day consecutive run. No
+     value is fabricated - the window ends a few days early and the
+     panel shows that issue date honestly.
+  S2 (v2) htBakedAssemble: the same tolerance for the fallback's own
+     scan (it has an identical strict copy), so a transient gap failure
+     no longer lands on a deterministic throw for hole-y stations.
+  G  (v2) htBakedAssemble: guard the archive-weather read (w.daily) so
+     a failed chunk fetch reports "weather archive unavailable"
+     instead of crashing on '.time'.
+  S3 (v2) the daily live fan's private assembly copy in ht-liveall:
+     same hole tolerance, so the fan can render for hole-y stations.
+  R  (v1) one appended watcher script: auto-retries a panel whose live
+     run failed (max 3 per streak, reset on success or a fresh master
+     pull); writes an honest completion/failure note into the LIVE bar
+     if a pull never completes; swaps the monthly lead strip's baked
+     dead-end for a pointer to the LIVE forecast when the panel above
+     is live; adds a Live-button hint to the weekly/monthly "no baked
+     forecast" issue lines (the yearly panel already explains this).
 
 Nothing else changes: no models, no data, no layout. Idempotent: pages
-carrying the MARKER are skipped. Part S skips with a warning if its
-anchors are not exactly as expected. Run from the repo root:
+carrying the v2 marker (with S3 applied) are skipped; v1 pages are
+upgraded in place. Run from the repo root:
 python3 build25/patch_outlookfix.py  (3D station pages only).
 """
 import sys
 from pathlib import Path
 
-MARKER = "ht-outlookfix v1"
+MARKER = "ht-outlookfix v2"
+V1 = "ht-outlookfix v1"
 
 # ------------------------------ Part S ---------------------------------
 GAP_FN = "async function htGapAssemble() {"
@@ -74,6 +78,57 @@ REPL_S = """  let k = dates.length - 1;
     if (!fixed) throw new Error('no 30-day consecutive run at the end');
     run = fixed;
   }"""
+
+# ------------------------------ Part S2 --------------------------------
+BIG_FN = "async function bigModelLive() {"
+FIND_S2 = """    let k = dates.length - 1;
+    while (k > 0 && dn[k] - dn[k - 1] === 1) k--;
+    const run = dates.slice(k);
+    if (run.length < 30) throw new Error('no 30-day consecutive run at the end');"""
+REPL_S2 = """    let k = dates.length - 1;
+    while (k > 0 && dn[k] - dn[k - 1] === 1) k--;
+    let run = dates.slice(k);
+    if (run.length < 30) {
+      /* ht-outlookfix v2: same hole tolerance as htGapAssemble - end
+       * the window at the newest date that completes a 30-day run
+       * instead of throwing when USGS has a fresh hole near today. */
+      let fixed = null;
+      for (let e = dates.length - 1; e >= 29 && !fixed; e--) {
+        let c = 1;
+        while (e - c >= 0 && dn[e - c + 1] - dn[e - c] === 1) c++;
+        if (c >= 30) fixed = dates.slice(e - c + 1, e + 1);
+      }
+      if (!fixed) throw new Error('no 30-day consecutive run at the end');
+      run = fixed;
+    }"""
+
+# ------------------------------ Part G ---------------------------------
+FIND_G = """      const d = w.daily;
+      for (let i = 0; i < d.time.length; i++) {"""
+REPL_G = """      const d = w && w.daily;
+      if (!d || !d.time) throw new Error('live: weather archive unavailable, try again');
+      for (let i = 0; i < d.time.length; i++) {"""
+
+# ------------------------------ Part S3 --------------------------------
+FIND_S3 = """      var k = dates.length - 1;
+      while (k > 0 && dn[k] - dn[k - 1] === 1) k--;
+      var run = dates.slice(k);
+      if (run.length < 30) throw new Error('no 30-day consecutive run at the end');"""
+REPL_S3 = """      var k = dates.length - 1;
+      while (k > 0 && dn[k] - dn[k - 1] === 1) k--;
+      var run = dates.slice(k);
+      if (run.length < 30) {
+        /* ht-outlookfix v2: same hole tolerance as htGapAssemble - end
+         * the window at the newest date that completes a 30-day run. */
+        var fixed3 = null;
+        for (var e3 = dates.length - 1; e3 >= 29 && !fixed3; e3--) {
+          var c3 = 1;
+          while (e3 - c3 >= 0 && dn[e3 - c3 + 1] - dn[e3 - c3] === 1) c3++;
+          if (c3 >= 30) fixed3 = dates.slice(e3 - c3 + 1, e3 + 1);
+        }
+        if (!fixed3) throw new Error('no 30-day consecutive run at the end');
+        run = fixed3;
+      }"""
 
 # ------------------------------ Part R ---------------------------------
 JS_BODY = r"""
@@ -184,24 +239,51 @@ JS_BODY = r"""
 
 
 def patch_page(s):
-    """Return (new_text, part_s_applied) or (None, False) on hard failure."""
-    if MARKER in s:
-        return s, False
-    part_s = False
+    """Apply every part whose anchor is present. Return (text, parts_set)
+    or (None, set()) on hard failure (no </body> for a needed Part R)."""
+    parts = set()
+    # --- Part S: bounded to the htGapAssemble span ---
     gi = s.find(GAP_FN)
     bi = s.find(BAKED_FN, gi + 1) if gi >= 0 else -1
     if gi >= 0 and bi > gi:
         span = s[gi:bi]
-        if span.count(FIND_S) == 1:
+        if V1 in span:
+            parts.add("S")
+        elif span.count(FIND_S) == 1:
             s = s[:gi] + span.replace(FIND_S, REPL_S, 1) + s[bi:]
-            part_s = True
-    idx = s.rfind("</body>")
-    if idx == -1:
-        return None, False
-    s = s[:idx] + JS_BODY.strip() + "\n" + s[idx:]
-    if MARKER not in s:
-        return None, False
-    return s, part_s
+            parts.add("S")
+    # --- Parts S2 + G: bounded to the htBakedAssemble span ---
+    bi = s.find(BAKED_FN)
+    mi = s.find(BIG_FN, bi + 1) if bi >= 0 else -1
+    if bi >= 0 and mi > bi:
+        span = s[bi:mi]
+        if "ht-outlookfix v2" in span:
+            parts.add("S2")
+        elif span.count(FIND_S2) == 1:
+            span = span.replace(FIND_S2, REPL_S2, 1)
+            parts.add("S2")
+        if "weather archive unavailable" in span:
+            parts.add("G")
+        elif span.count(FIND_G) == 1:
+            span = span.replace(FIND_G, REPL_G, 1)
+            parts.add("G")
+        s = s[:bi] + span + s[mi:]
+    # --- Part S3: the liveall daily-fan assembly copy (unique text) ---
+    if "fixed3" in s:
+        parts.add("S3")
+    elif s.count(FIND_S3) == 1:
+        s = s.replace(FIND_S3, REPL_S3, 1)
+        parts.add("S3")
+    # --- Part R: append the watcher script once ---
+    if V1 in s and "live outlook resilience" in s:
+        parts.add("R")
+    else:
+        idx = s.rfind("</body>")
+        if idx == -1:
+            return None, set()
+        s = s[:idx] + JS_BODY.strip() + "\n" + s[idx:]
+        parts.add("R")
+    return s, parts
 
 
 def main():
@@ -209,28 +291,32 @@ def main():
     if not pages:
         print("no 3D station pages found (run from repo root)", file=sys.stderr)
         return 1
-    n_new = n_skip = n_warn = n_part_s = 0
+    want = {"S", "S2", "G", "S3", "R"}
+    n_full = n_skip = n_warn = 0
     for p in pages:
         s = p.read_text(encoding="utf-8")
-        if MARKER in s:
+        if MARKER in s and "fixed3" in s:
             n_skip += 1
-            print(f"already patched: {p.name}")
+            print(f"already patched (v2): {p.name}")
             continue
-        out, part_s = patch_page(s)
+        out, parts = patch_page(s)
         if out is None:
             n_warn += 1
             print(f"WARNING: could not patch, skipped: {p.name}")
             continue
-        p.write_text(out, encoding="utf-8")
-        n_new += 1
-        if part_s:
-            n_part_s += 1
+        missing = want - parts
+        if out != s:
+            p.write_text(out, encoding="utf-8")
+        if missing:
+            n_warn += 1
+            print(f"WARNING: {p.name} missing parts {sorted(missing)} "
+                  f"(applied {sorted(parts)})")
         else:
-            print(f"WARNING: Part S anchors not as expected (Part R only): {p.name}")
-        print(f"patched: {p.name} (Part S: {'yes' if part_s else 'no'})")
-    print(f"patch_outlookfix: {n_new} page(s) newly patched "
-          f"({n_part_s} with Part S), {n_skip} already, "
-          f"{n_warn} skipped-with-warning, {len(pages)} 3D pages scanned")
+            n_full += 1
+            print(f"patched: {p.name} (parts {sorted(parts)})")
+    print(f"patch_outlookfix: {n_full} page(s) fully patched, "
+          f"{n_skip} already v2, {n_warn} with warnings, "
+          f"{len(pages)} 3D pages scanned")
     return 0
 
 
