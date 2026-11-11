@@ -147,6 +147,9 @@ jobs:
       - name: Photorealistic 3D Tiles scenery (dev only)
         run: python3 build25/patch_tiles3d.py
 
+      - name: Water seating over tiles - per-station lift (dev only)
+        run: python3 build25/patch_tileslift.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
