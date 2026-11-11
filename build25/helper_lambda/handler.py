@@ -1,8 +1,10 @@
 """HydroTwin helper-bot inference Lambda.
 
 Hosts an open source instruct model (GGUF Q4_K_M, stored in a private
-S3 bucket; MODEL_KEY selects the file — Qwen2.5-3B-Instruct since
-2026-11-01) behind llama.cpp, invoked only through the Lambda
+S3 bucket; MODEL_KEY selects the file — Meta-Llama-3.2-3B-Instruct
+since 2026-11-11; Qwen2.5-3B-Instruct before that, and its file stays
+in the bucket for rollback) behind llama.cpp, invoked only through
+the Lambda
 Function URL by the dev site's helper bot.
 
 Hybrid rerank (v3, 2026-11-01): when the request carries the bot's
@@ -59,6 +61,15 @@ MODEL_PATH = os.environ.get("MODEL_PATH", "/tmp/model.gguf")
 MODEL_NAME = os.environ.get(
     "MODEL_NAME", os.path.basename(MODEL_KEY).replace(".gguf", "")
 )
+
+# Chat-template selection, keyed off the model file so a MODEL_KEY
+# rollback to a Qwen file restores ChatML with no code change:
+# Llama 3 instruct models use the header/<|eot_id|> template, Qwen
+# instruct models use ChatML (<|im_start|>/<|im_end|>).
+IS_LLAMA = "llama" in MODEL_NAME.lower()
+CHAT_STOP = (["<|eot_id|>", "<|end_of_text|>"] if IS_LLAMA
+             else ["<|im_end|>", "<|im_start|>"])
+CHAT_REVERSE = "<|eot_id|>" if IS_LLAMA else "<|im_end|>"
 # llama.cpp threads. The account's Lambda quota caps MemorySize at
 # 3008 MB (a raise to 8192 was refused with a ValidationException on
 # 2026-11-01), which is about 1.7 vCPU, so 2 threads is the match;
@@ -127,11 +138,20 @@ def _build_prompt(question, entries):
         lines.append("- %s: %s (page: %s)" % (title, text, page))
     entries_text = "\n".join(lines) if lines else "(no entries matched)"
     user = "Question: %s\n\nSite index entries:\n%s" % (question, entries_text)
-    prompt = (
-        "<|im_start|>system\n" + SYSTEM + "<|im_end|>\n"
-        "<|im_start|>user\n" + user + "<|im_end|>\n"
-        "<|im_start|>assistant\n"
-    )
+    if IS_LLAMA:
+        prompt = (
+            "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n"
+            + SYSTEM + "<|eot_id|>"
+            "<|start_header_id|>user<|end_header_id|>\n\n"
+            + user + "<|eot_id|>"
+            "<|start_header_id|>assistant<|end_header_id|>\n\n"
+        )
+    else:
+        prompt = (
+            "<|im_start|>system\n" + SYSTEM + "<|im_end|>\n"
+            "<|im_start|>user\n" + user + "<|im_end|>\n"
+            "<|im_start|>assistant\n"
+        )
     return prompt[:7000]
 
 
@@ -202,7 +222,7 @@ def _generate_server(prompt):
         "temperature": 0.2,
         "seed": 42,
         "cache_prompt": True,
-        "stop": ["<|im_end|>", "<|im_start|>"],
+        "stop": CHAT_STOP,
     }).encode()
     req = urllib.request.Request(
         SERVER_URL + "/completion", data=body,
@@ -228,7 +248,7 @@ def _generate_cli(prompt):
             "--temp", "0.2",
             "--seed", "42",
             "--no-display-prompt",
-            "-r", "<|im_end|>",
+            "-r", CHAT_REVERSE,
         ],
         capture_output=True,
         text=True,
