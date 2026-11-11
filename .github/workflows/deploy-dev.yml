@@ -144,6 +144,9 @@ jobs:
       - name: Data view charts in 3D (dev only)
         run: python3 build25/patch_charts3d.py
 
+      - name: Photorealistic 3D Tiles scenery (dev only)
+        run: python3 build25/patch_tiles3d.py
+
       - name: Commit baked pages back to dev (best effort)
         continue-on-error: true
         run: |
@@ -178,6 +181,10 @@ jobs:
           aws s3 cp . s3://hydrotwin-site-dev-2026/ --recursive \
             --exclude "*" --include "index.html" --include "stations/*.html" \
             --cache-control "no-cache" --content-type "text/html"
+
+      - name: WASM content type for the vendored DRACO decoder (dev only)
+        run: |
+          aws s3 cp vendor3d/draco/draco_decoder.wasm s3://hydrotwin-site-dev-2026/vendor3d/draco/draco_decoder.wasm --content-type "application/wasm"
 
       - name: Invalidate DEV CloudFront cache (dev only)
         run: |
