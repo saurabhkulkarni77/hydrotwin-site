@@ -7,7 +7,7 @@
  * ?htv=<build id>; a fresh deploy id makes the browser fetch the new
  * files instead of serving the cached ones. External hosts untouched. */
 (function () {
-  var BID = "42925215918-32b9d860543704ac34cd1e4405db79e56dafc28f";
+  var BID = "43312417379-0194ab46a4d6cd727ae54812b9feb3ee6085d35b";
   if (!BID || window.__htcb === BID) return;
   window.__htcb = BID;
   function stamp(u) {
@@ -98,6 +98,7 @@
 
 
 
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HydroTwin 3D · Colorado · Lees Ferry</title>
@@ -118,7 +119,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0E1A24;font-family:Ar
 #side canvas{display:none;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.4)}
 #fcb{position:fixed;left:50%;top:100px;transform:translateX(-50%);padding:9px 16px;border-radius:10px;background:rgba(12,18,28,.9);font:600 15px Arial;display:none;z-index:6;text-align:center}
 </style>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"},"scopes":{"../vendor3d/":{"three":"../vendor3d/three.module.min.js"}}}</script>
 <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.min.js"></script>
 <script>
 /* ht-lazypanels v1 gate stub: panel data loads wait here until the
@@ -147,6 +148,27 @@ window.__htlpRelease = window.__htlpRelease || function (key) {
 #ht-drift-panel{display:none !important}
 html.htlp-drift-on #ht-drift-panel{display:block !important}
 html:not(.htlp-daily-on) #dock canvas,html:not(.htlp-daily-on) #dock .htux-wrap{display:none !important}
+</style>
+<style>/* ht-mobilepanels v1 - phone geometry for the floating
+   satellite panels (see build25/patch_mobilepanels.py). Desktop
+   slots are fixed left offsets (weekly 14px, monthly 466px,
+   yearly 918px) that fall entirely off-screen on phones; inside
+   this media query only, the panels become bottom sheets. */
+@media (max-width: 760px) {
+  #htwk-panel, #htmo-panel, #htyr-panel {
+    left: 8px !important; right: 8px !important;
+    width: auto !important; max-width: none !important;
+    bottom: 8px !important;
+    max-height: calc(100dvh - 16px) !important;
+    overflow-y: auto !important;
+    z-index: 10002 !important;
+  }
+  #htfi-panel {
+    left: 8px !important; right: 8px !important;
+    width: auto !important; max-width: none !important;
+    z-index: 10001 !important;
+  }
+}
 </style>
 </head><body>
 <div id="hud"></div><div id="links"></div><div id="status">loading…</div><div id="pick"></div><div id="fcb"></div>
@@ -1595,8 +1617,22 @@ async function htGapAssemble() {
   const dn = dates.map(dt => Math.round(Date.parse(dt + 'T00:00:00Z') / 864e5));
   let k = dates.length - 1;
   while (k > 0 && dn[k] - dn[k - 1] === 1) k--;
-  const run = dates.slice(k);
-  if (run.length < 30) throw new Error('no 30-day consecutive run at the end');
+  let run = dates.slice(k);
+  if (run.length < 30) {
+    /* ht-outlookfix v1: a fresh hole near today (a day USGS has not
+     * published yet, or a provisional gap) must not force the slow
+     * full-record fallback: end the window at the newest date that still
+     * completes a 30-day consecutive run. No value is fabricated - the
+     * window simply ends a few days early, and the issue date shows it. */
+    let fixed = null;
+    for (let e = dates.length - 1; e >= 29 && !fixed; e--) {
+      let c = 1;
+      while (e - c >= 0 && dn[e - c + 1] - dn[e - c] === 1) c++;
+      if (c >= 30) fixed = dates.slice(e - c + 1, e + 1);
+    }
+    if (!fixed) throw new Error('no 30-day consecutive run at the end');
+    run = fixed;
+  }
   return { flows: flows, wx: wx, run: run, win30: run.slice(-30) };
 }
 
@@ -1610,7 +1646,8 @@ async function htBakedAssemble() {
     const wx = {};
     for (const [a, b] of [['2016-10-01', '2021-09-30'], ['2021-10-01', today]]) {
       const w = await fetchJson(`https://archive-api.open-meteo.com/v1/archive?latitude=${D.lat}&longitude=${D.lon}&start_date=${a}&end_date=${b}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&temperature_unit=celsius&precipitation_unit=mm&timezone=auto`, 90000);
-      const d = w.daily;
+      const d = w && w.daily;
+      if (!d || !d.time) throw new Error('live: weather archive unavailable, try again');
       for (let i = 0; i < d.time.length; i++) {
         const tx = d.temperature_2m_max[i], tn = d.temperature_2m_min[i];
         if (tx == null || tn == null) continue;
@@ -1622,8 +1659,20 @@ async function htBakedAssemble() {
     const dn = dates.map(dt => Math.round(Date.parse(dt + 'T00:00:00Z') / 864e5));
     let k = dates.length - 1;
     while (k > 0 && dn[k] - dn[k - 1] === 1) k--;
-    const run = dates.slice(k);
-    if (run.length < 30) throw new Error('no 30-day consecutive run at the end');
+    let run = dates.slice(k);
+    if (run.length < 30) {
+      /* ht-outlookfix v2: same hole tolerance as htGapAssemble - end
+       * the window at the newest date that completes a 30-day run
+       * instead of throwing when USGS has a fresh hole near today. */
+      let fixed = null;
+      for (let e = dates.length - 1; e >= 29 && !fixed; e--) {
+        let c = 1;
+        while (e - c >= 0 && dn[e - c + 1] - dn[e - c] === 1) c++;
+        if (c >= 30) fixed = dates.slice(e - c + 1, e + 1);
+      }
+      if (!fixed) throw new Error('no 30-day consecutive run at the end');
+      run = fixed;
+    }
     return { flows: flows, wx: wx, run: run, win30: run.slice(-30) };
 }
 
@@ -2559,6 +2608,181 @@ buildRibbon = function (dH, w) {
   const saved = ribbonPts; ribbonPts = htGapPts(saved);
   try { htBridgeGap0(dH, w); } finally { ribbonPts = saved; }
 };
+
+
+// ht-tiles3d v1: Google Photorealistic 3D Tiles (Cesium Ion asset
+// 2275207) as the ground view scenery base. Mirrors the River Twin
+// app (createImagery in river-twin/world.mjs): TilesRenderer with
+// CesiumIonAuthPlugin, GLTFExtensionsPlugin (DRACO) and
+// TileCompressionPlugin from the vendored bundle in ../vendor3d/,
+// errorTarget 16, desktop LRU budgets, and the app's attribution
+// footer. Placement uses the app's East/Up/South local frame at
+// the gauge (river-twin/geodesy.mjs localFrame) with the up
+// translation lowered by REFE + this station's GEOID18 geoid
+// height, because page y is orthometric elevation above the
+// river level at the gauge while tile heights are WGS84
+// ellipsoid heights. The bundle runs on its own vendored three
+// behind a scoped importmap, so the tiles live in their own
+// scene, drawn by the page renderer as a first pass under the
+// page scene. Legacy DEM scenery steps aside only once the
+// first tile model has arrived; any failure leaves the page
+// exactly as it was. Water, ribbon, bank lines, gauge, labels
+// and panels are never touched.
+const HT_T3_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IkRDR0VvTktoakhSeTRNZ28iLCJqdGkiOiIzNTI5MDQ0YS0zMmQyLTRhZDItYTA2NC1jN2VkYzc0MTY1ODIiLCJpZCI6NTQ2ODU5LCJzdWIiOiJTYXVyYWJoS3Vsa2FybmkiLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoiaHlkcm90d2luLWRldiIsImlhdCI6MTc5NDM1NDg5OH0.FL2gKrRS4bV8J8i_O7zgiTMKVl_Gpe1cviLT-vTHssI';
+const HT_T3_GEOID_N = -23.459;
+const htTiles = { v: 'ht-tiles3d v1', active: false, failed: false, models: 0, errors: 0, started: Date.now() };
+window.__htTiles3D = htTiles;
+let htT3Tiles = null, htT3Scene = null, htT3Cam = null, htT3ResV = null;
+function htT3Ecef(latitude, longitude, height = 0) {
+  const p = latitude * Math.PI / 180, l = longitude * Math.PI / 180, a = 6378137, e2 = 6.69437999014e-3, n = a / Math.sqrt(1 - e2 * Math.sin(p) ** 2);
+  return [(n + height) * Math.cos(p) * Math.cos(l), (n + height) * Math.cos(p) * Math.sin(l), (n * (1 - e2) + height) * Math.sin(p)];
+}
+function htT3LocalFrame(latitude, longitude, height = 0) {
+  const p = latitude * Math.PI / 180, l = longitude * Math.PI / 180, origin = htT3Ecef(latitude, longitude, height);
+  const east = [-Math.sin(l), Math.cos(l), 0], up = [Math.cos(p) * Math.cos(l), Math.cos(p) * Math.sin(l), Math.sin(p)], south = [Math.sin(p) * Math.cos(l), Math.sin(p) * Math.sin(l), -Math.cos(p)];
+  const dot = (a, b) => a.reduce((v, x, i) => v + x * b[i], 0);
+  return [...east, -dot(east, origin), ...up, -dot(up, origin), ...south, -dot(south, origin), 0, 0, 0, 1];
+}
+let htT3Foot = null, htT3FootText = '', htT3FootAt = 0;
+function htT3FooterShow() {
+  if (htT3Foot) return;
+  const d = document.createElement('div');
+  d.id = 'htTiles3dCredits';
+  d.style.cssText = 'position:fixed;left:10px;bottom:8px;z-index:40;max-width:74vw;padding:4px 9px;background:rgba(7,25,32,.88);color:#e4f1ee;font:11px/1.5 system-ui,Arial,sans-serif;border-radius:6px;display:none;align-items:center;gap:7px;pointer-events:none';
+  d.innerHTML = '<img src="../vendor3d/google-maps-white.png" alt="Google Maps" style="height:14px;display:none"><span></span>';
+  document.body.appendChild(d);
+  htT3Foot = d;
+}
+function htT3Credits() {
+  const clean = (v) => new DOMParser().parseFromString(String(v), 'text/html').body.textContent.trim();
+  const values = htT3Tiles.getAttributions().filter((i) => i.type !== 'image').map((i) => clean(i.value)).filter(Boolean);
+  return ['Basemap: Google Maps', ...[...new Set(values)].sort(), '3D tiles access: Cesium ion', 'Hydrology: USGS / supplied HydroTwin forecasts'].join(' · ');
+}
+function htT3FooterTick() {
+  if (!htT3Foot) return;
+  const now = performance.now();
+  if (now - htT3FootAt < 600) return;
+  htT3FootAt = now;
+  let text = '';
+  try { text = htT3Credits(); } catch (e) { return; }
+  if (text !== htT3FootText) { htT3FootText = text; htT3Foot.querySelector('span').textContent = text; htT3Foot.querySelector('img').style.display = 'block'; }
+  htT3Foot.style.display = 'flex';
+}
+let htT3Hidden = [];
+function htT3HideLegacy() {
+  for (const ch of groundRoot.children) {
+    if (ch === ribbon || ch === gLabels || ch === gaugeMark) continue;
+    if (ch === gWater.mesh || ch === gWater.lines.fc || ch === gWater.lines.obs) continue;
+    if (typeof htWb3Strips !== 'undefined' && htWb3Strips && htWb3Strips.some((st) => st.mesh === ch)) continue;
+    if (ch.name === 'htPolyWater' || (ch.name && ch.name.startsWith('htWb3'))) continue;
+    if (ch.visible) { ch.visible = false; htT3Hidden.push(ch); }
+  }
+}
+function htT3RestoreLegacy() {
+  for (const ch of htT3Hidden) ch.visible = true;
+  htT3Hidden = [];
+}
+function htT3Update(cam) {
+  const m = htT3LocalFrame(D.lat, D.lon);
+  m[7] -= (REFE + HT_T3_GEOID_N);
+  htT3Tiles.group.matrix.set(...m);
+  htT3Tiles.group.matrixWorldNeedsUpdate = true;
+  // The tiles scene is not rendered until the first model arrives,
+  // so refresh the world matrix by hand: the renderer culls the
+  // ECEF bounding volumes against it on every update.
+  htT3Tiles.group.updateWorldMatrix(true, false);
+  if (htT3Cam !== cam) { if (htT3Cam) htT3Tiles.deleteCamera(htT3Cam); htT3Tiles.setCamera(cam); htT3Cam = cam; }
+  renderer.getDrawingBufferSize(htT3ResV);
+  htT3Tiles.setResolution(cam, htT3ResV);
+  htT3Tiles.update();
+}
+const htT3OrigRender = renderer.render.bind(renderer);
+renderer.render = function (s, c) {
+  if (s !== scene || !htT3Tiles || renderer.xr.isPresenting) {
+    if (htT3Foot && s === scene && !groundRoot.visible) htT3Foot.style.display = 'none';
+    htT3OrigRender(s, c); return;
+  }
+  try { htT3Update(c); } catch (e) { htTiles.failed = true; htTiles.err = String(e && e.message || e).slice(0, 240); htT3Tiles = null; htT3RestoreLegacy(); htT3OrigRender(s, c); return; }
+  if (!htTiles.active || !groundRoot.visible) { htT3OrigRender(s, c); return; }
+  try {
+    htT3HideLegacy();
+    htT3OrigRender(htT3Scene, c);
+    htTiles.tris = renderer.info.render.triangles; htTiles.calls = renderer.info.render.calls;
+    renderer.autoClear = false;
+    try { htT3OrigRender(s, c); } finally { renderer.autoClear = true; }
+    htT3FooterTick();
+  } catch (e) {
+    htTiles.failed = true; htTiles.active = false; htTiles.err = String(e && e.message || e).slice(0, 240); renderer.autoClear = true;
+    htT3RestoreLegacy();
+    if (htT3Foot) htT3Foot.style.display = 'none';
+    htT3OrigRender(s, c);
+  }
+};
+(async () => {
+  if (QUEST) { htTiles.skipped = 'quest'; return; }
+  try { setLoad('tiles3d', 'loading'); } catch (e) {}
+  try {
+    const dep = await import('../vendor3d/dependencies.js');
+    const T3 = await import('../vendor3d/three.module.min.js');
+    // The page renderer (three r160) calls material.onBuild()
+    // while compiling a material; three removed that hook after
+    // r160, so restore it as a no-op on the vendored bundle's
+    // Material prototype before any tile material compiles.
+    if (typeof T3.Material.prototype.onBuild !== 'function') T3.Material.prototype.onBuild = function () {};
+    htT3ResV = new T3.Vector2(1, 1);
+    htT3Scene = new T3.Scene();
+    const tiles = new dep.TilesRenderer(undefined);
+    const draco = new dep.DRACOLoader().setDecoderPath('../vendor3d/draco/');
+    tiles.registerPlugin(new dep.CesiumIonAuthPlugin({ apiToken: HT_T3_TOKEN, assetId: 2275207, autoRefreshToken: true, useRecommendedSettings: false }));
+    tiles.registerPlugin(new dep.GLTFExtensionsPlugin({ dracoLoader: draco }));
+    tiles.registerPlugin(new dep.TileCompressionPlugin({ disableMipmaps: true, compressIndex: true, compressPosition: false, compressUvs: false, compressNormals: false }));
+    tiles.errorTarget = 16;
+    tiles.lruCache.minSize = 450; tiles.lruCache.maxSize = 1600;
+    tiles.lruCache.minBytesSize = 256 * 1024 * 1024; tiles.lruCache.maxBytesSize = 512 * 1024 * 1024;
+    tiles.group.matrixAutoUpdate = false;
+    htT3Scene.add(tiles.group);
+    tiles.addEventListener('load-model', () => { htTiles.models++; if (!htTiles.active) { htTiles.active = true; try { setLoad('tiles3d', 'ok'); } catch (e) {} htT3FooterShow(); } });
+    tiles.addEventListener('load-error', () => { htTiles.errors++; });
+    htTiles.debug = () => { try { const e = tiles.group.matrixWorld.elements; return { vis: tiles.visibleTiles.size, tris: htTiles.tris || 0, calls: htTiles.calls || 0, gw: [e[12], e[13], e[14]].map((v) => Math.round(v)), cam: camera.position.toArray().map((v) => Math.round(v)), refe: Math.round(REFE), act: htTiles.active, fail: htTiles.failed, err: htTiles.err || null }; } catch (err) { return { dbgErr: String(err && err.message || err) }; } };
+    htT3Tiles = tiles;
+  } catch (e) {
+    htTiles.failed = true;
+    try { setLoad('tiles3d', 'ok'); } catch (e2) {}
+  }
+})();
+
+
+// ht-tileslift v1: while the Google tiles are the scenery, lift
+// the water set by this station's measured amount so the
+// DEM-profiled surfaces sit on the tile channel instead of
+// intersecting its mesh (see patch_tileslift.py). Restored the
+// moment tiles deactivate, fail, or the ground view closes.
+const HT_LIFT_V = 'ht-tileslift v1';
+const HT_LIFT_M = 2.0;
+const htLiftObjs = [];
+let htLiftOn = false;
+function htLiftCollect() {
+  const cand = [gWater.mesh, ribbon, gWater.lines && gWater.lines.fc, gWater.lines && gWater.lines.obs];
+  if (typeof htPolyMesh !== 'undefined' && htPolyMesh) cand.push(htPolyMesh);
+  if (typeof htWb3Strips !== 'undefined' && htWb3Strips) for (const st of htWb3Strips) if (st && st.mesh) cand.push(st.mesh);
+  for (const o of cand) {
+    if (!o || typeof o !== 'object') continue;
+    if (o.userData.__liftBase === undefined) o.userData.__liftBase = o.position.y;
+    if (!htLiftObjs.includes(o)) htLiftObjs.push(o);
+  }
+}
+function htLiftTick() {
+  const t = window.__htTiles3D;
+  const want = !!(t && t.active && !t.failed && groundRoot.visible);
+  htLiftCollect();
+  if (want === htLiftOn) {
+    if (want) for (const o of htLiftObjs) o.position.y = o.userData.__liftBase + HT_LIFT_M;
+    return;
+  }
+  htLiftOn = want;
+  for (const o of htLiftObjs) o.position.y = o.userData.__liftBase + (want ? HT_LIFT_M : 0);
+}
+if (HT_LIFT_M > 0) setInterval(htLiftTick, 600);
 
 window.HT3 = { scene, camera, orbit, setDay, act, RIV, geoUnits, FC, S2, gWater, tWater, VIEWS, BLD, stageFt, dHof, goView, get REFE() { return REFE; }, get elevRange() { return [eMin, eMax, EXAG]; }, get curDH() { return curDH; }, get floods() { return floodsReady; } };
 window.HT3_READY = true;
@@ -5145,7 +5369,18 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
       var k = dates.length - 1;
       while (k > 0 && dn[k] - dn[k - 1] === 1) k--;
       var run = dates.slice(k);
-      if (run.length < 30) throw new Error('no 30-day consecutive run at the end');
+      if (run.length < 30) {
+        /* ht-outlookfix v2: same hole tolerance as htGapAssemble - end
+         * the window at the newest date that completes a 30-day run. */
+        var fixed3 = null;
+        for (var e3 = dates.length - 1; e3 >= 29 && !fixed3; e3--) {
+          var c3 = 1;
+          while (e3 - c3 >= 0 && dn[e3 - c3 + 1] - dn[e3 - c3] === 1) c3++;
+          if (c3 >= 30) fixed3 = dates.slice(e3 - c3 + 1, e3 + 1);
+        }
+        if (!fixed3) throw new Error('no 30-day consecutive run at the end');
+        run = fixed3;
+      }
       return { flows: flows, wx: wx, run: run, win30: run.slice(-30) };
     };
   }
@@ -6236,6 +6471,7 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
 <!-- ht-precip v1 -->
 <script type="module" src="../assets/precip/ht-precip.mjs"></script>
 
+
 <style>
 #ht-drift-panel{position:fixed;right:18px;bottom:18px;width:308px;z-index:9999;
  background:rgba(12,18,28,.92);color:#e8eef5;border:1px solid rgba(255,255,255,.16);
@@ -6685,6 +6921,109 @@ window.__yrMeta = {"leader":{"PILSTMv1":0.5473,"LSTM":0.5674,"Transformer":0.549
   setInterval(place, 5000);
   poll();
   setInterval(poll, 60000);
+})();
+</script>
+<script>
+/* ht-outlookfix v1 - live outlook resilience (dev). See
+ * build25/patch_outlookfix.py for the full story. Watches the three
+ * outlook panels + the master LIVE bar and: auto-retries failed live
+ * runs a few times, writes an honest note if a pull never completes,
+ * points the monthly lead strip at the LIVE forecast when the panel
+ * above is live, and adds a Live-button hint to the weekly/monthly
+ * 'no baked forecast' dead ends. Adds no data and changes no layout. */
+(function () {
+  'use strict';
+  var PANELS = [
+    { btn: 'htwk-live', status: 'htwk-status', tag: 'wk' },
+    { btn: 'htmo-live', status: 'htmo-status', tag: 'mo' },
+    { btn: 'htyr-live', status: 'htyr-status', tag: 'yr' }
+  ];
+  var retries = {}, wasPulling = false, pullStart = 0;
+  function txt(id) { var e = document.getElementById(id); return e ? (e.textContent || '') : ''; }
+  function issuedDate(st) { var m = /issued (\d{4}-\d{2}-\d{2})/.exec(st); return m ? m[1] : null; }
+  setInterval(function () {
+    var note = txt('htla-note');
+    var pulling = note.indexOf('pulling live data') >= 0;
+    if (pulling && !wasPulling) { retries = {}; pullStart = Date.now(); }
+    if (!pulling) pullStart = 0;
+    wasPulling = pulling;
+    var allLive = true, anyFailed = false;
+    PANELS.forEach(function (p) {
+      var st = txt(p.status);
+      if (/live outlook issued/.test(st)) { retries[p.btn] = 0; return; }
+      allLive = false;
+      if (/failed/.test(st)) {
+        anyFailed = true;
+        var n = retries[p.btn] || 0;
+        if (n < 3) {
+          retries[p.btn] = n + 1;
+          var b = document.getElementById(p.btn);
+          if (b) { try { b.click(); } catch (e) {} }
+        }
+      }
+    });
+    if (pulling && pullStart && Date.now() - pullStart > 260000) {
+      var noteEl = document.getElementById('htla-note');
+      if (noteEl && allLive) {
+        var d = PANELS.map(function (p) { return issuedDate(txt(p.status)); });
+        if (d[0] && d[1] && d[2]) {
+          var latest = d.slice().sort()[2];
+          noteEl.textContent = '\u25CF LIVE \u00B7 daily data through ' + latest +
+            ' \u00B7 outlooks issued wk ' + d[0] + ' \u00B7 mo ' + d[1] + ' \u00B7 yr ' + d[2];
+          pullStart = 0;
+        }
+      } else if (noteEl && anyFailed && Date.now() - pullStart > 300000) {
+        var someLive = PANELS.some(function (p) { return /live outlook issued/.test(txt(p.status)); });
+        noteEl.textContent = 'live pull did not complete \u2014 ' +
+          (someLive ? 'some outlooks above are live; ' : '') +
+          'the failed outlook says why in its panel status line. Tap that panel\u2019s \u25B6 Live button to retry.';
+        pullStart = 0;
+      }
+    }
+  }, 5000);
+  function attach() {
+    var ffRead = document.getElementById('htffmo-read');
+    if (ffRead && !ffRead.__htofObs) {
+      var fixFF = function () {
+        var issue = txt('htmo-issue');
+        var t = ffRead.textContent || '';
+        if (issue.indexOf('LIVE outlook') >= 0 && t.indexOf('No baked monthly forecast') >= 0) {
+          var m = issue.match(/issued (\d{4}-\d{2}-\d{2})/);
+          var dates = t.match(/\d{4}-\d{2}-\d{2}/g) || [];
+          var range = dates.length >= 3 ? ' (baked archive covers ' + dates[1] + ' \u2026 ' + dates[2] + ')' : '';
+          ffRead.textContent = 'The panel above is showing the LIVE monthly forecast issued ' +
+            (m ? m[1] : 'today') + ' \u2014 its 6 monthly leads are in the panel\u2019s table and chart. ' +
+            'This strip inspects the baked outlook archive' + range + ', so it has no lead view for the live date.';
+        }
+      };
+      ffRead.__htofObs = new MutationObserver(fixFF);
+      ffRead.__htofObs.observe(ffRead, { childList: true, characterData: true, subtree: true });
+      fixFF();
+    }
+    ['htwk-issue', 'htmo-issue'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && !el.__htofObs) {
+        var fix = function () {
+          var t = el.textContent || '';
+          if (t.indexOf('no baked') >= 0 && t.indexOf('LIVE outlook') < 0 && t.indexOf('Live button') < 0) {
+            el.textContent = t + ' \u2014 or press the \u25B6 Live button in this panel for a forecast issued today.';
+          }
+        };
+        el.__htofObs = new MutationObserver(fix);
+        el.__htofObs.observe(el, { childList: true, characterData: true, subtree: true });
+        fix();
+      }
+    });
+    return !!(document.getElementById('htffmo-read') &&
+              document.getElementById('htwk-issue') &&
+              document.getElementById('htmo-issue'));
+  }
+  var tries = 0;
+  var iv = setInterval(function () {
+    tries++;
+    if (attach() || tries > 300) clearInterval(iv);
+  }, 2000);
+  attach();
 })();
 </script>
 </body></html>
