@@ -1,4 +1,4 @@
-/* ht-helperbot v4 — HydroTwin helper bot.
+/* ht-helperbot v5 — HydroTwin helper bot.
  *
  * A chat widget (bottom right) that answers "where is X / how do I Y"
  * questions about the digital twin. Location answers come from the
@@ -7,15 +7,15 @@
  * entries drive the "Show me" actions. Index answers never wait on
  * the network.
  *
- * Server-side AI (v4): the optional open source model no longer runs
+ * Server-side AI (v5): the optional open source model no longer runs
  * in the visitor's browser. v1-v3 loaded WebLLM on-device; the model
  * load crashed mobile Safari tabs outright (memory pressure kills
  * the web content process, worker isolation or not). Now an open
- * source model (Llama 3.2 3B Instruct, GGUF; hosted by a persistent
- * llama.cpp server per Lambda environment — the original 0.5B was
- * replaced on 2026-11-01 after it confabulated about locations the
- * index had not given it, and the Qwen2.5 3B that followed it was
- * replaced by Llama 3.2 3B on 2026-11-03) is hosted on the
+ * source model (Meta Llama 3.2 3B Instruct, GGUF; hosted by a
+ * persistent llama.cpp server per Lambda environment — Qwen2.5 3B
+ * served until 2026-11-11, when the model was switched to Llama;
+ * the original 0.5B was replaced on 2026-11-01 after it confabulated
+ * about locations the index had not given it) is hosted on the
  * project's own cloud (private S3 bucket + AWS Lambda llama.cpp) and
  * the bot calls its HTTPS endpoint with the question plus the
  * retrieved index entries; when the rephrased answer arrives it
@@ -94,7 +94,7 @@
     + '<button class="hthb-chip" type="button">How do I change the date?</button>'
     + '<button class="hthb-chip" type="button">Which features affect flow in Dallas?</button>'
     + '</div>'
-    + '<div id="hthb-ai"><span id="hthb-ai-status"></span></div>'
+    + '<div id="hthb-ai"><b>Site AI</b> <span id="hthb-ai-status"></span></div>'
     + '<form id="hthb-form"><input id="hthb-in" type="text" autocomplete="off" placeholder="Ask where something is…">'
     + '<button id="hthb-send" type="submit">Ask</button></form>';
   document.body.appendChild(panel);
@@ -103,8 +103,8 @@
   var input = panel.querySelector('#hthb-in');
   var aiStatus = panel.querySelector('#hthb-ai-status');
   aiStatus.textContent = AI_ENDPOINT
-    ? 'Model used: Llama 3.2 3B'
-    : 'Model used: site index';
+    ? 'is on: answers are located instantly from the built-in site index, then an open source model (Meta Llama 3.2 3B) hosted on this project’s own cloud rephrases them in friendlier words. Your question and the index entries it matched are sent to that endpoint; nothing else leaves your browser, and nothing is downloaded.'
+    : 'is off: answers come straight from the built-in site index.';
 
   function addMsg(text, who) {
     var d = document.createElement('div');
@@ -337,7 +337,7 @@
         var txt = d && typeof d.answer === 'string' ? d.answer.trim() : '';
         if (txt) {
           txtSpan.textContent = txt;
-          tag.textContent = 'Answer rephrased by the site AI (open source Llama 3.2 3B, hosted by this project). Locations come from the site index.';
+          tag.textContent = 'Answer rephrased by the site AI (open source Meta Llama 3.2 3B, hosted by this project). Locations come from the site index.';
         } else {
           tag.remove();
         }
