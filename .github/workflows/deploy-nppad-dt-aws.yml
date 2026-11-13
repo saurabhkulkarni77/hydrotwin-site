@@ -1,0 +1,177 @@
+name: Deploy NPPAD Digital Twin (nppad-dt) to AWS S3 + CloudFront — one-off
+
+# Manual-only helper workflow. Deploys the public
+# saurabhkulkarni77/nppad-dt repo (NPPAD Digital Twin site) to its own
+# dedicated AWS S3 website bucket (nppad-dt-2026) fronted by its own
+# CloudFront distribution, using this repo's AWS secrets (same
+# names/conventions as deploy-aws.yml, deploy-npp-twin.yml and
+# setup-dev-https.yml). It does NOT touch the HydroTwin site, its
+# buckets or distributions, or the NPPAD Results Explorer.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  AWS_PAGER: ""
+  BUCKET: nppad-dt-2026
+  AWS_REGION: us-east-1
+  ORIGIN_DOMAIN: nppad-dt-2026.s3-website-us-east-1.amazonaws.com
+  PROD_DIST_ID: E29IVO4IMQNKO6
+
+jobs:
+  deploy-nppad-dt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out NPPAD DT repo
+        run: git clone --depth 1 https://github.com/saurabhkulkarni77/nppad-dt.git nppad-dt-src
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Ensure website bucket exists
+        run: |
+          if ! aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null; then
+            aws s3api create-bucket --bucket "$BUCKET" --region "$AWS_REGION"
+          fi
+          aws s3api put-public-access-block --bucket "$BUCKET" \
+            --public-access-block-configuration \
+            BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false
+          aws s3api put-bucket-website --bucket "$BUCKET" \
+            --website-configuration '{"IndexDocument":{"Suffix":"index.html"},"ErrorDocument":{"Key":"index.html"}}'
+          cat > /tmp/policy.json <<EOF
+          {"Version":"2012-10-17","Statement":[{"Sid":"PublicRead","Effect":"Allow",
+            "Principal":"*","Action":"s3:GetObject",
+            "Resource":"arn:aws:s3:::$BUCKET/*"}]}
+          EOF
+          aws s3api put-bucket-policy --bucket "$BUCKET" --policy file:///tmp/policy.json
+
+      - name: Sync DT site to S3
+        run: |
+          aws s3 sync nppad-dt-src "s3://$BUCKET/" \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --delete
+          aws s3 ls "s3://$BUCKET/" --recursive | head -50
+
+      - name: Check for an existing NPPAD DT distribution
+        run: |
+          aws cloudfront list-distributions > dists.json
+          python3 - <<'PYEOF'
+          import json, os
+          d = json.load(open('dists.json'))
+          items = d.get('DistributionList', {}).get('Items', []) or []
+          found = None
+          for it in items:
+              for o in it.get('Origins', {}).get('Items', []):
+                  if o.get('DomainName') == 'nppad-dt-2026.s3-website-us-east-1.amazonaws.com':
+                      found = it
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+              if found:
+                  f.write(f"DIST_ID={found['Id']}\nDIST_DOMAIN={found['DomainName']}\n")
+                  print('Found existing distribution:', found['Id'], found['DomainName'], found['Status'])
+              else:
+                  print('No existing distribution found; will create one.')
+          PYEOF
+
+      - name: Build distribution config from prod config
+        if: env.DIST_ID == ''
+        run: |
+          aws cloudfront get-distribution-config --id "$PROD_DIST_ID" > prod_full.json
+          python3 - <<'PYEOF'
+          import json, time
+          cfg = json.load(open('prod_full.json'))['DistributionConfig']
+          cfg['CallerReference'] = f'nppad-dt-{int(time.time())}'
+          cfg['Comment'] = 'NPPAD Digital Twin site - HTTPS front for nppad-dt-2026 website endpoint'
+          origins = cfg['Origins']
+          o = origins['Items'][0]
+          old_id = o.get('Id')
+          new_id = 'S3-Website-nppad-dt-2026'
+          o['Id'] = new_id
+          o['DomainName'] = 'nppad-dt-2026.s3-website-us-east-1.amazonaws.com'
+          o['OriginPath'] = ''
+          o.pop('S3OriginConfig', None)
+          coc = o.get('CustomOriginConfig', {})
+          coc['HTTPPort'] = 80
+          coc['HTTPSPort'] = 443
+          coc['OriginProtocolPolicy'] = 'http-only'
+          coc['OriginSslProtocols'] = {'Quantity': 1, 'Items': ['TLSv1.2']}
+          coc.setdefault('OriginReadTimeout', 30)
+          coc.setdefault('OriginKeepaliveTimeout', 5)
+          o['CustomOriginConfig'] = coc
+          o['ConnectionAttempts'] = o.get('ConnectionAttempts', 3)
+          o['ConnectionTimeout'] = o.get('ConnectionTimeout', 10)
+          o['OriginShield'] = {'Enabled': False}
+          origins['Quantity'] = 1
+          origins['Items'] = [o]
+          dcb = cfg['DefaultCacheBehavior']
+          dcb['TargetOriginId'] = new_id
+          cfg['DefaultCacheBehavior'] = dcb
+          cb = cfg.get('CacheBehaviors') or {'Quantity': 0, 'Items': []}
+          for item in cb.get('Items', []) or []:
+              if item.get('TargetOriginId') == old_id:
+                  item['TargetOriginId'] = new_id
+          cfg['CacheBehaviors'] = cb
+          cfg['Aliases'] = {'Quantity': 0, 'Items': []}
+          cfg['DefaultRootObject'] = 'index.html'
+          cfg['Enabled'] = True
+          cfg['ViewerCertificate'] = {'CloudFrontDefaultCertificate': True}
+          cfg['Logging'] = {'Enabled': False, 'IncludeCookies': False, 'Bucket': '', 'Prefix': ''}
+          cfg['WebACLId'] = ''
+          cfg['IsIPV6Enabled'] = cfg.get('IsIPV6Enabled', True)
+          json.dump(cfg, open('dt_dc.json', 'w'), indent=1)
+          print('origin:', o['DomainName'])
+          PYEOF
+
+      - name: Create distribution
+        if: env.DIST_ID == ''
+        run: |
+          aws cloudfront create-distribution --distribution-config file://dt_dc.json > created.json
+          python3 - <<'PYEOF'
+          import json, os
+          d = json.load(open('created.json'))['Distribution']
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+              f.write(f"DIST_ID={d['Id']}\nDIST_DOMAIN={d['DomainName']}\n")
+          print('Created:', d['Id'], d['DomainName'], d['Status'])
+          PYEOF
+
+      - name: Invalidate cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id "$DIST_ID" --paths "/*" || true
+
+      - name: Wait for deployment
+        run: |
+          for i in $(seq 1 45); do
+            STATUS=$(aws cloudfront get-distribution --id "$DIST_ID" --query 'Distribution.Status' --output text)
+            echo "check $i: $STATUS"
+            if [ "$STATUS" = "Deployed" ]; then break; fi
+            sleep 60
+          done
+          echo "final status: $STATUS"
+
+      - name: Verify origin serves the site
+        run: |
+          for p in index.html ml.html app.html data/model.bin data/results.json js/edge.js; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "http://$BUCKET.s3-website-$AWS_REGION.amazonaws.com/$p")
+            echo "origin $p -> HTTP $code"
+          done
+
+      - name: Publish result
+        run: |
+          {
+            echo "## NPPAD Digital Twin on AWS"
+            echo "- Bucket: $BUCKET (us-east-1)"
+            echo "- Distribution ID: $DIST_ID"
+            echo "- Domain: $DIST_DOMAIN"
+            echo "- HTTPS base: https://$DIST_DOMAIN"
+            echo "- Pages: https://$DIST_DOMAIN/index.html | https://$DIST_DOMAIN/ml.html | https://$DIST_DOMAIN/app.html"
+            echo "RESULT_JSON {\"bucket\":\"$BUCKET\",\"distribution_id\":\"$DIST_ID\",\"domain\":\"$DIST_DOMAIN\",\"https_base\":\"https://$DIST_DOMAIN\"}"
+          } | tee result.txt
+          cat result.txt >> "$GITHUB_STEP_SUMMARY"
