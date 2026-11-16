@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-11T19:28:52Z",
+  "generated_at": "2026-11-16T19:41:46Z",
   "repo": "saurabhkulkarni77/hydrotwin-site",
   "links": {
     "repo": "https://github.com/saurabhkulkarni77/hydrotwin-site",
@@ -348,7 +348,7 @@
       "title": "MLOps monitor: drift threshold breaches detected",
       "state": "open",
       "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/issues/1",
-      "updated_at": "2026-11-09T19:54:21Z"
+      "updated_at": "2026-11-16T19:41:04Z"
     }
   },
   "workflows": [
@@ -356,14 +356,14 @@
       "file": ".github/workflows/ci.yml",
       "name": "CI \u2014 site, data & model tests",
       "latest": {
-        "run_id": 43087354490,
-        "title": "ht-outlookfix v2: hole tolerance for fallback + daily-fan assemblies,\u2026",
+        "run_id": 43096292261,
+        "title": "ht-helperbot v5: Meta Llama 3.2 3B Instruct replaces Qwen2.5 3B for t\u2026",
         "event": "push",
-        "status": "completed",
-        "conclusion": "success",
-        "created_at": "2026-11-11T19:27:21Z",
-        "updated_at": "2026-11-11T19:28:14Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/43087354490"
+        "status": "queued",
+        "conclusion": null,
+        "created_at": "2026-11-11T20:28:47Z",
+        "updated_at": "2026-11-11T20:28:47Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/43096292261"
       }
     },
     {
@@ -375,14 +375,14 @@
       "file": ".github/workflows/monitor.yml",
       "name": "MLOps monitor \u2014 drift & freshness",
       "latest": {
-        "run_id": 42687687205,
+        "run_id": 43941788774,
         "title": "MLOps monitor \u2014 drift & freshness",
         "event": "schedule",
         "status": "completed",
         "conclusion": "success",
-        "created_at": "2026-11-09T19:53:37Z",
-        "updated_at": "2026-11-09T19:54:24Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/42687687205"
+        "created_at": "2026-11-16T19:40:29Z",
+        "updated_at": "2026-11-16T19:41:07Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/43941788774"
       }
     },
     {
@@ -399,14 +399,14 @@
       "file": ".github/workflows/deploy-dev.yml",
       "name": "Deploy DEV to AWS S3",
       "latest": {
-        "run_id": 43087354360,
-        "title": "ht-outlookfix v2: hole tolerance for fallback + daily-fan assemblies,\u2026",
-        "event": "push",
-        "status": "in_progress",
-        "conclusion": null,
-        "created_at": "2026-11-11T19:27:21Z",
-        "updated_at": "2026-11-11T19:27:25Z",
-        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/43087354360"
+        "run_id": 43312417379,
+        "title": "Deploy DEV to AWS S3",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-12T21:39:34Z",
+        "updated_at": "2026-11-12T21:41:26Z",
+        "url": "https://github.com/saurabhkulkarni77/hydrotwin-site/actions/runs/43312417379"
       }
     }
   ]
