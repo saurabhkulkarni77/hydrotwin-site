@@ -1,258 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Data Center Energy Twin — F-3809 Day-Ahead Load Forecasting</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F-3809 Geothermal Study — Digital Twin</title>
 <style>
-  :root{ --navy:#14213D; --blue:#2D6FB7; --gray:#46505F; --line:#D8DEE7; --bg:#F5F7FA; --card:#FFFFFF; }
-  *{ box-sizing:border-box; }
-  body{ margin:0; font-family:Inter, Arial, sans-serif; background:var(--bg); color:var(--navy); }
-  header{ background:var(--navy); color:#fff; padding:26px 20px 20px; }
-  header h1{ margin:0 0 6px; font-size:26px; letter-spacing:.2px; }
-  header p{ margin:0; color:#C7D2E0; font-size:14px; max-width:980px; line-height:1.45; }
-  header a{ color:#9FC3E8; }
-  .wrap{ max-width:1180px; margin:0 auto; padding:18px 16px 30px; }
-  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
-  .chip{ background:#1E3257; border:1px solid #33507E; color:#E8EEF6; padding:6px 11px; border-radius:999px; font-size:12.5px; }
-  .chip b{ color:#fff; }
-  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
-  .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:16px; }
-  .card h2{ margin:0 0 4px; font-size:18px; }
-  .sub{ color:var(--gray); font-size:13px; line-height:1.5; margin:0 0 10px; }
-  .big{ display:flex; gap:26px; flex-wrap:wrap; margin:6px 0 4px; }
-  .big div b{ display:block; font-size:29px; }
-  .big div span{ font-size:12.5px; color:var(--gray); }
-  canvas{ width:100%; height:230px; display:block; }
-  table{ width:100%; border-collapse:collapse; font-size:13px; }
-  th, td{ border:1px solid var(--line); padding:6px 8px; text-align:right; }
-  th{ background:var(--navy); color:#fff; font-weight:600; }
-  td:first-child, th:first-child{ text-align:left; }
-  tr.alt td{ background:#F0F3F8; }
-  tr.best td{ background:#E4EDF7; font-weight:600; }
-  .verdict{ background:#EEF2F7; border-left:4px solid var(--blue); padding:11px 14px; border-radius:0 8px 8px 0; font-size:13.5px; line-height:1.55; margin-top:12px; }
-  footer{ color:var(--gray); font-size:12.5px; line-height:1.6; padding:4px 2px 10px; }
-  footer a{ color:var(--blue); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    background: #14213D;
+    color: #FFFFFF;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    max-width: 560px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    padding: 48px 36px;
+  }
+  .rule {
+    width: 56px;
+    height: 4px;
+    background: #2D6FB7;
+    border-radius: 2px;
+    margin: 0 auto 26px auto;
+  }
+  h1 {
+    font-size: 26px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #C9D4E6;
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>Data Center Energy Twin</h1>
-  <p>Day-ahead forecasting of the F-3809 data center's hourly energy load — the load the geothermal
-     cascade on the <a href="index.html">main twin page</a> exists to serve. A Transformer, a
-     PatchTST-style patch transformer and the rest of the HydroTwin Energy model roster learn the
-     load's daily and weekly rhythms from the project's own hourly profile and are scored, honestly,
-     on a held-out final month.</p>
-  <div class="chips">
-    <span class="chip">Mean IT load <b id="cMean">–</b></span>
-    <span class="chip">Peak IT load <b id="cPeak">–</b></span>
-    <span class="chip">Forecast <b>next 24 h from past 168 h</b></span>
-    <span class="chip">Test <b id="cTest">–</b></span>
-    <span class="chip">Best model <b id="cBest">–</b></span>
-  </div>
-  <p style="margin-top:12px"><a href="index.html">← Back to the F-3809 Geothermal Digital Twin</a></p>
-</header>
-
-<div class="wrap">
-
   <div class="card">
-    <h2>The load being twinned</h2>
-    <p class="sub">This page twins the study's 200 MWe data center using the project's Stage 5.5 hourly
-       profile — the 60% GPU-utilization case (NLR 60u) that the study's optimizer consumes hour by hour.
-       The profile's IT load averages <b id="pMean">–</b> and peaks at <b id="pPeak">–</b>; every watt of IT
-       power leaves as heat, so the cooling service the cascade must deliver tracks the IT load.
-       <span id="pEq"></span> The chart shows the final 14 days of the 8,760-hour profile, hourly.</p>
-    <canvas id="actualChart"></canvas>
+    <div class="rule"></div>
+    <h1>F-3809 Geothermal Study — Digital Twin</h1>
+    <p>This visualisation is temporarily offline for revision and will return shortly.</p>
   </div>
-
-  <div class="card">
-    <h2>Day-ahead forecast — the final test day</h2>
-    <p class="sub">Each model sees the past 168 hours and predicts the next 24, directly at every horizon.
-       Below: the last of the <b id="fDays">–</b> held-out test days — the actual load, the Transformer's
-       forecast, and the forecast of the best-scoring model (<b id="fBest">–</b>).</p>
-    <div class="grid">
-      <div>
-        <h3 style="margin:0 0 6px; font-size:15px">IT load (MW)</h3>
-        <canvas id="fcItChart"></canvas>
-      </div>
-      <div>
-        <h3 style="margin:0 0 6px; font-size:15px">Cooling service (MWth)</h3>
-        <canvas id="fcCoolChart"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Model compare — held-out test month</h2>
-    <p class="sub">Protocol: train on the first <b id="mTrain">–</b>, validate on the next month
-       (early stopping), test on the final <b id="mTest">–</b> with a fresh forecast origin every day
-       (<b id="mOrigins">–</b> origins). Skill is measured against persistence — repeating yesterday's
-       load — so 0 means no better than yesterday and negative means worse. The Transformer and
-       PatchTST are PyTorch models trained for this twin; Random Forest and Ridge use lag and
-       rolling-window features, in the pattern of the HydroTwin Energy roster.</p>
-    <table id="modelTable">
-      <tr><th>Model</th><th>IT MAE (MW)</th><th>IT RMSE (MW)</th><th>Cooling MAE (MWth)</th>
-          <th>Cooling RMSE (MWth)</th><th>Skill vs persistence (IT)</th><th>Train time</th></tr>
-    </table>
-    <div class="verdict" id="modelVerdict"></div>
-  </div>
-
-  <div class="card">
-    <h2>Model architectures</h2>
-    <p class="sub">What each model in the table above actually is — input, structure, output, and how it
-       was trained. The three neural models share one training recipe (AdamW, learning rate 1e-3 with
-       cosine decay, MSE loss, batch 128, at most 30 epochs, early stopping on validation MAE), so the
-       comparison is between architectures, not tuning effort.</p>
-    <table>
-      <tr><th>Model</th><th>Architecture</th></tr>
-      <tr><td>Transformer</td><td>Encoder-only Transformer (PyTorch). The 168 h × 6-channel window
-        (IT load and cooling, standardized, plus hour-of-day and day-of-week sin/cos) is projected to
-        d<sub>model</sub> 96 with learned positional embeddings; 2 encoder layers, 4 attention heads,
-        feedforward 192, dropout 0.1. The time-mean of the encoded states feeds a linear head that
-        emits all 24 h × 2 targets in one shot.</td></tr>
-      <tr class="alt"><td>PatchTST</td><td>Channel-independent patch Transformer. Each load channel is
-        cut into 20 patches of 16 h (stride 8); patches are embedded to d<sub>model</sub> 64 with
-        learned positions and passed through a shared 2-layer, 4-head encoder (feedforward 128,
-        dropout 0.1); the flattened patch states feed a per-channel linear head (24 h).</td></tr>
-      <tr><td>LSTM</td><td>2-layer LSTM, hidden size 96, dropout 0.1, over the same 6-channel window;
-        the final hidden state feeds a linear head (24 h × 2 targets).</td></tr>
-      <tr class="alt"><td>Random Forest</td><td>110 lag and rolling features per forecast origin —
-        for each channel: yesterday's 24 hourly values, the same 24 hours last week, the 24 h and
-        168 h means, the last value and the value 24 h ago — plus 4 calendar sin/cos terms. One
-        multi-output random forest per target: 200 trees, min_samples_leaf 2.</td></tr>
-      <tr><td>Ridge</td><td>The same 110 lag features, standardized; ridge regression with
-        α = 10, direct 24-output prediction per target.</td></tr>
-      <tr class="alt"><td>Persistence</td><td>Baseline with no training: repeats the previous day's
-        24 hours.</td></tr>
-    </table>
-  </div>
-
-  <div class="card">
-    <h2>What the test month costs on the grid</h2>
-    <p class="sub">If the test month's electric load were bought from ERCOT at LZ_SOUTH hourly prices,
-       this is the bill — the reference case the geothermal designs on the main page are compared
-       against. The electric load is the IT load plus the cooling service converted at the study's
-       electric-chiller COP of <b id="costCop">–</b> (ASHRAE 90.1-2019, 0.560 kW/ton, from the study's
-       parameter register). In the cascade designs, geothermal heat drives absorption chillers instead,
-       so most of the cooling-electric part never becomes a grid purchase.</p>
-    <div class="big">
-      <div><b id="costTotal">–</b><span>total grid cost, test month</span></div>
-      <div><b id="costIt">–</b><span>of which IT load</span></div>
-      <div><b id="costCool">–</b><span>of which cooling (electric)</span></div>
-      <div><b id="costMwh">–</b><span>total electric energy (MWh)</span></div>
-      <div><b id="costPrice">–</b><span>mean LZ_SOUTH price ($/MWh)</span></div>
-    </div>
-  </div>
-
-  <footer>
-    Sources: F-3809 project files — Stage 5.5 NLR 60u 8,760-hour IT-load and cooling profile, ERCOT
-    historical RTM prices (LZ_SOUTH, 2025, paired with the profile by hour of year as in the study),
-    and the study parameter register (Stage83_params.m) for the electric-chiller COP. All forecast
-    metrics on this page were computed from those files under the protocol above; a model that failed
-    to train is shown as failed, never filled in. Part of the
-    <a href="index.html">F-3809 Geothermal Digital Twin</a>.
-  </footer>
-</div>
-
-<script src="dc_data.js"></script>
-<script>
-const D = window.F3809DC;
-const fmt$ = v => '$' + v.toLocaleString('en-US');
-const fmtN = v => v.toLocaleString('en-US');
-
-// ---------- header + framing ----------
-document.getElementById('cMean').textContent = D.profile.mean_it.toFixed(1) + ' MW';
-document.getElementById('cPeak').textContent = D.profile.peak_it.toFixed(1) + ' MW';
-document.getElementById('cTest').textContent = D.split.test_days + ' held-out days';
-document.getElementById('cBest').textContent = D.best_model;
-document.getElementById('pMean').textContent = D.profile.mean_it.toFixed(1) + ' MW';
-document.getElementById('pPeak').textContent = D.profile.peak_it.toFixed(1) + ' MW';
-document.getElementById('pEq').textContent = D.profile.cool_equals_it
-  ? 'In this profile file the cooling service equals the IT load hour for hour (checked value for value), so the two curves below coincide and the cooling forecast scores mirror the IT scores.'
-  : '';
-document.getElementById('fDays').textContent = D.split.test_days;
-document.getElementById('fBest').textContent = D.forecast_day.best_name;
-document.getElementById('mTrain').textContent = D.split.train_days + ' days';
-document.getElementById('mTest').textContent = D.split.test_days + ' days';
-document.getElementById('mOrigins').textContent = D.split.test_origins;
-
-// ---------- charts ----------
-function lineChart(cv, series, colors, labels, xlabels){
-  const ctx = cv.getContext('2d');
-  const W = cv.width = cv.offsetWidth * 2, H = cv.height = 460;
-  let lo = Infinity, hi = -Infinity;
-  series.forEach(s => s.forEach(v => { if (v < lo) lo = v; if (v > hi) hi = v; }));
-  const pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
-  const X = i => 46 + i * (W - 60) / (series[0].length - 1);
-  const Y = v => H - 34 - (v - lo) * (H - 56) / (hi - lo);
-  ctx.font = '19px Inter, Arial'; ctx.fillStyle = '#46505F';
-  for (let g = 0; g <= 4; g++){
-    const v = lo + (hi - lo) * g / 4, y = Y(v);
-    ctx.strokeStyle = '#E3E8EF'; ctx.beginPath(); ctx.moveTo(46, y); ctx.lineTo(W - 14, y); ctx.stroke();
-    ctx.fillText(v.toFixed(0), 4, y + 6);
-  }
-  if (xlabels){
-    ctx.fillText(xlabels[0], 46, H - 8);
-    const mid = xlabels[Math.floor(xlabels.length / 2)];
-    ctx.fillText(mid, W / 2 - 30, H - 8);
-    const last = xlabels[xlabels.length - 1];
-    ctx.fillText(last, W - 14 - ctx.measureText(last).width, H - 8);
-  }
-  series.forEach((s, si) => {
-    ctx.strokeStyle = colors[si]; ctx.lineWidth = 2.4; ctx.beginPath();
-    s.forEach((v, i) => i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v)));
-    ctx.stroke();
-  });
-  ctx.lineWidth = 1;
-  labels.forEach((t, i) => { ctx.fillStyle = colors[i]; ctx.fillText('— ' + t, 60 + i * 340, 24); });
-}
-const dayLabels = [];
-for (let d = 0; d < 14; d++) for (let h = 0; h < 24; h++) dayLabels.push(h === 0 ? 'day ' + (d + 1) : '');
-lineChart(document.getElementById('actualChart'),
-  [D.last14.it, D.last14.cool], ['#2D6FB7', '#E08A2E'],
-  ['IT load (MW)', 'Cooling service (MWth)'],
-  ['14 days ago', '', 'final day']);
-const hourLabels = D.forecast_day.hours.map(h => h + ':00');
-lineChart(document.getElementById('fcItChart'),
-  [D.forecast_day.actual_it, D.forecast_day.transformer_it, D.forecast_day.best_it],
-  ['#14213D', '#2D6FB7', '#C0392B'],
-  ['Actual', 'Transformer', D.forecast_day.best_name], hourLabels);
-lineChart(document.getElementById('fcCoolChart'),
-  [D.forecast_day.actual_cool, D.forecast_day.transformer_cool, D.forecast_day.best_cool],
-  ['#14213D', '#2D6FB7', '#C0392B'],
-  ['Actual', 'Transformer', D.forecast_day.best_name], hourLabels);
-
-// ---------- model table ----------
-const ORDER = ['Transformer', 'PatchTST', 'LSTM', 'Random Forest', 'Ridge', 'Persistence'];
-const rows = ORDER.filter(n => D.models[n]).map((n, i) => {
-  const m = D.models[n];
-  const cls = (n === D.best_model ? 'best' : (i % 2 ? 'alt' : ''));
-  if (!m.it) return `<tr class="${cls}"><td>${n}</td><td colspan="6">failed to train — ${m.status}</td></tr>`;
-  return `<tr class="${cls}"><td>${n}</td><td>${m.it.mae.toFixed(2)}</td><td>${m.it.rmse.toFixed(2)}</td>` +
-    `<td>${m.cool.mae.toFixed(2)}</td><td>${m.cool.rmse.toFixed(2)}</td>` +
-    `<td>${m.skill_it === null ? '—' : (m.skill_it * 100).toFixed(0) + ' %'}</td><td>${m.seconds.toFixed(0)} s</td></tr>`;
-}).join('');
-document.getElementById('modelTable').insertAdjacentHTML('beforeend', rows);
-const B = D.models[D.best_model], T = D.models['Transformer'], P = D.models['Persistence'];
-document.getElementById('modelVerdict').innerHTML =
-  `Verdict: <b>${D.best_model}</b> forecasts the IT load best on the held-out month ` +
-  `(MAE ${B.it.mae.toFixed(2)} MW against persistence at ${P.it.mae.toFixed(2)} MW, ` +
-  `a skill of ${(B.skill_it * 100).toFixed(0)} %). The Transformer scores ` +
-  `MAE ${T.it ? T.it.mae.toFixed(2) : '—'} MW (skill ${T.skill_it !== null && T.skill_it !== undefined ? (T.skill_it * 100).toFixed(0) + ' %' : '—'}). ` +
-  `The Stage 5.5 profile is a synthetic, strongly periodic series — a daily shape riding a weekly ` +
-  `cycle — so models that key directly on yesterday's and last week's hours are hard to beat here, ` +
-  `while the sequence models must learn that same structure from raw windows; the vanilla ` +
-  `Transformer, given the whole 168-hour window at once, trails the patch-based model. The table ` +
-  `reports every model rather than only the winner.`;
-
-// ---------- cost ----------
-document.getElementById('costCop').textContent = D.cost.cop_ec.toFixed(2);
-document.getElementById('costTotal').textContent = fmt$(D.cost.cost_total_usd);
-document.getElementById('costIt').textContent = fmt$(D.cost.cost_it_usd);
-document.getElementById('costCool').textContent = fmt$(D.cost.cost_cooling_elec_usd);
-document.getElementById('costMwh').textContent = fmtN(D.cost.energy_it_mwh + D.cost.energy_cool_elec_mwh);
-document.getElementById('costPrice').textContent = '$' + D.cost.mean_price_usd_mwh.toFixed(2);
-</script>
 </body>
 </html>
