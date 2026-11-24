@@ -99,6 +99,36 @@
   </div>
 
   <div class="card">
+    <h2>Model architectures</h2>
+    <p class="sub">What each model in the table above actually is — input, structure, output, and how it
+       was trained. The three neural models share one training recipe (AdamW, learning rate 1e-3 with
+       cosine decay, MSE loss, batch 128, at most 30 epochs, early stopping on validation MAE), so the
+       comparison is between architectures, not tuning effort.</p>
+    <table>
+      <tr><th>Model</th><th>Architecture</th></tr>
+      <tr><td>Transformer</td><td>Encoder-only Transformer (PyTorch). The 168 h × 6-channel window
+        (IT load and cooling, standardized, plus hour-of-day and day-of-week sin/cos) is projected to
+        d<sub>model</sub> 96 with learned positional embeddings; 2 encoder layers, 4 attention heads,
+        feedforward 192, dropout 0.1. The time-mean of the encoded states feeds a linear head that
+        emits all 24 h × 2 targets in one shot.</td></tr>
+      <tr class="alt"><td>PatchTST</td><td>Channel-independent patch Transformer. Each load channel is
+        cut into 20 patches of 16 h (stride 8); patches are embedded to d<sub>model</sub> 64 with
+        learned positions and passed through a shared 2-layer, 4-head encoder (feedforward 128,
+        dropout 0.1); the flattened patch states feed a per-channel linear head (24 h).</td></tr>
+      <tr><td>LSTM</td><td>2-layer LSTM, hidden size 96, dropout 0.1, over the same 6-channel window;
+        the final hidden state feeds a linear head (24 h × 2 targets).</td></tr>
+      <tr class="alt"><td>Random Forest</td><td>110 lag and rolling features per forecast origin —
+        for each channel: yesterday's 24 hourly values, the same 24 hours last week, the 24 h and
+        168 h means, the last value and the value 24 h ago — plus 4 calendar sin/cos terms. One
+        multi-output random forest per target: 200 trees, min_samples_leaf 2.</td></tr>
+      <tr><td>Ridge</td><td>The same 110 lag features, standardized; ridge regression with
+        α = 10, direct 24-output prediction per target.</td></tr>
+      <tr class="alt"><td>Persistence</td><td>Baseline with no training: repeats the previous day's
+        24 hours.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
     <h2>What the test month costs on the grid</h2>
     <p class="sub">If the test month's electric load were bought from ERCOT at LZ_SOUTH hourly prices,
        this is the bill — the reference case the geothermal designs on the main page are compared
