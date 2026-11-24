@@ -42,6 +42,9 @@
   canvas.tall{ height:320px; }
   .diagram{ width:100%; height:auto; display:block; }
   .diagram text{ font-family:Inter, Arial, sans-serif; }
+  .flowline{ stroke-dasharray:7 5; animation:dashmove 1s linear infinite; }
+  @keyframes dashmove{ to{ stroke-dashoffset:-24; } }
+  @media (prefers-reduced-motion: reduce){ .flowline{ animation:none; } }
   table{ width:100%; border-collapse:collapse; font-size:13px; }
   th, td{ border:1px solid var(--line); padding:6px 8px; text-align:right; }
   th{ background:var(--navy); color:#fff; font-weight:600; }
@@ -85,24 +88,49 @@
         <marker id="arrD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0,0 L10,5 L0,10 z" fill="#8A97A8"></path>
         </marker>
+        <radialGradient id="heatGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#E08A2E" stop-opacity="0.55"></stop>
+          <stop offset="100%" stop-color="#E08A2E" stop-opacity="0"></stop>
+        </radialGradient>
+        <clipPath id="tankClip"><rect x="795" y="78" width="56" height="38" rx="7"></rect></clipPath>
+        <path id="tblade" d="M350,95 C357,88 357,81 350,79 C343,81 343,88 350,95 Z" fill="#2D6FB7" opacity="0.8"></path>
       </defs>
 
       <!-- power line along the top: ORC -> data center -->
       <path d="M350,64 L350,30 L1053,30 L1053,58" fill="none" stroke="#E08A2E" stroke-width="2.5" marker-end="url(#arr)"></path>
       <text x="701" y="22" text-anchor="middle" font-size="12" fill="#B96F14">electric power</text>
+      <g fill="#E08A2E">
+        <circle r="4"><animateMotion dur="5.5s" repeatCount="indefinite" path="M350,64 L350,30 L1053,30 L1053,54"></animateMotion></circle>
+        <circle r="4"><animateMotion dur="5.5s" begin="-1.83s" repeatCount="indefinite" path="M350,64 L350,30 L1053,30 L1053,54"></animateMotion></circle>
+        <circle r="4"><animateMotion dur="5.5s" begin="-3.67s" repeatCount="indefinite" path="M350,64 L350,30 L1053,30 L1053,54"></animateMotion></circle>
+      </g>
 
       <!-- main cascade arrows -->
-      <line x1="208" y1="119" x2="244" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
-      <line x1="452" y1="119" x2="488" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
-      <line x1="696" y1="119" x2="732" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
-      <line x1="910" y1="119" x2="946" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
+      <line class="flowline" x1="208" y1="119" x2="244" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
+      <line class="flowline" x1="452" y1="119" x2="488" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
+      <line class="flowline" x1="696" y1="119" x2="732" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
+      <line class="flowline" x1="910" y1="119" x2="946" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
       <text x="226" y="106" text-anchor="middle" font-size="11" fill="#46505F">hot brine</text>
       <text x="470" y="106" text-anchor="middle" font-size="11" fill="#46505F">hot water</text>
       <text x="714" y="106" text-anchor="middle" font-size="11" fill="#46505F">chilled water</text>
       <text x="928" y="106" text-anchor="middle" font-size="11" fill="#46505F">cooling</text>
+      <g>
+        <circle r="3.2" fill="#D73027"><animateMotion dur="0.85s" repeatCount="indefinite" path="M208,119 L240,119"></animateMotion></circle>
+        <circle r="3.2" fill="#D73027"><animateMotion dur="0.85s" begin="-0.42s" repeatCount="indefinite" path="M208,119 L240,119"></animateMotion></circle>
+        <circle r="3.2" fill="#E08A2E"><animateMotion dur="0.85s" repeatCount="indefinite" path="M452,119 L484,119"></animateMotion></circle>
+        <circle r="3.2" fill="#E08A2E"><animateMotion dur="0.85s" begin="-0.42s" repeatCount="indefinite" path="M452,119 L484,119"></animateMotion></circle>
+        <circle r="3.2" fill="#2D6FB7"><animateMotion dur="0.85s" repeatCount="indefinite" path="M696,119 L728,119"></animateMotion></circle>
+        <circle r="3.2" fill="#2D6FB7"><animateMotion dur="0.85s" begin="-0.42s" repeatCount="indefinite" path="M696,119 L728,119"></animateMotion></circle>
+        <circle r="3.2" fill="#2D6FB7"><animateMotion dur="0.85s" repeatCount="indefinite" path="M910,119 L942,119"></animateMotion></circle>
+        <circle r="3.2" fill="#2D6FB7"><animateMotion dur="0.85s" begin="-0.42s" repeatCount="indefinite" path="M910,119 L942,119"></animateMotion></circle>
+      </g>
 
       <!-- reinjection loop -->
       <path d="M350,174 L350,208 L106,208 L106,180" fill="none" stroke="#8A97A8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrD)"></path>
+      <g fill="#8A97A8">
+        <circle r="3.2"><animateMotion dur="6s" repeatCount="indefinite" path="M350,176 L350,208 L106,208 L106,184"></animateMotion></circle>
+        <circle r="3.2"><animateMotion dur="6s" begin="-3s" repeatCount="indefinite" path="M350,176 L350,208 L106,208 L106,184"></animateMotion></circle>
+      </g>
       <text x="228" y="226" text-anchor="middle" font-size="11.5" fill="#46505F">cooled brine reinjected at 70–93 °C</text>
 
       <!-- backup arrows -->
@@ -121,16 +149,29 @@
         <rect x="14" y="136" width="184" height="11" fill="#E79B4F"></rect>
         <rect x="14" y="147" width="184" height="11" fill="#E08A2E"></rect>
         <rect x="14" y="158" width="184" height="10" fill="#D97B26"></rect>
+        <ellipse cx="106" cy="149" rx="88" ry="25" fill="url(#heatGlow)">
+          <animate attributeName="opacity" values="0.4;0.9;0.4" dur="4.5s" repeatCount="indefinite"></animate>
+        </ellipse>
         <line x1="106" y1="110" x2="106" y2="168" stroke="#14213D" stroke-width="3"></line>
         <line x1="94" y1="112" x2="118" y2="112" stroke="#14213D" stroke-width="3"></line>
+        <g fill="#FFE7C2">
+          <circle r="3"><animateMotion dur="1.7s" repeatCount="indefinite" path="M106,164 L106,116"></animateMotion></circle>
+          <circle r="3"><animateMotion dur="1.7s" begin="-0.85s" repeatCount="indefinite" path="M106,164 L106,116"></animateMotion></circle>
+        </g>
         <text x="118" y="168" font-size="11" fill="#FFFFFF" font-weight="700">192.7 °C at 4,354 m</text>
       </g>
 
       <!-- 2. Binary ORC plant -->
       <g>
         <rect x="250" y="64" width="200" height="110" rx="10" fill="#EEF2F7" stroke="#D8DEE7"></rect>
-        <circle cx="350" cy="96" r="17" fill="none" stroke="#2D6FB7" stroke-width="2.5"></circle>
-        <polygon points="354,84 342,99 350,99 346,110 360,94 351,94" fill="#E08A2E"></polygon>
+        <circle cx="350" cy="96" r="18" fill="#FFFFFF" stroke="#2D6FB7" stroke-width="2.5"></circle>
+        <g>
+          <animateTransform attributeName="transform" type="rotate" from="0 350 96" to="360 350 96" dur="7s" repeatCount="indefinite"></animateTransform>
+          <use href="#tblade"></use>
+          <use href="#tblade" transform="rotate(120 350 96)"></use>
+          <use href="#tblade" transform="rotate(240 350 96)"></use>
+        </g>
+        <circle cx="350" cy="96" r="3.6" fill="#E08A2E"></circle>
         <text x="350" y="136" text-anchor="middle" font-size="15" font-weight="700" fill="#14213D">Binary (ORC) plant</text>
         <text x="350" y="155" text-anchor="middle" font-size="11.5" fill="#46505F">Outlet 70–160 °C, chosen hourly:</text>
         <text x="350" y="169" text-anchor="middle" font-size="11.5" fill="#46505F">power traded against heat</text>
@@ -153,7 +194,12 @@
       <g>
         <rect x="738" y="64" width="170" height="110" rx="10" fill="#EEF2F7" stroke="#D8DEE7"></rect>
         <rect x="793" y="76" width="60" height="42" rx="9" fill="#BFD9F2" stroke="#2D6FB7" stroke-width="2"></rect>
-        <path d="M793,92 L853,92 L853,109 a9,9 0 0 1 -9,9 L802,118 a9,9 0 0 1 -9,-9 Z" fill="#2D6FB7" opacity="0.55"></path>
+        <g clip-path="url(#tankClip)">
+          <rect x="793" y="100" width="60" height="18" fill="#2D6FB7" opacity="0.55">
+            <animate attributeName="y" values="100;84;100" keyTimes="0;0.5;1" dur="9s" repeatCount="indefinite"></animate>
+            <animate attributeName="height" values="18;34;18" keyTimes="0;0.5;1" dur="9s" repeatCount="indefinite"></animate>
+          </rect>
+        </g>
         <text x="823" y="136" text-anchor="middle" font-size="15" font-weight="700" fill="#14213D">RTES</text>
         <text x="823" y="155" text-anchor="middle" font-size="11.5" fill="#46505F">Aquifer chilled-water storage,</text>
         <text x="823" y="169" text-anchor="middle" font-size="11.5" fill="#46505F">ΔT 13.5 K, cycled hourly</text>
@@ -168,9 +214,12 @@
           <rect x="1058" y="78" width="30" height="38" rx="3"></rect>
         </g>
         <g fill="#7FC4EA">
-          <circle cx="986" cy="88" r="2.4"></circle><circle cx="986" cy="98" r="2.4"></circle>
-          <circle cx="1026" cy="88" r="2.4"></circle><circle cx="1026" cy="98" r="2.4"></circle>
-          <circle cx="1066" cy="88" r="2.4"></circle><circle cx="1066" cy="98" r="2.4"></circle>
+          <circle cx="986" cy="88" r="2.4"><animate attributeName="opacity" values="1;0.1;1" dur="2.6s" repeatCount="indefinite"></animate></circle>
+          <circle cx="986" cy="98" r="2.4"><animate attributeName="opacity" values="1;0.1;1" dur="3.1s" begin="-0.7s" repeatCount="indefinite"></animate></circle>
+          <circle cx="1026" cy="88" r="2.4"><animate attributeName="opacity" values="1;0.1;1" dur="2.3s" begin="-1.3s" repeatCount="indefinite"></animate></circle>
+          <circle cx="1026" cy="98" r="2.4"><animate attributeName="opacity" values="1;0.1;1" dur="3.4s" begin="-0.4s" repeatCount="indefinite"></animate></circle>
+          <circle cx="1066" cy="88" r="2.4"><animate attributeName="opacity" values="1;0.1;1" dur="2.8s" begin="-1.8s" repeatCount="indefinite"></animate></circle>
+          <circle cx="1066" cy="98" r="2.4"><animate attributeName="opacity" values="1;0.1;1" dur="2.4s" begin="-1s" repeatCount="indefinite"></animate></circle>
         </g>
         <text x="1053" y="136" text-anchor="middle" font-size="15" font-weight="700" fill="#14213D">Data center</text>
         <text x="1053" y="155" text-anchor="middle" font-size="11.5" fill="#46505F">200 MWe, direct-to-chip cooling,</text>
@@ -503,6 +552,13 @@ document.getElementById('mlVerdict').innerHTML =
   `${(M.dl_ho.coverage * 100).toFixed(0)} % of wells, against ${Math.abs(M.gbm_ho.bias).toFixed(0)} °C and ` +
   `${(M.gbm_ho.coverage * 100).toFixed(0)} % for the trees. The boosted-tree interval therefore stays the LP ` +
   `input; the deep model becomes a candidate again once local field measurements exist.`;
+
+// ---------- reduced motion: pause the animated schematic ----------
+const diagramSvg = document.querySelector('svg.diagram');
+if (diagramSvg && diagramSvg.pauseAnimations &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  diagramSvg.pauseAnimations();
+}
 </script>
 </body>
 </html>
