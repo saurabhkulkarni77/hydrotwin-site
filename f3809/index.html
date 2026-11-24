@@ -39,6 +39,9 @@
   .tacrow .bar{ margin:0; }
   .tacrow b{ text-align:right; font-size:13.5px; }
   canvas{ width:100%; height:230px; display:block; }
+  canvas.tall{ height:320px; }
+  .diagram{ width:100%; height:auto; display:block; }
+  .diagram text{ font-family:Inter, Arial, sans-serif; }
   table{ width:100%; border-collapse:collapse; font-size:13px; }
   th, td{ border:1px solid var(--line); padding:6px 8px; text-align:right; }
   th{ background:var(--navy); color:#fff; font-weight:600; }
@@ -74,17 +77,127 @@
     <h2>The system</h2>
     <p class="sub">Brine is produced, run through a binary plant, then cascaded into cooling and storage.
        Grid import and gas CHP are the backup options the optimizer can choose instead.</p>
-    <div class="chain">
-      <div class="node"><b>Geothermal field</b><span>24 producers, Vicksburg formation, brine reinjected at 70 to 93 °C</span></div>
-      <div class="arrow">→</div>
-      <div class="node"><b>Binary (ORC) plant</b><span>Outlet temperature chosen every hour, 70 to 160 °C, trading power against heat</span></div>
-      <div class="arrow">→</div>
-      <div class="node"><b>Absorption chillers</b><span>Single-effect LiBr, COP 0.70, driven by the outlet heat</span></div>
-      <div class="arrow">→</div>
-      <div class="node"><b>RTES</b><span>Chilled-water storage in an aquifer, ΔT 13.5 K, charged and discharged hourly</span></div>
-      <div class="arrow">→</div>
-      <div class="node"><b>Data center</b><span>200 MWe, direct-to-chip cooling, served every hour of the year</span></div>
-    </div>
+    <svg class="diagram" viewBox="0 0 1160 336" role="img" aria-label="Schematic of the F-3809 geothermal cascade: reservoir, binary plant, absorption chillers, RTES and data center, with grid and gas CHP backup">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#2D6FB7"></path>
+        </marker>
+        <marker id="arrD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8A97A8"></path>
+        </marker>
+      </defs>
+
+      <!-- power line along the top: ORC -> data center -->
+      <path d="M350,64 L350,30 L1053,30 L1053,58" fill="none" stroke="#E08A2E" stroke-width="2.5" marker-end="url(#arr)"></path>
+      <text x="701" y="22" text-anchor="middle" font-size="12" fill="#B96F14">electric power</text>
+
+      <!-- main cascade arrows -->
+      <line x1="208" y1="119" x2="244" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
+      <line x1="452" y1="119" x2="488" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
+      <line x1="696" y1="119" x2="732" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
+      <line x1="910" y1="119" x2="946" y2="119" stroke="#2D6FB7" stroke-width="2.5" marker-end="url(#arr)"></line>
+      <text x="226" y="106" text-anchor="middle" font-size="11" fill="#46505F">hot brine</text>
+      <text x="470" y="106" text-anchor="middle" font-size="11" fill="#46505F">hot water</text>
+      <text x="714" y="106" text-anchor="middle" font-size="11" fill="#46505F">chilled water</text>
+      <text x="928" y="106" text-anchor="middle" font-size="11" fill="#46505F">cooling</text>
+
+      <!-- reinjection loop -->
+      <path d="M350,174 L350,208 L106,208 L106,180" fill="none" stroke="#8A97A8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrD)"></path>
+      <text x="228" y="226" text-anchor="middle" font-size="11.5" fill="#46505F">cooled brine reinjected at 70–93 °C</text>
+
+      <!-- backup arrows -->
+      <line x1="594" y1="252" x2="594" y2="180" stroke="#8A97A8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrD)"></line>
+      <text x="604" y="220" font-size="11.5" fill="#46505F">backup heat</text>
+      <line x1="1053" y1="252" x2="1053" y2="180" stroke="#8A97A8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrD)"></line>
+      <text x="1043" y="220" text-anchor="end" font-size="11.5" fill="#46505F">backup power</text>
+
+      <!-- 1. Reservoir -->
+      <g>
+        <rect x="6" y="64" width="200" height="110" rx="10" fill="#FFFFFF" stroke="#D8DEE7"></rect>
+        <text x="106" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#14213D">Geothermal reservoir</text>
+        <text x="106" y="104" text-anchor="middle" font-size="11.5" fill="#46505F">Vicksburg formation · 24 producers</text>
+        <rect x="14" y="114" width="184" height="11" fill="#F3D9B0"></rect>
+        <rect x="14" y="125" width="184" height="11" fill="#EDBE85"></rect>
+        <rect x="14" y="136" width="184" height="11" fill="#E79B4F"></rect>
+        <rect x="14" y="147" width="184" height="11" fill="#E08A2E"></rect>
+        <rect x="14" y="158" width="184" height="10" fill="#D97B26"></rect>
+        <line x1="106" y1="110" x2="106" y2="168" stroke="#14213D" stroke-width="3"></line>
+        <line x1="94" y1="112" x2="118" y2="112" stroke="#14213D" stroke-width="3"></line>
+        <text x="118" y="168" font-size="11" fill="#FFFFFF" font-weight="700">192.7 °C at 4,354 m</text>
+      </g>
+
+      <!-- 2. Binary ORC plant -->
+      <g>
+        <rect x="250" y="64" width="200" height="110" rx="10" fill="#EEF2F7" stroke="#D8DEE7"></rect>
+        <circle cx="350" cy="96" r="17" fill="none" stroke="#2D6FB7" stroke-width="2.5"></circle>
+        <polygon points="354,84 342,99 350,99 346,110 360,94 351,94" fill="#E08A2E"></polygon>
+        <text x="350" y="136" text-anchor="middle" font-size="15" font-weight="700" fill="#14213D">Binary (ORC) plant</text>
+        <text x="350" y="155" text-anchor="middle" font-size="11.5" fill="#46505F">Outlet 70–160 °C, chosen hourly:</text>
+        <text x="350" y="169" text-anchor="middle" font-size="11.5" fill="#46505F">power traded against heat</text>
+      </g>
+
+      <!-- 3. Absorption chillers -->
+      <g>
+        <rect x="494" y="64" width="200" height="110" rx="10" fill="#EEF2F7" stroke="#D8DEE7"></rect>
+        <g stroke="#2D6FB7" stroke-width="2.5" stroke-linecap="round">
+          <line x1="594" y1="80" x2="594" y2="112"></line>
+          <line x1="580" y1="88" x2="608" y2="104"></line>
+          <line x1="608" y1="88" x2="580" y2="104"></line>
+        </g>
+        <text x="594" y="136" text-anchor="middle" font-size="15" font-weight="700" fill="#14213D">Absorption chillers</text>
+        <text x="594" y="155" text-anchor="middle" font-size="11.5" fill="#46505F">Single-effect LiBr, COP 0.70,</text>
+        <text x="594" y="169" text-anchor="middle" font-size="11.5" fill="#46505F">driven by the outlet heat</text>
+      </g>
+
+      <!-- 4. RTES -->
+      <g>
+        <rect x="738" y="64" width="170" height="110" rx="10" fill="#EEF2F7" stroke="#D8DEE7"></rect>
+        <rect x="793" y="76" width="60" height="42" rx="9" fill="#BFD9F2" stroke="#2D6FB7" stroke-width="2"></rect>
+        <path d="M793,92 L853,92 L853,109 a9,9 0 0 1 -9,9 L802,118 a9,9 0 0 1 -9,-9 Z" fill="#2D6FB7" opacity="0.55"></path>
+        <text x="823" y="136" text-anchor="middle" font-size="15" font-weight="700" fill="#14213D">RTES</text>
+        <text x="823" y="155" text-anchor="middle" font-size="11.5" fill="#46505F">Aquifer chilled-water storage,</text>
+        <text x="823" y="169" text-anchor="middle" font-size="11.5" fill="#46505F">ΔT 13.5 K, cycled hourly</text>
+      </g>
+
+      <!-- 5. Data center -->
+      <g>
+        <rect x="952" y="64" width="202" height="110" rx="10" fill="#EEF2F7" stroke="#D8DEE7"></rect>
+        <g fill="#14213D">
+          <rect x="978" y="78" width="30" height="38" rx="3"></rect>
+          <rect x="1018" y="78" width="30" height="38" rx="3"></rect>
+          <rect x="1058" y="78" width="30" height="38" rx="3"></rect>
+        </g>
+        <g fill="#7FC4EA">
+          <circle cx="986" cy="88" r="2.4"></circle><circle cx="986" cy="98" r="2.4"></circle>
+          <circle cx="1026" cy="88" r="2.4"></circle><circle cx="1026" cy="98" r="2.4"></circle>
+          <circle cx="1066" cy="88" r="2.4"></circle><circle cx="1066" cy="98" r="2.4"></circle>
+        </g>
+        <text x="1053" y="136" text-anchor="middle" font-size="15" font-weight="700" fill="#14213D">Data center</text>
+        <text x="1053" y="155" text-anchor="middle" font-size="11.5" fill="#46505F">200 MWe, direct-to-chip cooling,</text>
+        <text x="1053" y="169" text-anchor="middle" font-size="11.5" fill="#46505F">served every hour of the year</text>
+      </g>
+
+      <!-- backup: gas CHP -->
+      <g>
+        <rect x="494" y="252" width="200" height="66" rx="10" fill="#FFFFFF" stroke="#D8DEE7"></rect>
+        <path d="M530,306 C520,296 522,286 530,276 C538,286 540,296 530,306 Z" fill="#E08A2E"></path>
+        <text x="606" y="282" text-anchor="middle" font-size="14" font-weight="700" fill="#14213D">Gas CHP (backup)</text>
+        <text x="606" y="301" text-anchor="middle" font-size="11.5" fill="#46505F">heat for the absorption chillers</text>
+      </g>
+
+      <!-- backup: ERCOT grid -->
+      <g>
+        <rect x="952" y="252" width="202" height="66" rx="10" fill="#FFFFFF" stroke="#D8DEE7"></rect>
+        <g stroke="#14213D" stroke-width="2.2" stroke-linecap="round">
+          <line x1="986" y1="306" x2="998" y2="272"></line>
+          <line x1="1010" y1="306" x2="998" y2="272"></line>
+          <line x1="986" y1="284" x2="1010" y2="284"></line>
+          <line x1="990" y1="294" x2="1006" y2="294"></line>
+        </g>
+        <text x="1068" y="282" text-anchor="middle" font-size="14" font-weight="700" fill="#14213D">ERCOT grid (backup)</text>
+        <text x="1068" y="301" text-anchor="middle" font-size="11.5" fill="#46505F">LZ_SOUTH power import</text>
+      </g>
+    </svg>
     <p class="sub" style="margin-top:10px">Backup: ERCOT grid import (LZ_SOUTH) and optional gas CHP. Every relation in the
        optimizer is linear, so the optimum is global and the dual prices are exact sensitivities.</p>
   </div>
@@ -135,6 +248,23 @@
     </div>
   </div>
 
+  <div class="grid">
+    <div class="card">
+      <h2>Texas well map — where the heat is</h2>
+      <p class="sub">Every dot is a BEG well with a corrected bottom-hole temperature (a sample of
+         <b id="mapN">–</b> of the <b id="mapTotal">–</b> wells passing the brief's filters). Colour is
+         temperature; the ring marks the F-3809 field centre in Hidalgo County, down on the Rio Grande.</p>
+      <canvas id="wellMap" class="tall"></canvas>
+    </div>
+    <div class="card">
+      <h2>Temperature vs depth — the gradient the model learns</h2>
+      <p class="sub">Corrected bottom-hole temperature against depth for <b id="profN">–</b> sampled wells.
+         The diamond is the study's F-3809 screening point: 192.7 °C at 4,354 m, hot for its depth,
+         which is why this field carries the design.</p>
+      <canvas id="depthProfile" class="tall"></canvas>
+    </div>
+  </div>
+
   <div class="card">
     <h2>Machine learning and deep learning — the temperature model</h2>
     <p class="sub">Machine learning predicts one physical parameter only: corrected bottom-hole temperature
@@ -151,7 +281,8 @@
   </div>
 
   <footer>
-    Sources: F-3809 project files — BEG well inventory (staging view), ERCOT historical RTM prices (LZ_SOUTH, 2025),
+    Sources: F-3809 project files — BEG well inventory (staging view; the map and depth profile plot samples of the
+    filtered inventory under the brief's filters), ERCOT historical RTM prices (LZ_SOUTH, 2025),
     Stage 5.5 hourly IT-load and cooling profile, and the study LP (Python/HiGHS, rebuilt in MATLAB).
     Scenario, TAC and Monte Carlo values are the published results of the study paper (Mahdi, UT Dallas).
     Machine-learning metrics were computed on 24 Nov 2026 from the BEG records under the protocol above;
@@ -247,6 +378,110 @@ bandChart(document.getElementById('ercotChart'));
 lineChart(document.getElementById('loadChart'),
   [D.load.p_it, D.load.q_cool], ['#2D6FB7', '#E08A2E'],
   ['IT power (MW)', 'Cooling service (MWth)']);
+
+// ---------- well map + depth profile ----------
+function bhtColor(t){
+  const stops = [[15,[69,117,180]],[90,[145,191,219]],[150,[254,224,144]],[210,[244,109,67]],[300,[165,0,38]]];
+  if (t <= stops[0][0]) return `rgb(${stops[0][1].join(',')})`;
+  for (let i = 1; i < stops.length; i++){
+    if (t <= stops[i][0]){
+      const [t0, c0] = stops[i-1], [t1, c1] = stops[i], f = (t - t0) / (t1 - t0);
+      return `rgb(${c0.map((v, j) => Math.round(v + (c1[j] - v) * f)).join(',')})`;
+    }
+  }
+  return `rgb(${stops[stops.length-1][1].join(',')})`;
+}
+function wellMapChart(cv){
+  const ctx = cv.getContext('2d');
+  const W = cv.width = cv.offsetWidth * 2, H = cv.height = cv.offsetHeight * 2;
+  const lon = D.wells.map.lon, lat = D.wells.map.lat, bht = D.wells.map.bht;
+  const loLon = Math.min(...lon), hiLon = Math.max(...lon);
+  const loLat = Math.min(...lat), hiLat = Math.max(...lat);
+  const mL = 58, mR = 14, mT = 12, mB = 62;
+  const pw = W - mL - mR, ph = H - mT - mB;
+  const k = Math.cos((loLat + hiLat) / 2 * Math.PI / 180);
+  const s = Math.min(pw / ((hiLon - loLon) * k), ph / (hiLat - loLat));
+  const ox = mL + (pw - (hiLon - loLon) * k * s) / 2;
+  const oy = mT + (ph - (hiLat - loLat) * s) / 2;
+  const X = v => ox + (v - loLon) * k * s;
+  const Y = v => oy + (hiLat - v) * s;
+  ctx.font = '17px Inter, Arial'; ctx.fillStyle = '#46505F';
+  for (let g = Math.ceil(loLon / 2) * 2; g <= hiLon; g += 2){
+    ctx.strokeStyle = '#E3E8EF'; ctx.beginPath(); ctx.moveTo(X(g), mT); ctx.lineTo(X(g), mT + ph); ctx.stroke();
+    ctx.fillText(g + '°', X(g) - 14, mT + ph + 22);
+  }
+  for (let g = Math.ceil(loLat / 2) * 2; g <= hiLat; g += 2){
+    ctx.strokeStyle = '#E3E8EF'; ctx.beginPath(); ctx.moveTo(mL, Y(g)); ctx.lineTo(mL + pw, Y(g)); ctx.stroke();
+    ctx.fillText(g + '°', 8, Y(g) + 6);
+  }
+  ctx.strokeStyle = '#C4CEDB'; ctx.strokeRect(mL, mT, pw, ph);
+  const order = bht.map((v, i) => i).sort((a, b) => bht[a] - bht[b]);
+  order.forEach(i => {
+    ctx.fillStyle = bhtColor(bht[i]);
+    ctx.beginPath(); ctx.arc(X(lon[i]), Y(lat[i]), 3.1, 0, Math.PI * 2); ctx.fill();
+  });
+  const fx = X(D.wells.field.lon), fy = Y(D.wells.field.lat);
+  ctx.strokeStyle = '#14213D'; ctx.lineWidth = 3.4;
+  ctx.beginPath(); ctx.arc(fx, fy, 11, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(fx - 17, fy); ctx.lineTo(fx + 17, fy);
+  ctx.moveTo(fx, fy - 17); ctx.lineTo(fx, fy + 17);
+  ctx.stroke(); ctx.lineWidth = 1;
+  ctx.fillStyle = '#14213D'; ctx.font = 'bold 18px Inter, Arial';
+  ctx.fillText('F-3809 field', fx + 20, fy - 8);
+  ctx.font = '16px Inter, Arial'; ctx.fillStyle = '#46505F';
+  ctx.fillText('Hidalgo County', fx + 20, fy + 14);
+  const ly = H - 26, lw = W - mL - mR;
+  const grad = ctx.createLinearGradient(mL, 0, mL + lw, 0);
+  for (let t = 15; t <= 300; t += 15) grad.addColorStop((t - 15) / 285, bhtColor(t));
+  ctx.fillStyle = grad; ctx.fillRect(mL, ly, lw, 13);
+  ctx.strokeStyle = '#C4CEDB'; ctx.strokeRect(mL, ly, lw, 13);
+  ctx.fillStyle = '#46505F'; ctx.font = '16px Inter, Arial';
+  ctx.fillText('corrected BHT: 15 °C', mL, ly - 8);
+  const lbl = '300 °C';
+  ctx.fillText(lbl, mL + lw - ctx.measureText(lbl).width, ly - 8);
+}
+function depthChart(cv){
+  const ctx = cv.getContext('2d');
+  const W = cv.width = cv.offsetWidth * 2, H = cv.height = cv.offsetHeight * 2;
+  const dep = D.wells.profile.depth, bht = D.wells.profile.bht;
+  const mL = 84, mR = 14, mT = 30, mB = 46;
+  const pw = W - mL - mR, ph = H - mT - mB;
+  const X = v => mL + v / 320 * pw;
+  const Y = v => mT + v / 7500 * ph;
+  ctx.font = '17px Inter, Arial'; ctx.fillStyle = '#46505F';
+  for (let g = 0; g <= 300; g += 100){
+    ctx.strokeStyle = '#E3E8EF'; ctx.beginPath(); ctx.moveTo(X(g), mT); ctx.lineTo(X(g), mT + ph); ctx.stroke();
+    ctx.fillText(g + '', X(g) - 8, mT + ph + 24);
+  }
+  for (let g = 0; g <= 7500; g += 1500){
+    ctx.strokeStyle = '#E3E8EF'; ctx.beginPath(); ctx.moveTo(mL, Y(g)); ctx.lineTo(mL + pw, Y(g)); ctx.stroke();
+    const lbl = g.toLocaleString('en-US');
+    ctx.fillText(lbl, mL - ctx.measureText(lbl).width - 8, Y(g) + 6);
+  }
+  ctx.strokeStyle = '#C4CEDB'; ctx.strokeRect(mL, mT, pw, ph);
+  ctx.fillText('depth (m), increasing downward', mL, 20);
+  const xl = 'corrected BHT (°C)';
+  ctx.fillText(xl, mL + pw / 2 - ctx.measureText(xl).width / 2, mT + ph + 24);
+  ctx.fillStyle = 'rgba(45,111,183,0.38)';
+  for (let i = 0; i < dep.length; i++){
+    ctx.beginPath(); ctx.arc(X(bht[i]), Y(dep[i]), 2.6, 0, Math.PI * 2); ctx.fill();
+  }
+  const px = X(D.wells.field.screen_bht_c), py = Y(D.wells.field.screen_depth_m);
+  ctx.fillStyle = '#D73027'; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(px, py - 10); ctx.lineTo(px + 10, py); ctx.lineTo(px, py + 10); ctx.lineTo(px - 10, py);
+  ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.lineWidth = 1;
+  ctx.fillStyle = '#A50026'; ctx.font = 'bold 17px Inter, Arial';
+  ctx.fillText('F-3809 screening point', px + 16, py - 2);
+  ctx.font = '16px Inter, Arial'; ctx.fillStyle = '#46505F';
+  ctx.fillText('192.7 °C at 4,354 m', px + 16, py + 19);
+}
+document.getElementById('mapN').textContent = D.wells.map.n_shown.toLocaleString('en-US');
+document.getElementById('mapTotal').textContent = D.wells.map.n_total.toLocaleString('en-US');
+document.getElementById('profN').textContent = D.wells.profile.n_shown.toLocaleString('en-US');
+wellMapChart(document.getElementById('wellMap'));
+depthChart(document.getElementById('depthProfile'));
 
 // ---------- ML table ----------
 const M = D.ml;
