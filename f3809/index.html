@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-3809 Geothermal Digital Twin — Power, Absorption Cooling and RTES for a 200 MWe Data Center</title>
+<style>
+  :root{ --navy:#14213D; --blue:#2D6FB7; --gray:#46505F; --line:#D8DEE7; --bg:#F5F7FA; --card:#FFFFFF; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:Inter, Arial, sans-serif; background:var(--bg); color:var(--navy); }
+  header{ background:var(--navy); color:#fff; padding:26px 20px 20px; }
+  header h1{ margin:0 0 6px; font-size:26px; letter-spacing:.2px; }
+  header p{ margin:0; color:#C7D2E0; font-size:14px; max-width:980px; line-height:1.45; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:18px 16px 30px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .chip{ background:#1E3257; border:1px solid #33507E; color:#E8EEF6; padding:6px 11px; border-radius:999px; font-size:12.5px; }
+  .chip b{ color:#fff; }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:16px; }
+  .card h2{ margin:0 0 4px; font-size:18px; }
+  .card h3{ margin:0 0 6px; font-size:15px; }
+  .sub{ color:var(--gray); font-size:13px; line-height:1.5; margin:0 0 10px; }
+  .chain{ display:flex; align-items:stretch; gap:0; flex-wrap:wrap; }
+  .node{ flex:1 1 150px; background:#EEF2F7; border:1px solid var(--line); border-radius:10px; padding:10px 12px; min-width:140px; }
+  .node b{ display:block; font-size:14px; margin-bottom:3px; }
+  .node span{ font-size:12px; color:var(--gray); line-height:1.4; display:block; }
+  .arrow{ align-self:center; padding:0 7px; color:var(--blue); font-size:19px; font-weight:700; }
+  .scen{ display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 14px; }
+  .scen button{ border:1px solid var(--line); background:#fff; border-radius:999px; padding:7px 13px; font-size:13px; cursor:pointer; color:var(--navy); }
+  .scen button.on{ background:var(--blue); border-color:var(--blue); color:#fff; font-weight:600; }
+  .big{ display:flex; gap:26px; flex-wrap:wrap; margin:6px 0 4px; }
+  .big div b{ display:block; font-size:29px; }
+  .big div span{ font-size:12.5px; color:var(--gray); }
+  .bar{ height:14px; background:#E7ECF2; border-radius:7px; overflow:hidden; margin:10px 0 4px; }
+  .bar i{ display:block; height:100%; background:var(--blue); width:0; transition:width .3s; }
+  .tacrow{ display:grid; grid-template-columns:300px 1fr 74px; gap:10px; align-items:center; margin:7px 0; font-size:13px; }
+  @media (max-width:700px){ .tacrow{ grid-template-columns:1fr 74px; } .tacrow .bar{ grid-column:1 / -1; order:3; margin:2px 0 6px; } }
+  .tacrow .bar{ margin:0; }
+  .tacrow b{ text-align:right; font-size:13.5px; }
+  canvas{ width:100%; height:230px; display:block; }
+  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  th, td{ border:1px solid var(--line); padding:6px 8px; text-align:right; }
+  th{ background:var(--navy); color:#fff; font-weight:600; }
+  td:first-child, th:first-child{ text-align:left; }
+  tr.alt td{ background:#F0F3F8; }
+  .verdict{ background:#EEF2F7; border-left:4px solid var(--blue); padding:11px 14px; border-radius:0 8px 8px 0; font-size:13.5px; line-height:1.55; margin-top:12px; }
+  .mc{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:700px){ .mc{ grid-template-columns:1fr; } }
+  .mc div{ background:#EEF2F7; border-radius:10px; padding:12px 14px; font-size:13.5px; line-height:1.6; }
+  footer{ color:var(--gray); font-size:12.5px; line-height:1.6; padding:4px 2px 10px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>F-3809 Geothermal Digital Twin</h1>
+  <p>Hourly optimization of geothermal power, absorption cooling and reservoir thermal energy storage (RTES)
+     for a 200 MWe data center at the F-3809 well field, Hidalgo County, Texas. The twin couples the study's
+     8,760-hour linear program with its machine-learning temperature model, extended with conformal
+     calibration and a deep learning model.</p>
+  <div class="chips">
+    <span class="chip">Resource <b>192.7 °C at 4,354 m</b></span>
+    <span class="chip"><b>49</b> wells within 5 km</span>
+    <span class="chip"><b>24</b> producers</span>
+    <span class="chip">Base flow <b>2.7 kg/s per well</b></span>
+    <span class="chip">LP <b>8,760 h · 166,440 variables</b></span>
+    <span class="chip">Least cost <b>$59.85M / yr</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>The system</h2>
+    <p class="sub">Brine is produced, run through a binary plant, then cascaded into cooling and storage.
+       Grid import and gas CHP are the backup options the optimizer can choose instead.</p>
+    <div class="chain">
+      <div class="node"><b>Geothermal field</b><span>24 producers, Vicksburg formation, brine reinjected at 70 to 93 °C</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><b>Binary (ORC) plant</b><span>Outlet temperature chosen every hour, 70 to 160 °C, trading power against heat</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><b>Absorption chillers</b><span>Single-effect LiBr, COP 0.70, driven by the outlet heat</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><b>RTES</b><span>Chilled-water storage in an aquifer, ΔT 13.5 K, charged and discharged hourly</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><b>Data center</b><span>200 MWe, direct-to-chip cooling, served every hour of the year</span></div>
+    </div>
+    <p class="sub" style="margin-top:10px">Backup: ERCOT grid import (LZ_SOUTH) and optional gas CHP. Every relation in the
+       optimizer is linear, so the optimum is global and the dual prices are exact sensitivities.</p>
+  </div>
+
+  <div class="card">
+    <h2>Scenario explorer — what the 24 producers can deliver</h2>
+    <p class="sub">The field is hot but each well flows little; value scales with flow per well. Pick a
+       deliverability case (published results of the study's LP runs):</p>
+    <div class="scen" id="scenBtns"></div>
+    <div class="big">
+      <div><b id="sFlow">–</b><span>flow per well (kg/s)</span></div>
+      <div><b id="sPower">–</b><span>power, all brine to generation (MWe)</span></div>
+      <div><b id="sCool">–</b><span>of the cooling load served</span></div>
+    </div>
+    <div class="bar"><i id="sBar"></i></div>
+    <p class="sub" id="sNote" style="margin-top:6px"></p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Annual cost of each design (TAC)</h2>
+      <p class="sub">Mode C4 of the LP, delivered prices, 2025 dollars. RTES is in every least-cost design;
+         it is worth $7.31M per year in the absorption design and cuts chiller size by 34 %.</p>
+      <div id="tac"></div>
+    </div>
+    <div class="card">
+      <h2>Uncertainty — Monte Carlo (20,000 samples, P50)</h2>
+      <p class="sub">Per-well flow, capital cost and gas price propagated jointly. No sample beats
+         grid + electric chillers + RTES.</p>
+      <div class="mc" id="mc"></div>
+      <div class="verdict">Absorption design with fractured wells: TAC P10 / P50 / P90 =
+         <b>$80.7M / $91.7M / $104.6M</b> per year. Strongest drivers: capital cost, permeability, gas price.</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>ERCOT LZ_SOUTH prices, 2025</h2>
+      <p class="sub">Daily mean with the min–max band, from the project's hourly price file.
+         Annual mean <b id="ercotMean">–</b> per MWh (plus $1.61/MWh fees and the 4CP charge in the LP).</p>
+      <canvas id="ercotChart"></canvas>
+    </div>
+    <div class="card">
+      <h2>Data-center load profile</h2>
+      <p class="sub">Daily means of the project's Stage 5.5 hourly profile (60 % GPU utilization case):
+         IT power and the cooling service it needs.</p>
+      <canvas id="loadChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Machine learning and deep learning — the temperature model</h2>
+    <p class="sub">Machine learning predicts one physical parameter only: corrected bottom-hole temperature
+       from latitude, longitude and depth, on <b id="mlN">–</b> Texas BEG wells. Its P10–P90 interval sets the
+       production-temperature range for the Monte Carlo; the LP itself is never replaced by a model.
+       Validation: 5-fold cross-validation on 0.5° spatial blocks, plus a hold-out with the whole F-3809
+       area withheld (train beyond 25 km, test on the <b id="mlTestN">–</b> wells within 5 km, measured mean
+       <b id="mlTestMean">–</b> °C).</p>
+    <table id="mlTable">
+      <tr><th>Model</th><th>Statewide RMSE (°C)</th><th>Statewide R²</th><th>Deep wells RMSE (°C)</th>
+          <th>F-3809 RMSE (°C)</th><th>F-3809 bias (°C)</th><th>P10–P90 coverage at F-3809</th></tr>
+    </table>
+    <div class="verdict" id="mlVerdict"></div>
+  </div>
+
+  <footer>
+    Sources: F-3809 project files — BEG well inventory (staging view), ERCOT historical RTM prices (LZ_SOUTH, 2025),
+    Stage 5.5 hourly IT-load and cooling profile, and the study LP (Python/HiGHS, rebuilt in MATLAB).
+    Scenario, TAC and Monte Carlo values are the published results of the study paper (Mahdi, UT Dallas).
+    Machine-learning metrics were computed on 24 Nov 2026 from the BEG records under the protocol above;
+    the deep model is a Fourier-feature residual network with quantile heads, and both models' intervals are
+    split-conformal calibrated. The field centre for the hold-out was reconstructed from the paper's screening
+    statistics (49 wells, 192.7 °C, 4,354 m), as the supplied extract does not name it.
+  </footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+const D = window.F3809;
+
+// ---------- scenario explorer ----------
+const btns = document.getElementById('scenBtns');
+D.published.scenarios.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.textContent = s.flow + ' kg/s — ' + s.label;
+  b.onclick = () => selectScenario(i);
+  btns.appendChild(b);
+});
+function selectScenario(i){
+  const s = D.published.scenarios[i];
+  [...btns.children].forEach((b, j) => b.classList.toggle('on', j === i));
+  document.getElementById('sFlow').textContent = s.flow.toFixed(1);
+  document.getElementById('sPower').textContent = s.power.toFixed(1);
+  document.getElementById('sCool').textContent = s.cooling === null ? 'see note' : s.cooling + ' %';
+  document.getElementById('sBar').style.width = (s.cooling === null ? 0 : s.cooling) + '%';
+  document.getElementById('sNote').textContent = s.note;
+}
+selectScenario(0);
+
+// ---------- TAC bars ----------
+const tacMax = Math.max(...D.published.tac.map(r => r.tac));
+document.getElementById('tac').innerHTML = D.published.tac.map(r =>
+  `<div class="tacrow"><span>${r.name}</span><div class="bar"><i style="width:${(r.tac/tacMax*100).toFixed(1)}%"></i></div><b>$${r.tac.toFixed(2)}M</b></div>`
+).join('');
+
+// ---------- Monte Carlo ----------
+document.getElementById('mc').innerHTML = D.published.mc.map(r =>
+  `<div><b>${r.case}</b><br>Flow ${r.flow} kg/s per well · ${r.power} MWe · ${r.cooling} % of cooling<br>Chance of serving at least 30 % of cooling: <b>${r.chance} %</b></div>`
+).join('');
+
+// ---------- charts ----------
+function lineChart(cv, series, colors, labels){
+  const ctx = cv.getContext('2d');
+  const W = cv.width = cv.offsetWidth * 2, H = cv.height = 460;
+  ctx.scale(1,1);
+  let lo = Infinity, hi = -Infinity;
+  series.forEach(s => s.forEach(v => { if (v < lo) lo = v; if (v > hi) hi = v; }));
+  const pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
+  const X = i => 46 + i * (W - 60) / (series[0].length - 1);
+  const Y = v => H - 34 - (v - lo) * (H - 56) / (hi - lo);
+  ctx.font = '19px Inter, Arial'; ctx.fillStyle = '#46505F';
+  for (let g = 0; g <= 4; g++){
+    const v = lo + (hi - lo) * g / 4, y = Y(v);
+    ctx.strokeStyle = '#E3E8EF'; ctx.beginPath(); ctx.moveTo(46, y); ctx.lineTo(W - 14, y); ctx.stroke();
+    ctx.fillText(v.toFixed(0), 4, y + 6);
+  }
+  series.forEach((s, si) => {
+    ctx.strokeStyle = colors[si]; ctx.lineWidth = 2.4; ctx.beginPath();
+    s.forEach((v, i) => i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v)));
+    ctx.stroke();
+  });
+  ctx.lineWidth = 1;
+  labels.forEach((t, i) => { ctx.fillStyle = colors[i]; ctx.fillText('— ' + t, 60 + i * 300, 24); });
+}
+function bandChart(cv){
+  const ctx = cv.getContext('2d');
+  const W = cv.width = cv.offsetWidth * 2, H = cv.height = 460;
+  const mean = D.ercot.mean, loA = D.ercot.lo, hiA = D.ercot.hi;
+  let lo = Math.min(...loA), hi = Math.max(...hiA);
+  const pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
+  const X = i => 46 + i * (W - 60) / (mean.length - 1);
+  const Y = v => H - 34 - (v - lo) * (H - 56) / (hi - lo);
+  ctx.font = '19px Inter, Arial'; ctx.fillStyle = '#46505F';
+  for (let g = 0; g <= 4; g++){
+    const v = lo + (hi - lo) * g / 4, y = Y(v);
+    ctx.strokeStyle = '#E3E8EF'; ctx.beginPath(); ctx.moveTo(46, y); ctx.lineTo(W - 14, y); ctx.stroke();
+    ctx.fillText(v.toFixed(0), 4, y + 6);
+  }
+  ctx.fillStyle = 'rgba(45,111,183,0.18)'; ctx.beginPath();
+  hiA.forEach((v, i) => i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v)));
+  for (let i = loA.length - 1; i >= 0; i--) ctx.lineTo(X(i), Y(loA[i]));
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#2D6FB7'; ctx.lineWidth = 2.4; ctx.beginPath();
+  mean.forEach((v, i) => i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v)));
+  ctx.stroke(); ctx.lineWidth = 1;
+  ctx.fillStyle = '#2D6FB7'; ctx.fillText('— daily mean, shaded = daily min–max ($/MWh)', 60, 24);
+}
+document.getElementById('ercotMean').textContent = '$' + D.ercot.annual_mean.toFixed(2);
+bandChart(document.getElementById('ercotChart'));
+lineChart(document.getElementById('loadChart'),
+  [D.load.p_it, D.load.q_cool], ['#2D6FB7', '#E08A2E'],
+  ['IT power (MW)', 'Cooling service (MWth)']);
+
+// ---------- ML table ----------
+const M = D.ml;
+document.getElementById('mlN').textContent = M.n_wells.toLocaleString('en-US');
+document.getElementById('mlTestN').textContent = M.field.n_within_5km;
+document.getElementById('mlTestMean').textContent = M.test_mean.toFixed(0);
+function mlRow(name, cv, ho, alt){
+  return `<tr${alt ? ' class="alt"' : ''}><td>${name}</td><td>${cv.all.rmse.toFixed(1)}</td>` +
+    `<td>${cv.all.r2.toFixed(2)}</td><td>${cv.deep.rmse.toFixed(1)}</td><td>${ho.rmse.toFixed(1)}</td>` +
+    `<td>${ho.bias.toFixed(1)}</td><td>${(ho.coverage * 100).toFixed(0)} %</td></tr>`;
+}
+document.getElementById('mlTable').insertAdjacentHTML('beforeend',
+  mlRow('Gradient boosting, conformalized', M.gbm_cv, M.gbm_ho, false) +
+  mlRow('Deep network (Fourier residual), conformalized', M.dl_cv, M.dl_ho, true));
+document.getElementById('mlVerdict').innerHTML =
+  `Verdict under the study validation gate: statewide the deep network ties the trees ` +
+  `(RMSE ${M.dl_cv.all.rmse.toFixed(1)} vs ${M.gbm_cv.all.rmse.toFixed(1)} °C), but at the withheld field it ` +
+  `under-predicts by ${Math.abs(M.dl_ho.bias).toFixed(0)} °C and its interval covers only ` +
+  `${(M.dl_ho.coverage * 100).toFixed(0)} % of wells, against ${Math.abs(M.gbm_ho.bias).toFixed(0)} °C and ` +
+  `${(M.gbm_ho.coverage * 100).toFixed(0)} % for the trees. The boosted-tree interval therefore stays the LP ` +
+  `input; the deep model becomes a candidate again once local field measurements exist.`;
+</script>
+</body>
+</html>
