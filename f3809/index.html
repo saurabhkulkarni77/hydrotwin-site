@@ -72,6 +72,7 @@
     <span class="chip">LP <b>8,760 h · 166,440 variables</b></span>
     <span class="chip">Least cost <b>$59.85M / yr</b></span>
   </div>
+  <p style="margin-top:12px"><a href="dc.html" style="color:#9FC3E8">→ Data Center Energy Twin: day-ahead forecasting of the data center's load, with a Transformer and the energy model roster</a></p>
 </header>
 
 <div class="wrap">
@@ -249,6 +250,10 @@
     </svg>
     <p class="sub" style="margin-top:10px">Backup: ERCOT grid import (LZ_SOUTH) and optional gas CHP. Every relation in the
        optimizer is linear, so the optimum is global and the dual prices are exact sensitivities.</p>
+    <p class="sub">The data center at the end of the cascade has its own page: the
+       <a href="dc.html" style="color:#2D6FB7"><b>Data Center Energy Twin</b></a> forecasts its hourly IT and
+       cooling load a day ahead with a Transformer, a PatchTST-style model and the rest of the energy roster,
+       scored on a held-out month.</p>
   </div>
 
   <div class="card">
